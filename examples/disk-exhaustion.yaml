@@ -1,0 +1,42 @@
+# Abate —— 止息混沌 · 示例实验：磁盘耗尽
+# Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+# AGPLv3; 商业用途须事先获得小黎的部落书面授权
+#
+# 本文件演示 F4 Exhaustion 故障类的完整实验结构。
+# This file demonstrates a complete F4 Exhaustion fault experiment.
+
+id: exp-disk-exhaustion-demo
+seed: 128
+criticality: 4
+recoveryBudgetMs: 300000
+
+target:
+  kind: service
+  name: storage-svc
+  env: staging
+  region: ap-shanghai
+
+fault:
+  type: F4
+  utilization: "85"
+
+blastRadius:
+  maxInstances: 1
+  maxDurationMs: 60000
+  maxTraffic: 500
+
+steadyState:
+  - sli: write-latency
+    assert: "< 200ms"
+    windowMs: 30000
+    method: p99
+  - sli: disk-available
+    assert: "> 10%"
+    windowMs: 30000
+    method: gauge
+
+abortOn:
+  - sli: write-latency
+    assert: "> 1000ms"
+    windowMs: 10000
+    method: p99

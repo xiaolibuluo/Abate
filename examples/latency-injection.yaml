@@ -1,0 +1,42 @@
+# Abate —— 止息混沌 · 示例实验：延迟注入
+# Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+# AGPLv3; 商业用途须事先获得小黎的部落书面授权
+#
+# 本文件演示 CES 第 2 章实验五元组的完整结构。
+# This file demonstrates the complete CES Chapter 2 five-tuple.
+
+id: exp-latency-demo
+seed: 42
+criticality: 3
+recoveryBudgetMs: 300000
+
+target:
+  kind: service
+  name: payment-svc
+  env: production
+  region: us-east-1
+
+fault:
+  type: F1
+  delay: "200"
+
+blastRadius:
+  maxInstances: 2
+  maxDurationMs: 90000
+  maxTraffic: 1000
+
+steadyState:
+  - sli: p99-latency
+    assert: "< 500ms"
+    windowMs: 60000
+    method: p99
+  - sli: error-rate
+    assert: "< 1%"
+    windowMs: 60000
+    method: rate
+
+abortOn:
+  - sli: error-rate
+    assert: "> 5%"
+    windowMs: 10000
+    method: rate

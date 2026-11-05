@@ -1,0 +1,120 @@
+<!--
+Abate —— 止息混沌 · 变异+混沌双结合的全量覆盖质量框架
+Abate — where chaos abates. Mutation × Chaos unified total-coverage quality framework.
+Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+
+本文件以 GNU Affero General Public License v3（AGPLv3）发布；商业用途须事先获得
+小黎的部落书面授权，详见 COMMERCIAL.md。
+This file is published under the GNU Affero General Public License v3 (AGPLv3).
+Commercial use requires prior written authorization from 小黎的部落.
+See COMMERCIAL.md for details.
+-->
+
+# 变更日志 | Changelog
+
+---
+
+## [Unreleased] — 2026-11-06
+
+### 新增 | Added
+
+#### 新 Go 包
+- **`llm/` 包**（第 16 个 Go 包）— LLM 客户端实现，对接 OpenAI Chat Completions API 与 Anthropic Claude Messages API，均实现 `mut.LLMClient` 接口，零外部依赖（仅标准库 `net/http`）
+  - `llm/client.go`（80 行）— Config 配置、BaseClient 公共 HTTP 能力、buildPrompt 提示词构造
+  - `llm/openai.go`（92 行）— OpenAIClient，默认模型 `gpt-4o`
+  - `llm/claude.go`（94 行）— ClaudeClient，默认模型 `claude-sonnet-4-20250514`
+  - 17 个测试用例，100% 覆盖率
+
+- **`hub/` 包**（第 17 个 Go 包）— ChaosHub 子编码注册表、远程同步与公告机制
+  - `hub/registry.go`（162 行）— 线程安全 Registry、附录 B v0.1 种子表 20 项、Merge 合并
+  - `hub/syncer.go`（82 行）— HTTP 远程同步，支持 API Key 认证
+  - `hub/announce.go`（91 行）— Diff 差异计算、Announcement 公告、Format 格式化
+  - 21 个测试用例 + 6 个基准测试，100% 覆盖率
+
+#### CLI 子命令
+- `abate mcp` — 启动 MCP Server（JSON-RPC 2.0 over stdio，协议版本 `2024-11-05`）
+- `abate hub sync` — 同步 ChaosHub 子编码表并输出版本公告
+- `abate llm generate` — 从命令行调用 LLM 生成补测代码
+
+#### MCP Server 工具
+- `generate_test` — 通过 LLM（OpenAI/Claude）生成补测代码杀死存活变异体
+- MCP Server 现暴露 4 个工具：`generate_mutants` / `apply_mutant` / `list_fault_classes` / `generate_test`
+
+#### Web API 端点
+- `GET /api/v1/hub/subcodes` — 暴露 ChaosHub 子编码注册表（CES-B.1）
+
+#### CES 规范条款（9 条新增）
+- CES-7.3.1 — MCP Server 协议版本与 JSON-RPC 2.0 传输
+- CES-7.3.2 — MCP Server 工具集要求
+- CES-7.3.3 — generate_test provider 支持规范
+- CES-9.5.3 — LLMClient 接口规范
+- CES-9.5.4 — LLM 客户端自定义端点与安全要求
+- CES-B.1 — 子编码注册表为唯一权威来源
+- CES-B.2 — 远程同步与回退机制
+- CES-B.3 — 版本公告要求
+
+#### 实验示例（F1-F6 全矩阵）
+- `examples/latency-injection.yaml` — F1 延迟注入（已有）
+- `examples/pod-crash-f2.yaml` — F2 进程崩溃（新增）
+- `examples/network-partition.yaml` — F3 网络分区（新增）
+- `examples/disk-exhaustion.yaml` — F4 磁盘耗尽（新增）
+- `examples/data-corruption.yaml` — F5 数据损坏（新增）
+- `examples/clock-skew.yaml` — F6 时钟偏移（新增）
+
+#### 文档示例
+- `examples/mcp-server.md` — MCP Server 使用示例（中英双语）
+- `examples/hub-sync.md` — hub sync 使用示例（中英双语）
+
+#### 基准测试
+- `hub/benchmark_test.go` — 6 个基准：AllCodes/AllCodeStrings/Lookup/Register/ComputeDiff/AnnouncementFormat
+- `llm/benchmark_test.go` — 5 个基准：buildPrompt/NewOpenAIClient/NewClaudeClient/OpenAIGenerateTest/ClaudeGenerateTest
+
+#### LLM 集成测试
+- `mut/llm_integration_test.go` — 验证 OpenAIClient/ClaudeClient 实现 mut.LLMClient 接口并注入 Flywheel
+
+#### 适配器集成测试（真实 k3s 集群）
+- `adapter/integration_test.go`（build tag `integration`）— ChaosMesh/Litmus 在真实 k3s 集群上的 Apply→验证 CR 存在→Cleanup→验证删除→二次 Cleanup 幂等全链路测试；Gremlin 用 CLI shim 验证命令行契约
+- 运行方式：`go test -tags integration ./adapter/ -v -count=1`
+- 集成环境：k3s v1.37.2+k3s1（单机 control-plane）
+
+#### 便捷脚本
+- `scripts/hub-sync.sh`（74 行）— ChaosHub 子编码同步脚本（curl+jq，支持 -u/-k 参数与 ABATE_HUB_URL/ABATE_HUB_API_KEY 环境变量）
+- `scripts/mcp-demo.sh`（71 行）— MCP Server 演示脚本（initialize / tools/list / list_fault_classes / generate_mutants 四个真实 JSON-RPC 请求）
+
+#### Web 前端
+- `web/static/index.html` — 新增「子编码 Sub-Codes」视图（207→226 行）：导航按钮、注册表面板（编码/名称/参数三列 + 版本徽标）、subcodes 加载器调用 `GET /api/v1/hub/subcodes`
+
+#### 文档
+- `README.md` — 中英文「核心功能 / Key Features」章节（+62 行：MCP Server、LLM 客户端、ChaosHub 同步、Web API）
+- `COMMERCIAL.md` — 双轨许可边界新增两条：LLM 第三方服务（上游费用/数据政策与部落无关，API Key 不落日志）、ChaosHub 远程数据源（默认端点归部落运营，-url 自建端点责任归运营方）
+
+#### ChaosHub 真实数据源验证
+- 同版本同步：`ChaosHub v0.1 → v0.1: no changes` ✅（abate serve 作为数据源）
+- 变更同步：`ChaosHub v0.1 → v0.2: + added: F1.4, ~ updated: F1.1` ✅（自定义数据源，Diff 公告机制完整工作）
+
+### 修复 | Fixed
+- `adapter/chaosmesh.go` — `cmDeleteFn` 对 kubectl NotFound 幂等返回成功（CES-3.1.2 Cleanup 可重复调用合规，集成测试发现的真实缺陷）
+- `adapter/litmus.go` — `litDeleteFn` 同样修复 NotFound 幂等（CES-3.1.2 合规）
+- `adapter/chaosmesh.go` / `adapter/litmus.go` — 清理 `_ = applyResult` 死代码
+- `plugin/sandbox.go` — 清理未使用的 `before` 变量（设计残留）
+
+### 变更 | Changed
+- `adapter/mapping.go` — `allChaosHubSubCodes()` 从硬编码改为委托 `hub.NewSeedRegistry().AllCodeStrings()`
+- `web/mcp.go` — 工具列表新增 `generate_test`，工具数量 3→4
+- `.github/workflows/redline.yml` — Go 版本 1.23 → 1.25 匹配 go.mod
+- `README.md` — 包数量 15→17，仓库结构添加 llm/hub，CLI 命令添加 mcp/hub sync/llm generate
+- `CONTRIBUTING.md` — PR scope 添加 llm/hub，新增第 8 节 LLM/Hub 贡献规则
+- `GOVERNANCE.md` — 生态轨添加 LLM 客户端与 ChaosHub 同步，数据飞轮治理补充 CES-B.1/B.2/B.3
+
+### 统计 | Stats
+- Go 包：15 → 17
+- 测试用例：新增 60+ 个
+- CES 条款：新增 9 条（中英文同步）
+- 全项目覆盖率：100%（17/17 包）
+- 非测试文件最大行数：291 行（dsl/parse.go，≤300 红线 ✅）
+- 集成测试：3 个（真实 k3s 集群，`-tags integration`）
+- 零外部依赖（仅 wazero v1.12.0 + golang.org/x/sys）
+
+---
+
+Copyright (C) 2026 小黎的部落（www.qingdujian.com）

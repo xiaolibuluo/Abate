@@ -1,0 +1,42 @@
+# Abate —— 止息混沌 · 示例实验：数据损坏
+# Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+# AGPLv3; 商业用途须事先获得小黎的部落书面授权
+#
+# 本文件演示 F5 Corruption 故障类的完整实验结构。
+# This file demonstrates a complete F5 Corruption fault experiment.
+
+id: exp-corruption-demo
+seed: 512
+criticality: 5
+recoveryBudgetMs: 600000
+
+target:
+  kind: service
+  name: db-svc
+  env: staging
+  region: ap-beijing
+
+fault:
+  type: F5
+  bitIndex: "128"
+
+blastRadius:
+  maxInstances: 1
+  maxDurationMs: 45000
+  maxTraffic: 50
+
+steadyState:
+  - sli: checksum-valid
+    assert: "= true"
+    windowMs: 30000
+    method: gauge
+  - sli: query-latency
+    assert: "< 100ms"
+    windowMs: 30000
+    method: p99
+
+abortOn:
+  - sli: checksum-valid
+    assert: "= false"
+    windowMs: 10000
+    method: gauge

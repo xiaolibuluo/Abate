@@ -1,0 +1,66 @@
+#!/bin/sh
+# Abate —— 止息混沌 · pre-commit 红线自查
+# Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+# AGPLv3; 商业用途须事先获得小黎的部落书面授权
+#
+# 启用方式 | Enable: git config core.hooksPath .githooks
+
+set -eu
+
+fail=0
+
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+[ -z "$staged" ] && exit 0
+
+echo "== Abate pre-commit: 红线自查 =="
+
+for f in $staged; do
+  [ -f "$f" ] || continue
+  base=$(basename "$f")
+
+  # 红线二：300 行上限（法定全文与英文版规范豁免说明见 README）
+  case "$f" in
+    spec/CES-*.md) continue ;;
+  esac
+  case "$base" in
+    LICENSE|LICENSE.*) continue ;;
+  esac
+  lines=$(wc -l < "$f")
+  if [ "$lines" -gt 300 ]; then
+    echo "[FAIL] $f: $lines 行，超过 300 行红线"
+    fail=1
+  fi
+
+  # 红线四：文件头检查（文本类文件必须含开源方文件头）
+  case "$f" in
+    *.go|*.md|*.sh|*.py|*.rs|*.ts|*.js)
+      if ! head -20 "$f" | grep -q '小黎的部落'; then
+        echo "[FAIL] $f: 缺少小黎的部落开源文件头"
+        fail=1
+      fi
+      ;;
+  esac
+done
+
+# 红线三联动：规范中英版条款编号集合一致（两文件同时存在且任一被修改时检查）
+case "$staged" in
+  *spec/CES-*)
+    for pair in "spec/CES-v0.1.md spec/CES-v0.1.en.md"; do
+      set -- $pair
+      if [ -f "$1" ] && [ -f "$2" ]; then
+        grep -oE 'CES-[0-9]+\.[0-9]+\.[0-9]+' "$1" | sort -u > /tmp/abate_cn.ids
+        grep -oE 'CES-[0-9]+\.[0-9]+\.[0-9]+' "$2" | sort -u > /tmp/abate_en.ids
+        if ! diff -q /tmp/abate_cn.ids /tmp/abate_en.ids > /dev/null; then
+          echo "[FAIL] 规范中英版条款编号集合不一致：$1 vs $2"
+          fail=1
+        fi
+      fi
+    done
+    ;;
+esac
+
+if [ "$fail" -ne 0 ]; then
+  echo "== pre-commit 未通过，请修复后重新提交 =="
+  exit 1
+fi
+echo "== pre-commit 通过 =="

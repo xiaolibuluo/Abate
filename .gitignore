@@ -1,0 +1,17 @@
+# 编译产物
+abate
+
+# 覆盖率文件
+coverage.out
+cov2.out
+*.cover
+
+# TLA+ 工具与产物
+tla/tla2tools.jar
+tla/states/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

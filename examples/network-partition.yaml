@@ -1,0 +1,43 @@
+# Abate —— 止息混沌 · 示例实验：网络分区
+# Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+# AGPLv3; 商业用途须事先获得小黎的部落书面授权
+#
+# 本文件演示 F3 Partition 故障类的完整实验结构。
+# This file demonstrates a complete F3 Partition fault experiment.
+
+id: exp-partition-demo
+seed: 200
+criticality: 5
+recoveryBudgetMs: 300000
+
+target:
+  kind: service
+  name: cache-svc
+  env: production
+  region: ap-shanghai
+
+fault:
+  type: F3
+  peer: "10.0.1.0/24"
+  direction: "both"
+
+blastRadius:
+  maxInstances: 1
+  maxDurationMs: 60000
+  maxTraffic: 1000
+
+steadyState:
+  - sli: cache-hit-rate
+    assert: "> 80%"
+    windowMs: 30000
+    method: rate
+  - sli: fallback-latency
+    assert: "< 500ms"
+    windowMs: 30000
+    method: p99
+
+abortOn:
+  - sli: cache-hit-rate
+    assert: "< 50%"
+    windowMs: 10000
+    method: rate

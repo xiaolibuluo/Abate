@@ -1,0 +1,226 @@
+<!--
+Abate —— 止息混沌 · 混沌工程开放规范（CES）与参考实现
+Abate — where chaos abates. Open Chaos Experiment Specification (CES) & reference implementation.
+Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+
+本文件以 GNU Affero General Public License v3（AGPLv3）发布；商业用途须事先获得
+小黎的部落书面授权，详见 COMMERCIAL.md。网络交互使用同样触发 AGPLv3 Copyleft。
+This file is published under the GNU Affero General Public License v3 (AGPLv3).
+Commercial use requires prior written authorization from 小黎的部落.
+See COMMERCIAL.md for details. Network use triggers AGPLv3 copyleft.
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abate Console · 止息混沌</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --border: #30363d;
+    --fg: #e6edf3; --dim: #8b949e; --accent: #58a6ff;
+    --ok: #3fb950; --warn: #d29922; --err: #f85149;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 14px; line-height: 1.6;
+  }
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 24px; border-bottom: 1px solid var(--border);
+    background: var(--panel); position: sticky; top: 0;
+  }
+  .brand { font-size: 18px; font-weight: 700; }
+  .brand .zh { color: var(--accent); }
+  nav button {
+    background: none; border: 1px solid var(--border); color: var(--dim);
+    padding: 6px 14px; margin-left: 8px; border-radius: 6px; cursor: pointer;
+    font: inherit;
+  }
+  nav button.active, nav button:hover { color: var(--fg); border-color: var(--accent); }
+  main { max-width: 960px; margin: 24px auto; padding: 0 24px; }
+  .panel {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px; margin-bottom: 16px;
+  }
+  h2 { font-size: 16px; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+  th { color: var(--dim); font-weight: 600; }
+  textarea {
+    width: 100%; min-height: 220px; background: var(--bg); color: var(--fg);
+    border: 1px solid var(--border); border-radius: 6px; padding: 12px;
+    font: inherit; resize: vertical;
+  }
+  .btn {
+    background: var(--accent); color: #0d1117; border: none;
+    padding: 8px 18px; border-radius: 6px; cursor: pointer;
+    font-weight: 600; margin-top: 10px;
+  }
+  .btn:hover { opacity: 0.9; }
+  .msg { margin-top: 10px; white-space: pre-wrap; }
+  .msg.ok { color: var(--ok); } .msg.err { color: var(--err); }
+  .kv { display: grid; grid-template-columns: 200px 1fr; gap: 6px 16px; }
+  .kv dt { color: var(--dim); } .kv dd { margin: 0; }
+  footer {
+    text-align: center; color: var(--dim); padding: 24px;
+    border-top: 1px solid var(--border); font-size: 12px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    background: var(--border); font-size: 12px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">⚔ Abate <span class="zh">· 止息混沌</span></div>
+  <nav>
+    <button data-view="experiments" class="active">实验 Experiments</button>
+    <button data-view="submit">提交 Submit</button>
+    <button data-view="spec">规范 Spec</button>
+    <button data-view="status">状态 Status</button>
+    <button data-view="subcodes">子编码 Sub-Codes</button>
+  </nav>
+</header>
+<main>
+  <section id="view-experiments" class="panel">
+    <h2>实验列表 · Experiments</h2>
+    <table>
+      <thead><tr><th>ID</th><th>状态 Status</th><th>Seed</th><th>创建时间 Created</th></tr></thead>
+      <tbody id="exp-rows"><tr><td colspan="4">加载中… Loading…</td></tr></tbody>
+    </table>
+  </section>
+
+  <section id="view-submit" class="panel" hidden>
+    <h2>提交实验 DSL · Submit Experiment</h2>
+    <textarea id="dsl" spellcheck="false">id: exp-demo
+seed: 42
+criticality: 4
+target:
+  kind: service
+  name: order-service
+fault:
+  type: F1
+  delay: 500ms
+blastRadius:
+  maxInstances: 1
+  maxDurationMs: 300000
+steadyState:
+  - sli: http_success_rate
+    assert: ">= 99.9%"
+abortOn:
+  - sli: error_rate
+    assert: "> 5%"</textarea>
+    <button class="btn" id="submit-btn">提交 Submit</button>
+    <div class="msg" id="submit-msg"></div>
+  </section>
+
+  <section id="view-spec" class="panel" hidden>
+    <h2>CES 规范章节 · Specification Chapters</h2>
+    <table>
+      <thead><tr><th>章节 Chapter</th><th>标题 Title</th></tr></thead>
+      <tbody id="spec-rows"><tr><td colspan="2">加载中… Loading…</td></tr></tbody>
+    </table>
+  </section>
+
+  <section id="view-status" class="panel" hidden>
+    <h2>系统状态 · System Status</h2>
+    <dl class="kv" id="status-kv"><dt>加载中…</dt><dd>Loading…</dd></dl>
+  </section>
+
+  <section id="view-subcodes" class="panel" hidden>
+    <h2>ChaosHub 子编码注册表 · Sub-Code Registry</h2>
+    <p id="subcode-meta"><span class="badge">加载中… Loading…</span></p>
+    <table>
+      <thead><tr><th>编码 Code</th><th>名称 Name</th><th>参数 Params</th></tr></thead>
+      <tbody id="subcode-rows"><tr><td colspan="3">加载中… Loading…</td></tr></tbody>
+    </table>
+  </section>
+</main>
+<footer>
+  AGPL-3.0-only + 商业双证 Commercial dual-license ·
+  <a href="https://www.qingdujian.com">小黎的部落 www.qingdujian.com</a> ·
+  CES v0.1
+</footer>
+<script>
+const $ = (s) => document.querySelector(s);
+const views = ["experiments", "submit", "spec", "status", "subcodes"];
+
+function show(name) {
+  for (const v of views) {
+    document.getElementById("view-" + v).hidden = v !== name;
+  }
+  document.querySelectorAll("nav button").forEach((b) =>
+    b.classList.toggle("active", b.dataset.view === name));
+  loaders[name] && loaders[name]();
+}
+document.querySelectorAll("nav button").forEach((b) =>
+  b.addEventListener("click", () => show(b.dataset.view)));
+
+async function api(path, opts) {
+  const res = await fetch(path, opts);
+  const body = await res.json();
+  if (!res.ok) throw new Error(body.reason || res.statusText);
+  return body;
+}
+
+const loaders = {
+  async experiments() {
+    const rows = await api("/api/experiments");
+    $("#exp-rows").innerHTML = rows.map((e) =>
+      `<tr><td>${e.id}</td><td><span class="badge">${e.status}</span></td>` +
+      `<td>${e.seed}</td><td>${e.created}</td></tr>`).join("") ||
+      '<tr><td colspan="4">空 Empty</td></tr>';
+  },
+  async spec() {
+    const rows = await api("/api/spec/clauses");
+    $("#spec-rows").innerHTML = rows.map((c) =>
+      `<tr><td>${c.id}</td><td>${c.title}</td></tr>`).join("");
+  },
+  async status() {
+    const v = await api("/api/version");
+    const h = await api("/api/health");
+    $("#status-kv").innerHTML =
+      `<dt>名称 Name</dt><dd>${v.name}</dd>` +
+      `<dt>版本 Version</dt><dd>${v.version}</dd>` +
+      `<dt>规范 Spec</dt><dd>${v.spec}</dd>` +
+      `<dt>许可 License</dt><dd>${v.license}</dd>` +
+      `<dt>开源方 Vendor</dt><dd>${v.vendor}</dd>` +
+      `<dt>健康 Health</dt><dd>${h.status}</dd>`;
+  },
+  async subcodes() {
+    const r = await api("/api/v1/hub/subcodes");
+    $("#subcode-meta").innerHTML =
+      `<span class="badge">${r.version}</span> · 共 ${r.count} 项子编码`;
+    $("#subcode-rows").innerHTML = r.codes.map((c) =>
+      `<tr><td><span class="badge">${c.code}</span></td>` +
+      `<td>${c.name}</td><td>${c.params || "—"}</td></tr>`).join("") ||
+      '<tr><td colspan="3">空 Empty</td></tr>';
+  },
+};
+
+$("#submit-btn").addEventListener("click", async () => {
+  const msg = $("#submit-msg");
+  msg.className = "msg"; msg.textContent = "提交中… Submitting…";
+  try {
+    const r = await api("/api/experiments", {
+      method: "POST",
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+      body: $("#dsl").value,
+    });
+    msg.classList.add("ok");
+    msg.textContent = `已创建 Created: ${r.id} (status=${r.status})`;
+  } catch (err) {
+    msg.classList.add("err");
+    msg.textContent = `失败 Failed: ${err.message}`;
+  }
+});
+
+loaders.experiments();
+</script>
+</body>
+</html>

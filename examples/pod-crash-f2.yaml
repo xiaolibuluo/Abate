@@ -1,0 +1,42 @@
+# Abate —— 止息混沌 · 示例实验：进程崩溃
+# Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+# AGPLv3; 商业用途须事先获得小黎的部落书面授权
+#
+# 本文件演示 F2 Crash 故障类的完整实验结构。
+# This file demonstrates a complete F2 Crash fault experiment.
+
+id: exp-crash-demo
+seed: 64
+criticality: 4
+recoveryBudgetMs: 120000
+
+target:
+  kind: service
+  name: order-svc
+  env: production
+  region: ap-guangzhou
+
+fault:
+  type: F2
+  signal: "SIGKILL"
+
+blastRadius:
+  maxInstances: 1
+  maxDurationMs: 30000
+  maxTraffic: 100
+
+steadyState:
+  - sli: availability
+    assert: "> 99.9%"
+    windowMs: 30000
+    method: rate
+  - sli: restart-count
+    assert: "<= 1"
+    windowMs: 30000
+    method: gauge
+
+abortOn:
+  - sli: availability
+    assert: "< 95%"
+    windowMs: 10000
+    method: rate

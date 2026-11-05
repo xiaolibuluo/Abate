@@ -1,0 +1,42 @@
+# Abate —— 止息混沌 · 示例实验：时钟偏移
+# Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+# AGPLv3; 商业用途须事先获得小黎的部落书面授权
+#
+# 本文件演示 F6 ClockSkew 故障类的完整实验结构。
+# This file demonstrates a complete F6 ClockSkew fault experiment.
+
+id: exp-clock-skew-demo
+seed: 256
+criticality: 3
+recoveryBudgetMs: 180000
+
+target:
+  kind: service
+  name: auth-svc
+  env: staging
+  region: ap-beijing
+
+fault:
+  type: F6
+  offsetMs: "5000"
+
+blastRadius:
+  maxInstances: 1
+  maxDurationMs: 45000
+  maxTraffic: 200
+
+steadyState:
+  - sli: token-validity
+    assert: "= true"
+    windowMs: 30000
+    method: gauge
+  - sli: auth-latency
+    assert: "< 300ms"
+    windowMs: 30000
+    method: p99
+
+abortOn:
+  - sli: token-validity
+    assert: "= false"
+    windowMs: 10000
+    method: gauge

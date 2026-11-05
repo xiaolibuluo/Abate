@@ -1,0 +1,81 @@
+# Abate —— 止息混沌 · CI 红线检查
+# Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+# AGPLv3; 商业用途须事先获得小黎的部落书面授权
+
+name: redline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  redline-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 300-line red line
+        run: |
+          set -eu
+          fail=0
+          while IFS= read -r -d '' f; do
+            base=$(basename "$f")
+            case "$base" in LICENSE|LICENSE.*) continue ;; esac
+            lines=$(wc -l < "$f")
+            if [ "$lines" -gt 300 ]; then
+              echo "::error file=$f::$lines lines exceed the 300-line red line"
+              fail=1
+            fi
+          done < <(find . -path ./.git -prune -o -type f \
+            \( -name '*.go' -o -name '*.md' -o -name '*.sh' -o -name '*.py' \
+               -o -name '*.rs' -o -name '*.ts' -o -name '*.js' \
+               -o -name '*.yml' -o -name '*.yaml' \) -print0)
+          exit "$fail"
+
+      - name: Open-source file header
+        run: |
+          set -eu
+          fail=0
+          while IFS= read -r -d '' f; do
+            if ! head -20 "$f" | grep -q '小黎的部落'; then
+              echo "::error file=$f::missing 小黎的部落 open-source header"
+              fail=1
+            fi
+          done < <(find . -path ./.git -prune -o -type f \
+            \( -name '*.go' -o -name '*.md' -o -name '*.sh' -o -name '*.py' \
+               -o -name '*.rs' -o -name '*.ts' -o -name '*.js' \) -print0)
+          exit "$fail"
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+
+      - name: Go vet
+        run: go vet ./...
+
+      - name: Go test
+        run: go test -cover ./...
+
+      - name: Bilingual spec clause-ID parity
+        run: |
+          set -eu
+          grep -oE 'CES-[0-9]+\.[0-9]+\.[0-9]+' spec/CES-v0.1.md | sort -u > /tmp/ids_cn.txt
+          grep -oE 'CES-[0-9]+\.[0-9]+\.[0-9]+' spec/CES-v0.1.en.md | sort -u > /tmp/ids_en.txt
+          diff /tmp/ids_cn.txt /tmp/ids_en.txt
+          echo "Clause ID sets identical: $(wc -l < /tmp/ids_cn.txt) clauses"
+
+      - name: DCO sign-off on PR commits
+        if: github.event_name == 'pull_request'
+        run: |
+          set -eu
+          fail=0
+          for sha in $(git rev-list "origin/${{ github.base_ref }}..HEAD"); do
+            if ! git log -1 --format=%B "$sha" | grep -q '^Signed-off-by:'; then
+              echo "::error::commit $sha missing DCO Signed-off-by"
+              fail=1
+            fi
+          done
+          exit "$fail"
