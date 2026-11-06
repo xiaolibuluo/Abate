@@ -421,6 +421,13 @@ Verdict 状态的判定结论取四值：
 - [CES-8.3.1] 徽章仅授予通过认证的实现，并标注认证级别（L1/L2）与规范版本；徽章数据必须由认证实现产出（CES-4.9）。
 - [CES-8.3.2] 每枚徽章必须附核验 URL：访问返回该实现的认证报告内容哈希（CES-6.3.2）与套件版本；核验失败视为徽章失效。
 - [CES-8.3.3] 认证过期或实现版本超出认证范围时，实现方必须在 30 日内摘除徽章或完成重认证。
+### 8.4 CLI 一致性（强制）
+- CLI 命令行表面属于规范的一部分；实现不得随意增删改子命令、flags 与退出码语义。
+- [CES-8.4.1] 实现必须提供以下子命令：serve、mcp、hub sync、llm generate、run、score、validate、version；子命令集合变更视为规范版本变更。
+- [CES-8.4.2] 退出码语义固定：0 成功；1 运行失败（I/O、解析失败、后端错误等）；2 用法错误（未知子命令、缺失或多余参数）。实现不得引入其他退出码语义。
+- [CES-8.4.3] serve 启动横幅输出到 stdout；mcp 启动横幅输出到 stderr，stdout 完整保留给 JSON-RPC 2.0 流（CES-7.3），不得混入任何非协议输出。
+- [CES-8.4.4] flags 命名与默认值固定：serve -addr（默认 :8080）；hub sync -url、-api-key；score -coverage-total（默认 100）、-coverage-exercised（默认 0）。新增 flag 不得改变既有 flag 语义。
+- [CES-8.4.5] CLI 一致性必须由自动化测试锁死：子命令集合、退出码语义与 flags 表面变更时，测试必须失败，防止静默破坏兼容性。
 
 ## 第 9 章 · 变异实验规范（Mutation Experiment Specification, MES）
 
@@ -452,8 +459,9 @@ Verdict 状态的判定结论取四值：
 ### 9.5 AI 补测飞轮
 - [CES-9.5.1] 存活变异体可作为补测输入投喂代码生成模型；生成用例必须真实杀死目标变异体并在 CI 复现后方可入库。
 - [CES-9.5.2] AI 生成用例的权属归运行方项目所有；规范不主张权利（许可边界见 COMMERCIAL.md）。
-- [CES-9.5.3] LLM 客户端必须实现 `LLMClient` 接口（`GenerateTest(mutant, source) → (testCode, err)`）；参考实现提供 OpenAI（Chat Completions API）与 Anthropic Claude（Messages API）两种客户端，均使用标准库 net/http，零外部依赖。
+- [CES-9.5.3] LLM 客户端必须实现 `LLMClient` 接口（`GenerateTest(mutant, source, feedback) → (testCode, err)`，feedback 携带上一轮失败原因，见 CES-9.5.5）；参考实现提供 OpenAI（Chat Completions API）与 Anthropic Claude（Messages API）两种客户端，均使用标准库 net/http，零外部依赖。
 - [CES-9.5.4] LLM 客户端必须支持通过配置自定义 API 端点（BaseURL），以兼容 Azure OpenAI、代理网关与私有化部署；API Key 不得硬编码或写入日志。
+- [CES-9.5.5] LLM 补测生成必须依次通过质量门禁：本地语法预检（AST 解析）→ 测试执行 → 杀死验证；任一门禁失败时，失败原因必须作为 feedback 传入下一轮生成（错误反馈闭环），禁止丢弃错误的盲重试。
 - [CES-9.5.3] 禁止未人工核验的 AI 批量产出直接进入测试集（防投毒，见 SECURITY.md 威胁模型）。
 
 ## 附录 A · 状态机 TLA+ 模型（强制，CES-3.4）

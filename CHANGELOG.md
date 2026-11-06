@@ -18,6 +18,23 @@ See COMMERCIAL.md for details.
 
 ### 新增 | Added
 
+#### 归属与完整性凭据（水印 / 亮牌 / 签名）
+- **`watermark/` 包**（第 18 个 Go 包）— 代码级数字水印与运行时开机亮牌
+  - `watermark/watermark.go`（55 行）— 水印常量（项目 / 许可证 / 小黎的部落 / www.qingdujian.com / xiaolibuluo@163.com）与 Banner 亮牌函数，纯内存计算
+  - `watermark/no_network_test.go`（91 行）— AST 静态检查：零网络调用、零文件 I/O，禁止联网心跳校验
+  - `watermark/watermark_test.go`（61 行）— 水印常量与亮牌横幅测试
+- `abate serve` 启动亮牌输出到 stdout；`abate mcp` 启动亮牌输出到 stderr（stdout 完整保留给 JSON-RPC 2.0 流）
+- `scripts/release.sh`（82 行）— 构建发布产物并生成 SHA-256 校验值文件与 GPG 分离签名（退出码 0/1/2，gpg 或私钥缺失时明确提示）
+- `docs/SIGNING.md`（90 行）—《数字签名与验证指南》：水印、亮牌、SHA-256、GPG 验证步骤、发布流程与联系方式
+
+#### CLI 一致性（CES-8.4，强制）
+- `cmd/abate/cli_conformance_test.go`（163 行）— 锁死子命令集合、退出码 0/1/2 语义、flags 表面与亮牌输出流（CES-8.4.5）
+- CES-8.4.1 — 子命令集合固定：serve / mcp / hub sync / llm generate / run / score / validate / version
+- CES-8.4.2 — 退出码语义固定：0 成功 / 1 运行失败 / 2 用法错误
+- CES-8.4.3 — serve 亮牌走 stdout、mcp 亮牌走 stderr
+- CES-8.4.4 — flags 命名与默认值固定
+- CES-8.4.5 — CLI 一致性由自动化测试锁死
+
 #### 新 Go 包
 - **`llm/` 包**（第 16 个 Go 包）— LLM 客户端实现，对接 OpenAI Chat Completions API 与 Anthropic Claude Messages API，均实现 `mut.LLMClient` 接口，零外部依赖（仅标准库 `net/http`）
   - `llm/client.go`（80 行）— Config 配置、BaseClient 公共 HTTP 能力、buildPrompt 提示词构造

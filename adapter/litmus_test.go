@@ -138,3 +138,16 @@ func TestLitDeleteFn_Error(t *testing.T) {
 		t.Fatal("expected error from kubectl delete")
 	}
 }
+
+// TestLitDeleteFn_NotFoundIdempotent 覆盖 CES-3.1.2 幂等分支：
+// kubectl 返回 not found 错误时 litDeleteFn 视为成功返回 nil。
+func TestLitDeleteFn_NotFoundIdempotent(t *testing.T) {
+	orig := litExecFn
+	defer func() { litExecFn = orig }()
+	litExecFn = func(args []string, input string) ([]byte, error) {
+		return []byte("Error from server (NotFound): chaosengine \"abate-litmus-1\" not found"), errors.New("exit status 1")
+	}
+	if err := litDeleteFn("abate-litmus-1"); err != nil {
+		t.Fatalf("litDeleteFn should return nil for not found, got: %v", err)
+	}
+}

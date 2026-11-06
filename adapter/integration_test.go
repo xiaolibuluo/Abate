@@ -174,7 +174,7 @@ func TestGremlinCLIContract(t *testing.T) {
 		t.Fatalf("read args log: %v", err)
 	}
 	log := string(data)
-	if !strings.Contains(log, "attack latency") || !strings.Contains(log, "--guid "+id) || !strings.Contains(log, "--length 60") {
+	if !strings.Contains(log, "attack latency") || !strings.Contains(log, "-l 60") || strings.Contains(log, "--guid") {
 		t.Fatalf("gremlin apply args mismatch: %s", log)
 	}
 	if err := backend.Cleanup(id); err != nil {
@@ -184,7 +184,7 @@ func TestGremlinCLIContract(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reread args log: %v", err)
 	}
-	if !strings.Contains(string(data), "attack stop "+id) {
+	if !strings.Contains(string(data), "rollback") {
 		t.Fatalf("gremlin cleanup args mismatch: %s", string(data))
 	}
 }

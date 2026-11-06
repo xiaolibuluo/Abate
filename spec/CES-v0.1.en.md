@@ -420,6 +420,13 @@ Report top-level fields (mandatory):
 - [CES-8.3.1] Badges are granted only to certified implementations and must annotate the certification tier (L1/L2) and specification version; badge data must be produced by the certified implementation (CES-4.9).
 - [CES-8.3.2] Each badge must carry a verification URL: accessing it returns the implementation's certification report content hash (CES-6.3.2) and suite version; verification failure invalidates the badge.
 - [CES-8.3.3] When certification expires or the implementation version exceeds the certification scope, the implementer must remove the badge within 30 days or complete re-certification.
+### 8.4 CLI Conformance (Mandatory)
+- The CLI surface is part of the specification; implementations must not add, remove, or alter subcommands, flags, or exit-code semantics at will.
+- [CES-8.4.1] Implementations must provide the following subcommands: serve, mcp, hub sync, llm generate, run, score, validate, version; any change to the subcommand set constitutes a specification version change.
+- [CES-8.4.2] Exit-code semantics are fixed: 0 success; 1 runtime failure (I/O, parse failure, backend error, etc.); 2 usage error (unknown subcommand, missing or extra arguments). Implementations must not introduce other exit-code semantics.
+- [CES-8.4.3] The serve startup banner goes to stdout; the mcp startup banner goes to stderr, keeping stdout fully reserved for the JSON-RPC 2.0 stream (CES-7.3) with no non-protocol output mixed in.
+- [CES-8.4.4] Flag names and defaults are fixed: serve -addr (default :8080); hub sync -url, -api-key; score -coverage-total (default 100), -coverage-exercised (default 0). New flags must not change the semantics of existing flags.
+- [CES-8.4.5] CLI conformance must be locked down by automated tests: any change to the subcommand set, exit-code semantics, or flag surface must fail the tests, preventing silent compatibility breakage.
 
 ## Chapter 9 · Mutation Experiment Specification (MES)
 
@@ -451,8 +458,9 @@ Mutation experiments are static perturbations: modify code, run tests, determine
 ### 9.5 AI Test-Supplement Flywheel
 - [CES-9.5.1] Surviving mutants may serve as supplementary-test inputs to code-generation models; generated test cases must genuinely kill the target mutant and reproduce in CI before admission to the test suite.
 - [CES-9.5.2] Ownership of AI-generated test cases belongs to the running project; the specification asserts no rights (license boundary in COMMERCIAL.md).
-- [CES-9.5.3] LLM clients must implement the `LLMClient` interface (`GenerateTest(mutant, source) -> (testCode, err)`); the reference implementation provides OpenAI (Chat Completions API) and Anthropic Claude (Messages API) clients, both using the standard library net/http with zero external dependencies.
+- [CES-9.5.3] LLM clients must implement the `LLMClient` interface (`GenerateTest(mutant, source, feedback) -> (testCode, err)`, where feedback carries the previous round's failure reason, see CES-9.5.5); the reference implementation provides OpenAI (Chat Completions API) and Anthropic Claude (Messages API) clients, both using the standard library net/http with zero external dependencies.
 - [CES-9.5.4] LLM clients must support custom API endpoints (BaseURL) via configuration to be compatible with Azure OpenAI, proxy gateways, and private deployments; API keys must not be hardcoded or logged.
+- [CES-9.5.5] LLM-generated supplementary tests must pass quality gates in sequence: local syntax pre-check (AST parsing) -> test execution -> kill verification; on any gate failure, the failure reason must be passed as feedback into the next generation round (error feedback loop); blind retries that discard errors are prohibited.
 - [CES-9.5.3] Unreviewed AI batch output is prohibited from direct entry into the test suite (anti-poisoning, see SECURITY.md threat model).
 
 ## Appendix A · State Machine TLA+ Model (mandatory, CES-3.4)

@@ -61,8 +61,8 @@ type claudeResponse struct {
 }
 
 // GenerateTest 实现 mut.LLMClient 接口。
-func (c *ClaudeClient) GenerateTest(mutant core.Mutation, source string) (string, error) {
-	prompt := buildPrompt(mutant.File, mutant.Line, string(mutant.Class), mutant.From, mutant.To, source)
+func (c *ClaudeClient) GenerateTest(mutant core.Mutation, source, feedback string) (string, error) {
+	prompt := buildPrompt(mutant.File, mutant.Line, string(mutant.Class), mutant.From, mutant.To, source, feedback)
 	reqBody := claudeRequest{
 		Model:     c.cfg.Model,
 		MaxTokens: 4096,

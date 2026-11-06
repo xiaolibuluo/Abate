@@ -68,8 +68,8 @@ func (c *BaseClient) doRequest(method, url string, headers map[string]string, bo
 }
 
 // buildPrompt 根据变异体和源码构造补测生成提示词。
-func buildPrompt(file string, line int, class, from, to, source string) string {
-	return fmt.Sprintf(
+func buildPrompt(file string, line int, class, from, to, source, feedback string) string {
+	prompt := fmt.Sprintf(
 		"You are a Go test expert. A mutation was applied to the following Go source file.\n\n"+
 			"File: %s\nLine: %d\nMutation class: %s\nOriginal: %q\nMutated: %q\n\n"+
 			"Source code:\n```go\n%s\n```\n\n"+
@@ -77,4 +77,8 @@ func buildPrompt(file string, line int, class, from, to, source string) string {
 			"Return ONLY the test code, no explanation.",
 		file, line, class, from, to, source,
 	)
+	if feedback != "" {
+		prompt += "\n\nYour previous attempt failed:\n" + feedback + "\nFix the issue and try again."
+	}
+	return prompt
 }

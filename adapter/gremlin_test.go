@@ -44,11 +44,11 @@ func TestGremlinBackend_Apply_Success(t *testing.T) {
 	if gotArgs[0] != "attack" || gotArgs[1] != "delay" {
 		t.Errorf("args = %v", gotArgs)
 	}
-	if !contains(gotArgs, "--guid") {
-		t.Errorf("args missing --guid: %v", gotArgs)
+	if contains(gotArgs, "--guid") {
+		t.Errorf("args must not contain --guid: %v", gotArgs)
 	}
-	if !contains(gotArgs, "--ms") {
-		t.Errorf("args missing --ms: %v", gotArgs)
+	if !containsPair(gotArgs, "-m", "100") {
+		t.Errorf("args missing -m 100: %v", gotArgs)
 	}
 }
 
@@ -96,8 +96,8 @@ func TestGremlinBackend_Cleanup_Success(t *testing.T) {
 	if err := b.Cleanup("gremlin-1"); err != nil {
 		t.Fatalf("Cleanup: %v", err)
 	}
-	if gotArgs[0] != "attack" || gotArgs[1] != "stop" || gotArgs[2] != "gremlin-1" {
-		t.Errorf("args = %v", gotArgs)
+	if len(gotArgs) != 1 || gotArgs[0] != "rollback" {
+		t.Errorf("args = %v, want [rollback]", gotArgs)
 	}
 }
 
@@ -122,18 +122,43 @@ func TestGremlinExecFn(t *testing.T) {
 }
 
 func TestBuildGremlinArgs_WithSlash(t *testing.T) {
-	args := buildGremlinArgs("guid-1", MappedFault{
+	args := buildGremlinArgs(MappedFault{
 		UpstreamType: "network/loss",
 		Params:       map[string]string{"percent": "50"},
 	})
 	if args[1] != "loss" {
 		t.Errorf("method = %q, want loss", args[1])
 	}
-	if !contains(args, "--percent") {
-		t.Errorf("args missing --percent: %v", args)
+	if !containsPair(args, "--percent", "50") {
+		t.Errorf("args missing --percent 50: %v", args)
 	}
-	if !contains(args, "50") {
-		t.Errorf("args missing value 50: %v", args)
+}
+
+// TestBuildGremlinArgs_ShortFlags 验证已确认参数映射为真实 CLI 短参数，
+// 且 flag 与值拆分为独立数组元素（官方 latency 参数表）。
+func TestBuildGremlinArgs_ShortFlags(t *testing.T) {
+	args := buildGremlinArgs(MappedFault{
+		UpstreamType: "latency/delay",
+		Params: map[string]string{
+			"ip":     "10.0.0.1",
+			"port":   "8080",
+			"ms":     "200",
+			"jitter": "50",
+			"length": "120",
+		},
+	})
+	if args[0] != "attack" || args[1] != "delay" {
+		t.Errorf("args = %v", args)
+	}
+	for _, p := range [][2]string{
+		{"-i", "10.0.0.1"}, {"-p", "8080"}, {"-m", "200"}, {"-j", "50"}, {"-l", "120"},
+	} {
+		if !containsPair(args, p[0], p[1]) {
+			t.Errorf("args missing %s %s: %v", p[0], p[1], args)
+		}
+	}
+	if contains(args, "--guid") {
+		t.Errorf("args must not contain --guid: %v", args)
 	}
 }
 
@@ -155,6 +180,17 @@ func TestDefaultGremlinMappings(t *testing.T) {
 func contains(slice []string, s string) bool {
 	for _, v := range slice {
 		if v == s {
+			return true
+		}
+	}
+	return false
+}
+
+// containsPair 校验 flag 与其值作为相邻的独立数组元素出现。
+// containsPair asserts a flag and its value appear as adjacent elements.
+func containsPair(slice []string, flag, value string) bool {
+	for i := 0; i+1 < len(slice); i++ {
+		if slice[i] == flag && slice[i+1] == value {
 			return true
 		}
 	}

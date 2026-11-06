@@ -149,6 +149,19 @@ func TestCmDeleteFn_KubectlError(t *testing.T) {
 	}
 }
 
+// TestCmDeleteFn_NotFoundIdempotent 覆盖 CES-3.1.2 幂等分支：
+// kubectl 返回 not found 错误时 cmDeleteFn 视为成功返回 nil。
+func TestCmDeleteFn_NotFoundIdempotent(t *testing.T) {
+	orig := cmExecFn
+	defer func() { cmExecFn = orig }()
+	cmExecFn = func(args []string, input string) ([]byte, error) {
+		return []byte("Error from server (NotFound): podchaos \"abate-1\" not found"), errors.New("exit status 1")
+	}
+	if err := cmDeleteFn("podchaos/abate-1"); err != nil {
+		t.Fatalf("cmDeleteFn should return nil for not found, got: %v", err)
+	}
+}
+
 func TestCrdKindLower(t *testing.T) {
 	tests := []struct {
 		input string

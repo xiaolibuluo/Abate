@@ -66,7 +66,7 @@ func TestOpenAIGenerateTestSuccess(t *testing.T) {
 	defer srv.Close()
 
 	c := NewOpenAIClient(Config{APIKey: "test-key", BaseURL: srv.URL})
-	result, err := c.GenerateTest(sampleMutation(), "package main")
+	result, err := c.GenerateTest(sampleMutation(), "package main", "")
 	if err != nil {
 		t.Fatalf("GenerateTest: %v", err)
 	}
@@ -84,7 +84,7 @@ func TestOpenAIGenerateTestHTTPError(t *testing.T) {
 	defer func() { httpDoFn = orig }()
 
 	c := NewOpenAIClient(Config{APIKey: "k"})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "network unreachable") {
 		t.Errorf("err = %v, want network unreachable", err)
 	}
@@ -99,7 +99,7 @@ func TestOpenAIGenerateTestAPIError(t *testing.T) {
 	defer srv.Close()
 
 	c := NewOpenAIClient(Config{APIKey: "bad", BaseURL: srv.URL})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "401") {
 		t.Errorf("err = %v, want 401", err)
 	}
@@ -113,7 +113,7 @@ func TestOpenAIGenerateTestBadJSON(t *testing.T) {
 	defer srv.Close()
 
 	c := NewOpenAIClient(Config{APIKey: "k", BaseURL: srv.URL})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "unmarshal") {
 		t.Errorf("err = %v, want unmarshal error", err)
 	}
@@ -127,7 +127,7 @@ func TestOpenAIGenerateTestEmptyChoices(t *testing.T) {
 	defer srv.Close()
 
 	c := NewOpenAIClient(Config{APIKey: "k", BaseURL: srv.URL})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "no choices") {
 		t.Errorf("err = %v, want no choices", err)
 	}
@@ -142,7 +142,7 @@ func TestDoRequestNewRequestError(t *testing.T) {
 	defer func() { newRequestFn = orig }()
 
 	c := NewOpenAIClient(Config{APIKey: "k"})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "create request") {
 		t.Errorf("err = %v, want create request", err)
 	}
@@ -162,7 +162,7 @@ func TestDoRequestReadAllError(t *testing.T) {
 	defer func() { readAllFn = orig }()
 
 	c := NewOpenAIClient(Config{APIKey: "k", BaseURL: srv.URL})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "read response") {
 		t.Errorf("err = %v, want read response", err)
 	}
@@ -177,7 +177,7 @@ func TestOpenAIMarshalError(t *testing.T) {
 	defer func() { openAIMarshalFn = orig }()
 
 	c := NewOpenAIClient(Config{APIKey: "k"})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "marshal") {
 		t.Errorf("err = %v, want marshal error", err)
 	}
@@ -185,8 +185,25 @@ func TestOpenAIMarshalError(t *testing.T) {
 
 // TestBuildPrompt 验证提示词包含关键信息。
 func TestBuildPrompt(t *testing.T) {
-	p := buildPrompt("f.go", 5, "M1", "+", "-", "src")
+	p := buildPrompt("f.go", 5, "M1", "+", "-", "src", "")
 	if !strings.Contains(p, "f.go") || !strings.Contains(p, "M1") || !strings.Contains(p, "src") {
 		t.Error("prompt missing key info")
+	}
+	if strings.Contains(p, "previous attempt") {
+		t.Error("empty feedback should not include previous-attempt section")
+	}
+}
+
+// TestBuildPromptWithFeedback 验证非空 feedback 时提示词包含失败原因段落（CES-9.5.5）。
+func TestBuildPromptWithFeedback(t *testing.T) {
+	p := buildPrompt("f.go", 5, "M1", "+", "-", "src", "syntax error at line 3")
+	if !strings.Contains(p, "previous attempt failed") {
+		t.Error("prompt missing previous-attempt section")
+	}
+	if !strings.Contains(p, "syntax error at line 3") {
+		t.Error("prompt missing feedback content")
+	}
+	if !strings.Contains(p, "Fix the issue and try again") {
+		t.Error("prompt missing fix instruction")
 	}
 }

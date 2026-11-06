@@ -22,7 +22,7 @@ import (
 // BenchmarkBuildPrompt 基准测试：提示词构造。
 func BenchmarkBuildPrompt(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_ = buildPrompt("main.go", 42, "M1", "+", "-", "package main\nfunc add(a,b int) int { return a+b }")
+		_ = buildPrompt("main.go", 42, "M1", "+", "-", "package main\nfunc add(a,b int) int { return a+b }", "")
 	}
 }
 
@@ -51,7 +51,7 @@ func BenchmarkOpenAIGenerateTest(b *testing.B) {
 	mutant := core.Mutation{File: "f.go", Line: 1, Class: "M1", From: "+", To: "-"}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, _ = client.GenerateTest(mutant, "package main")
+		_, _ = client.GenerateTest(mutant, "package main", "")
 	}
 }
 
@@ -66,6 +66,6 @@ func BenchmarkClaudeGenerateTest(b *testing.B) {
 	mutant := core.Mutation{File: "f.go", Line: 1, Class: "M1", From: "+", To: "-"}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, _ = client.GenerateTest(mutant, "package main")
+		_, _ = client.GenerateTest(mutant, "package main", "")
 	}
 }

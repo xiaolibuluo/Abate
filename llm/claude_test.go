@@ -60,7 +60,7 @@ func TestClaudeGenerateTestSuccess(t *testing.T) {
 	defer srv.Close()
 
 	c := NewClaudeClient(Config{APIKey: "test-key", BaseURL: srv.URL})
-	result, err := c.GenerateTest(sampleMutation(), "package main")
+	result, err := c.GenerateTest(sampleMutation(), "package main", "")
 	if err != nil {
 		t.Fatalf("GenerateTest: %v", err)
 	}
@@ -78,7 +78,7 @@ func TestClaudeGenerateTestHTTPError(t *testing.T) {
 	defer func() { httpDoFn = orig }()
 
 	c := NewClaudeClient(Config{APIKey: "k"})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "connection refused") {
 		t.Errorf("err = %v, want connection refused", err)
 	}
@@ -93,7 +93,7 @@ func TestClaudeGenerateTestAPIError(t *testing.T) {
 	defer srv.Close()
 
 	c := NewClaudeClient(Config{APIKey: "bad", BaseURL: srv.URL})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "429") {
 		t.Errorf("err = %v, want 429", err)
 	}
@@ -107,7 +107,7 @@ func TestClaudeGenerateTestBadJSON(t *testing.T) {
 	defer srv.Close()
 
 	c := NewClaudeClient(Config{APIKey: "k", BaseURL: srv.URL})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "unmarshal") {
 		t.Errorf("err = %v, want unmarshal error", err)
 	}
@@ -122,7 +122,7 @@ func TestClaudeMarshalError(t *testing.T) {
 	defer func() { claudeMarshalFn = orig }()
 
 	c := NewClaudeClient(Config{APIKey: "k"})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "marshal") {
 		t.Errorf("err = %v, want marshal error", err)
 	}
@@ -136,7 +136,7 @@ func TestClaudeGenerateTestEmptyContent(t *testing.T) {
 	defer srv.Close()
 
 	c := NewClaudeClient(Config{APIKey: "k", BaseURL: srv.URL})
-	_, err := c.GenerateTest(sampleMutation(), "source")
+	_, err := c.GenerateTest(sampleMutation(), "source", "")
 	if err == nil || !strings.Contains(err.Error(), "no content") {
 		t.Errorf("err = %v, want no content", err)
 	}

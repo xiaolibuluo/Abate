@@ -27,12 +27,12 @@ var _ LLMClient = (*llm.ClaudeClient)(nil)
 // TestLLMIntegration_OpenAIWithFlywheel 验证 OpenAIClient 注入 Flywheel 后端到端工作。
 func TestLLMIntegration_OpenAIWithFlywheel(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `{"choices":[{"message":{"content":"func TestKill(t *testing.T) { t.Fail() }"}}]}`)
+		fmt.Fprint(w, `{"choices":[{"message":{"content":"package main\nfunc TestKill(t *testing.T) { t.Fail() }"}}]}`)
 	}))
 	defer srv.Close()
 
 	client := llm.NewOpenAIClient(llm.Config{APIKey: "k", BaseURL: srv.URL})
-	runner := &mockRunner{passMap: map[string]bool{"func TestKill(t *testing.T) { t.Fail() }": false}}
+	runner := &mockRunner{passMap: map[string]bool{"package main\nfunc TestKill(t *testing.T) { t.Fail() }": false}}
 	f, err := NewFlywheel(client, runner, FlywheelConfig{MaxRetries: 1, MaxMutants: 10})
 	if err != nil {
 		t.Fatalf("NewFlywheel: %v", err)
@@ -54,12 +54,12 @@ func TestLLMIntegration_OpenAIWithFlywheel(t *testing.T) {
 // TestLLMIntegration_ClaudeWithFlywheel 验证 ClaudeClient 注入 Flywheel 后端到端工作。
 func TestLLMIntegration_ClaudeWithFlywheel(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, `{"content":[{"type":"text","text":"func TestKill(t *testing.T) { t.Fail() }"}]}`)
+		fmt.Fprint(w, `{"content":[{"type":"text","text":"package main\nfunc TestKill(t *testing.T) { t.Fail() }"}]}`)
 	}))
 	defer srv.Close()
 
 	client := llm.NewClaudeClient(llm.Config{APIKey: "k", BaseURL: srv.URL})
-	runner := &mockRunner{passMap: map[string]bool{"func TestKill(t *testing.T) { t.Fail() }": false}}
+	runner := &mockRunner{passMap: map[string]bool{"package main\nfunc TestKill(t *testing.T) { t.Fail() }": false}}
 	f, err := NewFlywheel(client, runner, FlywheelConfig{MaxRetries: 1, MaxMutants: 10})
 	if err != nil {
 		t.Fatalf("NewFlywheel: %v", err)

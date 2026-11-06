@@ -61,8 +61,8 @@ type openAIResponse struct {
 }
 
 // GenerateTest 实现 mut.LLMClient 接口。
-func (c *OpenAIClient) GenerateTest(mutant core.Mutation, source string) (string, error) {
-	prompt := buildPrompt(mutant.File, mutant.Line, string(mutant.Class), mutant.From, mutant.To, source)
+func (c *OpenAIClient) GenerateTest(mutant core.Mutation, source, feedback string) (string, error) {
+	prompt := buildPrompt(mutant.File, mutant.Line, string(mutant.Class), mutant.From, mutant.To, source, feedback)
 	reqBody := openAIRequest{
 		Model: c.cfg.Model,
 		Messages: []openAIMessage{

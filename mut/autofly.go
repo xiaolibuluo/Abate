@@ -12,6 +12,8 @@ package mut
 
 import (
 	"fmt"
+	"go/parser"
+	"go/token"
 	"sync"
 
 	"github.com/qingdujian/abate/core"
@@ -21,7 +23,8 @@ import (
 // LLMClient is the LLM client interface for test generation.
 type LLMClient interface {
 	// GenerateTest 根据存活变异体信息生成补测代码。
-	GenerateTest(mutant core.Mutation, source string) (testCode string, err error)
+	// feedback 携带上一轮尝试的失败原因，供 LLM 针对性修正（CES-9.5.5）。
+	GenerateTest(mutant core.Mutation, source, feedback string) (testCode string, err error)
 }
 
 // TestRunner 是测试执行器接口，用于验证补测是否杀死变异体。
@@ -85,14 +88,21 @@ func (f *Flywheel) Process(mutants []core.Mutation, source string) ([]SurvivedMu
 
 	for _, m := range mutants {
 		sm := SurvivedMutant{Mutant: m}
+		feedback := ""
 		for attempt := 1; attempt <= f.config.MaxRetries; attempt++ {
 			sm.Attempts = attempt
-			testCode, err := f.llm.GenerateTest(m, source)
+			testCode, err := f.llm.GenerateTest(m, source, feedback)
 			if err != nil {
+				feedback = fmt.Sprintf("LLM call failed: %v", err)
+				continue
+			}
+			if err := syntaxCheck(testCode); err != nil {
+				feedback = fmt.Sprintf("The generated test has a syntax error: %v", err)
 				continue
 			}
 			passed, err := f.runner.RunTest(source, testCode)
 			if err != nil {
+				feedback = fmt.Sprintf("Test execution failed: %v", err)
 				continue
 			}
 			if !passed {
@@ -100,10 +110,21 @@ func (f *Flywheel) Process(mutants []core.Mutation, source string) ([]SurvivedMu
 				sm.TestCode = testCode
 				break
 			}
+			feedback = "The test passed against the mutant: the mutant survived and the test did not kill it. Write a stronger test."
 		}
 		f.results = append(f.results, sm)
 	}
 	return f.results, nil
+}
+
+// syntaxCheck 对 LLM 生成的补测代码做本地语法预检（CES-9.5.5 第一道门禁）。
+// syntaxCheck runs a local syntax pre-check on LLM-generated test code (CES-9.5.5).
+func syntaxCheck(testCode string) error {
+	fset := token.NewFileSet()
+	if _, err := parser.ParseFile(fset, "generated_test.go", testCode, 0); err != nil {
+		return fmt.Errorf("go/parser: %w", err)
+	}
+	return nil
 }
 
 // KillRate 返回杀死率（0-1）。

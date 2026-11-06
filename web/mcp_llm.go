@@ -64,7 +64,7 @@ func handleGenerateTest(args json.RawMessage) (MCPResult, error) {
 	default:
 		return MCPResult{}, fmt.Errorf("unsupported provider: %s", a.Provider)
 	}
-	testCode, err := client.GenerateTest(a.Mutant, a.Source)
+	testCode, err := client.GenerateTest(a.Mutant, a.Source, "")
 	if err != nil {
 		return MCPResult{}, err
 	}

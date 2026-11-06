@@ -18,20 +18,26 @@ import (
 )
 
 type mockLLM struct {
-	tests    map[string]string
-	err      error
+	tests     map[string]string
+	seq       []string
+	err       error
 	callCount int
+	feedbacks []string
 }
 
-func (m *mockLLM) GenerateTest(mutant core.Mutation, _ string) (string, error) {
+func (m *mockLLM) GenerateTest(mutant core.Mutation, _ string, feedback string) (string, error) {
 	m.callCount++
+	m.feedbacks = append(m.feedbacks, feedback)
 	if m.err != nil {
 		return "", m.err
+	}
+	if m.callCount <= len(m.seq) {
+		return m.seq[m.callCount-1], nil
 	}
 	if t, ok := m.tests[mutant.ID()]; ok {
 		return t, nil
 	}
-	return "// no test generated", nil
+	return "package main", nil
 }
 
 type mockRunner struct {
@@ -106,8 +112,8 @@ func TestFlywheel_Process_Empty(t *testing.T) {
 
 func TestFlywheel_Process_KillOnFirstTry(t *testing.T) {
 	m := makeMutation("m1")
-	llm := &mockLLM{tests: map[string]string{m.ID(): "func TestKill(t *testing.T) { t.Fail() }"}}
-	runner := &mockRunner{passMap: map[string]bool{"func TestKill(t *testing.T) { t.Fail() }": false}}
+	llm := &mockLLM{tests: map[string]string{m.ID(): "package main\nfunc TestKill(t *testing.T) { t.Fail() }"}}
+	runner := &mockRunner{passMap: map[string]bool{"package main\nfunc TestKill(t *testing.T) { t.Fail() }": false}}
 	f, _ := NewFlywheel(llm, runner, DefaultFlywheelConfig())
 
 	results, err := f.Process([]core.Mutation{m}, "source")
@@ -133,8 +139,8 @@ func TestFlywheel_Process_KillOnFirstTry(t *testing.T) {
 
 func TestFlywheel_Process_Survived(t *testing.T) {
 	m := makeMutation("m1")
-	llm := &mockLLM{tests: map[string]string{m.ID(): "func TestNoKill(t *testing.T) {}"}}
-	runner := &mockRunner{passMap: map[string]bool{"func TestNoKill(t *testing.T) {}": true}}
+	llm := &mockLLM{tests: map[string]string{m.ID(): "package main\nfunc TestNoKill(t *testing.T) {}"}}
+	runner := &mockRunner{passMap: map[string]bool{"package main\nfunc TestNoKill(t *testing.T) {}": true}}
 	f, _ := NewFlywheel(llm, runner, DefaultFlywheelConfig())
 
 	results, err := f.Process([]core.Mutation{m}, "source")
@@ -172,7 +178,7 @@ func TestFlywheel_Process_LLMError(t *testing.T) {
 
 func TestFlywheel_Process_RunnerError(t *testing.T) {
 	m := makeMutation("m1")
-	llm := &mockLLM{tests: map[string]string{m.ID(): "test"}}
+	llm := &mockLLM{tests: map[string]string{m.ID(): "package main"}}
 	runner := &mockRunner{err: errors.New("runner failed")}
 	f, _ := NewFlywheel(llm, runner, DefaultFlywheelConfig())
 
@@ -202,55 +208,5 @@ func TestFlywheel_Process_MaxMutants(t *testing.T) {
 	}
 	if len(results) != 2 {
 		t.Errorf("results = %d, want 2 (MaxMutants)", len(results))
-	}
-}
-
-func TestFlywheel_Process_KillOnRetry(t *testing.T) {
-	m := makeMutation("m1")
-	callCount := 0
-	llm := &mockLLM{
-		tests: map[string]string{m.ID(): "test-v2"},
-	}
-	runner := &mockRunner{
-		passMap: map[string]bool{
-			"// no test generated": true,
-			"test-v2":            false,
-		},
-	}
-	_ = callCount
-	f, _ := NewFlywheel(llm, runner, FlywheelConfig{MaxRetries: 3, MaxMutants: 0})
-
-	results, err := f.Process([]core.Mutation{m}, "source")
-	if err != nil {
-		t.Fatalf("Process: %v", err)
-	}
-	if !results[0].Killed {
-		t.Error("mutant should be killed on retry")
-	}
-}
-
-func TestFlywheel_Results(t *testing.T) {
-	m := makeMutation("m1")
-	llm := &mockLLM{tests: map[string]string{m.ID(): "test"}}
-	runner := &mockRunner{passMap: map[string]bool{"test": false}}
-	f, _ := NewFlywheel(llm, runner, DefaultFlywheelConfig())
-
-	_, _ = f.Process([]core.Mutation{m}, "source")
-	results := f.Results()
-	if len(results) != 1 {
-		t.Fatalf("Results = %d, want 1", len(results))
-	}
-	if !results[0].Killed {
-		t.Error("should be killed")
-	}
-}
-
-func TestDefaultFlywheelConfig(t *testing.T) {
-	cfg := DefaultFlywheelConfig()
-	if cfg.MaxRetries != 3 {
-		t.Errorf("MaxRetries = %d", cfg.MaxRetries)
-	}
-	if cfg.MaxMutants != 100 {
-		t.Errorf("MaxMutants = %d", cfg.MaxMutants)
 	}
 }

@@ -133,7 +133,7 @@ abate hub sync
 
 ### 状态
 
-Phase 1：内核重构与变异引擎建设进行中。17 个 Go 包全部 100% 覆盖；注入器矩阵 F1-F6 全部实现；TLA+ 模型检验通过（6 状态穷举，TypeOK + ResidueFree 不变量成立）；Chaos Mesh + Litmus + Gremlin 适配器完整实现；MCP Server CLI 集成完成；LLM 客户端（OpenAI + Claude）实现完成；ChaosHub 子编码同步与公告机制实现完成。规范 v1.0 冻结前，API 可能调整。
+Phase 1：内核重构与变异引擎建设进行中。18 个 Go 包全部 100% 覆盖；注入器矩阵 F1-F6 全部实现；TLA+ 模型检验通过（6 状态穷举，TypeOK + ResidueFree 不变量成立）；Chaos Mesh + Litmus + Gremlin 适配器完整实现；MCP Server CLI 集成完成；LLM 客户端（OpenAI + Claude）实现完成；ChaosHub 子编码同步与公告机制实现完成。规范 v1.0 冻结前，API 可能调整。
 
 ---
 
@@ -252,7 +252,7 @@ Fetches the latest sub-code table from the remote ChaosHub data source and gener
 
 ### Status
 
-Phase 1: kernel refactoring and mutation engine construction in progress. 17 Go packages at 100% coverage; injector matrix F1-F6 fully implemented; TLA+ model checking passed (6 states exhausted, TypeOK + ResidueFree invariants hold); Chaos Mesh + Litmus + Gremlin adapters fully implemented; MCP Server CLI integration complete; LLM clients (OpenAI + Claude) implemented; ChaosHub sub-code sync and announcement mechanism implemented. APIs may change before specification v1.0 freeze.
+Phase 1: kernel refactoring and mutation engine construction in progress. 18 Go packages at 100% coverage; injector matrix F1-F6 fully implemented; TLA+ model checking passed (6 states exhausted, TypeOK + ResidueFree invariants hold); Chaos Mesh + Litmus + Gremlin adapters fully implemented; MCP Server CLI integration complete; LLM clients (OpenAI + Claude) implemented; ChaosHub sub-code sync and announcement mechanism implemented. APIs may change before specification v1.0 freeze.
 
 ---
 
