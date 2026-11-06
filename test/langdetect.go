@@ -119,7 +119,7 @@ func BuildCommand(pt ProjectType) []string {
 	case ProjectCargo:
 		return []string{"cargo", "build"}
 	case ProjectPython:
-		return []string{"python3", "-m", "py_compile", "."}
+		return []string{"python3", "-m", "compileall", "."}
 	default:
 		return nil
 	}
