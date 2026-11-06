@@ -62,7 +62,14 @@ sha256sum -c abate-<version>.sha256
 gpg --verify abate-<version>.sig abate
 ```
 
-首次验证需导入发布方公钥（获取渠道见第 8 节联系方式）。输出 `Good signature` 即通过。
+首次验证需导入发布方公钥：
+
+```bash
+curl -O https://www.qingdujian.com/abate-dl/abate-v0.1.0-pubkey.asc
+gpg --import abate-v0.1.0-pubkey.asc
+```
+
+输出 `Good signature` 即通过。
 
 ## 6. 维护者发布流程
 
