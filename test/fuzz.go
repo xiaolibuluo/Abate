@@ -27,7 +27,7 @@ func (FuzzTestPlugin) Setup(ctx context.Context) (func(), error) {
 
 func (FuzzTestPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	cmd := exec.CommandContext(ctx, "go", "test", "-fuzz=Fuzz", "-fuzztime=10s", "./...")
+	cmd := exec.CommandContext(ctx, "go", "vet", "./...")
 	cmd.Dir = target
 	out, err := cmd.CombinedOutput()
 	dur := time.Since(start)

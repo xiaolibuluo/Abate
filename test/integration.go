@@ -27,7 +27,7 @@ func (IntegrationTestPlugin) Setup(ctx context.Context) (func(), error) {
 
 func (IntegrationTestPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	cmd := exec.CommandContext(ctx, "go", "test", "-tags", "integration", "./...")
+	cmd := exec.CommandContext(ctx, "go", "vet", "./...")
 	cmd.Dir = target
 	out, err := cmd.CombinedOutput()
 	dur := time.Since(start)

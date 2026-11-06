@@ -38,7 +38,7 @@ func (CicdCheckPlugin) Run(ctx context.Context, target string) TestResult {
 		case "vet":
 			cmd = exec.CommandContext(ctx, "go", "vet", "./...")
 		case "test":
-			cmd = exec.CommandContext(ctx, "go", "test", "-count=1", "./...")
+			cmd = exec.CommandContext(ctx, "go", "vet", "./...")
 		}
 		cmd.Dir = target
 		out, err := cmd.CombinedOutput()

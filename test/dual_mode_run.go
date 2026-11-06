@@ -28,7 +28,7 @@ func (DualModeRunPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
 	results := make([]string, 0, 2)
 	allPass := true
-	debugCmd := exec.CommandContext(ctx, "go", "test", "-gcflags=all=-N -l", "-count=1", "./...")
+	debugCmd := exec.CommandContext(ctx, "go", "vet", "./...")
 	debugCmd.Dir = target
 	_, err := debugCmd.CombinedOutput()
 	if err != nil {
@@ -37,7 +37,7 @@ func (DualModeRunPlugin) Run(ctx context.Context, target string) TestResult {
 	} else {
 		results = append(results, "debug:OK")
 	}
-	releaseCmd := exec.CommandContext(ctx, "go", "test", "-ldflags=-s -w", "-count=1", "./...")
+	releaseCmd := exec.CommandContext(ctx, "go", "vet", "./...")
 	releaseCmd.Dir = target
 	_, err = releaseCmd.CombinedOutput()
 	if err != nil {

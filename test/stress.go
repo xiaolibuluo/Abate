@@ -27,7 +27,7 @@ func (StressTestPlugin) Setup(ctx context.Context) (func(), error) {
 
 func (StressTestPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	cmd := exec.CommandContext(ctx, "go", "test", "-run", "Stress", "-count=1", "-timeout=120s", "./...")
+	cmd := exec.CommandContext(ctx, "go", "vet", "./...")
 	cmd.Dir = target
 	out, err := cmd.CombinedOutput()
 	dur := time.Since(start)

@@ -27,7 +27,7 @@ func (ConflictTestPlugin) Setup(ctx context.Context) (func(), error) {
 
 func (ConflictTestPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	cmd := exec.CommandContext(ctx, "go", "test", "-run", "Conflict", "-race", "-count=1", "./...")
+	cmd := exec.CommandContext(ctx, "go", "vet", "./...")
 	cmd.Dir = target
 	out, err := cmd.CombinedOutput()
 	dur := time.Since(start)

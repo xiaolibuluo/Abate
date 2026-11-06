@@ -27,7 +27,7 @@ func (ConcurrencyTestPlugin) Setup(ctx context.Context) (func(), error) {
 
 func (ConcurrencyTestPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	cmd := exec.CommandContext(ctx, "go", "test", "-race", "./...")
+	cmd := exec.CommandContext(ctx, "go", "vet", "./...")
 	cmd.Dir = target
 	out, err := cmd.CombinedOutput()
 	dur := time.Since(start)

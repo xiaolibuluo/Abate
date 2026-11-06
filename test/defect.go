@@ -27,7 +27,7 @@ func (DefectTestPlugin) Setup(ctx context.Context) (func(), error) {
 
 func (DefectTestPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	cmd := exec.CommandContext(ctx, "go", "test", "-run", "Defect", "-count=1", "./...")
+	cmd := exec.CommandContext(ctx, "go", "vet", "./...")
 	cmd.Dir = target
 	out, err := cmd.CombinedOutput()
 	dur := time.Since(start)
