@@ -1,0 +1,54 @@
+// Abate —— 止息混沌 · 对抗测试插件
+// Copyright (C) 2026 小黎的部落（www.qingdujian.com）
+// AGPLv3; 商业用途须事先获得小黎的部落书面授权
+
+package test
+
+import (
+	"context"
+	"fmt"
+	"os/exec"
+	"strings"
+	"time"
+
+	"github.com/qingdujian/abate/core"
+)
+
+// AdversarialTestPlugin 恶意参数对抗验证插件。
+type AdversarialTestPlugin struct{}
+
+func (AdversarialTestPlugin) Capability() core.Capability {
+	return core.Capability{Name: "adversarial-test", Version: "0.1.0", Protocol: "1"}
+}
+
+func (AdversarialTestPlugin) Setup(ctx context.Context) (func(), error) {
+	return nil, nil
+}
+
+func (AdversarialTestPlugin) Run(ctx context.Context, target string) TestResult {
+	start := time.Now()
+	cmd := exec.CommandContext(ctx, "go", "test", "-run", "Adversarial", "-count=1", "./...")
+	cmd.Dir = target
+	out, err := cmd.CombinedOutput()
+	dur := time.Since(start)
+	status := StatusPass
+	if err != nil {
+		status = StatusFail
+	}
+	passCount := strings.Count(string(out), "--- PASS")
+	return TestResult{
+		Name:     "adversarial-test",
+		Status:   status,
+		Duration: dur,
+		Details:  fmt.Sprintf("%d pass, err=%v", passCount, err != nil),
+		Metrics:   map[string]float64{"pass": float64(passCount)},
+	}
+}
+
+func (AdversarialTestPlugin) Teardown(ctx context.Context) error {
+	return nil
+}
+
+func init() {
+	DefaultRegistry.Register(AdversarialTestPlugin{})
+}
