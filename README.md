@@ -60,6 +60,8 @@ Abate 不是又一个混沌工具，也不是又一个变异测试工具——**
 - 本项目以 **GNU Affero General Public License v3（AGPLv3）** 发布；AGPLv3 下网络交互使用同样触发 Copyleft，合规运行（向服务用户提供对应源码）完全自由。
 - 希望**免除 AGPLv3 义务**的商业用途（闭源集成、闭源 SaaS、免义务内部生产使用、商标商用），须事先获得小黎的部落书面商业授权。
 - 授权联系：www.qingdujian.com，详见 COMMERCIAL.md。
+- 第三方许可声明：wazero（Apache-2.0）、golang.org/x/sys（BSD 3-Clause），详见 THIRD-PARTY-NOTICES.md。
+- 免责声明：无担保、混沌工程风险警告与支持政策（包C不包赢），详见 DISCLAIMER.md。
 
 ### 工程红线（不可协商）
 
@@ -179,6 +181,8 @@ The mathematical definition of 100% total coverage: **Escaped = 0** — no pertu
 - Published under the **GNU Affero General Public License v3 (AGPLv3)**; network interaction use triggers copyleft, so compliant operation (offering corresponding source to service users) is entirely free.
 - Commercial use seeking **exemption from AGPLv3 obligations** (closed-source integration, closed-source SaaS, obligation-free internal production use, trademark use) requires prior written commercial authorization from 小黎的部落.
 - Licensing contact: www.qingdujian.com — see COMMERCIAL.md.
+- Third-party notices: wazero (Apache-2.0), golang.org/x/sys (BSD 3-Clause) — see THIRD-PARTY-NOTICES.md.
+- Disclaimer: no warranty, chaos engineering risk warning, and support policy — see DISCLAIMER.md.
 
 ### Engineering Red Lines (non-negotiable)
 
