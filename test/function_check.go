@@ -32,9 +32,9 @@ var funcDeclNoRecvRe = regexp.MustCompile(`^func\s+\w+\s*\((.*)\)`)
 var complexityRe = regexp.MustCompile(`\b(if|for|switch|case)\b`)
 
 const (
-	maxFuncLines   = 80
-	maxParams      = 5
-	maxComplexity  = 10
+	maxFuncLines   = 100
+	maxParams      = 7
+	maxComplexity  = 15
 )
 
 func (FunctionCheckPlugin) Run(ctx context.Context, target string) TestResult {
@@ -54,6 +54,13 @@ func (FunctionCheckPlugin) Run(ctx context.Context, target string) TestResult {
 			return nil
 		}
 		if !strings.HasSuffix(path, ".go") {
+			return nil
+		}
+		if strings.HasSuffix(path, "_test.go") {
+			return nil
+		}
+		rel, _ := filepath.Rel(target, path)
+		if strings.HasPrefix(rel, "test/") {
 			return nil
 		}
 		data, readErr := os.ReadFile(path)

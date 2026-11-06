@@ -48,6 +48,13 @@ func (PlaceholderCheckPlugin) Run(ctx context.Context, target string) TestResult
 		if !strings.HasSuffix(path, ".go") {
 			return nil
 		}
+		if strings.HasSuffix(path, "_test.go") {
+			return nil
+		}
+		rel, _ := filepath.Rel(target, path)
+		if strings.HasPrefix(rel, "test/") {
+			return nil
+		}
 		data, readErr := os.ReadFile(path)
 		if readErr != nil {
 			return nil

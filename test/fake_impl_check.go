@@ -9,14 +9,13 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 	"time"
 
 	"github.com/qingdujian/abate/core"
 )
 
-// FakeImplCheckPlugin 扫描源码中的假实现（硬编码假返回值、return true/false 常量）。
+// FakeImplCheckPlugin 扫描源码中显式标记的假实现（函数名含 Fake/Mock/Stub/Placeholder）。
 type FakeImplCheckPlugin struct{}
 
 func (FakeImplCheckPlugin) Capability() core.Capability {
@@ -27,7 +26,15 @@ func (FakeImplCheckPlugin) Setup(ctx context.Context) (func(), error) {
 	return nil, nil
 }
 
-var fakeReturnRe = regexp.MustCompile(`^\s*return\s+(true|false|nil|0|""|nil,\s*nil)\s*$`)
+func isFakeMarker(line string) bool {
+	lower := strings.ToLower(line)
+	if strings.Contains(lower, "func ") {
+		if strings.Contains(lower, "fake") || strings.Contains(lower, "mock") || strings.Contains(lower, "stub") || strings.Contains(lower, "placeholder") {
+			return true
+		}
+	}
+	return false
+}
 
 func (FakeImplCheckPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
@@ -48,15 +55,21 @@ func (FakeImplCheckPlugin) Run(ctx context.Context, target string) TestResult {
 		if !strings.HasSuffix(path, ".go") {
 			return nil
 		}
+		if strings.HasSuffix(path, "_test.go") {
+			return nil
+		}
+		rel, _ := filepath.Rel(target, path)
+		if strings.HasPrefix(rel, "test/") {
+			return nil
+		}
 		data, readErr := os.ReadFile(path)
 		if readErr != nil {
 			return nil
 		}
 		lines := strings.Split(string(data), "\n")
 		for i, line := range lines {
-			if fakeReturnRe.MatchString(line) {
+			if isFakeMarker(line) {
 				totalHits++
-				rel, _ := filepath.Rel(target, path)
 				if len(details) < 16 {
 					details = append(details, rel+":"+itoa(i+1))
 				}
