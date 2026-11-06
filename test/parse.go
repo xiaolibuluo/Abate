@@ -52,22 +52,22 @@ func (i Issue) Location() string {
 
 // issuePatterns 各语言工具的通用输出模式：file:line[:col]: [severity:] message
 var issuePatterns = []*regexp.Regexp{
-	// go vet / golangci: file.go:12:3: message
 	regexp.MustCompile(`^(\S+\.go):(\d+)(?::\d+)?:\s*(?:fatal:)?\s*(?:error:)?\s*(.+)$`),
-	// gradle lint / android lint: file.kt:12: Error: message
 	regexp.MustCompile(`^(\S+\.(?:kt|java)):(\d+):\s*(Error|Warning|Information):\s*(.+)$`),
-	// eslint / tsc: /path/file.js:12:5: error: message
 	regexp.MustCompile(`^(\S+\.(?:js|ts|tsx|jsx)):(\d+):\d+:\s*(error|warning)?:?\s*(.+)$`),
-	// clippy / rustc: file.rs:12:5: message [lint]
 	regexp.MustCompile(`^(\S+\.rs):(\d+):\d+:\s*(error|warning)?:?\s*(.+)$`),
-	// python: file.py:12:30: E501 message
 	regexp.MustCompile(`^(\S+\.py):(\d+):\d+:\s*([EWF]\d+)\s*(.+)$`),
-	// 通用兜底: file.ext:12: message
+	regexp.MustCompile(`^(\S+\.(?:c|cpp|h|hpp)):(\d+):\s*\[(error|warning|style|performance)\]:?\s*(.+)$`),
+	regexp.MustCompile(`^(\S+\.swift):(\d+):\d+:\s*(error|warning|note):\s*(.+)$`),
+	regexp.MustCompile(`^(\S+\.rb):(\d+):\d+:\s*([CWEF])\s*:\s*(.+)$`),
+	regexp.MustCompile(`^(\S+\.php):(\d+):\s*(Parse error|Warning|Notice|Fatal error):\s*(.+)$`),
+	regexp.MustCompile(`^(\S+\.cs):\((\d+),\d+\):\s*(error|warning)\s+\w+:\s*(.+)$`),
+	regexp.MustCompile(`^(\S+\.scala):(\d+):\d+:\s*\[(error|warning)\]\s*(.+)$`),
+	regexp.MustCompile(`^(\S+\.dart):(\d+):\d+:\s*(error|warning|info):\s*(.+)$`),
 	regexp.MustCompile(`^(\S+\.[a-zA-Z0-9]+):(\d+):\s*(.+)$`),
 }
 
 // ParseIssues 从工具输出中提取结构化问题列表。
-// tool 标注来源工具，severityHint 提供无法从行内判断级别时的默认级别。
 func ParseIssues(output, tool string, severityHint Severity) []Issue {
 	var issues []Issue
 	for _, line := range strings.Split(output, "\n") {
@@ -97,7 +97,6 @@ func parseIssueLine(line, tool string, hint Severity) (Issue, bool) {
 			continue
 		}
 		iss := Issue{File: filepath.Clean(file), Line: ln, Tool: tool, Severity: hint}
-		// 模式分组：部分含显式级别，部分不含。
 		switch len(m) {
 		case 5:
 			iss.Severity = normalizeSeverity(m[3])
@@ -122,7 +121,6 @@ func normalizeSeverity(s string) Severity {
 	case "warning", "w":
 		return SevWarning
 	default:
-		// python 风格代码：E 系 error，W/F 系 warning，其余 info。
 		if len(s) == 4 {
 			switch s[0] {
 			case 'E', 'F':

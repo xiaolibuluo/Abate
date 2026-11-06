@@ -42,28 +42,57 @@ func IsCodeFile(path string) bool {
 // IsTestFile 判断是否为测试文件（跨语言）
 func IsTestFile(path string) bool {
 	base := strings.ToLower(filepath.Base(path))
+	// Go
 	if strings.HasSuffix(base, "_test.go") {
 		return true
 	}
-	if strings.HasSuffix(base, "test.kt") {
+	// Kotlin / Java
+	if strings.HasSuffix(base, "test.kt") || strings.HasSuffix(base, "test.java") {
 		return true
 	}
-	if strings.HasSuffix(base, "test.java") {
-		return true
-	}
+	// Python
 	if strings.HasPrefix(base, "test_") && strings.HasSuffix(base, ".py") {
 		return true
 	}
-	if strings.HasSuffix(base, ".test.js") || strings.HasSuffix(base, ".spec.js") {
+	if strings.HasSuffix(base, "_test.py") {
 		return true
 	}
-	if strings.HasSuffix(base, ".test.ts") || strings.HasSuffix(base, ".spec.ts") {
+	// JS / TS / TSX / JSX
+	for _, ext := range []string{".js", ".ts", ".tsx", ".jsx"} {
+		if strings.HasSuffix(base, ".test"+ext) || strings.HasSuffix(base, ".spec"+ext) {
+			return true
+		}
+	}
+	// Rust
+	if strings.HasSuffix(base, "_test.rs") || strings.HasSuffix(base, "tests.rs") {
 		return true
 	}
-	if strings.HasSuffix(base, "_test.rs") {
+	// C / C++ — Google Test 约定
+	if strings.HasSuffix(base, "_test.c") || strings.HasSuffix(base, "_test.cpp") {
 		return true
 	}
-	if strings.HasSuffix(base, "tests.rs") {
+	// Swift — XCTest 约定
+	if strings.HasSuffix(base, "tests.swift") || strings.HasSuffix(base, "_test.swift") {
+		return true
+	}
+	// Ruby — RSpec / Minitest 约定
+	if strings.HasSuffix(base, "_test.rb") || strings.HasSuffix(base, "_spec.rb") {
+		return true
+	}
+	// PHP — PHPUnit 约定
+	if strings.HasSuffix(base, "test.php") {
+		return true
+	}
+	// C# — xUnit / NUnit 约定
+	if strings.HasSuffix(base, "test.cs") {
+		return true
+	}
+	// Scala — ScalaTest 约定
+	if strings.HasSuffix(base, "test.scala") || strings.HasSuffix(base, "spec.scala") {
+		return true
+	}
+	// Dart — flutter_test 约定
+	if strings.HasSuffix(base, "_test.dart") {
 		return true
 	}
 	return false
@@ -80,6 +109,13 @@ const (
 	ProjectNpm
 	ProjectCargo
 	ProjectPython
+	ProjectSwift     // Package.swift
+	ProjectRuby      // Gemfile
+	ProjectPhp       // composer.json
+	ProjectDotNet    // *.csproj / *.sln
+	ProjectCpp       // CMakeLists.txt / Makefile
+	ProjectScala     // build.sbt
+	ProjectDart      // pubspec.yaml
 )
 
 // DetectProjectType 自动检测项目类型
@@ -102,67 +138,28 @@ func DetectProjectType(target string) ProjectType {
 	if fileExists(filepath.Join(target, "requirements.txt")) || fileExists(filepath.Join(target, "setup.py")) || fileExists(filepath.Join(target, "pyproject.toml")) {
 		return ProjectPython
 	}
+	if fileExists(filepath.Join(target, "Package.swift")) {
+		return ProjectSwift
+	}
+	if fileExists(filepath.Join(target, "Gemfile")) {
+		return ProjectRuby
+	}
+	if fileExists(filepath.Join(target, "composer.json")) {
+		return ProjectPhp
+	}
+	if hasFileWithExt(target, ".csproj") || hasFileWithExt(target, ".sln") {
+		return ProjectDotNet
+	}
+	if fileExists(filepath.Join(target, "CMakeLists.txt")) || fileExists(filepath.Join(target, "Makefile")) {
+		return ProjectCpp
+	}
+	if fileExists(filepath.Join(target, "build.sbt")) {
+		return ProjectScala
+	}
+	if fileExists(filepath.Join(target, "pubspec.yaml")) {
+		return ProjectDart
+	}
 	return ProjectUnknown
-}
-
-// BuildCommand 返回项目类型对应的构建命令
-func BuildCommand(pt ProjectType) []string {
-	switch pt {
-	case ProjectGo:
-		return []string{"go", "build", "./..."}
-	case ProjectGradle:
-		return []string{"gradle", "compileDebugKotlin", "--no-daemon"}
-	case ProjectMaven:
-		return []string{"mvn", "compile", "-q"}
-	case ProjectNpm:
-		return []string{"npm", "run", "build"}
-	case ProjectCargo:
-		return []string{"cargo", "build"}
-	case ProjectPython:
-		return []string{"python3", "-m", "compileall", "."}
-	default:
-		return nil
-	}
-}
-
-// VetCommand 返回项目类型对应的静态检查命令
-func VetCommand(pt ProjectType) []string {
-	switch pt {
-	case ProjectGo:
-		return []string{"go", "vet", "./..."}
-	case ProjectGradle:
-		return []string{"gradle", "lint", "--no-daemon"}
-	case ProjectMaven:
-		return []string{"mvn", "checkstyle:check", "-q"}
-	case ProjectNpm:
-		return []string{"npm", "run", "lint"}
-	case ProjectCargo:
-		return []string{"cargo", "clippy"}
-	case ProjectPython:
-		return []string{"python3", "-m", "pyflakes", "."}
-	default:
-		return nil
-	}
-}
-
-// TestCommand 返回项目类型对应的测试命令
-func TestCommand(pt ProjectType) []string {
-	switch pt {
-	case ProjectGo:
-		return []string{"go", "test", "./..."}
-	case ProjectGradle:
-		return []string{"gradle", "test", "--no-daemon"}
-	case ProjectMaven:
-		return []string{"mvn", "test", "-q"}
-	case ProjectNpm:
-		return []string{"npm", "test"}
-	case ProjectCargo:
-		return []string{"cargo", "test"}
-	case ProjectPython:
-		return []string{"python3", "-m", "pytest"}
-	default:
-		return nil
-	}
 }
 
 // ShouldSkipDir 判断是否应跳过该目录
@@ -190,4 +187,18 @@ func ShouldSkipFile(path string, target string) bool {
 func fileExists(path string) bool {
 	_, err := os.Stat(path)
 	return err == nil
+}
+
+// hasFileWithExt 检查目录下是否存在指定扩展名的文件（仅扫一层）。
+func hasFileWithExt(target, ext string) bool {
+	entries, err := os.ReadDir(target)
+	if err != nil {
+		return false
+	}
+	for _, e := range entries {
+		if !e.IsDir() && strings.HasSuffix(strings.ToLower(e.Name()), ext) {
+			return true
+		}
+	}
+	return false
 }
