@@ -127,10 +127,16 @@ See COMMERCIAL.md for details.
 - Go 包：15 → 17
 - 测试用例：新增 60+ 个
 - CES 条款：新增 9 条（中英文同步）
-- 全项目覆盖率：100%（17/17 包）
+- 全项目覆盖率：100%（18/18 包，含新增 watermark 包）
 - 非测试文件最大行数：291 行（dsl/parse.go，≤300 红线 ✅）
+- 测试文件最大行数：299 行（plugin/registry_test.go，≤300 红线 ✅）
 - 集成测试：3 个（真实 k3s 集群，`-tags integration`）
 - 零外部依赖（仅 wazero v1.12.0 + golang.org/x/sys）
+- 代码级数字水印：watermark 包，纯内存计算，AST 静态卡死零网络调用
+- 运行时开机亮牌：serve→stdout / mcp→stderr，MCP stdout 零字节污染
+- 发布签名：SHA-256 校验值 + GPG 分离签名（scripts/release.sh）
+- CLI 一致性：CES-8.4.1~8.4.5 强制条款 + 自动化测试锁死
+- Debug + Release 双 8 验证：vet/race/cover/count/红线/文件头/条款号/build 全部 PASS，pass 数据完全一致
 
 ---
 
