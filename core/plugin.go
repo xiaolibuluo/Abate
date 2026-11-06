@@ -105,3 +105,24 @@ type Reporter interface {
 	// Emit 输出一次评分运行的报告；返回产物定位符。
 	Emit(ctx context.Context, s Score) (string, error)
 }
+
+// LogField 是结构化日志的字段，与 log.Field 对齐。
+// LogField is a structured log field, aligned with log.Field.
+type LogField struct {
+	Key   string
+	Value any
+}
+
+// Logger 全链路结构化日志接口（CES-9.6 可观测性）。
+// 各模块通过依赖注入获取日志器，实现完整闭环的详细日志输出链。
+// Logger is the full-chain structured logging interface (CES-9.6 observability).
+// Modules obtain a logger via dependency injection for complete closed-loop logging.
+type Logger interface {
+	Debug(msg string, fields ...LogField)
+	Info(msg string, fields ...LogField)
+	Warn(msg string, fields ...LogField)
+	Error(msg string, fields ...LogField)
+	With(fields ...LogField) Logger
+	SetLevel(level int)
+	Level() int
+}
