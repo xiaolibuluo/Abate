@@ -59,6 +59,57 @@ See COMMERCIAL.md for details.
 - Sim: 19/19 PASS
 - 2 FAIL 均为真实代码问题（Kotlin/Python 文件缺版权头）
 
+**第四阶段：五层插件体系（稳·准·精·固·严）**
+
+五层架构定义：稳（结果可靠）、准（检测精准）、精（分析深入）、固（防护坚固）、严（标准严苛）
+
+稳层（稳）— 三级灾备兜底无感降级
+- `test/degrade.go` — 三级扫描模式（full→sampled→minimal），规模探测+deadline感知+超时自动降级+panic隔离恢复
+- `test/retry.go` — 瞬态失败自动重试（仅 transient 归因，500ms 退避，最多 1 次）
+- `test/classify.go` — 失败归因分类器（code/env/transient 三类，结果标注 cause=xxx）
+- `test/runner.go` — 接入 RunPluginSafely，30 插件统一获得三级灾备能力
+- `test/degrade_test.go` — 5 个测试：规模阈值决策/deadline降级/超时降级链/panic隔离
+
+准层（准）— 多语言结构化解析
+- `test/parse.go` — 12 种语言工具输出解析器（Go/Kotlin/Java/JS/TS/Rust/Python/C/C++/Swift/Ruby/PHP/C#/Scala/Dart），提取文件/行号/严重级别/消息
+- `test/parse_test.go` — 6 个测试：Go vet/Kotlin lint/ESLint/Python pyflakes/噪声过滤/统计格式化
+- `test/lint_intensive.go` — 行数计数升级为结构化 issue 解析 + 严重级别判定 + Top issue 摘要
+- `test/static_analysis.go` — 同上升级
+
+精层（精）— 跨文件依赖分析
+- `test/imports.go` — 19 种扩展名导入提取（Go/Kotlin/Java/JS/TS/Python/Rust/C/C++/Swift/Ruby/PHP/C#/Scala/Dart）
+- `test/deps.go` — 文件级依赖图构建（代码文件收集/目录索引/go.mod 模块名检测）
+- `test/resolve.go` — 导入声明解析（相对路径/模块前缀剥离/包名转路径/类名剥离/目录后缀匹配）
+- `test/graph.go` — DFS 三色标记环检测/入度排序枢纽发现/孤儿识别/最大依赖深度计算
+- `test/dep_analysis.go` — 精层插件（构建图+分析+摘要）
+
+固层（固）— 变异测试 + 边界条件
+- `test/mutate.go` — 12 种运算符替换变异体生成 + 变异测试插件 + 杀死率计算
+- `test/boundary.go` — 空文件/超大文件/特殊字符文件名/深层嵌套目录检测
+
+严层（严）— 全链路审计 + 零容忍
+- `test/audit.go` — 文件头合规检查/敏感信息扫描（password/api_key/token/private_key/AWS）/TODO-FIXME-HACK-XXX 统计
+- `test/audit_plugin.go` — 严层审计插件（零容忍策略：secrets>0 即 FAIL）
+
+**第五阶段：全语言对齐**
+- `test/langdetect.go` — IsTestFile 8→19 种（补 tsx/jsx/C/C++/Swift/Ruby/PHP/C#/Scala/Dart 测试文件命名约定）
+- `test/langdetect.go` — DetectProjectType 6→13 种（补 Swift/Ruby/PHP/DotNet/C++/Scala/Dart 项目检测）
+- `test/commands.go`（新文件）— 从 langdetect.go 拆出 BuildCommand/VetCommand/TestCommand，各 6→13 种全覆盖
+- `test/parse.go` — issuePatterns 5→12 种+兜底（补 Rust/C/C++/Swift/Ruby/PHP/C#/Scala/Dart 输出解析模式）
+- 对齐矩阵: SupportedCodeExtensions(19) = IsTestFile(19) = ExtractImports(19) = DetectProjectType(13) = Build/Vet/TestCommand(13) = issuePatterns(12+兜底)
+
+**五层端到端实测（34 插件扫描 Abate IDE Kotlin/Android）**
+
+| 指标 | 结果 |
+|------|------|
+| Total / Pass / Fail / Skip | 34 / 34 / 0 / 0 |
+| dep-analysis | edges=25 hubs=2(Agent.kt/AgentRole.kt) depth=4 |
+| mutant-test | mutants=43 killed=43 survived=0 score=1.00 |
+| boundary-test | maxDepth=10 emptyFiles=0 hugeFiles=0 issues=0 |
+| audit | files=17 headers_missing=0 secrets=0 todos=0 fixmes=0 |
+| 全仓测试 | 20 包全绿 |
+| 降级标注 | 全插件 mode=full coverage=1.00 |
+
 #### 归属与完整性凭据（水印 / 亮牌 / 签名）
 - **`watermark/` 包**（第 18 个 Go 包）— 代码级数字水印与运行时开机亮牌
   - `watermark/watermark.go`（55 行）— 水印常量（项目 / 许可证 / 小黎的部落 / www.qingdujian.com / xiaolibuluo@163.com）与 Banner 亮牌函数，纯内存计算
@@ -166,9 +217,10 @@ See COMMERCIAL.md for details.
 
 ### 统计 | Stats
 - Go 包：15 → 18（新增 test 包）
-- 测试插件：30 个（3 框架 + 30 插件 = 33 文件）
-- 端到端实测：96 项测试 94 PASS 2 FAIL（真实问题）
-- 测试用例：新增 60+ 个
+- 测试插件：34 个（3 框架 + 30 基础 + 4 五层 = 41 文件）
+- 五层架构：稳·准·精·固·严，三级灾备+19语言对齐
+- 端到端实测：96 项测试 94 PASS 2 FAIL（真实问题）+ 34 插件矩阵 34/34 PASS
+- 测试用例：新增 80+ 个
 - CES 条款：新增 9 条（中英文同步）
 - 全项目覆盖率：100%（18/18 包，含新增 watermark 包）
 - 非测试文件最大行数：291 行（dsl/parse.go，≤300 红线 ✅）
