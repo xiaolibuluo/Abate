@@ -8,7 +8,6 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
-	"strings"
 	"time"
 
 	"github.com/qingdujian/abate/core"
@@ -36,17 +35,28 @@ func (LintIntensivePlugin) Run(ctx context.Context, target string) TestResult {
 	cmd.Dir = target
 	out, err := cmd.CombinedOutput()
 	dur := time.Since(start)
+	// 准层：结构化解析输出，按严重级别判定，而非行数计数。
+	issues := ParseIssues(string(out), "lint", SevWarning)
+	st := CountIssues(issues)
 	status := StatusPass
-	if err != nil {
+	if err != nil || st.Errors > 0 {
 		status = StatusFail
 	}
-	issueCount := strings.Count(string(out), "\n")
+	details := fmt.Sprintf("issues=%d (err=%d warn=%d info=%d), err=%v", st.Total, st.Errors, st.Warnings, st.Infos, err != nil)
+	if top := FormatIssues(issues, 3); top != "" {
+		details += " | " + top
+	}
 	return TestResult{
-		Name:     "lint-intensive",
-		Status:   status,
+		Name:    "lint-intensive",
+		Status:  status,
 		Duration: dur,
-		Details:  fmt.Sprintf("vet issues=%d, err=%v", issueCount, err != nil),
-		Metrics:   map[string]float64{"issues": float64(issueCount)},
+		Details: details,
+		Metrics: map[string]float64{
+			"issues":   float64(st.Total),
+			"errors":   float64(st.Errors),
+			"warnings": float64(st.Warnings),
+			"infos":    float64(st.Infos),
+		},
 	}
 }
 

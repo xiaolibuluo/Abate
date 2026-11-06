@@ -142,8 +142,14 @@ func (rn *Runner) runOne(ctx context.Context, p TestPlugin, target string) TestR
 
 	pluginLogger.Debug("run phase started", log.F("target", target))
 	runStart := time.Now()
-	result := p.Run(child, target)
+	result := RunPluginSafely(child, p, target, rn.timeout)
 	result.Duration = time.Since(runStart)
+	if result.Metrics["scan_mode"] > 0 {
+		pluginLogger.Warn("plugin degraded",
+			log.F("scan_mode", result.Metrics["scan_mode"]),
+			log.F("coverage_ratio", result.Metrics["coverage_ratio"]),
+		)
+	}
 	pluginLogger.Debug("run phase completed",
 		log.F("run_duration", result.Duration.String()),
 		log.F("status", string(result.Status)),
