@@ -258,6 +258,13 @@ Fetches the latest sub-code table from the remote ChaosHub data source and gener
 
 Phase 1: kernel refactoring and mutation engine construction in progress. 18 Go packages at 100% coverage; injector matrix F1-F6 fully implemented; TLA+ model checking passed (6 states exhausted, TypeOK + ResidueFree invariants hold); Chaos Mesh + Litmus + Gremlin adapters fully implemented; MCP Server CLI integration complete; LLM clients (OpenAI + Claude) implemented; ChaosHub sub-code sync and announcement mechanism implemented. Code-level digital watermark + runtime boot banner (watermark package, AST-enforced zero network calls); release signing (SHA-256 + GPG); CLI conformance mandatory clauses (CES-8.4) + automated test lockdown; Debug + Release dual-8 verification passed (pass data fully consistent). APIs may change before specification v1.0 freeze.
 
+### Repository
+
+- **GitHub**: https://github.com/xiaolibuluo/Abate
+- **Clone**: `git clone https://github.com/xiaolibuluo/Abate.git`
+- **Homepage**: https://www.qingdujian.com/abate
+- **Download**: https://www.qingdujian.com/abate-dl/
+
 ---
 
 Copyright (C) 2026 小黎的部落（www.qingdujian.com）
