@@ -16,7 +16,7 @@ import (
 
 func TestMatrix(t *testing.T) {
 	runner := NewRunner(DefaultRegistry, 60*time.Second)
-	report := runner.RunMatrix(context.Background(), "/root/abate-ide")
+	report := runner.RunMatrix(context.Background(), "/root/abate")
 	for _, res := range report.Results {
 		icon := "PASS"
 		if res.Status == StatusFail {

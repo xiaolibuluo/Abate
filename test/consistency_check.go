@@ -7,6 +7,7 @@ package test
 import (
 	"context"
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
@@ -189,9 +190,21 @@ type LineLimitFile struct {
 	Lines int
 }
 
-// checkLineLimit 检查目标项目中超过行数限制的代码文件。
+// docFileExts 是需要行数检查的文档文件扩展名。
+var docFileExts = map[string]bool{
+	".md": true, ".txt": true, ".yaml": true, ".yml": true, ".json": true,
+}
+
+// isDocFile 判断是否为文档文件。
+func isDocFile(path string) bool {
+	ext := strings.ToLower(filepath.Ext(path))
+	return docFileExts[ext]
+}
+
+// checkLineLimit 检查目标项目中超过行数限制的代码文件和文档文件。
 func checkLineLimit(target string, limit int) []LineLimitFile {
 	var over []LineLimitFile
+	// 检查代码文件（通过依赖图收集）。
 	g := BuildDepGraph(target, 0)
 	for _, f := range g.Files {
 		data, err := readFileContent(f)
@@ -204,5 +217,30 @@ func checkLineLimit(target string, limit int) []LineLimitFile {
 			over = append(over, LineLimitFile{Path: f, Name: rel, Lines: lines})
 		}
 	}
+	// 检查文档文件（.md/.txt/.yaml/.yml/.json）。
+	_ = filepath.Walk(target, func(path string, info os.FileInfo, err error) error {
+		if err != nil || info == nil {
+			return nil
+		}
+		if info.IsDir() {
+			if path != target && ShouldSkipDir(info.Name()) {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if !isDocFile(path) {
+			return nil
+		}
+		data, err := readFileContent(path)
+		if err != nil {
+			return nil
+		}
+		lines := strings.Count(data, "\n") + 1
+		if lines > limit {
+			rel, _ := filepath.Rel(target, path)
+			over = append(over, LineLimitFile{Path: path, Name: rel, Lines: lines})
+		}
+		return nil
+	})
 	return over
 }

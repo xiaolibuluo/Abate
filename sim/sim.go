@@ -5,8 +5,6 @@
 package sim
 
 import (
-	"context"
-	"fmt"
 	"time"
 
 	"github.com/qingdujian/abate/core"
@@ -84,94 +82,22 @@ func (s *Simulator) Run(e core.Experiment) (core.Record, error) {
 		core.LogField{Key: "criticality", Value: e.Criticality},
 	)
 
-	logger.Debug("validating experiment config")
-	if err := e.Validate(); err != nil {
-		logger.Error("experiment validation failed", core.LogField{Key: "err", Value: err.Error()})
-		return core.Record{}, fmt.Errorf("preflight: %w", err)
-	}
-	logger.Debug("experiment config valid")
-
-	logger.Info("state transition", core.LogField{Key: "from", Value: "Pending"}, core.LogField{Key: "to", Value: "Preflight"})
-	state, err := transitFn(engine.StatePending, engine.StatePreflight)
+	state, err := s.runPreflight(logger, e)
 	if err != nil {
-		logger.Error("state transition failed", core.LogField{Key: "err", Value: err.Error()})
 		return core.Record{}, err
 	}
 
-	logger.Debug("running preflight checks")
-	issues, err := s.val.Preflight(context.Background(), e)
+	state, injection, windowMs, err := s.runInjection(logger, state, e)
 	if err != nil {
-		logger.Error("preflight error", core.LogField{Key: "err", Value: err.Error()})
-		return core.Record{}, err
-	}
-	if len(issues) > 0 {
-		logger.Warn("preflight issues found", core.LogField{Key: "issues", Value: fmt.Sprintf("%v", issues)}, core.LogField{Key: "count", Value: len(issues)})
-		return core.Record{}, fmt.Errorf("preflight issues: %v", issues)
-	}
-	logger.Info("preflight passed")
-
-	logger.Info("state transition", core.LogField{Key: "from", Value: "Preflight"}, core.LogField{Key: "to", Value: "Injecting"})
-	state, err = transitFn(state, engine.StateInjecting)
-	if err != nil {
-		logger.Error("state transition failed", core.LogField{Key: "err", Value: err.Error()})
 		return core.Record{}, err
 	}
 
-	logger.Info("injecting fault",
-		core.LogField{Key: "fault_class", Value: string(e.Fault.Class)},
-		core.LogField{Key: "target", Value: e.Target.Name},
-	)
-	injection, err := s.inj.Inject(context.Background(), e)
+	state, sample, err := s.runObservation(logger, state, e)
 	if err != nil {
-		logger.Error("injection failed", core.LogField{Key: "err", Value: err.Error()})
-		return core.Record{}, err
-	}
-	logger.Info("injection completed", core.LogField{Key: "injection_id", Value: injection.ID})
-
-	windowMs := e.Blast.MaxDurationMs
-	if windowMs <= 0 {
-		windowMs = 60000
-		logger.Debug("using default window", core.LogField{Key: "window_ms", Value: windowMs})
-	}
-	s.clock.Advance(windowMs)
-	logger.Debug("injection hold window elapsed", core.LogField{Key: "window_ms", Value: windowMs})
-
-	logger.Info("state transition", core.LogField{Key: "from", Value: "Injecting"}, core.LogField{Key: "to", Value: "Observing"})
-	state, err = transitFn(state, engine.StateObserving)
-	if err != nil {
-		logger.Error("state transition failed", core.LogField{Key: "err", Value: err.Error()})
 		return core.Record{}, err
 	}
 
-	logger.Debug("observing steady state")
-	sample, err := s.probe.Observe(context.Background(), e.Target)
-	if err != nil {
-		logger.Error("observation failed", core.LogField{Key: "err", Value: err.Error()})
-		return core.Record{}, err
-	}
-	logger.Info("observation completed",
-		core.LogField{Key: "sli", Value: sample.SLI},
-		core.LogField{Key: "value", Value: sample.Value},
-	)
-
-	logger.Info("state transition", core.LogField{Key: "from", Value: "Observing"}, core.LogField{Key: "to", Value: "Recovering"})
-	state, err = transitFn(state, engine.StateRecovering)
-	if err != nil {
-		logger.Error("state transition failed", core.LogField{Key: "err", Value: err.Error()})
-		return core.Record{}, err
-	}
-
-	logger.Debug("recovering injected fault", core.LogField{Key: "injection_id", Value: injection.ID})
-	if err := s.inj.Recover(context.Background(), injection); err != nil {
-		logger.Error("recovery failed", core.LogField{Key: "err", Value: err.Error()})
-		return core.Record{}, err
-	}
-	logger.Info("recovery completed")
-
-	logger.Info("state transition", core.LogField{Key: "from", Value: "Recovering"}, core.LogField{Key: "to", Value: "Verdict"})
-	_, err = transitFn(state, engine.StateVerdict)
-	if err != nil {
-		logger.Error("state transition failed", core.LogField{Key: "err", Value: err.Error()})
+	if _, err := s.runRecovery(logger, state, injection); err != nil {
 		return core.Record{}, err
 	}
 
@@ -182,14 +108,14 @@ func (s *Simulator) Run(e core.Experiment) (core.Record, error) {
 	}
 
 	record := core.Record{
-		Exp:             e,
-		Evidence:        core.EvidenceA,
-		HoldMs:          holdMs,
-		WindowMs:        windowMs,
-		RecoveryMs:      60000,
-		InvariantPass:   10,
-		InvariantTotal:  10,
-		DeclaredRadius:  int64(e.Blast.MaxInstances),
+		Exp:            e,
+		Evidence:       core.EvidenceA,
+		HoldMs:         holdMs,
+		WindowMs:       windowMs,
+		RecoveryMs:     60000,
+		InvariantPass:  10,
+		InvariantTotal: 10,
+		DeclaredRadius: int64(e.Blast.MaxInstances),
 	}
 
 	logger.Info("experiment completed",

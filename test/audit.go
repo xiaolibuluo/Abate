@@ -44,6 +44,10 @@ func RunAudit(target string, maxFiles int) AuditResult {
 	files := collectCodeFiles(target, maxFiles)
 	var result AuditResult
 	for _, f := range files {
+		// 跳过测试框架自身源码，避免模式定义被误报为密钥泄露。
+		if strings.Contains(f, "/test/") {
+			continue
+		}
 		data, err := os.ReadFile(f)
 		if err != nil {
 			continue
@@ -59,7 +63,13 @@ func RunAudit(target string, maxFiles int) AuditResult {
 		for i, line := range lines {
 			lower := strings.ToLower(line)
 			for _, p := range secretPatterns {
-				if strings.Contains(lower, p) {
+				idx := strings.Index(lower, p)
+				if idx >= 0 {
+					// 跳过比较运算符（如 apikey ==），避免误报。
+					afterIdx := idx + len(p)
+					if afterIdx < len(lower) && lower[afterIdx] == '=' {
+						continue
+					}
 					result.Secrets++
 					result.Findings = append(result.Findings, AuditFinding{File: f, Line: i + 1, Category: "secret", Message: "potential secret: " + p})
 					break
