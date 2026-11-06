@@ -14,7 +14,7 @@ import (
 	"github.com/qingdujian/abate/core"
 )
 
-// CicdCheckPlugin 模拟完整 CI/CD 流水线插件。
+// CicdCheckPlugin 模拟完整 CI/CD 流水线插件，自动检测项目类型。
 type CicdCheckPlugin struct{}
 
 func (CicdCheckPlugin) Capability() core.Capability {
@@ -27,29 +27,35 @@ func (CicdCheckPlugin) Setup(ctx context.Context) (func(), error) {
 
 func (CicdCheckPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	steps := []string{"build", "vet", "test"}
-	results := make([]string, 0, len(steps))
+	pt := DetectProjectType(target)
+	results := make([]string, 0, 3)
 	allPass := true
+
+	steps := []struct {
+		name string
+		cmd  []string
+	}{
+		{"build", BuildCommand(pt)},
+		{"vet", VetCommand(pt)},
+		{"test", TestCommand(pt)},
+	}
+
 	for _, step := range steps {
-		var cmd *exec.Cmd
-		switch step {
-		case "build":
-			cmd = exec.CommandContext(ctx, "go", "build", "./...")
-		case "vet":
-			cmd = exec.CommandContext(ctx, "go", "vet", "./...")
-		case "test":
-			cmd = exec.CommandContext(ctx, "go", "vet", "./...")
+		if step.cmd == nil {
+			results = append(results, fmt.Sprintf("%s:SKIP", step.name))
+			continue
 		}
+		cmd := exec.CommandContext(ctx, step.cmd[0], step.cmd[1:]...)
 		cmd.Dir = target
-		out, err := cmd.CombinedOutput()
+		_, err := cmd.CombinedOutput()
 		if err != nil {
 			allPass = false
-			results = append(results, fmt.Sprintf("%s:FAIL", step))
+			results = append(results, fmt.Sprintf("%s:FAIL", step.name))
 		} else {
-			results = append(results, fmt.Sprintf("%s:OK", step))
+			results = append(results, fmt.Sprintf("%s:OK", step.name))
 		}
-		_ = out
 	}
+
 	dur := time.Since(start)
 	status := StatusPass
 	if !allPass {
@@ -60,7 +66,7 @@ func (CicdCheckPlugin) Run(ctx context.Context, target string) TestResult {
 		Status:   status,
 		Duration: dur,
 		Details:  strings.Join(results, " "),
-		Metrics:   map[string]float64{"steps": float64(len(steps))},
+		Metrics:  map[string]float64{"steps": float64(len(steps))},
 	}
 }
 

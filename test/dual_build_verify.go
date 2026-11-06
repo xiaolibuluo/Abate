@@ -28,23 +28,42 @@ func (DualBuildVerifyPlugin) Run(ctx context.Context, target string) TestResult 
 	start := time.Now()
 	results := make([]string, 0, 2)
 	allPass := true
-	debugCmd := exec.CommandContext(ctx, "go", "build", "-gcflags=all=-N -l", "./...")
-	debugCmd.Dir = target
-	_, err := debugCmd.CombinedOutput()
-	if err != nil {
-		allPass = false
-		results = append(results, "debug:FAIL")
-	} else {
-		results = append(results, "debug:OK")
+	pt := DetectProjectType(target)
+	bc := BuildCommand(pt)
+	if bc == nil {
+		return TestResult{Name: "dual-build-verify", Status: StatusSkip, Duration: time.Since(start), Details: "unsupported project type", Metrics: map[string]float64{}}
 	}
-	releaseCmd := exec.CommandContext(ctx, "go", "build", "-ldflags=-s -w", "./...")
-	releaseCmd.Dir = target
-	_, err = releaseCmd.CombinedOutput()
-	if err != nil {
-		allPass = false
-		results = append(results, "release:FAIL")
+	if pt == ProjectGo {
+		// Go: debug + release dual mode
+		debugCmd := exec.CommandContext(ctx, "go", "build", "-gcflags=all=-N -l", "./...")
+		debugCmd.Dir = target
+		_, err := debugCmd.CombinedOutput()
+		if err != nil {
+			allPass = false
+			results = append(results, "debug:FAIL")
+		} else {
+			results = append(results, "debug:OK")
+		}
+		releaseCmd := exec.CommandContext(ctx, "go", "build", "-ldflags=-s -w", "./...")
+		releaseCmd.Dir = target
+		_, err = releaseCmd.CombinedOutput()
+		if err != nil {
+			allPass = false
+			results = append(results, "release:FAIL")
+		} else {
+			results = append(results, "release:OK")
+		}
 	} else {
-		results = append(results, "release:OK")
+		// Non-Go: single mode build
+		singleCmd := exec.CommandContext(ctx, bc[0], bc[1:]...)
+		singleCmd.Dir = target
+		_, err := singleCmd.CombinedOutput()
+		if err != nil {
+			allPass = false
+			results = append(results, "build:FAIL")
+		} else {
+			results = append(results, "build:OK")
+		}
 	}
 	dur := time.Since(start)
 	status := StatusPass
@@ -56,7 +75,7 @@ func (DualBuildVerifyPlugin) Run(ctx context.Context, target string) TestResult 
 		Status:   status,
 		Duration: dur,
 		Details:  strings.Join(results, " "),
-		Metrics:   map[string]float64{"modes": 2},
+		Metrics:  map[string]float64{"modes": float64(len(results))},
 	}
 }
 

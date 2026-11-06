@@ -28,23 +28,42 @@ func (DualModeRunPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
 	results := make([]string, 0, 2)
 	allPass := true
-	debugCmd := exec.CommandContext(ctx, "go", "vet", "./...")
-	debugCmd.Dir = target
-	_, err := debugCmd.CombinedOutput()
-	if err != nil {
-		allPass = false
-		results = append(results, "debug:FAIL")
-	} else {
-		results = append(results, "debug:OK")
+	pt := DetectProjectType(target)
+	vc := VetCommand(pt)
+	if vc == nil {
+		return TestResult{Name: "dual-mode-run", Status: StatusSkip, Duration: time.Since(start), Details: "unsupported project type", Metrics: map[string]float64{}}
 	}
-	releaseCmd := exec.CommandContext(ctx, "go", "vet", "./...")
-	releaseCmd.Dir = target
-	_, err = releaseCmd.CombinedOutput()
-	if err != nil {
-		allPass = false
-		results = append(results, "release:FAIL")
+	if pt == ProjectGo {
+		// Go: debug + release dual vet
+		debugCmd := exec.CommandContext(ctx, "go", "vet", "./...")
+		debugCmd.Dir = target
+		_, err := debugCmd.CombinedOutput()
+		if err != nil {
+			allPass = false
+			results = append(results, "debug:FAIL")
+		} else {
+			results = append(results, "debug:OK")
+		}
+		releaseCmd := exec.CommandContext(ctx, "go", "vet", "./...")
+		releaseCmd.Dir = target
+		_, err = releaseCmd.CombinedOutput()
+		if err != nil {
+			allPass = false
+			results = append(results, "release:FAIL")
+		} else {
+			results = append(results, "release:OK")
+		}
 	} else {
-		results = append(results, "release:OK")
+		// Non-Go: single mode vet
+		singleCmd := exec.CommandContext(ctx, vc[0], vc[1:]...)
+		singleCmd.Dir = target
+		_, err := singleCmd.CombinedOutput()
+		if err != nil {
+			allPass = false
+			results = append(results, "vet:FAIL")
+		} else {
+			results = append(results, "vet:OK")
+		}
 	}
 	dur := time.Since(start)
 	status := StatusPass
@@ -56,7 +75,7 @@ func (DualModeRunPlugin) Run(ctx context.Context, target string) TestResult {
 		Status:   status,
 		Duration: dur,
 		Details:  strings.Join(results, " "),
-		Metrics:   map[string]float64{"modes": 2},
+		Metrics:  map[string]float64{"modes": float64(len(results))},
 	}
 }
 

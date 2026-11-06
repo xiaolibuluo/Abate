@@ -53,14 +53,10 @@ func (FunctionCheckPlugin) Run(ctx context.Context, target string) TestResult {
 			}
 			return nil
 		}
-		if !strings.HasSuffix(path, ".go") {
+		if !IsCodeFile(path) {
 			return nil
 		}
-		if strings.HasSuffix(path, "_test.go") {
-			return nil
-		}
-		rel, _ := filepath.Rel(target, path)
-		if strings.HasPrefix(rel, "test/") {
+		if ShouldSkipFile(path, target) {
 			return nil
 		}
 		data, readErr := os.ReadFile(path)

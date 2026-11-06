@@ -52,14 +52,10 @@ func (FakeImplCheckPlugin) Run(ctx context.Context, target string) TestResult {
 			}
 			return nil
 		}
-		if !strings.HasSuffix(path, ".go") {
+		if !IsCodeFile(path) {
 			return nil
 		}
-		if strings.HasSuffix(path, "_test.go") {
-			return nil
-		}
-		rel, _ := filepath.Rel(target, path)
-		if strings.HasPrefix(rel, "test/") {
+		if ShouldSkipFile(path, target) {
 			return nil
 		}
 		data, readErr := os.ReadFile(path)
@@ -71,6 +67,7 @@ func (FakeImplCheckPlugin) Run(ctx context.Context, target string) TestResult {
 			if isFakeMarker(line) {
 				totalHits++
 				if len(details) < 16 {
+					rel, _ := filepath.Rel(target, path)
 					details = append(details, rel+":"+itoa(i+1))
 				}
 			}

@@ -43,7 +43,7 @@ func (FileHeaderCheckPlugin) Run(ctx context.Context, target string) TestResult 
 			}
 			return nil
 		}
-		if !strings.HasSuffix(path, ".go") {
+		if !IsCodeFile(path) {
 			return nil
 		}
 		totalFiles++

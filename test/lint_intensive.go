@@ -27,7 +27,12 @@ func (LintIntensivePlugin) Setup(ctx context.Context) (func(), error) {
 
 func (LintIntensivePlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	cmd := exec.CommandContext(ctx, "go", "vet", "./...")
+	pt := DetectProjectType(target)
+	vc := VetCommand(pt)
+	if vc == nil {
+		return TestResult{Name: "lint-intensive", Status: StatusSkip, Duration: time.Since(start), Details: "unsupported project type", Metrics: map[string]float64{}}
+	}
+	cmd := exec.CommandContext(ctx, vc[0], vc[1:]...)
 	cmd.Dir = target
 	out, err := cmd.CombinedOutput()
 	dur := time.Since(start)
@@ -40,7 +45,7 @@ func (LintIntensivePlugin) Run(ctx context.Context, target string) TestResult {
 		Name:     "lint-intensive",
 		Status:   status,
 		Duration: dur,
-		Details:  fmt.Sprintf("go vet issues=%d, err=%v", issueCount, err != nil),
+		Details:  fmt.Sprintf("vet issues=%d, err=%v", issueCount, err != nil),
 		Metrics:   map[string]float64{"issues": float64(issueCount)},
 	}
 }

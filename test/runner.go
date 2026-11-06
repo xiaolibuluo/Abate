@@ -46,6 +46,14 @@ func (rn *Runner) RunMatrix(ctx context.Context, target string) MatrixReport {
 		}
 		result := rn.runOne(ctx, p, target)
 		report.Results = append(report.Results, result)
+		icon := "PASS"
+		if result.Status == StatusFail {
+			icon = "FAIL"
+		}
+		if result.Status == StatusSkip {
+			icon = "SKIP"
+		}
+		fmt.Printf("[%s] %-24s %8v  %s\n", icon, result.Name, result.Duration, result.Details)
 		switch result.Status {
 		case StatusPass:
 			report.Passed++

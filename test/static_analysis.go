@@ -14,7 +14,7 @@ import (
 	"github.com/qingdujian/abate/core"
 )
 
-// StaticAnalysisPlugin go vet + gosec 静态分析插件。
+// StaticAnalysisPlugin 静态分析插件，自动检测项目类型。
 type StaticAnalysisPlugin struct{}
 
 func (StaticAnalysisPlugin) Capability() core.Capability {
@@ -27,7 +27,12 @@ func (StaticAnalysisPlugin) Setup(ctx context.Context) (func(), error) {
 
 func (StaticAnalysisPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	cmd := exec.CommandContext(ctx, "go", "vet", "-tags", "integration", "./...")
+	pt := DetectProjectType(target)
+	vc := VetCommand(pt)
+	if vc == nil {
+		return TestResult{Name: "static-analysis", Status: StatusSkip, Duration: time.Since(start), Details: "unsupported project type", Metrics: map[string]float64{}}
+	}
+	cmd := exec.CommandContext(ctx, vc[0], vc[1:]...)
 	cmd.Dir = target
 	out, err := cmd.CombinedOutput()
 	dur := time.Since(start)

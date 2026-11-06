@@ -27,7 +27,12 @@ func (DefectTestPlugin) Setup(ctx context.Context) (func(), error) {
 
 func (DefectTestPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	cmd := exec.CommandContext(ctx, "go", "vet", "./...")
+	pt := DetectProjectType(target)
+	vc := VetCommand(pt)
+	if vc == nil {
+		return TestResult{Name: "defect-test", Status: StatusSkip, Duration: time.Since(start), Details: "unsupported project type", Metrics: map[string]float64{}}
+	}
+	cmd := exec.CommandContext(ctx, vc[0], vc[1:]...)
 	cmd.Dir = target
 	out, err := cmd.CombinedOutput()
 	dur := time.Since(start)

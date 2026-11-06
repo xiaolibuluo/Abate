@@ -8,13 +8,12 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
-	"strings"
 	"time"
 
 	"github.com/qingdujian/abate/core"
 )
 
-// CompatibilityTestPlugin Go 版本兼容性验证插件。
+// CompatibilityTestPlugin 多语言兼容性验证插件，自动检测项目类型并构建。
 type CompatibilityTestPlugin struct{}
 
 func (CompatibilityTestPlugin) Capability() core.Capability {
@@ -27,27 +26,31 @@ func (CompatibilityTestPlugin) Setup(ctx context.Context) (func(), error) {
 
 func (CompatibilityTestPlugin) Run(ctx context.Context, target string) TestResult {
 	start := time.Now()
-	cmd := exec.CommandContext(ctx, "go", "version")
-	cmd.Dir = target
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return TestResult{Name: "compatibility-test", Status: StatusFail, Duration: time.Since(start), Details: fmt.Sprintf("go version: %s", err)}
+	pt := DetectProjectType(target)
+	ptName := projectTypeName(pt)
+	buildCmd := BuildCommand(pt)
+	if buildCmd == nil {
+		return TestResult{
+			Name:    "compatibility-test",
+			Status:  StatusFail,
+			Duration: time.Since(start),
+			Details: fmt.Sprintf("unknown project type at %s", target),
+		}
 	}
-	goVer := strings.TrimSpace(string(out))
-	cmd2 := exec.CommandContext(ctx, "go", "build", "./...")
-	cmd2.Dir = target
-	_, err2 := cmd2.CombinedOutput()
+	cmd := exec.CommandContext(ctx, buildCmd[0], buildCmd[1:]...)
+	cmd.Dir = target
+	_, err := cmd.CombinedOutput()
 	dur := time.Since(start)
 	status := StatusPass
-	if err2 != nil {
+	if err != nil {
 		status = StatusFail
 	}
 	return TestResult{
 		Name:     "compatibility-test",
 		Status:   status,
 		Duration: dur,
-		Details:  fmt.Sprintf("%s, build err=%v", goVer, err2 != nil),
-		Metrics:   map[string]float64{},
+		Details:  fmt.Sprintf("%s, build err=%v", ptName, err != nil),
+		Metrics:  map[string]float64{},
 	}
 }
 
@@ -57,4 +60,23 @@ func (CompatibilityTestPlugin) Teardown(ctx context.Context) error {
 
 func init() {
 	DefaultRegistry.Register(CompatibilityTestPlugin{})
+}
+
+func projectTypeName(pt ProjectType) string {
+	switch pt {
+	case ProjectGo:
+		return "Go"
+	case ProjectGradle:
+		return "Gradle/Android"
+	case ProjectMaven:
+		return "Maven/Java"
+	case ProjectNpm:
+		return "Node.js/npm"
+	case ProjectCargo:
+		return "Rust/Cargo"
+	case ProjectPython:
+		return "Python"
+	default:
+		return "Unknown"
+	}
 }
