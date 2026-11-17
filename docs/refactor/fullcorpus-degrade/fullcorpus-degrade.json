@@ -34,10 +34,10 @@
       "parseOK": 2932,
       "parseFail": 0,
       "emptyUnit": 0,
-      "observedKinds": 32,
+      "observedKinds": 52,
       "mappings": 114,
-      "degradedObserved": 53,
-      "degradePct": 46.49122807017544
+      "degradedObserved": 25,
+      "degradePct": 21.92982456140351
     },
     {
       "language": "c",

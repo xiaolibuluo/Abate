@@ -136,10 +136,16 @@ bash scripts/lint-gate.sh
     仅见 `docs/i18n/QA-ANTI-FRAUD-AUDIT.md` 等历史审计证据，**不代表当前语料状态**。
     当前测试语料已 100% 替换为自研语料（见 `docs/refactor/`）；自研语料的**全语料口径**
     降级率已用 `scripts/fullcorpus-degrade.sh` 对全部 20520 条逐条真实 parse 重测，
-    实测为 py 5.04% / js 46.49% / c 10.40% / cs 5.12% / rs 6.13% / kt 5.22%，
+    实测为 py 5.04% / js 21.93% / c 10.40% / cs 5.12% / rs 6.13% / kt 5.22%，
     go 无嵌入语法映射仍为 `NOT_MEASURED`（原始数据与 SHA-256 见
-    `docs/refactor/fullcorpus-degrade/`）。该全语料数值**未达**单文件冻结口径的阈值，
-    只作诚实披露，不构成「高保真/达标」结论；单文件口径与全语料口径不得混用外推，
+    `docs/refactor/fullcorpus-degrade/`）。js 由 46.49% 降至 21.93%，源于 jsfront
+    为语料中真实存在的 20 类构造（export/generator/lexical/this-super/class-body/
+    class-heritage/switch/new/paren/sequence/incdec/yield/template-sub/string-part/
+    property-ident/arguments/formal-params/declarator 等）在真实语法归约点产出专用
+    `KindJs*` 零宽节点、并由规则标为 exact——每个 exact 都有前端真实产出支撑，
+    绝不靠改标签造假；剩余降级构造（JSX/解构/正则/using 等）在自研语料中为零产出，
+    如实保留 degraded。该全语料数值**未达**单文件冻结口径的阈值，只作诚实披露，
+    不构成「高保真/达标」结论；单文件口径与全语料口径不得混用外推，
     也禁止把上述历史第三方数值当作当前自研语料的实测值；
   - `derive` 的 killing 是 **static AIR-level approximation, not a real go test
     execution**（静态 AIR 级近似，非真实执行 go test）。

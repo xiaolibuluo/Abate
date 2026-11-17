@@ -138,6 +138,13 @@ func (e *jsExprParser) parseCallLike(left air.Node, openIdx int,
 	// 递归使用受限代际的 Pratt 解析器解析参数/下标，使内部的比较与算术运算符
 	// 也能绑定成真实的二元节点（与 groupPrefix 一致），从而被单运算符变异捕获。
 	children := []air.Node{left}
+	// A real call reduces its argument list: anchor a dedicated arguments
+	// marker on the opening parenthesis so the construct is modelled by AIR
+	// rather than lowered onto the shared Region kind.
+	if kind == air.KindCall && openIdx < len(e.p.toks) {
+		children = append(children, e.p.mapper.dedicated(
+			air.KindJsArguments, tokenPos(e.p.toks[openIdx]), "(", "arguments"))
+	}
 	sub := &jsExprParser{p: e.p, end: closeIdx, gen: e.gen + 1}
 	children = append(children, sub.parseRange(openIdx+1, closeIdx)...)
 	e.i = closeIdx

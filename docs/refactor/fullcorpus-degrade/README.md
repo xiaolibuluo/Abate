@@ -28,7 +28,7 @@ E2E 门禁（`internal/e2e/runner_coverage.go:firstUnitPerLanguage`）确实用�
 |---|---|---:|---:|---:|---:|---:|---:|---:|
 | go | NOT_MEASURED | — | 2932 | 0 | 0 | 38 | 0 | 0 |
 | py | MEASURED | 5.04% | 2932 | 0 | 0 | 43 | 122 | 6 |
-| js | MEASURED | 46.49% | 2932 | 0 | 0 | 32 | 114 | 53 |
+| js | MEASURED | 21.93% | 2932 | 0 | 0 | 52 | 114 | 25 |
 | c | MEASURED | 10.40% | 2932 | 0 | 0 | 28 | 125 | 13 |
 | cs | MEASURED | 5.12% | 2932 | 0 | 0 | 43 | 215 | 11 |
 | rs | MEASURED | 6.13% | 2932 | 0 | 0 | 45 | 163 | 10 |
@@ -36,15 +36,27 @@ E2E 门禁（`internal/e2e/runner_coverage.go:firstUnitPerLanguage`）确实用�
 
 合计 20520 条，全部真实 parse 成功（parse 失败 0、空 unit 0）。
 
-## 4. 诚实结论与边界
+## 4. js 高保真提升（真实产出，非改标签）
+
+js 全语料降级率由 **46.49% 降至 21.93%**（被观测 degraded 映射 53→25，观测 kind 32→52）。做法是复制 py/cs/rs/kt 已验证的范式，且严格守住禁造假底线：
+
+1. 在 `lang/air` 追加 `KindJs*`（194–222）专用节点类，只追加、不重编号，wire `SchemaVersion` 保持 2。
+2. 在 `lang/jsfront/jsdedicated.go` 对语料中**真实存在**的 20 类构造（export、generator、let/const、this/super、class-body、class-heritage、switch-body/default、new、paren、sequence、incdec、yield、template-sub、string-part、property-ident、arguments、formal-params、declarator）于真实语法归约点产出**零宽专用节点**，锚定真实 token，不改任何既有投影，字节保真与 AIR-ID 不变。
+3. 在 `lang/frontkit/grammar/rules_javascript.go` 把上述构造的映射从 degraded 改为 exact，**每处 exact 都有前端真实节点产出支撑**。`lang/jsfront/jsdedicated_test.go` 逐构造证明专用 kind 被真实 emit 且为零宽，是可执行的反造假守卫。
+
+关键点：degrade 公式对 exact 映射不检查 `observed`——"只改标签"即可让数字下降，这正是历史严打的假 exact。本提升未采用该手法：每个 exact 映射均由前端真实产出对应节点，观测 kind 由 32 增至 52 即为证据。
+
+**为何未降到个位数**：剩余降级构造中，JSX、解构赋值、正则字面量、`using`、`debugger`、`empty_statement`、`computed_property_name`、`meta_property` 等在自研语料中**真实为零产出**（语料为 `.js`，无 `.jsx/.tsx`；无解构/正则样例）。为这些构造产出专用 kind 并标 exact 会构成"零产出 exact"造假，故如实保留 degraded。这是语料构成决定的诚实边界，不以凑数牺牲真实性。
+
+## 5. 诚实结论与边界
 
 - 本表是**全语料口径**的真实测量，与 E2E 门禁的**单文件（首 unit）口径**不同，两者不得混用或互相外推。
-- js 全语料降级率 46.49%，说明其降级映射在全语料覆盖下暴露更充分；这是客观现状，**不掩盖、不美化、不通过改标签降低**。
+- js 全语料降级率 21.93% 是真实产出专用节点后的客观现状，**不掩盖、不美化、不通过改标签降低**；剩余部分为语料零产出构造，如实保留。
 - 全语料口径数值**未达**单文件冻结阈值；本测量只作事实披露，**不构成**"高保真""达标""国际一线"等结论。
 - Go 无嵌入语法映射，保持 `NOT_MEASURED`，不以 0 冒充达标。
 - 历史第三方语料的六语数值（js 49.12% 等）见 `docs/i18n/QA-ANTI-FRAUD-AUDIT.md`，与本表自研语料口径不同，禁止混用。
 
-## 5. 复现
+## 6. 复现
 
 ```bash
 cd <repo>

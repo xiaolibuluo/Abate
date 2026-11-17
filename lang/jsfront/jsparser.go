@@ -114,6 +114,7 @@ func (p *jsParser) parse() (air.Node, []air.Diagnostic, error) {
 		}
 	}
 	p.mapper.cover(0, len(p.toks), &p.nodes)
+	p.nodes = append(p.nodes, p.dedicatedMarkers()...)
 	sort.SliceStable(p.nodes, func(a, b int) bool {
 		return p.nodes[a].Pos().Offset < p.nodes[b].Pos().Offset
 	})

@@ -90,7 +90,7 @@ $ git rev-list --objects --all | grep -cE 'third_party/|vendor/'
 
 1. **许可归属待法务确认** ⚖️：`kernel/abi/` 的 syscall 号→名表、errno 常量属 Linux uapi 事实数据（公有领域事实），少量地址/页原语为参考 gVisor（Apache-2.0）思路的重写实现，保留了归属声明。这不是源码副本，但**商用前应由法务复核许可兼容性**。AI 不出具法律结论。
 2. **竞品对拍分数 `NOT_MEASURED`**：与 PIT/Chaos Mesh 等竞品的真实同题对拍从未完成；`pit-parity.sh` 现为**自研 golden 语义回归，不是官方对拍**。对外不得宣称任何竞品绝对分数或"超越竞品"。
-3. **degrade 口径**：E2E 达标仅限冻结单文件（首 unit）口径；自研语料的全语料降级率**已闭环实测**——`scripts/fullcorpus-degrade.sh` 对全部 20520 条逐条真实 parse，同公式测得 py 5.04% / js 46.49% / c 10.40% / cs 5.12% / rs 6.13% / kt 5.22%，go `NOT_MEASURED`；原始数据与 SHA-256 见 `docs/refactor/fullcorpus-degrade/`，说明见同目录 `README.md`。该组数值诚实披露、**未达**单文件冻结阈值，不构成达标结论（详见主 README 诚实口径段）。
+3. **degrade 口径**：E2E 达标仅限冻结单文件（首 unit）口径；自研语料的全语料降级率**已闭环实测**——`scripts/fullcorpus-degrade.sh` 对全部 20520 条逐条真实 parse，同公式测得 py 5.04% / js 21.93% / c 10.40% / cs 5.12% / rs 6.13% / kt 5.22%，go `NOT_MEASURED`；js 由 46.49% 降至 21.93% 源于 jsfront 对语料真实存在的 20 类构造在真实归约点产出专用 `KindJs*` 零宽节点并标 exact（每个 exact 有前端真实产出支撑，非改标签造假），语料零产出的构造（JSX/解构/正则等）如实保留 degraded；原始数据与 SHA-256 见 `docs/refactor/fullcorpus-degrade/`，说明见同目录 `README.md`。该组数值诚实披露、**未达**单文件冻结阈值，不构成达标结论（详见主 README 诚实口径段）。
 4. **libclang-min**：C/C++ 前端产物级达成，C API 功能级验证未闭环（既有边界，保持不变）。
 
 ## 附录 A — 冻结件完整性（定稿复核）

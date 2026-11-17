@@ -156,10 +156,17 @@ that was hit; CI fails in sync.
     corpus**. The test corpus is now 100% replaced with self-researched sources
     (see `docs/refactor/`); the **full-corpus** degrade rate on the self-researched
     corpus has been re-measured by parsing all 20520 entries with their real
-    frontends via `scripts/fullcorpus-degrade.sh`: py 5.04% / js 46.49% /
+    frontends via `scripts/fullcorpus-degrade.sh`: py 5.04% / js 21.93% /
     c 10.40% / cs 5.12% / rs 6.13% / kt 5.22%, with go `NOT_MEASURED` (no embedded
-    grammar mappings). Raw data and SHA-256 are under
-    `docs/refactor/fullcorpus-degrade/`. These full-corpus values **do not meet**
+    grammar mappings). js dropped from 46.49% to 21.93% because jsfront now emits
+    dedicated `KindJs*` zero-width nodes at real reduction points for 20 constructs
+    actually present in the corpus (export/generator/lexical/this-super/class-body/
+    class-heritage/switch/new/paren/sequence/incdec/yield/template-sub/string-part/
+    property-ident/arguments/formal-params/declarator) and the rules mark them
+    exact — every exact mapping is backed by a real frontend emission, never by
+    relabeling; residual degraded constructs (JSX/destructuring/regex/using) have
+    zero corpus production and stay degraded honestly. Raw data and SHA-256 are
+    under `docs/refactor/fullcorpus-degrade/`. These full-corpus values **do not meet**
     the frozen single-file thresholds and are disclosed honestly; they are not a
     "high-fidelity / meets-threshold" claim. The single-file and full-corpus
     calibers must not be mixed or extrapolated, nor may the historical

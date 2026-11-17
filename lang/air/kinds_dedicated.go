@@ -83,3 +83,44 @@ const (
 	KindRsTurbofish         NodeKind = 192
 	KindRsTypeArgs          NodeKind = 193
 )
+
+// Genuine JavaScript/TypeScript construct kinds appended after the Rust block.
+//
+// Like the KindPy*/KindCs*/KindKt*/KindRs* blocks above, every value below is
+// produced by a real syntax-node reduction in jsfront: the parser emits the
+// node while lowering the corresponding JavaScript/TypeScript construct,
+// anchored on a real token position of that construct, never by switching on a
+// detached token's spelling alone. Values are appended explicitly so the
+// frozen wire numbering of every earlier kind stays unchanged and
+// SchemaVersion stays 2.
+const (
+	KindJsExport          NodeKind = 194
+	KindJsGeneratorFnDecl NodeKind = 195
+	KindJsGeneratorFn     NodeKind = 196
+	KindJsClassExpr       NodeKind = 197
+	KindJsClassBody       NodeKind = 198
+	KindJsStaticBlock     NodeKind = 199
+	KindJsSwitchBody      NodeKind = 200
+	KindJsSwitchDefault   NodeKind = 201
+	KindJsLexicalDecl     NodeKind = 202
+	KindJsUsingDecl       NodeKind = 203
+	KindJsDeclarator      NodeKind = 204
+	KindJsAugAssign       NodeKind = 205
+	KindJsNew             NodeKind = 206
+	KindJsOptionalChain   NodeKind = 207
+	KindJsParenExpr       NodeKind = 208
+	KindJsSequence        NodeKind = 209
+	KindJsYield           NodeKind = 210
+	KindJsPair            NodeKind = 211
+	KindJsRestPattern     NodeKind = 212
+	KindJsTemplateSub     NodeKind = 213
+	KindJsStringPart      NodeKind = 214
+	KindJsRegex           NodeKind = 215
+	KindJsPropertyIdent   NodeKind = 216
+	KindJsThisSuper       NodeKind = 217
+	KindJsJsx             NodeKind = 218
+	KindJsClassHeritage   NodeKind = 219
+	KindJsIncDec          NodeKind = 220
+	KindJsArguments       NodeKind = 221
+	KindJsFormalParams    NodeKind = 222
+)
