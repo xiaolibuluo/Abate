@@ -51,11 +51,11 @@ func writeFuel(b *strings.Builder) {
 	b.WriteString("## FuelMeter\n")
 	for _, budget := range []uint64{0, 1, 10, largeBudget} {
 		m := NewFuelMeter(budget)
-		fmt.Fprintf(b, "fuel budget=%d initial=%d remaining=%d used=%d halted=%v\n",
+		_, _ = fmt.Fprintf(b, "fuel budget=%d initial=%d remaining=%d used=%d halted=%v\n",
 			budget, m.Initial(), m.Remaining(), m.Used(), m.Halted())
 		for _, n := range []uint64{0, 1, 3, budget, budget + 1} {
 			remaining, halted := m.Consume(n)
-			fmt.Fprintf(b, "  consume=%d -> remaining=%d halted=%v | state remaining=%d used=%d halted=%v\n",
+			_, _ = fmt.Fprintf(b, "  consume=%d -> remaining=%d halted=%v | state remaining=%d used=%d halted=%v\n",
 				n, remaining, halted, m.Remaining(), m.Used(), m.Halted())
 		}
 	}
@@ -67,13 +67,13 @@ func writeClock(b *strings.Builder) {
 	b.WriteString("## VirtualClock\n")
 	for _, epoch := range []uint64{0, epochNanos} {
 		c := NewVirtualClock(epoch)
-		fmt.Fprintf(b, "clock epoch=%d epochGet=%d now=%d\n", epoch, c.Epoch(), c.Now())
+		_, _ = fmt.Fprintf(b, "clock epoch=%d epochGet=%d now=%d\n", epoch, c.Epoch(), c.Now())
 		for _, delta := range []uint64{0, 1, 7} {
 			c.Advance(delta)
-			fmt.Fprintf(b, "  advance=%d -> now=%d\n", delta, c.Now())
+			_, _ = fmt.Fprintf(b, "  advance=%d -> now=%d\n", delta, c.Now())
 		}
 		c.Reset()
-		fmt.Fprintf(b, "  reset -> now=%d\n", c.Now())
+		_, _ = fmt.Fprintf(b, "  reset -> now=%d\n", c.Now())
 	}
 	b.WriteString("\n")
 }
@@ -82,11 +82,11 @@ func writeClock(b *strings.Builder) {
 func writeConfig(b *strings.Builder) {
 	b.WriteString("## Config\n")
 	def := DefaultConfig()
-	fmt.Fprintf(b, "default fuel=%d min=%d max=%d clock=%v epoch=%d validate=%v\n",
+	_, _ = fmt.Fprintf(b, "default fuel=%d min=%d max=%d clock=%v epoch=%d validate=%v\n",
 		def.FuelLimit, def.MemoryMinPages, def.MemoryMaxPages,
 		def.ClockEnabled, def.ClockEpoch, def.Validate())
 	zeroMax := Config{FuelLimit: 10, MemoryMinPages: 1, MemoryMaxPages: 0}
 	minAbove := Config{FuelLimit: 10, MemoryMinPages: 2, MemoryMaxPages: 1}
-	fmt.Fprintf(b, "zero-max validate=%v\n", zeroMax.Validate())
-	fmt.Fprintf(b, "min-above-max validate=%v\n", minAbove.Validate())
+	_, _ = fmt.Fprintf(b, "zero-max validate=%v\n", zeroMax.Validate())
+	_, _ = fmt.Fprintf(b, "min-above-max validate=%v\n", minAbove.Validate())
 }

@@ -130,8 +130,12 @@ bash scripts/lint-gate.sh
 - 本文件不构成法律意见；`AGPL-3.0-or-later` 需权利人确认；
 - 诚实口径（如实限定，勿外推）：
   - 竞品绝对分数 `competitorAbsolute = NOT_MEASURED`（未真实对拍前不写竞品绝对分数）；
-  - E2E degrade「达标」**仅限冻结的单文件（首 unit）口径**；按同一公式跑全语料
-    时六语均超阈（js 49.12% / c 28.00% / py 26.89% / rs 42.33% / kt 8.21% /
-    cs 6.98%），go 为 `NOT_MEASURED`。对外结论禁止脱离单文件口径外推；
+  - E2E degrade「达标」**仅限冻结的单文件（首 unit）口径**。早期第三方语料上按同一
+    公式测得六语均超阈（js 49.12% / c 28.00% / py 26.89% / rs 42.33% / kt 8.21% /
+    cs 6.98%），go 为 `NOT_MEASURED`——该组数值是**语料全面自研化之前的历史测量**，
+    仅见 `docs/i18n/QA-ANTI-FRAUD-AUDIT.md` 等历史审计证据，**不代表当前语料状态**。
+    当前测试语料已 100% 替换为高保真自研语料（见 `docs/refactor/`），自研语料的全语料
+    降级率尚未重测，为 `NOT_MEASURED`。对外结论禁止脱离单文件口径外推，也禁止把上述
+    历史数值当作当前自研语料的实测值；
   - `derive` 的 killing 是 **static AIR-level approximation, not a real go test
     execution**（静态 AIR 级近似，非真实执行 go test）。

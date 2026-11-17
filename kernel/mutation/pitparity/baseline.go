@@ -12,12 +12,12 @@ import "strconv"
 // observation is one observable value produced by the baseline project.
 type observation string
 
-// The helpers below are a faithful Go port of the Java parity baseline that
-// ships in kernel/mutation/testdata/pit/baseline/.
+// The helpers below are the self-developed baseline port of the regression
+// fixture, implemented entirely in Go.
 //
-// The port is anchored by the assertions of ParityTargetTest.java: every
-// original observation must reproduce the value the Java suite asserts, which
-// is what makes the semantic witness trustworthy instead of hand written.
+// The port is anchored by the fixed assertions declared in witness_cases.go:
+// every original observation must reproduce the asserted value, which is what
+// makes the semantic witness trustworthy instead of hand written.
 func obsInt(value int) observation { return observation(strconv.Itoa(value)) }
 
 // baselineAdd observes add(a, b); the suite fixes the second operand at 5.

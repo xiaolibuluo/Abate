@@ -11,108 +11,99 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 	"testing"
 )
 
-// TestParseMutationsRejectsBadInput covers the report validation branches.
-func TestParseMutationsRejectsBadInput(t *testing.T) {
+// goldenLine renders one outcome line of the self-developed golden.
+func goldenLine(method string, line int, mutator, expect string) string {
+	return strings.Join([]string{
+		"outcome", "1", method, strconv.Itoa(line), mutator, expect,
+		"node", "class", "KILLED", "detected", "comparable", "true",
+	}, "\t")
+}
+
+// TestParseGoldenRejectsBadInput covers the self-developed golden validation.
+func TestParseGoldenRejectsBadInput(t *testing.T) {
 	t.Parallel()
+	valid := goldenLine("accepts", 49, "Boundary", ExpectKilled)
 	cases := []struct {
 		name string
 		body string
 	}{
-		{"not-json", "{"},
-		{"empty", "[]"},
-		{"bad-status", `[{"status":"WEIRD","mutatedMethod":"a","mutator":"m","lineNumber":1}]`},
-		{"no-method", `[{"status":"KILLED","mutator":"m","lineNumber":1}]`},
-		{"no-mutator", `[{"status":"KILLED","mutatedMethod":"a","lineNumber":1}]`},
-		{"bad-line", `[{"status":"KILLED","mutatedMethod":"a","mutator":"m","lineNumber":0}]`},
+		{"no-case", "# header\ntotal=0\n"},
+		{"few-fields", "outcome\t1\taccepts\n"},
+		{"bad-line", strings.Replace(valid, "\t49\t", "\tx\t", 1)},
+		{"zero-line", strings.Replace(valid, "\t49\t", "\t0\t", 1)},
+		{"bad-expect", strings.Replace(valid, "\t"+ExpectKilled+"\t", "\tWEIRD\t", 1)},
+		{"empty-method", strings.Replace(valid, "\taccepts\t", "\t\t", 1)},
+		{"empty-mutator", strings.Replace(valid, "\tBoundary\t", "\t\t", 1)},
 	}
 	for _, tc := range cases {
-		if _, err := ParseMutations([]byte(tc.body)); !errors.Is(err, ErrInvalidReport) {
-			t.Fatalf("%s: error = %v, want ErrInvalidReport", tc.name, err)
+		if _, err := ParseGolden([]byte(tc.body)); !errors.Is(err, ErrInvalidGolden) {
+			t.Fatalf("%s: error = %v, want ErrInvalidGolden", tc.name, err)
 		}
 	}
 }
 
-// TestLocateReportWalksUp covers the report locator.
-func TestLocateReportWalksUp(t *testing.T) {
+// TestParseGoldenSkipsHeaders proves comments and header lines are ignored.
+func TestParseGoldenSkipsHeaders(t *testing.T) {
 	t.Parallel()
-	path, err := LocateReport(".")
+	body := "# comment\ntotal=1\n" + goldenLine("accepts", 49, "Boundary", ExpectKilled) + "\n"
+	records, err := ParseGolden([]byte(body))
+	if err != nil {
+		t.Fatalf("parse: %v", err)
+	}
+	if len(records) != 1 {
+		t.Fatalf("records = %d, want 1", len(records))
+	}
+	if records[0].Method != "accepts" || records[0].Line != 49 {
+		t.Fatalf("record = %+v", records[0])
+	}
+}
+
+// TestLocateGoldenWalksUp covers the frozen golden locator.
+func TestLocateGoldenWalksUp(t *testing.T) {
+	t.Parallel()
+	path, err := LocateGolden(".")
 	if err != nil {
 		t.Fatalf("locate: %v", err)
 	}
-	if filepath.Base(path) != "pit-mutations.json" {
-		t.Fatalf("located %q, want the pit-mutations.json artifact", path)
+	if filepath.Base(path) != "mutation-semantics.golden" {
+		t.Fatalf("located %q, want the self-developed golden", path)
 	}
-	if _, err := LocateReport(filepath.Join(t.TempDir(), "deep", "nested")); err == nil {
+	if _, err := LocateGolden(filepath.Join(t.TempDir(), "deep", "nested")); err == nil {
 		t.Fatal("locate accepted a directory without the repository")
 	}
 }
 
-// TestLoadMutationsReportsMissingFile covers the read failure branch.
-func TestLoadMutationsReportsMissingFile(t *testing.T) {
+// TestLoadGoldenReportsMissingFile covers the read failure branch.
+func TestLoadGoldenReportsMissingFile(t *testing.T) {
 	t.Parallel()
-	if _, err := LoadMutations(filepath.Join(t.TempDir(), "absent.json")); err == nil {
+	if _, err := LoadGolden(filepath.Join(t.TempDir(), "absent.golden")); err == nil {
 		t.Fatal("load accepted a missing file")
 	}
 }
 
-// TestConvertXMLReproducesTheReference proves the rerun mode is comparable.
-func TestConvertXMLReproducesTheReference(t *testing.T) {
+// TestRegenerateGoldenReproducesTheFrozenFile proves the golden is a
+// reproducible self-developed observation, not hand written data.
+func TestRegenerateGoldenReproducesTheFrozenFile(t *testing.T) {
 	t.Parallel()
-	path, err := LocateReport(".")
+	path, err := LocateGolden(".")
 	if err != nil {
 		t.Fatalf("locate: %v", err)
 	}
-	xmlPath := filepath.Join(filepath.Dir(path), "pit-mutations.xml")
-	//nolint:gosec // the artifact path is fixed by this test.
-	raw, err := os.ReadFile(xmlPath)
+	//nolint:gosec // the golden path is fixed by this test.
+	frozen, err := os.ReadFile(path)
 	if err != nil {
-		t.Fatalf("read XML: %v", err)
+		t.Fatalf("read golden: %v", err)
 	}
-	converted, err := ConvertXML(raw)
+	fresh, err := RegenerateGolden()
 	if err != nil {
-		t.Fatalf("convert: %v", err)
+		t.Fatalf("regenerate: %v", err)
 	}
-	//nolint:gosec // the artifact path is fixed by this test.
-	reference, err := os.ReadFile(path)
-	if err != nil {
-		t.Fatalf("read reference: %v", err)
-	}
-	if string(converted) != string(reference) {
-		t.Fatal("the XML conversion does not reproduce the vendored reference report")
-	}
-}
-
-// TestConvertXMLRejectsBadInput covers the converter error branches.
-func TestConvertXMLRejectsBadInput(t *testing.T) {
-	t.Parallel()
-	if _, err := ConvertXML([]byte("<mutations>")); !errors.Is(err, ErrInvalidReport) {
-		t.Fatalf("error = %v, want ErrInvalidReport", err)
-	}
-	if _, err := ConvertXML([]byte("<mutations></mutations>")); !errors.Is(err, ErrInvalidReport) {
-		t.Fatalf("error = %v, want ErrInvalidReport", err)
-	}
-}
-
-// TestShortMutatorAndKillingTest covers the name shortening helpers.
-func TestShortMutatorAndKillingTest(t *testing.T) {
-	t.Parallel()
-	if got := shortMutator("org.pitest.mutationtest.MathMutator"); got != "MathMutator" {
-		t.Fatalf("short mutator = %q", got)
-	}
-	if got := shortMutator("MathMutator"); got != "MathMutator" {
-		t.Fatalf("short mutator = %q", got)
-	}
-	if got := shortKillingTest("short"); got != "short" {
-		t.Fatalf("short killing test = %q", got)
-	}
-	long := "com.abate.parity.ParityTargetTest.[method:t1ConstantAndReturn()]"
-	if got := shortKillingTest(long); got != "t1ConstantAndReturn()]" {
-		t.Fatalf("short killing test = %q", got)
-	}
-	if got := shortKillingTest("plain"); got != "plain" {
-		t.Fatalf("short killing test = %q", got)
+	if string(fresh) != string(frozen) {
+		t.Fatal("the regenerated golden differs from the frozen golden")
 	}
 }

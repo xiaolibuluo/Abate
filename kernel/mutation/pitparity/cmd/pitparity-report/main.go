@@ -5,12 +5,13 @@ For commercial licensing, contact xiaolibuluo@163.com.
 Source: https://github.com/xiaolibuluo/Abate
 */
 
-// Command pitparity-report renders the PIT parity report of the KRN-MUT
-// mutation kernel.
+// Command pitparity-report renders the self-developed golden regression report
+// of the KRN-MUT mutation kernel.
 //
-// The command replays the vendored official PIT report against the real
+// The command replays the frozen self-developed golden against the real
 // mutation engine and writes both the machine readable JSON artifact and the
-// human readable review document. It never starts a JVM.
+// human readable review document. It starts no external tool and reads no
+// upstream artifact.
 package main
 
 import (
@@ -31,38 +32,27 @@ func main() {
 	}
 }
 
-// run executes the report generation and returns the first failure.
+// run executes the regression report generation and returns the first failure.
 func run() error {
-	reportPath := flag.String("pit", "", "PIT JSON report path (default: auto locate)")
-	xmlPath := flag.String("xml", "", "PIT XML report to convert into the JSON report")
+	goldenPath := flag.String("golden", "", "self-developed golden path (default: auto locate)")
 	jsonOut := flag.String("json", ".artifacts/pit-parity.json", "JSON report output path")
 	mdOut := flag.String("md", "docs/dev/pit-parity-report.md", "Markdown report output path")
 	minRate := flag.String("min-rate", "100.00%", "minimum acceptable consistency rate")
 	flag.Parse()
 
-	source := *reportPath
+	source := *goldenPath
 	if source == "" {
-		located, err := pitparity.LocateReport(".")
+		located, err := pitparity.LocateGolden(".")
 		if err != nil {
 			return err
 		}
 		source = located
 	}
-	if *xmlPath != "" {
-		converted, err := convertXML(*xmlPath)
-		if err != nil {
-			return err
-		}
-		if err := writeFile(source, converted); err != nil {
-			return err
-		}
-		_, _ = fmt.Printf("PIT XML 报告已转换为 JSON: %s\n", source)
-	}
-	records, err := pitparity.LoadMutations(source)
+	cases, err := pitparity.LoadGolden(source)
 	if err != nil {
 		return err
 	}
-	report, err := pitparity.Compare(records)
+	report, err := pitparity.Compare(cases)
 	if err != nil {
 		return err
 	}
@@ -76,23 +66,14 @@ func run() error {
 	if err := writeFile(*mdOut, report.Markdown()); err != nil {
 		return err
 	}
-	_, _ = fmt.Printf("PIT 变异总数: %d\n", report.Total)
-	_, _ = fmt.Printf("可比对点数:   %d\n", report.Comparable)
-	_, _ = fmt.Printf("一致点数:     %d\n", report.Consistent)
-	_, _ = fmt.Printf("一致率:       %s\n", report.Rate)
-	_, _ = fmt.Printf("JSON 报告:    %s\n", *jsonOut)
-	_, _ = fmt.Printf("Markdown 报告: %s\n", *mdOut)
+	_, _ = fmt.Printf("自研 golden 语义回归（非 PIT 官方对拍）\n")
+	_, _ = fmt.Printf("golden 判例总数: %d\n", report.Total)
+	_, _ = fmt.Printf("可比对点数:     %d\n", report.Comparable)
+	_, _ = fmt.Printf("一致点数:       %d\n", report.Consistent)
+	_, _ = fmt.Printf("一致率:         %s\n", report.Rate)
+	_, _ = fmt.Printf("JSON 报告:      %s\n", *jsonOut)
+	_, _ = fmt.Printf("Markdown 报告:  %s\n", *mdOut)
 	return checkRate(report.Rate, *minRate)
-}
-
-// convertXML converts one PIT XML report into the canonical JSON form.
-func convertXML(path string) ([]byte, error) {
-	//nolint:gosec // the XML path is supplied explicitly by the operator.
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("读取 PIT XML 报告失败 %s: %w", path, err)
-	}
-	return pitparity.ConvertXML(data)
 }
 
 // writeFile writes one artifact, creating the parent directory when needed.

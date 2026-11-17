@@ -137,7 +137,8 @@ func TestGenericAnyShape(t *testing.T) {
 	if err := Unmarshal([]byte(raw), &got); err != nil {
 		t.Fatalf("Unmarshal: %v", err)
 	}
-	if got["apiVersion"] != "v1" || got["count"] != int(2) || got["ratio"] != 1.5 || got["ok"] != true {
+	okValue, isBool := got["ok"].(bool)
+	if got["apiVersion"] != "v1" || got["count"] != int(2) || got["ratio"] != 1.5 || !isBool || !okValue {
 		t.Fatalf("scalars: %#v", got)
 	}
 	if _, ok := got["nothing"]; !ok {

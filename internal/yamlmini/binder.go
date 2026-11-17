@@ -9,86 +9,85 @@ package yamlmini
 
 import (
 	"encoding"
+	"errors"
 	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
 )
 
+// A bindPolicy carries the strictness decision for one decode operation.
+// Using a policy value keeps helper signatures free of boolean control flags.
+type bindPolicy struct {
+	strict bool
+}
+
 func bind(n *Node, v any, strict bool) error {
 	if v == nil {
-		return fmt.Errorf("yamlmini: decode target must be a non-nil pointer, got nil")
+		return errors.New("yamlmini: decode target must be a non-nil pointer, got nil")
 	}
 	rv := reflect.ValueOf(v)
 	if rv.Kind() != reflect.Pointer || rv.IsNil() {
 		return fmt.Errorf("yamlmini: decode target must be a non-nil pointer, got %T", v)
 	}
-	return bindValue(n, rv.Elem(), strict, "$")
+	return bindPolicy{strict: strict}.bindValue(n, rv.Elem(), "$")
 }
 
 var textUnmarshalerType = reflect.TypeOf((*encoding.TextUnmarshaler)(nil)).Elem()
 
-func bindValue(n *Node, out reflect.Value, strict bool, path string) error {
-	// TextUnmarshaler takes precedence over the primitive kind. This is how
-	// schema.VirtualDuration accepts "1s"/"250ms" instead of a bare integer.
-	if out.CanAddr() && out.Addr().Type().Implements(textUnmarshalerType) {
-		text, err := nodeText(n, path)
-		if err != nil {
-			return err
-		}
-		u := out.Addr().Interface().(encoding.TextUnmarshaler)
-		if err := u.UnmarshalText([]byte(text)); err != nil {
-			return fmt.Errorf("yamlmini: %s: %w", path, err)
-		}
-		return nil
+func (p bindPolicy) bindValue(n *Node, out reflect.Value, path string) error {
+	if u, ok := textUnmarshalerOf(out); ok {
+		return bindTextValue(n, u, path)
 	}
+	return p.bindByKind(n, out, path)
+}
 
+// textUnmarshalerOf returns the text codec of out when it implements one.
+// The two-value type assertion makes the conversion explicit and panic-free.
+func textUnmarshalerOf(out reflect.Value) (encoding.TextUnmarshaler, bool) {
+	if !out.CanAddr() || !out.Addr().Type().Implements(textUnmarshalerType) {
+		return nil, false
+	}
+	u, ok := out.Addr().Interface().(encoding.TextUnmarshaler)
+	return u, ok
+}
+
+func bindTextValue(n *Node, u encoding.TextUnmarshaler, path string) error {
+	text, err := nodeText(n, path)
+	if err != nil {
+		return err
+	}
+	if err := u.UnmarshalText([]byte(text)); err != nil {
+		return fmt.Errorf("yamlmini: %s: %w", path, err)
+	}
+	return nil
+}
+
+func (p bindPolicy) bindByKind(n *Node, out reflect.Value, path string) error {
 	switch out.Kind() {
 	case reflect.Pointer:
-		if n.Kind == Null {
-			out.Set(reflect.Zero(out.Type()))
-			return nil
-		}
-		if out.IsNil() {
-			out.Set(reflect.New(out.Type().Elem()))
-		}
-		return bindValue(n, out.Elem(), strict, path)
-
+		return p.bindPointer(n, out, path)
 	case reflect.Struct:
-		return bindStruct(n, out, strict, path)
-
+		return p.bindStruct(n, out, path)
 	case reflect.Map:
-		return bindMap(n, out, strict, path)
-
+		return p.bindMap(n, out, path)
 	case reflect.Slice:
-		return bindSlice(n, out, strict, path)
-
+		return p.bindSlice(n, out, path)
 	case reflect.Array:
-		if n.Kind != Sequence {
-			return shapeError(path, out.Type(), n.Kind)
-		}
-		if len(n.Items) != out.Len() {
-			return fmt.Errorf("yamlmini: %s: sequence has %d items, want %d", path, len(n.Items), out.Len())
-		}
-		for i, item := range n.Items {
-			if err := bindValue(item, out.Index(i), strict, fmt.Sprintf("%s[%d]", path, i)); err != nil {
-				return err
-			}
-		}
-		return nil
-
+		return p.bindArray(n, out, path)
 	case reflect.Interface:
-		if n.Kind == Null || out.NumMethod() == 0 {
-			generic := nodeToAny(n)
-			if generic == nil {
-				out.Set(reflect.Zero(out.Type()))
-			} else {
-				out.Set(reflect.ValueOf(generic))
-			}
-			return nil
-		}
-		return fmt.Errorf("yamlmini: %s: cannot decode into non-empty interface %s", path, out.Type())
+		return bindInterface(n, out, path)
+	case reflect.String, reflect.Bool,
+		reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
+		reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr,
+		reflect.Float32, reflect.Float64:
+		return bindScalar(n, out, path)
+	}
+	return fmt.Errorf("yamlmini: %s: unsupported destination type %s", path, out.Type())
+}
 
+func bindScalar(n *Node, out reflect.Value, path string) error {
+	switch out.Kind() {
 	case reflect.String:
 		text, err := nodeText(n, path)
 		if err != nil {
@@ -96,170 +95,54 @@ func bindValue(n *Node, out reflect.Value, strict bool, path string) error {
 		}
 		out.SetString(text)
 		return nil
-
 	case reflect.Bool:
 		if n.Sk != sBool {
 			return scalarTypeError(path, out.Type(), n)
 		}
 		out.SetBool(n.Value == "true")
 		return nil
-
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		if n.Sk != sInt {
-			return scalarTypeError(path, out.Type(), n)
-		}
-		v, err := strconv.ParseInt(n.Value, 10, out.Type().Bits())
-		if err != nil {
-			return fmt.Errorf("yamlmini: %s: %w", path, err)
-		}
-		out.SetInt(v)
-		return nil
-
+		return bindSigned(n, out, path)
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		if n.Sk != sInt || strings.HasPrefix(n.Value, "-") {
-			return scalarTypeError(path, out.Type(), n)
-		}
-		v, err := strconv.ParseUint(n.Value, 10, out.Type().Bits())
-		if err != nil {
-			return fmt.Errorf("yamlmini: %s: %w", path, err)
-		}
-		out.SetUint(v)
-		return nil
-
+		return bindUnsigned(n, out, path)
 	case reflect.Float32, reflect.Float64:
-		if n.Sk != sInt && n.Sk != sFloat {
-			return scalarTypeError(path, out.Type(), n)
-		}
-		v, err := strconv.ParseFloat(n.Value, out.Type().Bits())
-		if err != nil {
-			return fmt.Errorf("yamlmini: %s: %w", path, err)
-		}
-		out.SetFloat(v)
-		return nil
+		return bindFloat(n, out, path)
 	}
 	return fmt.Errorf("yamlmini: %s: unsupported destination type %s", path, out.Type())
 }
 
-func shapeError(path string, t reflect.Type, got Kind) error {
-	return fmt.Errorf("yamlmini: %s: cannot decode %s into %s", path, got, t)
-}
-
-func scalarTypeError(path string, t reflect.Type, n *Node) error {
-	return fmt.Errorf("yamlmini: %s: cannot decode %q into %s", path, n.Value, t)
-}
-
-func nodeText(n *Node, path string) (string, error) {
-	switch n.Kind {
-	case Scalar:
-		return n.Value, nil
-	case Null:
-		return "", nil
-	default:
-		return "", shapeError(path, reflect.TypeOf(""), n.Kind)
+func bindSigned(n *Node, out reflect.Value, path string) error {
+	if n.Sk != sInt {
+		return scalarTypeError(path, out.Type(), n)
 	}
-}
-
-type fieldInfo struct {
-	name  string
-	index int
-}
-
-// fieldsOf caches the yaml-tag view of a struct type. Field order is the
-// declaration order, which is also the order used by the encoder.
-func fieldsOf(t reflect.Type) []fieldInfo {
-	var out []fieldInfo
-	for i := 0; i < t.NumField(); i++ {
-		f := t.Field(i)
-		if !f.IsExported() {
-			continue
-		}
-		name := f.Name
-		if tag := f.Tag.Get("yaml"); tag != "" {
-			parts := strings.Split(tag, ",")
-			if parts[0] == "-" {
-				continue
-			}
-			if parts[0] != "" {
-				name = parts[0]
-			}
-		}
-		out = append(out, fieldInfo{name: name, index: i})
+	v, err := strconv.ParseInt(n.Value, 10, out.Type().Bits())
+	if err != nil {
+		return fmt.Errorf("yamlmini: %s: %w", path, err)
 	}
-	return out
-}
-
-func fieldByName(fields []fieldInfo, name string) (fieldInfo, bool) {
-	for _, f := range fields {
-		if f.name == name {
-			return f, true
-		}
-	}
-	return fieldInfo{}, false
-}
-
-func bindStruct(n *Node, out reflect.Value, strict bool, path string) error {
-	if n.Kind == Null {
-		return nil
-	}
-	if n.Kind != Mapping {
-		return shapeError(path, out.Type(), n.Kind)
-	}
-	fields := fieldsOf(out.Type())
-	for i, key := range n.Keys {
-		f, ok := fieldByName(fields, key)
-		if !ok {
-			if strict {
-				return fmt.Errorf("yamlmini: %s: unknown field %q in type %s", path, key, out.Type())
-			}
-			continue
-		}
-		if err := bindValue(n.Vals[i], out.Field(f.index), strict, path+"."+key); err != nil {
-			return err
-		}
-	}
+	out.SetInt(v)
 	return nil
 }
 
-func bindMap(n *Node, out reflect.Value, strict bool, path string) error {
-	if n.Kind == Null {
-		return nil
+func bindUnsigned(n *Node, out reflect.Value, path string) error {
+	if n.Sk != sInt || strings.HasPrefix(n.Value, "-") {
+		return scalarTypeError(path, out.Type(), n)
 	}
-	if n.Kind != Mapping {
-		return shapeError(path, out.Type(), n.Kind)
+	v, err := strconv.ParseUint(n.Value, 10, out.Type().Bits())
+	if err != nil {
+		return fmt.Errorf("yamlmini: %s: %w", path, err)
 	}
-	t := out.Type()
-	if t.Key().Kind() != reflect.String {
-		return fmt.Errorf("yamlmini: %s: map key must have string kind, got %s", path, t.Key())
-	}
-	m := reflect.MakeMapWithSize(t, len(n.Keys))
-	for i, key := range n.Keys {
-		kv := reflect.New(t.Key()).Elem()
-		kv.SetString(key)
-		vv := reflect.New(t.Elem()).Elem()
-		if err := bindValue(n.Vals[i], vv, strict, path+"."+key); err != nil {
-			return err
-		}
-		m.SetMapIndex(kv, vv)
-	}
-	out.Set(m)
+	out.SetUint(v)
 	return nil
 }
 
-func bindSlice(n *Node, out reflect.Value, strict bool, path string) error {
-	if n.Kind == Null {
-		return nil
+func bindFloat(n *Node, out reflect.Value, path string) error {
+	if n.Sk != sInt && n.Sk != sFloat {
+		return scalarTypeError(path, out.Type(), n)
 	}
-	if n.Kind != Sequence {
-		return shapeError(path, out.Type(), n.Kind)
+	v, err := strconv.ParseFloat(n.Value, out.Type().Bits())
+	if err != nil {
+		return fmt.Errorf("yamlmini: %s: %w", path, err)
 	}
-	s := reflect.MakeSlice(out.Type(), 0, len(n.Items))
-	for i, item := range n.Items {
-		elem := reflect.New(out.Type().Elem()).Elem()
-		if err := bindValue(item, elem, strict, fmt.Sprintf("%s[%d]", path, i)); err != nil {
-			return err
-		}
-		s = reflect.Append(s, elem)
-	}
-	out.Set(s)
+	out.SetFloat(v)
 	return nil
 }

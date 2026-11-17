@@ -27,42 +27,42 @@ var primaryNode = map[string]string{
 	"remove-call":      "g-call",
 }
 
-// loadReference reads the vendored PIT report of the test run.
-func loadReference(t *testing.T) []Mutation {
+// loadReference reads the frozen self-developed golden of the test run.
+func loadReference(t *testing.T) []Case {
 	t.Helper()
-	path, err := LocateReport(".")
+	path, err := LocateGolden(".")
 	if err != nil {
-		t.Fatalf("locate reference report: %v", err)
+		t.Fatalf("locate golden: %v", err)
 	}
-	records, err := LoadMutations(path)
+	records, err := LoadGolden(path)
 	if err != nil {
-		t.Fatalf("load reference report: %v", err)
+		t.Fatalf("load golden: %v", err)
 	}
 	if len(records) == 0 {
-		t.Fatal("reference report holds no mutation")
+		t.Fatal("golden holds no case")
 	}
 	return records
 }
 
-// TestReferenceReportShape pins the size and status mix of the reference.
-func TestReferenceReportShape(t *testing.T) {
+// TestGoldenShape pins the size and expectation mix of the frozen golden.
+func TestGoldenShape(t *testing.T) {
 	t.Parallel()
 	records := loadReference(t)
 	if len(records) != 28 {
-		t.Fatalf("reference report holds %d mutations, want 28", len(records))
+		t.Fatalf("golden holds %d cases, want 28", len(records))
 	}
 	counts := map[string]int{}
 	for _, record := range records {
-		counts[record.Status]++
+		counts[record.Expect]++
 	}
-	if counts[StatusKilled] != 23 || counts[StatusSurvived] != 3 ||
-		counts[StatusNoCoverage] != 2 {
-		t.Fatalf("status mix = %v, want 23 killed, 3 survived, 2 no coverage", counts)
+	if counts[ExpectKilled] != 23 || counts[ExpectSurvived] != 3 ||
+		counts[ExpectNoCoverage] != 2 {
+		t.Fatalf("expectation mix = %v, want 23 killed, 3 survived, 2 no coverage", counts)
 	}
 }
 
-// TestMappingCoversEveryMutation checks that no mutation is silently dropped.
-func TestMappingCoversEveryMutation(t *testing.T) {
+// TestMappingCoversEveryCase checks that no golden case is silently dropped.
+func TestMappingCoversEveryCase(t *testing.T) {
 	t.Parallel()
 	records := loadReference(t)
 	registered := make(map[string]bool, len(mappingTable))
@@ -86,39 +86,39 @@ func TestMappingCoversEveryMutation(t *testing.T) {
 		}
 	}
 	for _, record := range records {
-		key := record.MutatedMethod + ":" + record.Mutator + ":" + itoa(record.LineNumber)
+		key := record.Method + ":" + record.Mutator + ":" + itoa(record.Line)
 		if !registered[key] {
-			t.Fatalf("mutation %s is not registered in the mapping table", key)
+			t.Fatalf("case %s is not registered in the mapping table", key)
 		}
 	}
 	if len(mappingTable) != len(records) {
-		t.Fatalf("mapping table holds %d entries for %d mutations",
+		t.Fatalf("mapping table holds %d entries for %d cases",
 			len(mappingTable), len(records))
 	}
 }
 
-// TestWitnessReproducesPITStatus checks the independent semantic oracle.
+// TestWitnessReproducesFrozenExpectation checks the independent semantic oracle.
 //
-// The witness never looks at the PIT status, so agreeing with it on all 28
-// mutations proves the ported baseline and the mapping are semantically right.
-func TestWitnessReproducesPITStatus(t *testing.T) {
+// The witness never looks at the frozen expectation, so agreeing with it on all
+// 28 cases proves the baseline port and the mapping are semantically right.
+func TestWitnessReproducesFrozenExpectation(t *testing.T) {
 	t.Parallel()
 	records := loadReference(t)
 	for _, record := range records {
-		caseEntry, ok := witnessFor(record.MutatedMethod, record.Mutator, record.LineNumber)
+		caseEntry, ok := witnessFor(record.Method, record.Mutator, record.Line)
 		if !ok {
 			t.Fatalf("no witness for %s:%d %s",
-				record.MutatedMethod, record.LineNumber, record.Mutator)
+				record.Method, record.Line, record.Mutator)
 		}
 		witness, err := classifyWitness(caseEntry)
 		if err != nil {
 			t.Fatalf("classify %s:%d %s: %v",
-				record.MutatedMethod, record.LineNumber, record.Mutator, err)
+				record.Method, record.Line, record.Mutator, err)
 		}
-		if !witnessMatchesStatus(witness, record.Status) {
-			t.Fatalf("%s:%d %s: witness %q does not match PIT status %q",
-				record.MutatedMethod, record.LineNumber, record.Mutator,
-				witness, record.Status)
+		if !witnessMatchesExpect(witness, record.Expect) {
+			t.Fatalf("%s:%d %s: witness %q does not match frozen expectation %q",
+				record.Method, record.Line, record.Mutator,
+				witness, record.Expect)
 		}
 	}
 }
@@ -126,23 +126,23 @@ func TestWitnessReproducesPITStatus(t *testing.T) {
 // TestMappingNodesFollowTheWitness proves the mapping is not outcome tuned.
 //
 // A comparable mapping must pick the class node, except when the witness says
-// the mutant is equivalent or unreachable, in which case the dedicated node
-// of that branch is the only admissible choice.
+// the case is equivalent or unreachable, in which case the dedicated node of
+// that branch is the only admissible choice.
 func TestMappingNodesFollowTheWitness(t *testing.T) {
 	t.Parallel()
 	records := loadReference(t)
 	for _, record := range records {
-		mapping, err := requireMapping(record.MutatedMethod, record.Mutator, record.LineNumber)
+		mapping, err := requireMapping(record.Method, record.Mutator, record.Line)
 		if err != nil {
 			t.Fatalf("require mapping: %v", err)
 		}
 		if mapping.Excluded {
 			continue
 		}
-		caseEntry, ok := witnessFor(record.MutatedMethod, record.Mutator, record.LineNumber)
+		caseEntry, ok := witnessFor(record.Method, record.Mutator, record.Line)
 		if !ok {
 			t.Fatalf("no witness for %s:%d %s",
-				record.MutatedMethod, record.LineNumber, record.Mutator)
+				record.Method, record.Line, record.Mutator)
 		}
 		witness, err := classifyWitness(caseEntry)
 		if err != nil {
@@ -160,7 +160,7 @@ func TestMappingNodesFollowTheWitness(t *testing.T) {
 		}
 		if mapping.Node != want {
 			t.Fatalf("%s:%d %s maps to node %q, the witness derives %q",
-				record.MutatedMethod, record.LineNumber, record.Mutator,
+				record.Method, record.Line, record.Mutator,
 				mapping.Node, want)
 		}
 	}

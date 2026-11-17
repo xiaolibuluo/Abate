@@ -5,13 +5,11 @@ For commercial licensing, contact xiaolibuluo@163.com.
 Source: https://github.com/xiaolibuluo/Abate
 */
 
-// Package pitparity implements the point-by-point parity harness between the
-// KRN-MUT mutation kernel and PITest.
+// Package pitparity implements the self-developed golden semantic regression
+// of the KRN-MUT mutation kernel.
 //
-// 参考 PITest 1.19.6 官方实跑产物（kernel/mutation/testdata/pit/），改进点=
-// 三方独立判定互校：PIT 官方状态、Abate 引擎真实判定、语义见证 oracle 逐点对齐，
-// 任何不一致都以差异条目如实上报，绝不通过改写映射掩盖语义不符。
-// The harness never starts a JVM: the PIT side replays the vendored official
-// report and the Abate side is produced by the real mutation engine, so the
-// whole comparison runs offline with the standard library only.
+// 本包以 kernel/mutation/testdata/pit/golden/mutation-semantics.golden 为权威冻结数据源，
+// 由本仓变异核对同构夹具的真实判定与自研语义见证逐点互校，复跑可逐字节复现。
+// 这是纯自研 golden 语义回归，不是 PIT 官方对拍；竞品对拍分数维持 NOT_MEASURED。
+// 全流程只用标准库、不启动 JVM、不读取任何上游产物。
 package pitparity

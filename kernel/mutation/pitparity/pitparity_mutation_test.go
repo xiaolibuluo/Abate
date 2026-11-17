@@ -136,8 +136,8 @@ func TestUncoveredHelpersAreReachable(t *testing.T) {
 	if _, ok := witnessFor("nowhere", "NoMutator", 42); ok {
 		t.Fatal("witnessFor found a case that was never registered")
 	}
-	if witnessMatchesStatus("unknown", StatusKilled) {
-		t.Fatal("an unknown witness matched a known status")
+	if witnessMatchesExpect("unknown", ExpectKilled) {
+		t.Fatal("an unknown witness matched a known expectation")
 	}
 	if markerInconsistent != "否" {
 		t.Fatal("the negative marker is wrong")
@@ -158,11 +158,11 @@ func TestResolveSiteRejectsUnknownSites(t *testing.T) {
 	if err != nil {
 		t.Fatalf("index: %v", err)
 	}
-	unknown := Mutation{
-		Status: StatusKilled, MutatedMethod: "nowhere",
-		Mutator: "NoMutator", LineNumber: 42,
+	unknown := Case{
+		Expect: ExpectKilled, Method: "nowhere",
+		Mutator: "NoMutator", Line: 42,
 	}
-	if _, err := compareRecord(unknown, index, suite); !errors.Is(err, ErrUnmappedMutation) {
+	if _, err := compareCase(unknown, index, suite); !errors.Is(err, ErrUnmappedMutation) {
 		t.Fatalf("error = %v, want ErrUnmappedMutation", err)
 	}
 }

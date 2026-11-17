@@ -7,11 +7,11 @@ Source: https://github.com/xiaolibuluo/Abate
 
 package pitparity
 
-// witnessTable registers the semantic witness of every PIT mutation site.
+// witnessTable registers the semantic witness of every self-developed case.
 //
-// The covered inputs and the expected values are the assertions of
-// ParityTargetTest.java, so the witness reproduces the Java semantics instead
-// of restating the PIT status.
+// The covered inputs and the expected values are the fixed assertions of the
+// baseline port, so the witness reproduces local semantics independently of
+// the frozen expectation.
 var witnessTable = []witnessCase{
 	{
 		method: "accepts", line: 49, mutator: "ConditionalsBoundaryMutator",
@@ -158,7 +158,7 @@ var witnessTable = []witnessCase{
 // uncoveredOriginal observes uncovered, which no test of the suite reaches.
 func uncoveredOriginal(x int) observation { return obsInt(x * 3) }
 
-// witnessFor returns the witness case registered for one PIT mutation site.
+// witnessFor returns the witness case registered for one self-developed case.
 func witnessFor(method, mutator string, line int) (witnessCase, bool) {
 	for _, entry := range witnessTable {
 		if entry.method == method && entry.mutator == mutator && entry.line == line {

@@ -72,7 +72,7 @@ func TestFixtureIsPureAndDefensive(t *testing.T) {
 }
 
 // TestBaselinePortMatchesTheJavaSuite proves the port reproduces the Java
-// assertions, which is what makes the witness independent of the PIT status.
+// assertions, which is what makes the witness independent of the frozen expectation.
 func TestBaselinePortMatchesTheJavaSuite(t *testing.T) {
 	t.Parallel()
 	for _, entry := range witnessTable {

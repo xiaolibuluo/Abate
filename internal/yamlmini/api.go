@@ -47,6 +47,7 @@ Source: https://github.com/xiaolibuluo/Abate
 package yamlmini
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"strings"
@@ -75,7 +76,7 @@ func (d *Decoder) KnownFields(enable bool) *Decoder {
 // fresh Decoder for each document.
 func (d *Decoder) Decode(v any) error {
 	if d == nil || d.r == nil {
-		return fmt.Errorf("yamlmini: nil decoder")
+		return errors.New("yamlmini: nil decoder")
 	}
 	data, err := io.ReadAll(d.r)
 	if err != nil {
@@ -85,7 +86,7 @@ func (d *Decoder) Decode(v any) error {
 	// third-party decoder this package replaces returned io.EOF here, which the
 	// CES caller classified as a malformed document rather than an empty struct.
 	if blankDocument(data) {
-		return fmt.Errorf("yamlmini: empty document")
+		return errors.New("yamlmini: empty document")
 	}
 	return decodeBytes(data, v, d.strict)
 }

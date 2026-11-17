@@ -148,7 +148,7 @@ func TestMarkdownCarriesTheEvidence(t *testing.T) {
 	document := string(report.Markdown())
 	for _, needle := range []string{
 		"一致率 | 100.00%",
-		"PIT 变异总数 | 28",
+		"golden 判例总数 | 28",
 		"可比对点数 | 21",
 		"RemoveConditionalMutator_ORDER_ELSE",
 		"EmptyObjectReturnValsMutator",
@@ -164,7 +164,7 @@ func TestMarkdownCarriesTheEvidence(t *testing.T) {
 // TestMarkdownHandlesAnEmptyAbateSide covers the empty branch of the report.
 func TestMarkdownHandlesAnEmptyAbateSide(t *testing.T) {
 	t.Parallel()
-	empty := Report{PITVersion: PITVersion, Rate: "N/A"}
+	empty := Report{Rate: "N/A"}
 	document := string(empty.Markdown())
 	if !strings.Contains(document, "无。") {
 		t.Fatal("the report does not state that no Abate only node exists")
@@ -226,5 +226,72 @@ func TestFormatRateCoversTheEmptyCase(t *testing.T) {
 	}
 	if got := formatRate(21, 21); got != "100.00%" {
 		t.Fatalf("rate = %q, want 100.00%%", got)
+	}
+}
+
+// TestCompareRejectsUnmappedCase covers the regression failure branch.
+func TestCompareRejectsUnmappedCase(t *testing.T) {
+	t.Parallel()
+	cases := []Case{{
+		Method: "nowhere", Mutator: "NoMutator", Line: 42, Expect: ExpectKilled,
+	}}
+	if _, err := Compare(cases); !errors.Is(err, ErrUnmappedMutation) {
+		t.Fatalf("error = %v, want ErrUnmappedMutation", err)
+	}
+}
+
+// TestCompareCaseReportsMismatch covers the cross-check difference path.
+func TestCompareCaseReportsMismatch(t *testing.T) {
+	t.Parallel()
+	target, suite := newFixture()
+	index, err := newVerdictIndex(mutationReport(t, target, suite))
+	if err != nil {
+		t.Fatalf("index: %v", err)
+	}
+	wrong := Case{
+		Method: "add", Mutator: "MathMutator", Line: 15, Expect: ExpectSurvived,
+	}
+	outcome, err := compareCase(wrong, index, suite)
+	if err != nil {
+		t.Fatalf("compare: %v", err)
+	}
+	if outcome.Consistent {
+		t.Fatal("a mismatched expectation was accepted")
+	}
+	if !strings.Contains(outcome.Difference, "语义见证") {
+		t.Fatalf("difference = %q", outcome.Difference)
+	}
+	if _, err := compareCase(wrong, verdictIndex{}, suite); !errors.Is(err, ErrMissingVerdict) {
+		t.Fatalf("error = %v, want ErrMissingVerdict", err)
+	}
+}
+
+// TestMarkdownCarriesDifference covers the difference rendering branch.
+func TestMarkdownCarriesDifference(t *testing.T) {
+	t.Parallel()
+	report := Report{
+		Rate: "50.00%",
+		Outcomes: []Outcome{
+			{
+				Method: "add", Line: 15, Mutator: "MathMutator", Expect: ExpectKilled,
+				Node: "a-arith", Class: "arith-replace", AbateVerdict: "SURVIVED",
+				Witness: WitnessDetected, VerdictMode: VerdictModePoint,
+				Disposition: DispositionComparable, Reason: "reason", Difference: "差异文本",
+			},
+			{
+				Method: "cap", Line: 29, Mutator: "Bucket", Expect: ExpectKilled,
+				Disposition: DispositionExcluded, Reason: "excluded reason",
+			},
+		},
+		AbateOnly: []Outcome{{
+			Node: "i-timeout", AbateVerdict: "TIMEOUT", Reason: "orphan",
+		}},
+	}
+	document := string(report.Markdown())
+	if !strings.Contains(document, "差异：差异文本") {
+		t.Fatal("the review document does not carry the mismatch")
+	}
+	if !strings.Contains(document, "excluded reason") {
+		t.Fatal("the review document does not carry the exclusion reason")
 	}
 }

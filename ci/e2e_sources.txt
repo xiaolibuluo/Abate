@@ -42,10 +42,17 @@ internal/corpusgen/sizes_test.go
 internal/corpusgen/spec.go
 internal/corpusgen/stats.go
 internal/corpusgen/verify.go
+internal/determinism/clock.go
+internal/determinism/clock_config_test.go
+internal/determinism/config.go
 internal/determinism/consts.go
 internal/determinism/determinism.go
 internal/determinism/determinism_test.go
 internal/determinism/doc.go
+internal/determinism/errors.go
+internal/determinism/fuel.go
+internal/determinism/fuel_test.go
+internal/determinism/golden_test.go
 internal/determinism/rng.go
 internal/determinism/rng_select.go
 internal/determinism/rng_test.go

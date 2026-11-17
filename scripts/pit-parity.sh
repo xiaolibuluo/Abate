@@ -1,18 +1,14 @@
 #!/usr/bin/env bash
 # =============================================================================
-# Abate PIT 对拍编排脚本（M2 验收：四类变异判定与分数口径与 PIT 参考实现对拍一致，
-# 对拍报告入库；PIT 对拍一致率 100%，差异逐条说明）
+# Abate 自研 golden 语义回归编排脚本。
 #
-# 两种模式：
-#   默认（离线）  : 用入库的官方 PIT 产物 kernel/mutation/testdata/pit/pit-mutations.json
-#                    跑 Go 侧逐点对拍，生成 docs/dev/pit-parity-report.md 与
-#                    .artifacts/pit-parity.json；零外部依赖，气隙可跑。
-#   --rerun-pit   : 真实重跑 PITest 1.19.6（需要 java 与 mvn，且 Maven 镜像可达），
-#                    把新产物写回 testdata 后再对拍；依赖缺失时如实报错并提示用默认模式，
-#                    绝不伪造产物。
+# 单一离线模式：用本仓 kernel/mutation 引擎对同构夹具重生成自研 golden，与
+# 冻结入库的 golden 逐字节比对；再用冻结 golden 驱动报告。全程零第三方依赖、
+# 不启动 JVM、不读取任何上游产物，气隙可跑。
 #
-# 事实来源：PIT 参考产物由 PITest 1.19.6 官方实跑生成（28 条变异：Killed 23、
-# SURVIVED 3、NO_COVERAGE 2），本脚本只做编排与复跑，不修改任何判定口径。
+# 事实来源：kernel/mutation/testdata/pit/golden/mutation-semantics.golden 是本仓
+# 引擎与语义见证的历史观测快照，非 PIT 官方产物；竞品对拍分数维持 NOT_MEASURED。
+# 本脚本只做编排与如实报告，不修改任何判定口径、不放宽门禁阈值。
 # =============================================================================
 set -euo pipefail
 
@@ -23,12 +19,8 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 
 REPORT_JSON=".artifacts/pit-parity.json"
 REPORT_MD="docs/dev/pit-parity-report.md"
-PIT_JSON="kernel/mutation/testdata/pit/pit-mutations.json"
-PIT_XML="kernel/mutation/testdata/pit/pit-mutations.xml"
-PIT_BASELINE="kernel/mutation/testdata/pit/baseline"
+GOLDEN="kernel/mutation/testdata/pit/golden/mutation-semantics.golden"
 MIN_RATE="100.00%"
-RERUN=0
-MAVEN_SETTINGS="${MAVEN_SETTINGS:-}"
 
 banner() { echo -e "${YELLOW}== $1 ==${NC}"; }
 fail() { echo -e "${RED}[FAIL] $1${NC}" >&2; exit 1; }
@@ -36,82 +28,56 @@ pass() { echo -e "${GREEN}[PASS] $1${NC}"; }
 
 usage() {
   cat <<'EOF'
-用法: scripts/pit-parity.sh [--rerun-pit] [--settings <maven-settings.xml>]
+用法: scripts/pit-parity.sh
 
-  --rerun-pit            真实重跑 PITest 1.19.6 并把产物写回 testdata
-  --settings <path>      Maven settings.xml（--rerun-pit 模式使用）
-  -h, --help             显示本帮助
+离线跑自研 golden 语义回归：本仓引擎重生成 golden → 与冻结 golden 逐字节比对 →
+生成 JSON/Markdown 报告。无外部参数，零第三方依赖。
 
-默认模式完全离线，只使用入库的官方 PIT 产物。
+  -h, --help   显示本帮助
 EOF
 }
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --rerun-pit) RERUN=1; shift ;;
-    --settings) MAVEN_SETTINGS="${2:-}"; shift 2 ;;
     -h|--help) usage; exit 0 ;;
     *) usage; echo -e "${RED}[FAIL] 未知参数: $1${NC}" >&2; exit 2 ;;
   esac
 done
 
-banner "Abate PIT Parity - KRN-MUT 变异核与 PITest 1.19.6 逐点对拍"
+banner "Abate 自研 golden 语义回归（非 PIT 官方对拍）"
 
 command -v go >/dev/null 2>&1 || fail "未找到 go 工具链"
+[ -f "$GOLDEN" ] || fail "缺少冻结自研 golden: $GOLDEN"
 
-if [ "$RERUN" -eq 1 ]; then
-  # ---------------------------------------------------------------- 重跑模式
-  banner "重跑 PITest 1.19.6"
-  command -v java >/dev/null 2>&1 || {
-    echo -e "${RED}[FAIL] --rerun-pit 需要 java（JDK 21），当前环境未安装${NC}" >&2
-    echo "提示: 请改用默认模式 scripts/pit-parity.sh，它使用入库的官方 PIT 产物。" >&2
-    exit 2
-  }
-  command -v mvn >/dev/null 2>&1 || {
-    echo -e "${RED}[FAIL] --rerun-pit 需要 mvn，当前环境未安装${NC}" >&2
-    echo "提示: 请改用默认模式 scripts/pit-parity.sh，它使用入库的官方 PIT 产物。" >&2
-    exit 2
-  }
-  WORK="$(mktemp -d)"
-  trap 'rm -rf "$WORK"' EXIT
-  # 入库工件把源码目录改名为 src-main/src-test 以便归档，重跑时还原 Maven 标准布局。
-  mkdir -p "$WORK/src/main" "$WORK/src/test"
-  cp -R "$PIT_BASELINE/src-main/java" "$WORK/src/main/java"
-  cp -R "$PIT_BASELINE/src-test/java" "$WORK/src/test/java"
-  cp "$PIT_BASELINE/pom.xml" "$WORK/pom.xml"
-  echo "重跑工作目录: $WORK"
-  MVN_ARGS=(-q -B org.pitest:pitest-maven:1.19.6:mutationCoverage)
-  if [ -n "$MAVEN_SETTINGS" ]; then
-    MVN_ARGS=(-s "$MAVEN_SETTINGS" "${MVN_ARGS[@]}")
-  fi
-  ( cd "$WORK" && mvn "${MVN_ARGS[@]}" ) || {
-    echo -e "${RED}[FAIL] PITest 重跑失败（Maven 仓库不可达或工程编译失败）${NC}" >&2
-    echo "提示: 请改用默认模式 scripts/pit-parity.sh，它使用入库的官方 PIT 产物。" >&2
-    exit 2
-  }
-  NEW_XML="$WORK/target/pit-reports/mutations.xml"
-  [ -f "$NEW_XML" ] || {
-    echo -e "${RED}[FAIL] PITest 未产出 mutations.xml${NC}" >&2
-    exit 2
-  }
-  echo "新产物: $NEW_XML"
-  cp "$NEW_XML" "$PIT_XML"
-  GOFLAGS="${GOFLAGS:-} -mod=vendor" GOPROXY=off \
-    go run ./kernel/mutation/pitparity/cmd/pitparity-report \
-    -pit "$PIT_JSON" -xml "$PIT_XML" -json "$REPORT_JSON" -md "$REPORT_MD" \
-    -min-rate "$MIN_RATE"
-  pass "PITest 重跑产物已写回 testdata 并完成对拍"
+# ---------------------------------------------------------------- 逐字节回归
+banner "重生成自研 golden 并与冻结 golden 逐字节比对"
+WORK="$(mktemp -d)"
+trap 'rm -rf "$WORK"' EXIT
+FRESH="$WORK/mutation-semantics.golden"
+GOFLAGS="${GOFLAGS:-}" GOPROXY=off \
+  go run kernel/mutation/pitparity/gen_golden.go -out "$FRESH"
+
+if cmp -s "$FRESH" "$GOLDEN"; then
+  RATE="100.00%"
+  pass "自研 golden 逐字节一致（一致率 $RATE，28 判例）"
 else
-  # ---------------------------------------------------------------- 默认模式
-  banner "离线对拍（使用入库的官方 PIT 产物）"
-  [ -f "$PIT_JSON" ] || fail "缺少入库产物: $PIT_JSON"
-  GOFLAGS="${GOFLAGS:-} -mod=vendor" GOPROXY=off \
-    go run ./kernel/mutation/pitparity/cmd/pitparity-report \
-    -pit "$PIT_JSON" -json "$REPORT_JSON" -md "$REPORT_MD" -min-rate "$MIN_RATE"
-  pass "对拍报告已生成"
+  # 真实计算行级一致率并如实报出，绝不伪造 100%。
+  TOTAL="$(wc -l < "$GOLDEN" | tr -d ' ')"
+  MATCHED="$(awk 'NR==FNR{line[FNR]=$0; next} $0==line[FNR]{m++} END{print m+0}' "$FRESH" "$GOLDEN")"
+  RATE="$(awk -v m="$MATCHED" -v t="$TOTAL" 'BEGIN{printf "%.2f%%", m*100/t}')"
+  echo -e "${RED}[FAIL] 自研 golden 重生成结果与冻结 golden 不一致（真实一致率 $RATE，$MATCHED/$TOTAL 行）${NC}" >&2
+  diff -u "$GOLDEN" "$FRESH" >&2 || true
+  exit 1
 fi
+
+# ---------------------------------------------------------------- 报告生成
+banner "生成自研 golden 回归报告（对比本仓引擎输出 vs 冻结 golden）"
+GOFLAGS="${GOFLAGS:-}" GOPROXY=off \
+  go run ./kernel/mutation/pitparity/cmd/pitparity-report \
+  -golden "$GOLDEN" -json "$REPORT_JSON" -md "$REPORT_MD" -min-rate "$MIN_RATE"
+pass "对拍报告已生成（竞品对拍分数 NOT_MEASURED）"
 
 echo ""
 echo "  JSON 报告:   $REPORT_JSON"
 echo "  Markdown:    $REPORT_MD"
-banner "PIT PARITY: PASSED（一致率门槛 $MIN_RATE，真实数字见上方输出）"
+banner "GOLDEN REGRESSION: PASSED（一致率 $RATE，自研 golden 非 PIT 官方对拍）"

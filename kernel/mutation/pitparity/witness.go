@@ -27,24 +27,24 @@ const (
 	WitnessNotApplicable = "not-applicable"
 )
 
-// ErrBaselineMismatch reports that the Go port of the Java baseline disagrees
-// with the assertions of the Java suite.
-var ErrBaselineMismatch = errors.New("pitparity: baseline port disagrees with the Java suite")
+// ErrBaselineMismatch reports that the local baseline port disagrees with the
+// assertions fixed for the self-developed fixture.
+var ErrBaselineMismatch = errors.New("pitparity: baseline port disagrees with the fixture assertions")
 
-// witnessCase binds one PIT mutation site to the observations of the original
-// and of the mutated baseline method.
+// witnessCase binds one self-developed case to the observations of the
+// original and of the mutated baseline method.
 //
 // The witness is the independent oracle of the harness: it decides whether the
-// suite can tell the mutant from the original without looking at the PIT
-// status, so a mapping table cannot be tuned to the wanted outcome.
+// suite can tell the mutant from the original without looking at the frozen
+// expectation, so a mapping table cannot be tuned to the wanted outcome.
 type witnessCase struct {
-	// method is the mutated method of the Java baseline project.
+	// method is the local fixture method identifier of the case.
 	method string
 
-	// line is the mutated source line.
+	// line is the local fixture line identifier.
 	line int
 
-	// mutator is the PIT mutator family of the mutation.
+	// mutator is the local fixture operator identifier of the case.
 	mutator string
 
 	// original observes the unmutated baseline method.
@@ -56,15 +56,15 @@ type witnessCase struct {
 	// inputs are the suite covered inputs of the mutated method.
 	inputs []int
 
-	// expected are the values the Java suite asserts for the inputs.
+	// expected are the values the suite asserts for the inputs.
 	expected []observation
 }
 
 // classifyWitness reports how the test suite sees one mutated site.
 //
-// The classification is derived from the ported baseline only: the original
-// observations are first checked against the assertions of the Java suite, so
-// a porting mistake is reported instead of silently changing a verdict.
+// The classification is derived from the local baseline port only: the
+// original observations are first checked against the fixed assertions, so a
+// porting mistake is reported instead of silently changing a verdict.
 func classifyWitness(c witnessCase) (string, error) {
 	if len(c.inputs) != len(c.expected) {
 		return "", fmt.Errorf("%w: %s:%d has %d inputs but %d expected values",
@@ -75,7 +75,7 @@ func classifyWitness(c witnessCase) (string, error) {
 	}
 	for i, input := range c.inputs {
 		if got := c.original(input); got != c.expected[i] {
-			return "", fmt.Errorf("%w: %s:%d input %d observes %s, the Java suite asserts %s",
+			return "", fmt.Errorf("%w: %s:%d input %d observes %s, the suite asserts %s",
 				ErrBaselineMismatch, c.method, c.line, input, got, c.expected[i])
 		}
 	}
@@ -87,19 +87,26 @@ func classifyWitness(c witnessCase) (string, error) {
 	return WitnessEquivalent, nil
 }
 
-// witnessMatchesStatus reports whether the witness reproduces the PIT status.
+// expectFromWitness maps one independent witness classification to the frozen
+// expected classification stored in the self-developed golden.
+func expectFromWitness(witness string) string {
+	switch witness {
+	case WitnessDetected:
+		return ExpectKilled
+	case WitnessEquivalent:
+		return ExpectSurvived
+	case WitnessUncovered:
+		return ExpectNoCoverage
+	default:
+		return ""
+	}
+}
+
+// witnessMatchesExpect reports whether the witness reproduces the frozen
+// expectation.
 //
 // The mapping is the documented one: a detectable mutant is killed, a mutant
 // the suite cannot distinguish survives, and an unreachable site has no cover.
-func witnessMatchesStatus(witness, status string) bool {
-	switch witness {
-	case WitnessDetected:
-		return status == StatusKilled
-	case WitnessEquivalent:
-		return status == StatusSurvived
-	case WitnessUncovered:
-		return status == StatusNoCoverage
-	default:
-		return false
-	}
+func witnessMatchesExpect(witness, expect string) bool {
+	return expectFromWitness(witness) == expect && expect != ""
 }

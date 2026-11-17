@@ -6,8 +6,8 @@
 - 生成器：`kernel/mutation/pitparity/gen_golden.go`（`//go:build ignore`）
 - 复跑命令：`go run kernel/mutation/pitparity/gen_golden.go`
 - 生成时点：T01（清除动作发生前）
-- 用途：T05 将 `scripts/pit-parity.sh` 的口径从「官方产物对拍」改为「自研语义 golden 回归」，
-  阈值 `MIN_RATE=100.00%` 保持不变；不得再宣称「官方对拍 100%」。
+- 用途：`scripts/pit-parity.sh` 已改为「自研语义 golden 回归」口径，阈值
+  `MIN_RATE=100.00%` 保持不变；竞品对拍分数为 `NOT_MEASURED`，不再宣称「官方对拍 100%」。
 
 ## 口径声明
 

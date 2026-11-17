@@ -7,64 +7,53 @@ For commercial licensing, contact xiaolibuluo@163.com.
 Source: https://github.com/xiaolibuluo/Abate
 */
 
-// Command gen_golden freezes the mutation-semantics verdicts produced by the
-// repository's own parity engine over its isomorphic fixture. The ignore build
-// tag keeps it out of normal builds; run it explicitly with:
+// Command gen_golden freezes the self-developed semantic golden produced by
+// the repository's own parity engine over its isomorphic fixture. The ignore
+// build tag keeps it out of normal builds; run it explicitly with:
 //
-//	go run kernel/mutation/pitparity/gen_golden.go
+//	go run kernel/mutation/pitparity/gen_golden.go [-out <path>]
 //
 // The output is a self-developed frozen golden. It is a historical observation
-// of this repository's engine, not an upstream official artifact.
+// of this repository's engine and witness, not an upstream official artifact.
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
-	"strings"
+	"path/filepath"
 
 	"abate/kernel/mutation/pitparity"
 )
 
 const (
-	sourcePath = "kernel/mutation/testdata/pit/pit-mutations.json"
-	outPath    = "kernel/mutation/testdata/pit/golden/mutation-semantics.golden"
-	dirMode    = 0o750
-	fileMode   = 0o600
+	dirMode  = 0o750
+	fileMode = 0o600
 )
 
-// main regenerates the frozen semantics golden.
 func main() {
-	records, err := pitparity.LoadMutations(sourcePath)
-	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "gen_golden: load source: %v\n", err)
+	if err := run(); err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "gen_golden: %v\n", err)
 		os.Exit(1)
 	}
-	report, err := pitparity.Compare(records)
-	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "gen_golden: compare: %v\n", err)
-		os.Exit(1)
-	}
+}
 
-	var b strings.Builder
-	b.WriteString("# Abate 自研变异语义冻结 golden（历史观测值，非上游官方产物）\n")
-	b.WriteString("# 由 kernel/mutation/pitparity/gen_golden.go 用本仓引擎与同构夹具生成，可复跑。\n")
-	fmt.Fprintf(&b, "total=%d\ncomparable=%d\nconsistent=%d\nrate=%s\n",
-		report.Total, report.Comparable, report.Consistent, report.Rate)
-	for i, outcome := range report.Outcomes {
-		fmt.Fprintf(&b, "outcome\t%d\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%v\n",
-			i+1, outcome.Method, outcome.Line, outcome.Mutator,
-			outcome.PITStatus, outcome.Node, outcome.Class,
-			outcome.AbateVerdict, outcome.Witness, outcome.Disposition,
-			outcome.Consistent)
+// run regenerates the frozen golden and writes it to the requested path.
+func run() error {
+	out := flag.String("out", pitparity.GoldenRelativePath, "golden output path")
+	flag.Parse()
+	payload, err := pitparity.RegenerateGolden()
+	if err != nil {
+		return fmt.Errorf("regenerate golden: %w", err)
 	}
-
-	if err := os.MkdirAll("kernel/mutation/testdata/pit/golden", dirMode); err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "gen_golden: create dir: %v\n", err)
-		os.Exit(1)
+	if dir := filepath.Dir(*out); dir != "" && dir != "." {
+		if err := os.MkdirAll(dir, dirMode); err != nil {
+			return fmt.Errorf("create dir: %w", err)
+		}
 	}
-	if err := os.WriteFile(outPath, []byte(b.String()), fileMode); err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "gen_golden: write: %v\n", err)
-		os.Exit(1)
+	if err := os.WriteFile(*out, payload, fileMode); err != nil {
+		return fmt.Errorf("write golden: %w", err)
 	}
-	_, _ = fmt.Printf("golden written: %s\n", outPath)
+	_, _ = fmt.Printf("自研 golden 已生成: %s\n", *out)
+	return nil
 }

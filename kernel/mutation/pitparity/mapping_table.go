@@ -7,14 +7,14 @@ Source: https://github.com/xiaolibuluo/Abate
 
 package pitparity
 
-// mappingTable registers the semantic correspondence between every PIT
-// mutation of the reference report and the Abate fixture.
+// mappingTable registers the semantic correspondence between every
+// self-developed golden case and the Abate fixture.
 //
-// The entries follow the order of the reference report so the review document
-// can be read side by side with the vendored JSON. Every entry states why the
-// two mutations are the same mutation; the seven PIT specific operator
-// families that Abate does not model are registered as excluded with their
-// cause, so no mutation is silently dropped.
+// The entries follow the order of the frozen golden so the review document can
+// be read side by side with the golden artifact. Every entry states why the
+// case maps to that fixture node; the seven operator families Abate does not
+// model are registered as excluded with their cause, so no case is silently
+// dropped.
 //
 // The node of a comparable entry is not chosen by hand: the test suite
 // verifies that it equals the node the semantic witness derives, which rules
@@ -29,7 +29,7 @@ var mappingTable = []Mapping{
 	{
 		Method: "accepts", Mutator: "RemoveConditionalMutator_ORDER_ELSE", Line: 49,
 		Excluded: true,
-		Reason: "PIT 专属算子：顺序比较条件被整体删除并以 false 取代。" +
+		Reason: "无 Abate 对应语义：顺序比较条件被整体删除并以 false 取代。" +
 			"Abate 七类算子只覆盖边界平移（boundary-value）、等式取反（negate-condition）" +
 			"与语句删除（control-flow），没有「删除顺序判定」语义，故不参与对拍。",
 	},
@@ -57,7 +57,7 @@ var mappingTable = []Mapping{
 	{
 		Method: "audited", Mutator: "RemoveConditionalMutator_ORDER_ELSE", Line: 63,
 		Excluded: true,
-		Reason: "PIT 专属算子：顺序比较条件被整体删除并以 false 取代，" +
+		Reason: "无 Abate 对应语义：顺序比较条件被整体删除并以 false 取代，" +
 			"Abate 没有对应的算子语义，故不参与对拍。",
 	},
 	{
@@ -74,7 +74,7 @@ var mappingTable = []Mapping{
 	{
 		Method: "cap", Mutator: "RemoveConditionalMutator_ORDER_ELSE", Line: 29,
 		Excluded: true,
-		Reason: "PIT 专属算子：顺序比较条件被整体删除并以 false 取代，" +
+		Reason: "无 Abate 对应语义：顺序比较条件被整体删除并以 false 取代，" +
 			"Abate 没有对应的算子语义，故不参与对拍。",
 	},
 	{
@@ -96,7 +96,7 @@ var mappingTable = []Mapping{
 	{
 		Method: "clamp", Mutator: "RemoveConditionalMutator_ORDER_ELSE", Line: 20,
 		Excluded: true,
-		Reason: "PIT 专属算子：顺序比较条件被整体删除并以 false 取代，" +
+		Reason: "无 Abate 对应语义：顺序比较条件被整体删除并以 false 取代，" +
 			"Abate 没有对应的算子语义，故不参与对拍。",
 	},
 	{
@@ -118,13 +118,13 @@ var mappingTable = []Mapping{
 	{
 		Method: "label", Mutator: "EmptyObjectReturnValsMutator", Line: 55,
 		Excluded: true,
-		Reason: "PIT 专属算子：字符串返回值被替换为空串；Abate return-value 只翻转" +
+		Reason: "无 Abate 对应语义：字符串返回值被替换为空串；Abate return-value 只翻转" +
 			"布尔与 nil 返回值，没有字符串返回类，故不参与对拍。",
 	},
 	{
 		Method: "label", Mutator: "EmptyObjectReturnValsMutator", Line: 57,
 		Excluded: true,
-		Reason: "PIT 专属算子：字符串返回值被替换为空串；Abate return-value 只翻转" +
+		Reason: "无 Abate 对应语义：字符串返回值被替换为空串；Abate return-value 只翻转" +
 			"布尔与 nil 返回值，没有字符串返回类，故不参与对拍。",
 	},
 	{
@@ -157,7 +157,7 @@ var mappingTable = []Mapping{
 	{
 		Method: "sumUntil", Mutator: "RemoveConditionalMutator_ORDER_ELSE", Line: 38,
 		Excluded: true,
-		Reason: "PIT 专属算子：顺序比较条件被整体删除并以 false 取代，" +
+		Reason: "无 Abate 对应语义：顺序比较条件被整体删除并以 false 取代，" +
 			"Abate 没有对应的算子语义，故不参与对拍。",
 	},
 	{

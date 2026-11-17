@@ -8,8 +8,9 @@ Source: https://github.com/xiaolibuluo/Abate
 package pitparity
 
 // The functions below observe the mutated baseline methods. Each one models
-// exactly the construct the PIT mutator replaces, so the witness can decide
-// whether the Java suite distinguishes the mutant from the original.
+// exactly the construct the self-developed operator replaces, so the witness
+// can decide whether the local suite distinguishes the mutant from the
+// original.
 
 // addSubtracted observes add with the addition replaced by a subtraction.
 func addSubtracted(a int) observation { return obsInt(a - 5) }

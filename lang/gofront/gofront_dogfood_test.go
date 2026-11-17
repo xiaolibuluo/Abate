@@ -29,11 +29,25 @@ func repoGoFiles(t *testing.T) []string {
 	paths := make([]string, 0, 256)
 	err = filepath.WalkDir(root, func(path string, entry fs.DirEntry, walkErr error) error {
 		if walkErr != nil {
+			// Other packages run in parallel and create/remove temporary
+			// directories inside the repo (e.g. ctl/cli plugin-state-*). If one
+			// disappears between WalkDir's readdir and our visit, skip it rather
+			// than failing the whole dogfood scan — this is a transient race, not
+			// a missing first-party source file.
+			if os.IsNotExist(walkErr) {
+				return nil
+			}
 			return walkErr
 		}
 		if entry.IsDir() {
-			switch entry.Name() {
-			case "vendor", "third_party", "testdata", ".git", "bench":
+			switch {
+			case entry.Name() == "vendor" || entry.Name() == "third_party" ||
+				entry.Name() == "testdata" || entry.Name() == ".git" ||
+				entry.Name() == "bench":
+				return filepath.SkipDir
+			case strings.HasPrefix(entry.Name(), "plugin-state-"):
+				// Transient test scratch dir created by ctl/cli tests; not a
+				// first-party source tree.
 				return filepath.SkipDir
 			}
 			return nil

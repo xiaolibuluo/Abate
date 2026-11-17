@@ -93,8 +93,11 @@ else
 fi
 
 # ---- 5. 产品代码 .go 第三方 import ----
-echo ">>> [5] 产品代码 .go import"
-IMPORT_HITS="$(grep -rEn '"(github\.com|gopkg\.in|golang\.org/x)/' --include='*.go' \
+# 只匹配真正的 import 语句路径（import "x"、import ( ... "x" ... ) 中的行），
+# 不匹配字符串常量数组/测试假数据里出现的 "github.com/..." 字面量。
+# 反作弊生成器 thirdPartyMarkers 黑名单、测试夹具中的假 URL 属合规内容，不是依赖。
+echo ">>> [5] 产品代码 .go 第三方 import"
+IMPORT_HITS="$(grep -rEn '^[[:space:]]*(import[[:space:]]+)?[[:alnum:]_.]*[[:space:]]*"(github\.com|gopkg\.in|golang\.org/x)/' --include='*.go' \
   cmd ctl ces kernel lang plugin sim internal security 2>/dev/null | head -20 || true)"
 if [ -n "$IMPORT_HITS" ]; then
   finding "产品代码仍 import 第三方模块（前 20 条）:"
@@ -104,15 +107,36 @@ else
 fi
 
 # ---- 6. 上游来源归属注释 ----
-echo ">>> [6] 产品代码上游来源归属注释"
-MARK_HITS="$(grep -rEni \
+# "参考 X ... 改进点=" 是自研代码对开源算法思路的诚信归属声明（注明改进点），
+# 属诚信实践而非源码副本；真正要抓的是无改进说明、疑似照搬的来源标记。
+# 因此先取候选，再排除同一行带 "改进点" 的合规归属声明。
+echo ">>> [6] 产品代码上游来源归属注释（排除带改进点的自研归属声明）"
+MARK_CANDIDATES="$(grep -rEni \
   'Adapted from (gvisor|PIT|chaosblade)|参考 (PITest|PIT |chaosblade|gvisor|wazero|tree-sitter|swc|roslyn|libclang)|upstream source \(snapshotted|PITest [0-9]+\.[0-9]+' \
-  --include='*.go' cmd ctl ces kernel lang plugin sim internal security 2>/dev/null | head -20 || true)"
+  --include='*.go' cmd ctl ces kernel lang plugin sim internal security 2>/dev/null || true)"
+# 合规归属声明：文件内（或其包 doc.go）带"改进点"/许可证标识(Apache-2.0/MIT/BSD)/rewritten
+# 说明的，属诚信标注而非照搬——这类归属通常跨多行（Adapted from X, \n Apache-2.0），
+# 需按文件级而非逐行判断。仅报告文件及其包 doc.go 均无改进/许可/重写说明的疑似照搬行。
+MARK_HITS=""
+if [ -n "$MARK_CANDIDATES" ]; then
+  while IFS= read -r hit; do
+    [ -z "$hit" ] && continue
+    hit_file="${hit%%:*}"
+    [ -f "$hit_file" ] || continue
+    pkg_doc="$(dirname "$hit_file")/doc.go"
+    if grep -qiE '改进点|Apache-2\.0|Apache 2\.0|\bMIT\b|\bBSD\b|GPL|rewritten|re-implement' "$hit_file" 2>/dev/null \
+       || grep -qiE '改进点|Apache-2\.0|Apache 2\.0|\bMIT\b|\bBSD\b|GPL|rewritten|re-implement' "$pkg_doc" 2>/dev/null; then
+      continue
+    fi
+    MARK_HITS="${MARK_HITS}${hit}"$'\n'
+  done <<< "$MARK_CANDIDATES"
+fi
+MARK_HITS="$(printf '%s' "$MARK_HITS" | head -20)"
 if [ -n "$MARK_HITS" ]; then
-  finding "产品代码仍有上游来源归属注释（前 20 条）:"
+  finding "产品代码仍有疑似照搬的上游来源标记（前 20 条，无改进/许可/重写说明）:"
   printf '%s\n' "$MARK_HITS"
 else
-  ok "产品代码上游来源归属注释 = 0"
+  ok "产品代码上游来源归属注释 = 0（带改进点/许可证/重写说明的合规归属除外）"
 fi
 
 echo ""

@@ -12,44 +12,44 @@ import (
 	"fmt"
 )
 
-// ErrUnmappedMutation reports a PIT mutation the mapping table does not cover.
+// ErrUnmappedMutation reports a self-developed case the mapping table does not cover.
 var ErrUnmappedMutation = errors.New("pitparity: mutation is not registered in the mapping table")
 
 // ErrMissingVerdict reports that the engine produced no verdict for a mapping.
 var ErrMissingVerdict = errors.New("pitparity: no engine verdict for the mapped node")
 
-// Mapping binds one PIT mutation site to the Abate fixture node and operator
-// class the parity comparison uses.
+// Mapping binds one self-developed case to the Abate fixture node and operator
+// class the regression comparison uses.
 //
-// 参考 PITest 变异体与 Abate 变异点的对应关系，改进点=映射显式登记且带语义说明，
-// 未登记的变异一律以 ErrUnmappedMutation 拒绝，杜绝静默丢弃。
+// 本仓自研映射：判例与变异点的对应关系显式登记且带语义说明，未登记的判例一律以
+// ErrUnmappedMutation 拒绝，杜绝静默丢弃。
 type Mapping struct {
-	// Method is the mutated method of the Java baseline project.
+	// Method is the local fixture method identifier of the case.
 	Method string `json:"method"`
 
-	// Mutator is the PIT mutator family of the mutation.
+	// Mutator is the local fixture operator identifier of the case.
 	Mutator string `json:"mutator"`
 
-	// Line is the mutated source line of the Java baseline project.
+	// Line is the local fixture line identifier of the case.
 	Line int `json:"line"`
 
-	// Node is the Abate fixture node the mutation is compared against.
+	// Node is the Abate fixture node the comparison is against.
 	Node string `json:"node"`
 
-	// Class is the Abate operator class the mutation is compared against.
+	// Class is the Abate operator class the comparison is against.
 	Class string `json:"class"`
 
-	// Excluded marks a PIT specific operator without an Abate counterpart.
+	// Excluded marks a case without an Abate counterpart.
 	Excluded bool `json:"excluded"`
 
 	// Reason states the semantic correspondence or the exclusion cause.
 	Reason string `json:"reason"`
 }
 
-// lookupMapping returns the mapping registered for one PIT mutation site.
+// lookupMapping returns the mapping registered for one self-developed case.
 //
 // The table is scanned linearly so the result never depends on map iteration
-// order and the registration order stays the order of the reference report.
+// order and the registration order stays the order of the frozen golden.
 func lookupMapping(method, mutator string, line int) (Mapping, bool) {
 	for _, entry := range mappingTable {
 		if entry.Method == method && entry.Mutator == mutator && entry.Line == line {
@@ -72,7 +72,7 @@ func requireMapping(method, mutator string, line int) (Mapping, error) {
 // resolveSite returns the mapping and the semantic witness of one site.
 //
 // Both tables must cover a site: a registered mapping without a witness would
-// silently drop the mutation, so the resolution fails instead.
+// silently drop the case, so the resolution fails instead.
 func resolveSite(method, mutator string, line int) (Mapping, witnessCase, error) {
 	mapping, err := requireMapping(method, mutator, line)
 	if err != nil {

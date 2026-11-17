@@ -147,10 +147,17 @@ that was hit; CI fails in sync.
   - Competitor absolute score: `competitorAbsolute = NOT_MEASURED` (no
     absolute competitor scores are written before a real cross-check);
   - The E2E degrade "meets threshold" statement holds **only under the frozen
-    single-file (first-unit) caliber**; running the same formula over the full
-    corpus, all six languages exceed the threshold (js 49.12% / c 28.00% /
-    py 26.89% / rs 42.33% / kt 8.21% / cs 6.98%), and go is `NOT_MEASURED`.
-    External conclusions must not be extrapolated beyond the single-file
-    caliber;
+    single-file (first-unit) caliber**. On the early third-party corpus, the same
+    formula put all six languages above threshold (js 49.12% / c 28.00% /
+    py 26.89% / rs 42.33% / kt 8.21% / cs 6.98%), with go `NOT_MEASURED` — these
+    figures are a **historical measurement taken before the corpus was fully
+    self-researched**, preserved only in historical audit evidence such as
+    `docs/i18n/QA-ANTI-FRAUD-AUDIT.md`, and **do not represent the current
+    corpus**. The test corpus is now 100% replaced with high-fidelity
+    self-researched sources (see `docs/refactor/`); the full-corpus degrade rate
+    on the self-researched corpus has not been re-measured and is
+    `NOT_MEASURED`. External conclusions must not be extrapolated beyond the
+    single-file caliber, nor may the above historical figures be presented as
+    current self-researched measurements;
   - `derive` killing is a **static AIR-level approximation, not a real go test
     execution**.

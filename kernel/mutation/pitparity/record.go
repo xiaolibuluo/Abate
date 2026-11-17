@@ -8,135 +8,185 @@ Source: https://github.com/xiaolibuluo/Abate
 package pitparity
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
+	"strings"
 )
 
-// Sentinel errors of the parity harness.
+// Sentinel errors of the golden regression harness.
 var (
-	// ErrReportNotFound reports that the vendored PIT report cannot be located.
-	ErrReportNotFound = errors.New("pitparity: PIT report not found")
+	// ErrGoldenNotFound reports that the self-developed golden cannot be located.
+	ErrGoldenNotFound = errors.New("pitparity: self-developed golden not found")
 
-	// ErrInvalidReport reports a malformed PIT mutation report.
-	ErrInvalidReport = errors.New("pitparity: invalid PIT report")
+	// ErrInvalidGolden reports a malformed self-developed golden.
+	ErrInvalidGolden = errors.New("pitparity: invalid self-developed golden")
 )
 
-// The mutation statuses reported by PITest 1.19.6.
-const (
-	// StatusKilled is the PIT status of a mutant killed by the suite.
-	StatusKilled = "KILLED"
+// GoldenRelativePath is the repository relative path of the frozen golden.
+const GoldenRelativePath = "kernel/mutation/testdata/pit/golden/mutation-semantics.golden"
 
-	// StatusSurvived is the PIT status of a mutant that survived the suite.
-	StatusSurvived = "SURVIVED"
-
-	// StatusNoCoverage is the PIT status of a mutant no test reaches.
-	StatusNoCoverage = "NO_COVERAGE"
-)
-
-// ReportRelativePath is the repository relative path of the vendored report.
-const ReportRelativePath = "kernel/mutation/testdata/pit/pit-mutations.json"
-
-// Mutation is one PIT mutation record of the official PIT report.
+// The expected verdict classifications frozen in the self-developed golden.
 //
-// 参考 PITest 的 MutationDetails（字节码位置 + 算子 + 状态），改进点=解析为
-// 语言无关的纯数据记录，保留行号与击杀测试，便于逐点对拍与确定性渲染。
-type Mutation struct {
-	// Status is the PIT verdict of the mutant.
-	Status string `json:"status"`
+// These are local observation labels of the Abate fixture, not status codes of
+// any external mutation tool.
+const (
+	// ExpectKilled marks a case the suite distinguishes from the original.
+	ExpectKilled = "KILLED"
 
-	// Detected is the PIT detection flag rendered as "true" or "false".
-	Detected string `json:"detected"`
+	// ExpectSurvived marks a case the suite cannot distinguish.
+	ExpectSurvived = "SURVIVED"
 
-	// SourceFile is the mutated source file of the baseline project.
-	SourceFile string `json:"sourceFile"`
+	// ExpectNoCoverage marks a case no test of the suite reaches.
+	ExpectNoCoverage = "NO_COVERAGE"
+)
 
-	// MutatedMethod is the mutated method of the baseline project.
-	MutatedMethod string `json:"mutatedMethod"`
+// Case is one self-developed golden case of the regression harness.
+//
+// 本仓自研判例：方法/算子标识只作本地夹具用例编号，期望分类由本仓语义见证派生，
+// 不是任何上游工具的产物字段。
+type Case struct {
+	// Method is the local fixture method identifier of the case.
+	Method string `json:"method"`
 
-	// LineNumber is the mutated line inside the baseline source file.
-	LineNumber int `json:"lineNumber"`
-
-	// Mutator is the PIT mutator family that produced the mutant.
+	// Mutator is the local fixture operator identifier of the case.
 	Mutator string `json:"mutator"`
 
-	// Description is the human readable description of the mutation.
-	Description string `json:"description"`
+	// Line is the local fixture line identifier of the case.
+	Line int `json:"line"`
 
-	// KillingTest is the test that killed the mutant, empty when none did.
-	KillingTest string `json:"killingTest"`
+	// Expect is the frozen expected verdict classification of the case.
+	Expect string `json:"expect"`
 }
 
-// ParseMutations decodes a PIT mutation report and validates every record.
+// goldenFields is the tab separated field count of one outcome line.
+const goldenFields = 12
+
+// goldenPrefix marks an outcome line inside the golden file.
+const goldenPrefix = "outcome"
+
+// ParseGolden decodes the frozen golden into self-developed cases.
 //
-// The decoder is the standard library JSON codec, so the harness stays offline
-// and free of third party dependencies.
-func ParseMutations(data []byte) ([]Mutation, error) {
-	var records []Mutation
-	if err := json.Unmarshal(data, &records); err != nil {
-		return nil, fmt.Errorf("%w: %w", ErrInvalidReport, err)
-	}
-	if len(records) == 0 {
-		return nil, fmt.Errorf("%w: report holds no mutation", ErrInvalidReport)
-	}
-	for i := range records {
-		if err := records[i].validate(); err != nil {
-			return nil, fmt.Errorf("%w: record %d: %w", ErrInvalidReport, i, err)
+// The decoder uses the standard library only, so the regression stays offline
+// and free of third party dependencies. Comment and header lines are skipped.
+func ParseGolden(data []byte) ([]Case, error) {
+	var cases []Case
+	for i, raw := range strings.Split(string(data), "\n") {
+		line := strings.TrimSuffix(raw, "\r")
+		if line == "" || strings.HasPrefix(line, "#") ||
+			!strings.HasPrefix(line, goldenPrefix+"\t") {
+			continue
 		}
+		fields := strings.Split(line, "\t")
+		if len(fields) != goldenFields {
+			return nil, fmt.Errorf("%w: line %d has %d fields, want %d",
+				ErrInvalidGolden, i+1, len(fields), goldenFields)
+		}
+		number, err := strconv.Atoi(strings.TrimSpace(fields[3]))
+		if err != nil {
+			return nil, fmt.Errorf("%w: line %d line number: %w", ErrInvalidGolden, i+1, err)
+		}
+		entry := Case{
+			Method:  fields[2],
+			Mutator: fields[4],
+			Line:    number,
+			Expect:  fields[5],
+		}
+		if err := entry.validate(); err != nil {
+			return nil, fmt.Errorf("%w: line %d: %w", ErrInvalidGolden, i+1, err)
+		}
+		cases = append(cases, entry)
 	}
-	return records, nil
+	if len(cases) == 0 {
+		return nil, fmt.Errorf("%w: golden holds no case", ErrInvalidGolden)
+	}
+	return cases, nil
 }
 
-// LoadMutations reads and decodes the PIT mutation report stored at path.
-func LoadMutations(path string) ([]Mutation, error) {
-	//nolint:gosec // the report path is supplied explicitly by the caller.
+// LoadGolden reads and decodes the frozen golden stored at path.
+func LoadGolden(path string) ([]Case, error) {
+	//nolint:gosec // the golden path is supplied explicitly by the caller.
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("pitparity: read %s: %w", path, err)
 	}
-	return ParseMutations(data)
+	return ParseGolden(data)
 }
 
-// LocateReport walks up from start and returns the path of the vendored report.
+// LocateGolden walks up from start and returns the path of the frozen golden.
 //
-// The report lives in the parent package testdata directory, which the
+// The golden lives in the parent package testdata directory, which the
 // //go:embed directive cannot reach because it forbids parent directory
 // patterns, so the harness resolves it on disk instead.
-func LocateReport(start string) (string, error) {
+func LocateGolden(start string) (string, error) {
 	dir, err := filepath.Abs(start)
 	if err != nil {
-		return "", fmt.Errorf("%w: %w", ErrReportNotFound, err)
+		return "", fmt.Errorf("%w: %w", ErrGoldenNotFound, err)
 	}
 	for {
-		candidate := filepath.Join(dir, filepath.FromSlash(ReportRelativePath))
+		candidate := filepath.Join(dir, filepath.FromSlash(GoldenRelativePath))
 		if info, statErr := os.Stat(candidate); statErr == nil && !info.IsDir() {
 			return candidate, nil
 		}
 		parent := filepath.Dir(dir)
 		if parent == dir {
-			return "", fmt.Errorf("%w: %s", ErrReportNotFound, ReportRelativePath)
+			return "", fmt.Errorf("%w: %s", ErrGoldenNotFound, GoldenRelativePath)
 		}
 		dir = parent
 	}
 }
 
-// validate reports whether one decoded record is well formed.
-func (m Mutation) validate() error {
-	switch m.Status {
-	case StatusKilled, StatusSurvived, StatusNoCoverage:
+// validate reports whether one decoded case is well formed.
+func (c Case) validate() error {
+	switch c.Expect {
+	case ExpectKilled, ExpectSurvived, ExpectNoCoverage:
 	default:
-		return fmt.Errorf("unknown status %q", m.Status)
+		return fmt.Errorf("unknown expected classification %q", c.Expect)
 	}
-	if m.MutatedMethod == "" {
-		return errors.New("empty mutated method")
+	if c.Method == "" {
+		return errors.New("empty method")
 	}
-	if m.Mutator == "" {
+	if c.Mutator == "" {
 		return errors.New("empty mutator")
 	}
-	if m.LineNumber <= 0 {
-		return fmt.Errorf("invalid line number %d", m.LineNumber)
+	if c.Line <= 0 {
+		return fmt.Errorf("invalid line number %d", c.Line)
 	}
 	return nil
+}
+
+// RenderGolden renders one report as the canonical frozen golden bytes.
+//
+// The rendering holds no timestamp and no map iteration order, so two runs over
+// the same self-developed cases are byte identical.
+func RenderGolden(report Report) []byte {
+	var b strings.Builder
+	b.WriteString("# Abate 自研变异语义冻结 golden（历史观测值，非上游官方产物）\n")
+	b.WriteString("# 由 kernel/mutation/pitparity/gen_golden.go 用本仓引擎与同构夹具生成，可复跑。\n")
+	_, _ = fmt.Fprintf(&b, "total=%d\ncomparable=%d\nconsistent=%d\nrate=%s\n",
+		report.Total, report.Comparable, report.Consistent, report.Rate)
+	for i, outcome := range report.Outcomes {
+		_, _ = fmt.Fprintf(&b, "outcome\t%d\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%v\n",
+			i+1, outcome.Method, outcome.Line, outcome.Mutator,
+			outcome.Expect, outcome.Node, outcome.Class,
+			outcome.AbateVerdict, outcome.Witness, outcome.Disposition,
+			outcome.Consistent)
+	}
+	return []byte(b.String())
+}
+
+// RegenerateGolden renders the golden from self-developed tables and the real
+// mutation engine, with no external artifact as input.
+func RegenerateGolden() ([]byte, error) {
+	cases, err := buildCases()
+	if err != nil {
+		return nil, err
+	}
+	report, err := Compare(cases)
+	if err != nil {
+		return nil, err
+	}
+	return RenderGolden(report), nil
 }

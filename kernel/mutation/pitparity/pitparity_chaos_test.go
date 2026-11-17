@@ -13,7 +13,7 @@ import (
 )
 
 // TestCompareIsStableOver100Runs certifies that one hundred comparisons over
-// the same reference report produce exactly one JSON document.
+// the frozen golden produce exactly one JSON document.
 func TestCompareIsStableOver100Runs(t *testing.T) {
 	t.Parallel()
 	records := loadReference(t)
@@ -33,7 +33,7 @@ func TestCompareIsStableOver100Runs(t *testing.T) {
 		t.Fatalf("the hundred runs produced %d distinct reports", len(unique))
 	}
 	for payload, count := range unique {
-		t.Logf("PIT-PARITY report bytes=%d count=%d", len(payload), count)
+		t.Logf("GOLDEN-REGRESSION report bytes=%d count=%d", len(payload), count)
 	}
 }
 

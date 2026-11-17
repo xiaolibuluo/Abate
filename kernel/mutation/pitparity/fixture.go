@@ -67,10 +67,10 @@ func (t *fixtureTarget) Evaluate(p mutation.MutationPoint, test string) verify.O
 	return verify.OutcomeHeld
 }
 
-// fixtureSuite is the Abate side test suite of the parity harness.
+// fixtureSuite is the Abate side test suite of the regression harness.
 //
-// The three tests mirror the t1/t2/t3 semantics of the Java parity baseline
-// shipped in kernel/mutation/testdata/pit/baseline/.
+// The three tests carry the t1/t2/t3 semantics of the self-developed baseline
+// port declared in baseline.go.
 type fixtureSuite struct {
 	tests []string
 	cover map[string]uint64
@@ -89,12 +89,12 @@ func (s *fixtureSuite) Tests() []string {
 // Coverage returns the integer number of tests covering one node.
 func (s *fixtureSuite) Coverage(node string) uint64 { return s.cover[node] }
 
-// newFixture builds the parity fixture: ten nodes covering the seven operator
-// classes plus the equivalent, timeout and no kill paths.
+// newFixture builds the regression fixture: ten nodes covering the seven
+// operator classes plus the equivalent, timeout and no kill paths.
 //
 // The node set, tokens, kill thresholds and coverage counters are identical to
 // the kernel fixture, which is what makes the Abate verdicts of this harness
-// directly comparable with the PIT verdicts of the same baseline project.
+// the verdicts of the real mutation kernel.
 func newFixture() (*fixtureTarget, *fixtureSuite) {
 	nodes := []string{
 		"a-arith", "b-bound", "c-const", "d-control", "e-return",

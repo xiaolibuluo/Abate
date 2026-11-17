@@ -24,37 +24,37 @@ func TestVerdictDifferenceExplainsEveryStatus(t *testing.T) {
 		t.Fatalf("index: %v", err)
 	}
 	mapping := Mapping{Node: "a-arith", Class: "arith-replace"}
-	if reason := verdictDifference(verify.MutantKilled, StatusKilled, WitnessDetected,
+	if reason := verdictDifference(verify.MutantKilled, ExpectKilled, WitnessDetected,
 		suite, mapping); reason != "" {
 		t.Fatalf("killed point reported %q", reason)
 	}
-	if reason := verdictDifference(verify.MutantSurvived, StatusKilled, WitnessDetected,
+	if reason := verdictDifference(verify.MutantSurvived, ExpectKilled, WitnessDetected,
 		suite, mapping); reason == "" {
 		t.Fatal("a surviving mutant was accepted for a killed status")
 	}
 	equivalent := Mapping{Node: "h-equivalent", Class: "arith-replace"}
-	if reason := verdictDifference(verify.MutantEquivalent, StatusSurvived,
+	if reason := verdictDifference(verify.MutantEquivalent, ExpectSurvived,
 		WitnessEquivalent, suite, equivalent); reason != "" {
 		t.Fatalf("equivalent point reported %q", reason)
 	}
-	if reason := verdictDifference(verify.MutantSurvived, StatusSurvived,
+	if reason := verdictDifference(verify.MutantSurvived, ExpectSurvived,
 		WitnessEquivalent, suite, equivalent); reason == "" {
 		t.Fatal("a plain survivor was accepted for an equivalent status")
 	}
-	if reason := verdictDifference(verify.MutantSurvived, StatusSurvived,
+	if reason := verdictDifference(verify.MutantSurvived, ExpectSurvived,
 		WitnessDetected, suite, equivalent); reason == "" {
 		t.Fatal("a detected mutant was accepted for a survived status")
 	}
 	uncovered := Mapping{Node: "j-survived", Class: "arith-replace"}
-	if reason := verdictDifference(verify.MutantSurvived, StatusNoCoverage,
+	if reason := verdictDifference(verify.MutantSurvived, ExpectNoCoverage,
 		WitnessUncovered, suite, uncovered); reason != "" {
 		t.Fatalf("no coverage point reported %q", reason)
 	}
-	if reason := verdictDifference(verify.MutantKilled, StatusNoCoverage,
+	if reason := verdictDifference(verify.MutantKilled, ExpectNoCoverage,
 		WitnessUncovered, suite, uncovered); reason == "" {
 		t.Fatal("a killed mutant was accepted for a no coverage status")
 	}
-	if reason := verdictDifference(verify.MutantSurvived, StatusNoCoverage,
+	if reason := verdictDifference(verify.MutantSurvived, ExpectNoCoverage,
 		WitnessUncovered, suite, mapping); reason == "" {
 		t.Fatal("a covered node accepted a no coverage status")
 	}
