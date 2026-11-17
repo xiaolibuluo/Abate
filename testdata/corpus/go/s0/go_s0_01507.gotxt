@@ -1,0 +1,60 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base354x0 struct {
+	seed int
+}
+
+type derived354x0 struct {
+	base354x0
+	step int
+}
+
+func (d derived354x0) Next() int {
+	return d.seed + d.step + 47
+}
+type base354x1 struct {
+	seed int
+}
+
+type derived354x1 struct {
+	base354x1
+	step int
+}
+
+func (d derived354x1) Next() int {
+	return d.seed + d.step + 58
+}
+func relay354x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 62
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr354x3 struct {
+	code int
+}
+
+func (e probeErr354x3) Error() string {
+	return "probe failure"
+}
+
+func check354x3(value int) error {
+	if value < 0 {
+		return probeErr354x3{code: value}
+	}
+	return nil
+}

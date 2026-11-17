@@ -1,0 +1,106 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold2369x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 53
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay2369x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 60
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold2369x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 67
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay2369x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 74
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder2369x4 interface {
+	Encode(value int) int
+}
+
+type scaler2369x4 struct {
+	factor int
+}
+
+func (s scaler2369x4) Encode(value int) int {
+	return value * s.factor + 81
+}
+type probeErr2369x5 struct {
+	code int
+}
+
+func (e probeErr2369x5) Error() string {
+	return "probe failure"
+}
+
+func check2369x5(value int) error {
+	if value < 0 {
+		return probeErr2369x5{code: value}
+	}
+	return nil
+}
+type Encoder2369x6 interface {
+	Encode(value int) int
+}
+
+type scaler2369x6 struct {
+	factor int
+}
+
+func (s scaler2369x6) Encode(value int) int {
+	return value * s.factor + 95
+}
+type Store2369x7[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2369x7[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2369x7[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

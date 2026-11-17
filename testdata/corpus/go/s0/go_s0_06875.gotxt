@@ -1,0 +1,71 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1582x0 interface {
+	Encode(value int) int
+}
+
+type scaler1582x0 struct {
+	factor int
+}
+
+func (s scaler1582x0) Encode(value int) int {
+	return value * s.factor + 7
+}
+type base1582x1 struct {
+	seed int
+}
+
+type derived1582x1 struct {
+	base1582x1
+	step int
+}
+
+func (d derived1582x1) Next() int {
+	return d.seed + d.step + 53
+}
+type Encoder1582x2 interface {
+	Encode(value int) int
+}
+
+type scaler1582x2 struct {
+	factor int
+}
+
+func (s scaler1582x2) Encode(value int) int {
+	return value * s.factor + 21
+}
+func relay1582x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 28
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Store1582x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1582x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1582x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

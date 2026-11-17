@@ -1,0 +1,40 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1664x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 6
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder1664x1 interface {
+	Encode(value int) int
+}
+
+type scaler1664x1 struct {
+	factor int
+}
+
+func (s scaler1664x1) Encode(value int) int {
+	return value * s.factor + 13
+}
+func fold1664x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 20
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

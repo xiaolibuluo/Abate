@@ -1,0 +1,55 @@
+id: TCK-VALIDATE-011
+spec: "03-ces-spec.md §4 METHOD-004"
+kind: validate
+input: |
+  apiVersion: ces.tencent.com/v1
+  kind: Experiment
+  metadata:
+      name: tck-base
+  spec:
+      target:
+          kind: simulator
+          selector:
+              node: n1
+      steadyState:
+          - probeRef: p1
+            expectation:
+              type: value
+              value: ok
+            tolerance:
+              type: absolute
+              value: 1
+            holdFor: 2s
+      method:
+          expression: operator://a ⊗ operator://b
+          operators:
+              - id: a
+                family: chaos
+                targets:
+                  - node
+                invertible: true
+                targetKind: simulator
+              - id: b
+                family: chaos
+                targets:
+                  - node
+                invertible: true
+                targetKind: simulator
+      probes:
+          - id: p1
+            kind: metric
+            spec:
+              query: up
+              expect: "1"
+            interval: 1s
+      rollback:
+          strategy: auto
+          verifySteadyState: false
+      schedule:
+          continuous:
+              duration: 1s
+expect:
+  accept: false
+  ruleIds:
+    - CES-VALID-METHOD-001
+    - CES-VALID-METHOD-004

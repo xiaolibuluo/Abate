@@ -1,0 +1,73 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder803x0 interface {
+	Encode(value int) int
+}
+
+type scaler803x0 struct {
+	factor int
+}
+
+func (s scaler803x0) Encode(value int) int {
+	return value * s.factor + 65
+}
+func relay803x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 72
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe803x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base803x3 struct {
+	seed int
+}
+
+type derived803x3 struct {
+	base803x3
+	step int
+}
+
+func (d derived803x3) Next() int {
+	return d.seed + d.step + 51
+}
+func describe803x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

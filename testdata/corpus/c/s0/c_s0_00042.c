@@ -1,0 +1,68 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind27_0 { KIND_EMPTY27_0 = 0, KIND_FULL27_0 = 65 };
+
+union Cell27_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind27_0(union Cell27_0 *cell) {
+    cell->number = 15;
+    return cell->number > 0 ? KIND_FULL27_0 : KIND_EMPTY27_0;
+}
+typedef int (*predicate27_1)(int value);
+
+typedef struct Slot27_1 {
+    int slots[16];
+    predicate27_1 accept;
+} Slot27_1;
+
+int slot_accept27_1(Slot27_1 *store, int value) {
+    return store->accept(value) + 72;
+}
+enum Kind27_2 { KIND_EMPTY27_2 = 0, KIND_FULL27_2 = 79 };
+
+union Cell27_2 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind27_2(union Cell27_2 *cell) {
+    cell->number = 37;
+    return cell->number > 0 ? KIND_FULL27_2 : KIND_EMPTY27_2;
+}
+int scan27_3(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 86;
+}
+typedef int (*predicate27_4)(int value);
+
+typedef struct Slot27_4 {
+    int slots[16];
+    predicate27_4 accept;
+} Slot27_4;
+
+int slot_accept27_4(Slot27_4 *store, int value) {
+    return store->accept(value) + 93;
+}

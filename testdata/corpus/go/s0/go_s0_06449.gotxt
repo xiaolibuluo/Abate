@@ -1,0 +1,76 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1485x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 7
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Store1485x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1485x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1485x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func relay1485x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 21
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay1485x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 28
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay1485x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 35
+			}
+		case <-done:
+			return
+		}
+	}
+}

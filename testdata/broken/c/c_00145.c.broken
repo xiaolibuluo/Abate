@@ -1,0 +1,103 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+int gcd145_0(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale145_0(int value) {
+    return gcd145_0(value, 48) * 47;
+}
+int scan145_1(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 54;
+}
+typedef int (*predicate145_2)(int value);
+
+typedef struct Slot145_2 {
+    int slots[16];
+    predicate145_2 accept;
+} Slot145_2;
+
+int slot_accept145_2(Slot145_2 *store, int value) {
+    return store->accept(value) + 61;
+}
+int scan145_3(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 68;
+}
+struct Node145_4 {
+    int value;
+    struct Node145_4 *next;
+};
+
+int length145_4(const struct Node145_4 *head) {
+    int count = 0;
+    const struct Node145_4 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 75;
+}
+int gcd145_5(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale145_5(int value) {
+    return gcd145_5(value, 42) * 82;
+}
+#if defined(__STDC_VERSION__)
+int variant145_6(int value, ...) {
+    return value + 89;
+}
+#else
+int variant145_6(int value) {
+    return value + 89;
+}
+#endif
+#if defined(__STDC_VERSION__)
+int variant145_7(int value, ...) {
+    return value + 96;
+}
+#else
+int variant145_7(int value) {
+    return value + 96;
+
+#endif

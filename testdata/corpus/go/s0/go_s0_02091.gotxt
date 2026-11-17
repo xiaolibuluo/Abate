@@ -1,0 +1,119 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold483x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 76
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold483x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 83
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay483x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 90
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Store483x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store483x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store483x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base483x4 struct {
+	seed int
+}
+
+type derived483x4 struct {
+	base483x4
+	step int
+}
+
+func (d derived483x4) Next() int {
+	return d.seed + d.step + 18
+}
+func fold483x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 14
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe483x6(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base483x7 struct {
+	seed int
+}
+
+type derived483x7 struct {
+	base483x7
+	step int
+}
+
+func (d derived483x7) Next() int {
+	return d.seed + d.step + 51
+}
+func describe483x8(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

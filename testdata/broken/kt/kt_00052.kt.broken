@@ -1,0 +1,21 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+data class Pair520<A, B>(val first: A, val second: B)
+
+fun combine520(left: Int, right: Int): Pair520<Int, Int> {
+    return Pair520(left + 99, right + 68)
+}
+data class Pair521<A, B>(val first: A, val second: B)
+
+fun combine521(left: Int, right: Int): Pair521<Int, Int> {
+    return Pair521(left + 9, right + 18)
+

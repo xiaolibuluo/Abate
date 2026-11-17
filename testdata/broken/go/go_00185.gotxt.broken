@@ -1,0 +1,98 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base185x0 struct {
+	seed int
+}
+
+type derived185x0 struct {
+	base185x0
+	step int
+}
+
+func (d derived185x0) Next() int {
+	return d.seed + d.step + 23
+}
+func describe185x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold185x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 96
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay185x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 6
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe185x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base185x5 struct {
+	seed int
+}
+
+type derived185x5 struct {
+	base185x5
+	step int
+}
+
+func (d derived185x5) Next() int {
+	return d.seed + d.step + 17
+}
+func describe185x6(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+

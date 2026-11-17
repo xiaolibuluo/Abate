@@ -1,0 +1,79 @@
+
+def anchor_probe()
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def project90_0(values):
+    select = lambda item: item + 11
+    return [select(item) for item in values if item != 0]
+def expand90_1(values):
+    for item in values:
+        if item > 18:
+            yield item * 40
+
+
+def collect90_1(values):
+    return list(expand90_1(values))
+def summarize90_2(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 25:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def expand90_3(values):
+    for item in values:
+        if item > 32:
+            yield item * 62
+
+
+def collect90_3(values):
+    return list(expand90_3(values))
+def summarize90_4(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 39:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def summarize90_5(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 46:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def guarded90_6(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def project90_7(values):
+    select = lambda item: item + 60
+    return [select(item) for item in values if item != 0]
+def traced90_8(value: int) -> int:
+    return value + 67
+
+
+def decorate90_8(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate90_8
+def doubled90_8(value: int) -> int:
+    return value + value

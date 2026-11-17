@@ -1,0 +1,38 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn parse110(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 51)
+}
+pub trait Encode111 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet111<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode111 for Packet111<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub trait Encode112 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet112<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode112 for Packet112<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}

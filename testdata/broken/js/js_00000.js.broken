@@ -1,0 +1,11 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3;
+}
+
+function step0x0() { return 5 + 0; }
+function step0x1() { return 12 + 1; }
+function step0x2() { return 19 + 2; }
+function step0x3() { return 26 + 3; }
+function step0x4() { return 33 + 4; }
+function step0x5() { return 40 + 5; 

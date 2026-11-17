@@ -1,0 +1,63 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify2257x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 52:
+		return value * 2
+	case 9:
+		return value + 2
+	default:
+		return value
+	}
+}
+type probeErr2257x1 struct {
+	code int
+}
+
+func (e probeErr2257x1) Error() string {
+	return "probe failure"
+}
+
+func check2257x1(value int) error {
+	if value < 0 {
+		return probeErr2257x1{code: value}
+	}
+	return nil
+}
+type Store2257x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2257x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2257x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base2257x3 struct {
+	seed int
+}
+
+type derived2257x3 struct {
+	base2257x3
+	step int
+}
+
+func (d derived2257x3) Next() int {
+	return d.seed + d.step + 42
+}

@@ -1,0 +1,101 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base84x0 struct {
+	seed int
+}
+
+type derived84x0 struct {
+	base84x0
+	step int
+}
+
+func (d derived84x0) Next() int {
+	return d.seed + d.step + 48
+}
+func classify84x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 37:
+		return value * 2
+	case 59:
+		return value + 2
+	default:
+		return value
+	}
+}
+func describe84x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Store84x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store84x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store84x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func classify84x4(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 58:
+		return value * 2
+	case 31:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder84x5 interface {
+	Encode(value int) int
+}
+
+type scaler84x5 struct {
+	factor int
+}
+
+func (s scaler84x5) Encode(value int) int {
+	return value * s.factor + 65
+}
+type probeErr84x6 struct {
+	code int
+}
+
+func (e probeErr84x6) Error() string {
+	return "probe failure"
+}
+
+func check84x6(value int) error {
+	if value < 0 {
+		return probeErr84x6{code: value}
+	}
+	return nil
+

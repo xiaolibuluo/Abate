@@ -1,0 +1,65 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+typedef int (*predicate73_0)(int value);
+
+typedef struct Slot73_0 {
+    int slots[16];
+    predicate73_0 accept;
+} Slot73_0;
+
+int slot_accept73_0(Slot73_0 *store, int value) {
+    return store->accept(value) + 81;
+}
+struct Node73_1 {
+    int value;
+    struct Node73_1 *next;
+};
+
+int length73_1(const struct Node73_1 *head) {
+    int count = 0;
+    const struct Node73_1 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 88;
+}
+int gcd73_2(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale73_2(int value) {
+    return gcd73_2(value, 54) * 95;
+}
+#define MASK73_3(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify73_3(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK73_3(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+#if defined(__STDC_VERSION__)
+int variant73_4(int value, ...) {
+    return value + 12;
+}
+#else
+int variant73_4(int value) {
+    return value + 12;
+}
+#endif

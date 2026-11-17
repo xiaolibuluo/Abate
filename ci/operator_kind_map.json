@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "bindingRule": "把真实 token 原文作为 NewNodeAt 的 attribute(text) 传入，使其进入 ComputeNodeID；SemOperator 由 air.Annotate 追加，仅作辅助标注，不进 NodeID。",
+  "bindingEntry": "lang/frontkit/opbind.go:frontkit.BindOperator",
+  "computeNodeIDChanged": false,
+  "annotationOnly": false,
+  "mutationAmplitudeChanged": false,
+  "verified": true,
+  "note": "T02 已通过 BindOperator 与 7 个 *_fidelity_test.go 的 cmp/op/digit 断言验证；注释反向验证不改变捕获结论。",
+  "frontends": ["gofront", "pyfront", "jsfront", "cfront", "csfront", "rsfront", "ktfront"],
+  "frontendFiles": [
+    "lang/gofront/mapexpr.go",
+    "lang/pyfront/pymap.go",
+    "lang/jsfront/jsmap_node.go",
+    "lang/cfront/cmap.go",
+    "lang/csfront/csmap.go",
+    "lang/rsfront/rsmap.go",
+    "lang/ktfront/ktmap.go"
+  ],
+  "verifiedBy": [
+    "lang/gofront/gofront_fidelity_test.go",
+    "lang/pyfront/pyfront_fidelity_test.go",
+    "lang/jsfront/jsfront_fidelity_test.go",
+    "lang/cfront/cfront_fidelity_test.go",
+    "lang/csfront/csfront_fidelity_test.go",
+    "lang/rsfront/rsfront_fidelity_test.go",
+    "lang/ktfront/ktfront_fidelity_test.go"
+  ],
+  "operators": [
+    {"token": "==", "class": "cmp", "airKind": "Binary", "airText": "==", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "!=", "class": "cmp", "airKind": "Binary", "airText": "!=", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "<", "class": "cmp", "airKind": "Binary", "airText": "<", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "<=", "class": "cmp", "airKind": "Binary", "airText": "<=", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": ">", "class": "cmp", "airKind": "Binary", "airText": ">", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": ">=", "class": "cmp", "airKind": "Binary", "airText": ">=", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "+", "class": "op", "airKind": "Binary", "airText": "+", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "-", "class": "op", "airKind": "Binary", "airText": "-", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "*", "class": "op", "airKind": "Binary", "airText": "*", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "/", "class": "op", "airKind": "Binary", "airText": "/", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "%", "class": "op", "airKind": "Binary", "airText": "%", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "&", "class": "op", "airKind": "Binary", "airText": "&", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "|", "class": "op", "airKind": "Binary", "airText": "|", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "^", "class": "op", "airKind": "Binary", "airText": "^", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "<<", "class": "op", "airKind": "Binary", "airText": "<<", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": ">>", "class": "op", "airKind": "Binary", "airText": ">>", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "&&", "class": "op", "airKind": "Binary", "airText": "&&", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "||", "class": "op", "airKind": "Binary", "airText": "||", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap_node.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "<integer-literal>", "class": "digit", "airKind": "NumLit", "airText": "41", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true},
+    {"token": "<floating-literal>", "class": "digit", "airKind": "NumLit", "airText": "3.14", "frontendFiles": ["gofront/mapexpr.go", "pyfront/pymap.go", "jsfront/jsmap.go", "cfront/cmap.go", "csfront/csmap.go", "rsfront/rsmap.go", "ktfront/ktmap.go"], "verified": true}
+  ]
+}

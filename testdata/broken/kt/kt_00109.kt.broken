@@ -1,0 +1,42 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+@JvmName("step1090")
+fun step1090(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 64
+}
+object Registry1091 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1091 = "registry-71"
+    }
+}
+class Counter1092 {
+    var current: Int by Delegates.observable(78) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+

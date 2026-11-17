@@ -1,0 +1,24 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3
+}
+
+func step0x0() int {
+	return 5 + 0
+}
+func step0x1() int {
+	return 12 + 1
+}
+func step0x2() int {
+	return 19 + 2
+}
+func step0x3() int {
+	return 26 + 3
+}
+func step0x4() int {
+	return 33 + 4
+}
+func step0x5() int {
+	return 40 + 5
+}

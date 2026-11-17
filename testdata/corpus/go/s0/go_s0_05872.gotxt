@@ -1,0 +1,32 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1365x0 struct {
+	seed int
+}
+
+type derived1365x0 struct {
+	base1365x0
+	step int
+}
+
+func (d derived1365x0) Next() int {
+	return d.seed + d.step + 48
+}
+type Encoder1365x1 interface {
+	Encode(value int) int
+}
+
+type scaler1365x1 struct {
+	factor int
+}
+
+func (s scaler1365x1) Encode(value int) int {
+	return value * s.factor + 6
+}

@@ -1,0 +1,60 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay554x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 29
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base554x1 struct {
+	seed int
+}
+
+type derived554x1 struct {
+	base554x1
+	step int
+}
+
+func (d derived554x1) Next() int {
+	return d.seed + d.step + 55
+}
+type Store554x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store554x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store554x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder554x3 interface {
+	Encode(value int) int
+}
+
+type scaler554x3 struct {
+	factor int
+}
+
+func (s scaler554x3) Encode(value int) int {
+	return value * s.factor + 50
+}

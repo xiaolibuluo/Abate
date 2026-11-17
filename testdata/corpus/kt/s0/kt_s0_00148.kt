@@ -1,0 +1,47 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome1200 {
+    data class Success(val payload: String) : Outcome1200()
+    data object Failure : Outcome1200()
+}
+
+fun describe1200(outcome: Outcome1200): String = when (outcome) {
+    is Outcome1200.Success -> outcome.payload
+    Outcome1200.Failure -> "failed"
+}
+@JvmName("step1201")
+fun step1201(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 20
+}
+sealed class Outcome1202 {
+    data class Success(val payload: String) : Outcome1202()
+    data object Failure : Outcome1202()
+}
+
+fun describe1202(outcome: Outcome1202): String = when (outcome) {
+    is Outcome1202.Success -> outcome.payload
+    Outcome1202.Failure -> "failed"
+}
+data class Pair1203<A, B>(val first: A, val second: B)
+
+fun combine1203(left: Int, right: Int): Pair1203<Int, Int> {
+    return Pair1203(left + 34, right + 28)
+}
+fun <T> List<T>.secondOrNull1204(): T? = if (size > 1) this[1] else null
+
+fun render1204(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}

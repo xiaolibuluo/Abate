@@ -1,0 +1,45 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1564x0 struct {
+	seed int
+}
+
+type derived1564x0 struct {
+	base1564x0
+	step int
+}
+
+func (d derived1564x0) Next() int {
+	return d.seed + d.step + 38
+}
+type Encoder1564x1 interface {
+	Encode(value int) int
+}
+
+type scaler1564x1 struct {
+	factor int
+}
+
+func (s scaler1564x1) Encode(value int) int {
+	return value * s.factor + 71
+}
+func relay1564x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 78
+			}
+		case <-done:
+			return
+		}
+	}
+}

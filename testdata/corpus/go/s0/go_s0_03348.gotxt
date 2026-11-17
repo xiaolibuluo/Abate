@@ -1,0 +1,65 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base752x0 struct {
+	seed int
+}
+
+type derived752x0 struct {
+	base752x0
+	step int
+}
+
+func (d derived752x0) Next() int {
+	return d.seed + d.step + 27
+}
+type Store752x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store752x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store752x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr752x2 struct {
+	code int
+}
+
+func (e probeErr752x2) Error() string {
+	return "probe failure"
+}
+
+func check752x2(value int) error {
+	if value < 0 {
+		return probeErr752x2{code: value}
+	}
+	return nil
+}
+type Store752x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store752x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store752x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

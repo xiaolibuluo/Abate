@@ -1,0 +1,195 @@
+<!doctype html>
+<!--
+Copyright (c) 2026 小黎的部落 (www.qingdujian.com). All rights reserved.
+Abate is dual-licensed under AGPLv3 and a commercial license.
+Self-contained browser console: inline CSS + vanilla JS, no CDN, fully offline.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abate Console</title>
+<style>
+  :root { color-scheme: light dark; --bg:#0f1419; --panel:#161c24; --ink:#e6edf3; --muted:#8b98a5; --acc:#3b82f6; --ok:#2ea043; --bad:#f85149; --line:#222c38; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:14px/1.5 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); }
+  header { display:flex; align-items:center; gap:12px; padding:12px 18px; border-bottom:1px solid var(--line); background:var(--panel); position:sticky; top:0; z-index:10; }
+  header h1 { font-size:16px; margin:0; font-weight:600; }
+  header .spacer { flex:1; }
+  header input { background:var(--bg); border:1px solid var(--line); color:var(--ink); border-radius:6px; padding:6px 8px; width:220px; }
+  nav { display:flex; gap:2px; padding:0 12px; border-bottom:1px solid var(--line); background:var(--panel); }
+  nav button { background:transparent; border:0; color:var(--muted); padding:10px 14px; cursor:pointer; border-bottom:2px solid transparent; font-size:14px; }
+  nav button.active { color:var(--ink); border-bottom-color:var(--acc); }
+  main { padding:18px; max-width:1100px; margin:0 auto; }
+  .tab { display:none; } .tab.active { display:block; }
+  label { display:block; color:var(--muted); margin:10px 0 4px; }
+  input,select,textarea,button.act { background:var(--bg); border:1px solid var(--line); color:var(--ink); border-radius:6px; padding:8px 10px; font:inherit; }
+  button.act { background:var(--acc); border-color:var(--acc); color:#fff; cursor:pointer; }
+  button.act:hover { filter:brightness(1.08); }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
+  .row > div { display:flex; flex-direction:column; }
+  pre { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px; overflow:auto; max-height:60vh; white-space:pre-wrap; word-break:break-word; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:14px; margin-top:14px; }
+  .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; border:1px solid var(--line); }
+  .ok { color:var(--ok); border-color:var(--ok); } .bad { color:var(--bad); border-color:var(--bad); } .muted { color:var(--muted); }
+  table { width:100%; border-collapse:collapse; } th,td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); }
+  th { color:var(--muted); font-weight:500; }
+  a { color:var(--acc); }
+  .hint { color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Abate Console</h1>
+  <span class="hint">local control plane</span>
+  <span class="spacer"></span>
+  <input id="token" type="password" placeholder="Bearer token (if required)" autocomplete="off">
+</header>
+<nav id="nav">
+  <button data-tab="health" class="active">Health</button>
+  <button data-tab="checks">Checks</button>
+  <button data-tab="experiments">Experiments</button>
+  <button data-tab="plugins">Plugins</button>
+  <button data-tab="openapi">OpenAPI</button>
+</nav>
+<main>
+  <section id="health" class="tab active">
+    <p class="hint">Public endpoint — no token required.</p>
+    <button class="act" onclick="getHealth()">GET /api/v1/health</button>
+    <pre id="health-out">—</pre>
+  </section>
+
+  <section id="checks" class="tab">
+    <div class="card">
+      <div class="row">
+        <div><label>Language</label><select id="c-lang">
+          <option>go</option><option>python</option><option>js</option><option>c</option>
+          <option>rust</option><option>csharp</option><option>kotlin</option>
+        </select></div>
+        <div><label>Format</label><select id="c-fmt">
+          <option>console</option><option>json</option><option>sarif</option>
+        </select></div>
+        <div style="flex:1; min-width:260px"><label>Paths (comma separated)</label>
+          <input id="c-paths" placeholder="./ctl/cli,./lang/rule"></div>
+        <div><label>&nbsp;</label><button class="act" onclick="runTask('check')">Run check</button></div>
+      </div>
+    </div>
+    <div id="checks-out"></div>
+  </section>
+
+  <section id="experiments" class="tab">
+    <div class="card">
+      <div class="row">
+        <div><label>Language</label><select id="e-lang">
+          <option>go</option><option>python</option><option>js</option><option>c</option>
+          <option>rust</option><option>csharp</option><option>kotlin</option>
+        </select></div>
+        <div><label>Format</label><select id="e-fmt">
+          <option>console</option><option>json</option><option>sarif</option>
+        </select></div>
+        <div style="flex:1; min-width:260px"><label>Paths (comma separated)</label>
+          <input id="e-paths" placeholder="./ctl/cli,./lang/rule"></div>
+        <div><label>&nbsp;</label><button class="act" onclick="runTask('experiment')">Run experiment</button></div>
+      </div>
+    </div>
+    <div id="experiments-out"></div>
+  </section>
+
+  <section id="plugins" class="tab">
+    <button class="act" onclick="loadPlugins()">GET /api/v1/plugins</button>
+    <div id="plugins-out"></div>
+  </section>
+
+  <section id="openapi" class="tab">
+    <button class="act" onclick="loadOpenAPI()">GET /openapi.json</button>
+    <pre id="openapi-out">—</pre>
+  </section>
+</main>
+
+<script>
+const API = "/api/v1";
+function token() { return document.getElementById("token").value.trim(); }
+function auth(h) { const t = token(); if (t) h["Authorization"] = "Bearer " + t; return h; }
+async function api(method, path, body) {
+  const opt = { method, headers: auth({ "Accept": "application/json" }) };
+  if (body) { opt.headers["Content-Type"] = "application/json"; opt.body = JSON.stringify(body); }
+  const r = await fetch(API + path, opt);
+  const ct = r.headers.get("Content-Type") || "";
+  if (ct.includes("application/json")) {
+    const j = await r.json().catch(() => null);
+    return { ok: r.ok, status: r.status, json: j, text: "" };
+  }
+  const t = await r.text();
+  return { ok: r.ok, status: r.status, json: null, text: t };
+}
+function esc(s) { return String(s).replace(/[&<>]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;" }[c])); }
+
+async function getHealth() {
+  const out = document.getElementById("health-out");
+  const res = await api("GET", "/health");
+  out.textContent = JSON.stringify(res.json ?? res.text, null, 2);
+}
+
+const TERMINAL = new Set(["completed","failed","incomplete","cancelled"]);
+function statusBadge(s) {
+  const cls = (s === "completed") ? "ok" : (TERMINAL.has(s) ? "bad" : "muted");
+  return `<span class="badge ${cls}">${esc(s)}</span>`;
+}
+
+async function runTask(kind) {
+  const out = document.getElementById(kind + "s-out");
+  const lang = document.getElementById(kind[0] + "-lang").value;
+  const fmt = document.getElementById(kind[0] + "-fmt").value;
+  const paths = document.getElementById(kind[0] + "-paths").value.split(",").map(p => p.trim()).filter(Boolean);
+  out.innerHTML = `<div class="card">Submitting…</div>`;
+  const res = await api("POST", "/" + kind + "s", { language: lang, format: fmt, paths });
+  if (!res.ok) { out.innerHTML = `<pre class="bad">${esc(JSON.stringify(res.json ?? res.text, null, 2))}</pre>`; return; }
+  const task = res.json;
+  const id = task.id;
+  out.innerHTML = `<div class="card">Task <code>${esc(id)}</code> ${statusBadge(task.status)} — polling…</div>`;
+  for (let i = 0; i < 60; i++) {
+    await new Promise(r => setTimeout(r, 300));
+    const t = await api("GET", "/" + kind + "s/" + id);
+    if (!t.ok) break;
+    const cur = t.json;
+    let html = `<div class="card">Task <code>${esc(id)}</code> ${statusBadge(cur.status)}`;
+    if (cur.summary) html += ` · files ${cur.summary.files} · rules ${cur.summary.rules} · total ${cur.summary.total}`;
+    if (cur.fingerprint) html += ` · <code>${esc(cur.fingerprint)}</code>`;
+    if (cur.detail) html += ` · <span class="bad">${esc(cur.detail)}</span>`;
+    html += `</div>`;
+    if (TERMINAL.has(cur.status)) {
+      const rep = await api("GET", "/" + kind + "s/" + id + "/report");
+      html += `<pre>${esc(rep.text || JSON.stringify(rep.json, null, 2) || "(empty)")}</pre>`;
+      break;
+    }
+    out.innerHTML = html;
+  }
+}
+
+async function loadPlugins() {
+  const out = document.getElementById("plugins-out");
+  const res = await api("GET", "/plugins");
+  if (!res.ok) { out.innerHTML = `<pre class="bad">${esc(JSON.stringify(res.json ?? res.text, null, 2))}</pre>`; return; }
+  const tasks = (res.json && res.json.plugins) || [];
+  if (!tasks.length) { out.innerHTML = `<div class="card muted">No plugins registered.</div>`; return; }
+  let rows = tasks.map(p => `<tr><td>${esc(p.id||"")}</td><td>${esc(p.version||"")}</td><td>${esc(p.kind||"")}</td><td>${statusBadge(p.state||"")}</td></tr>`).join("");
+  out.innerHTML = `<table><thead><tr><th>ID</th><th>Version</th><th>Kind</th><th>State</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+async function loadOpenAPI() {
+  const out = document.getElementById("openapi-out");
+  const res = await api("GET", "/openapi.json");
+  out.textContent = JSON.stringify(res.json ?? res.text, null, 2);
+}
+
+document.getElementById("nav").addEventListener("click", e => {
+  const b = e.target.closest("button[data-tab]"); if (!b) return;
+  document.querySelectorAll("nav button").forEach(x => x.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+  b.classList.add("active");
+  document.getElementById(b.dataset.tab).classList.add("active");
+});
+getHealth();
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+struct Node129_0 {
+    int value;
+    struct Node129_0 *next;
+};
+
+int length129_0(const struct Node129_0 *head) {
+    int count = 0;
+    const struct Node129_0 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 33;
+}
+int scan129_1(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 40;
+}
+int scan129_2(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 47;
+}
+enum Kind129_3 { KIND_EMPTY129_3 = 0, KIND_FULL129_3 = 54 };
+
+union Cell129_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind129_3(union Cell129_3 *cell) {
+    cell->number = 30;
+    return cell->number > 0 ? KIND_FULL129_3 : KIND_EMPTY129_3;
+}
+#if defined(__STDC_VERSION__)
+int variant129_4(int value, ...) {
+    return value + 61;
+}
+#else
+int variant129_4(int value) {
+    return value + 61;
+
+#endif

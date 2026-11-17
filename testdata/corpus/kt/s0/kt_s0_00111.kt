@@ -1,0 +1,72 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+data class Pair880<A, B>(val first: A, val second: B)
+
+fun combine880(left: Int, right: Int): Pair880<Int, Int> {
+    return Pair880(left + 82, right + 15)
+}
+data class Pair881<A, B>(val first: A, val second: B)
+
+fun combine881(left: Int, right: Int): Pair881<Int, Int> {
+    return Pair881(left + 89, right + 26)
+}
+class Counter882 {
+    var current: Int by Delegates.observable(96) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+sealed class Outcome883 {
+    data class Success(val payload: String) : Outcome883()
+    data object Failure : Outcome883()
+}
+
+fun describe883(outcome: Outcome883): String = when (outcome) {
+    is Outcome883.Success -> outcome.payload
+    Outcome883.Failure -> "failed"
+}
+fun <T, R> List<T>.mapChecked884(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+data class Pair885<A, B>(val first: A, val second: B)
+
+fun combine885(left: Int, right: Int): Pair885<Int, Int> {
+    return Pair885(left + 20, right + 9)
+}
+sealed class Outcome886 {
+    data class Success(val payload: String) : Outcome886()
+    data object Failure : Outcome886()
+}
+
+fun describe886(outcome: Outcome886): String = when (outcome) {
+    is Outcome886.Success -> outcome.payload
+    Outcome886.Failure -> "failed"
+}
+fun <T, R> List<T>.mapChecked887(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}

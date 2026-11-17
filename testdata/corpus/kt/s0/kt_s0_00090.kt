@@ -1,0 +1,56 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+object Registry740 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG740 = "registry-94"
+    }
+}
+@JvmName("step741")
+fun step741(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 101
+}
+fun <T, R> List<T>.mapChecked742(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+data class Pair743<A, B>(val first: A, val second: B)
+
+fun combine743(left: Int, right: Int): Pair743<Int, Int> {
+    return Pair743(left + 18, right + 11)
+}
+fun <T, R> List<T>.mapChecked744(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+object Registry745 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG745 = "registry-32"
+    }
+}

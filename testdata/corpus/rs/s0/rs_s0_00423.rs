@@ -1,0 +1,106 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn loops1400(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 79;
+        break;
+    }
+    total
+}
+#[derive(Debug, Clone)]
+pub enum Outcome1401<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record1401<T> {
+    pub value: T,
+    pub tag: u32,
+}
+pub trait Encode1402 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet1402<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode1402 for Packet1402<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+#[derive(Debug, Clone)]
+pub enum Outcome1403<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record1403<T> {
+    pub value: T,
+    pub tag: u32,
+}
+pub fn loops1404(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 10;
+        break;
+    }
+    total
+}
+pub fn loops1405(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 17;
+        break;
+    }
+    total
+}
+pub trait Encode1406 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet1406<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode1406 for Packet1406<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub fn peek1407(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 31
+}

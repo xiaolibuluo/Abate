@@ -1,0 +1,82 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr900x0 struct {
+	code int
+}
+
+func (e probeErr900x0) Error() string {
+	return "probe failure"
+}
+
+func check900x0(value int) error {
+	if value < 0 {
+		return probeErr900x0{code: value}
+	}
+	return nil
+}
+type probeErr900x1 struct {
+	code int
+}
+
+func (e probeErr900x1) Error() string {
+	return "probe failure"
+}
+
+func check900x1(value int) error {
+	if value < 0 {
+		return probeErr900x1{code: value}
+	}
+	return nil
+}
+type Encoder900x2 interface {
+	Encode(value int) int
+}
+
+type scaler900x2 struct {
+	factor int
+}
+
+func (s scaler900x2) Encode(value int) int {
+	return value * s.factor + 79
+}
+type probeErr900x3 struct {
+	code int
+}
+
+func (e probeErr900x3) Error() string {
+	return "probe failure"
+}
+
+func check900x3(value int) error {
+	if value < 0 {
+		return probeErr900x3{code: value}
+	}
+	return nil
+}
+func fold900x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 93
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold900x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 100
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

@@ -1,0 +1,87 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+typedef int (*predicate88_0)(int value);
+
+typedef struct Slot88_0 {
+    int slots[16];
+    predicate88_0 accept;
+} Slot88_0;
+
+int slot_accept88_0(Slot88_0 *store, int value) {
+    return store->accept(value) + 82;
+}
+#define MASK88_1(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify88_1(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK88_1(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+enum Kind88_2 { KIND_EMPTY88_2 = 0, KIND_FULL88_2 = 96 };
+
+union Cell88_2 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind88_2(union Cell88_2 *cell) {
+    cell->number = 37;
+    return cell->number > 0 ? KIND_FULL88_2 : KIND_EMPTY88_2;
+}
+#define MASK88_3(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify88_3(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK88_3(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+enum Kind88_4 { KIND_EMPTY88_4 = 0, KIND_FULL88_4 = 13 };
+
+union Cell88_4 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind88_4(union Cell88_4 *cell) {
+    cell->number = 59;
+    return cell->number > 0 ? KIND_FULL88_4 : KIND_EMPTY88_4;
+}
+int gcd88_5(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale88_5(int value) {
+    return gcd88_5(value, 9) * 20;
+}
+int gcd88_6(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale88_6(int value) {
+    return gcd88_6(value, 20) * 27;
+}

@@ -1,0 +1,152 @@
+%% ---------------------------------------------------------------------------
+%% Copyright (c) 小黎的部落 (www.qingdujian.com) — Project: xiaolibuluo/Abate (https://github.com/xiaolibuluo/Abate)
+%% SPDX-License-Identifier: AGPL-3.0-or-later (subject to confirmation by the rights holder / 需权利人确认)
+%% Abate dual-license (AGPLv3 or commercial) bilingual documentation.
+%% 本文件不构成法律意见 / This document does not constitute legal advice.
+%% Side-by-side English translation of sequence-diagram.mermaid; participant
+%% order, message flow and all code identifiers are identical to the frozen
+%% source; only Chinese labels are translated. The source file is not modified.
+%% ---------------------------------------------------------------------------
+sequenceDiagram
+    autonumber
+    actor ENG as Engineer / Lead
+    participant FETCH as scripts/corpus_fetch.sh<br/>(offline preparation tool)
+    participant FS as third_party/_sources/<br/>_validation/… (read-only fs.FS)
+    participant CTL as cmd/corpusctl
+    participant MAN as ci/corpus_manifest.json
+    participant LINT as scripts/lint-gate.sh<br/>(existing nine sections + tenth section)
+    participant GATE as ci/gate_e2e.sh<br/>(tenth-section gate)
+    participant THR as ci/e2e_thresholds.json<br/>+ baseline
+    participant NEU as internal/e2e/neutrality<br/>(go/ast reverse check)
+    participant E2E as cmd/e2e
+    participant RUN as internal/e2e.Runner
+    participant SMP as internal/corpus<br/>StratifiedSample + RNG
+    participant FT as FrontendTable<br/>(7-language air.Frontend)
+    participant AIR as lang/air<br/>Unit / Node / IDOf
+    participant MUT as internal/e2e/mutate<br/>Registry + EquivalentSet
+    participant CHA as internal/e2e/chaos<br/>Generator + Merge
+    participant COV as internal/e2e/coverage<br/>CoverageIndex
+    participant MET as internal/e2e/metrics
+    participant REP as internal/e2e/report<br/>Write / Recompute / Evaluate
+    participant ART as .artifacts/e2e/&lt;manifestSha256&gt;/
+
+    %% ---------- Phase 0: corpus landing and registration (offline; gates never access the network) ----------
+    rect rgb(235, 244, 252)
+    Note over ENG,FS: Phase 0 · dual-track corpus landing (one-time offline preparation; gates never trigger downloads)
+    ENG->>FETCH: bash scripts/corpus_fetch.sh (7 pinned URLs + sha256)
+    FETCH->>FS: extract to _sources/_validation/&lt;lang&gt;/&lt;project-tag&gt;/
+    FETCH->>FETCH: recompute tarball sha256 per package; exit 1 on mismatch
+    FETCH-->>ENG: directories read-only; all directory names start with _
+    end
+
+    rect rgb(240, 248, 240)
+    Note over ENG,MAN: Phase 1 · registration / verification (CRUD: Create + Read + Verify)
+    ENG->>CTL: corpusctl register
+    CTL->>FS: fs.WalkDir(_sources) collect by extension, ascending path order
+    loop Each file (no skips, no branching on source)
+        CTL->>FS: fs.ReadFile(fsys, relPath)
+        CTL->>CTL: sha256(raw bytes) / byte count / SPDX / evidence path / construct tags / source tag
+    end
+    CTL->>MAN: Write Entries (ascending RelPath, no timestamps, no absolute paths)
+    ENG->>CTL: corpusctl verify
+    CTL->>MAN: Load
+    CTL->>FS: recompute sha256 in full (item by item)
+    CTL->>CTL: SPDX classification (GPL/UNKNOWN hard FAIL; boundary counted separately)
+    CTL->>CTL: dual-track parseablePerLanguage by source (≥200 assertion)
+    CTL-->>ENG: VerifyResult{registered, recomputed, mismatches=0, spdxViolations=0}
+    end
+
+    %% ---------- Phase 2: tenth-section gate starts ----------
+    rect rgb(255, 248, 232)
+    Note over LINT,THR: Phase 2 · tenth-section gate entry (existing nine sections unchanged)
+    ENG->>LINT: bash scripts/lint-gate.sh
+    LINT->>LINT: [0..8] all existing nine sections preserved
+    LINT->>GATE: [9] bash ci/gate_e2e.sh (appended section)
+    GATE->>MAN: compute manifestSha256
+    GATE->>THR: load thresholds + baseline
+    GATE->>THR: tightening-only check: minima ≥ baseline / maxima ≤ baseline / zero-tolerance keys complete and always 0
+    GATE->>NEU: neutralitycheck --sources ci/e2e_sources.txt
+    NEU->>NEU: go/ast scan: Source/Project/SPDX selectors in conditions, continue/break in corpus loops, WithTypeCheck(false), recover, time.Now, math/rand, os/exec, http.Do, net.Dial
+    NEU->>NEU: completeness reverse check: find(new roots) compared line-by-line with e2e_sources.txt via cmp
+    NEU-->>GATE: Findings (continue only on zero hits; on hit print file:line:rule)
+    end
+
+    %% ---------- Phase 3: Runner double run ----------
+    rect rgb(245, 240, 255)
+    Note over GATE,ART: Phase 3 · two runs with identical seed + manifest are byte-identical
+    loop runIndex ∈ {1, 2} (seed and manifest fully identical)
+        GATE->>E2E: go run ./cmd/e2e -plan -manifest -out
+        E2E->>RUN: NewRunner(plan, manifest)
+        RUN->>SMP: StratifiedSample(manifest, plan, rng)
+        SMP->>SMP: rng = SplitMix64(first 8 bytes of sha256(seed ‖ manifestSha256 ‖ label))
+        SMP->>SMP: 256B~180KB split into StrataCount strata, sampled equidistantly in ascending sha256(RelPath) order within each stratum
+        SMP-->>RUN: FilesPerLanguage samples per language (no exclusion branches)
+        RUN->>FT: For(lang) → (air.Frontend, dialect)
+        Note over FT: NewGoFrontend() defaults to typeCheck=true<br/>WithTypeCheck(false) is forbidden to dodge the G1 path
+
+        loop Each registered sample (deterministic order; processedFiles must == registeredFiles)
+            RUN->>RUN: Trace.Mark(fileSha256, relPath, phase) writes deterministic progress lines
+            RUN->>RUN: ResourceProbe.Measure prepares context.WithTimeout + ReadMemStats baseline
+            RUN->>FT: Parse(air.SourceUnit{Language, Dialect, Files:[]SourceFile})
+            FT->>AIR: NewNodeAt(kind, pos, end, text=real operator token text, children...)
+            AIR->>AIR: ComputeNodeID(kind, text, child IDs) → NodeID (FNV-1a)
+            FT-->>RUN: (*air.Unit, []air.Diagnostic, error)
+            RUN->>AIR: air.IDOf(unit.Roots[i]) → AIRIDBefore
+            RUN->>AIR: air.CheckIntervals(root, size) / Unit.Validate()
+
+            RUN->>MUT: Registry.All() → Apply(OpContext) per operator
+            MUT->>MUT: generate Edit per point (cmp/op/digit + P1 six classes)
+            loop Each valid mutation point
+                RUN->>RUN: replace bytes in memory (never write back to the read-only corpus tree)
+                RUN->>FT: Parse(mutated SourceUnit)
+                FT-->>RUN: (*air.Unit, diagnostics, error)
+                RUN->>AIR: air.IDOf(root) → AIRIDAfter
+                RUN->>MUT: EquivalentSet.Classify(record) only labels; gross denominator is not reduced
+                RUN->>MET: append DrilldownRecord{FileSHA256, OperatorID, AIRIDBefore/After, Captured, ProofID}
+            end
+
+            RUN->>CHA: Generator.Generate(entry, DamageKind, rng) (including truncate-half reproducing G1)
+            CHA->>CHA: Merge() deduplicates by input sha256 (-merge=1 semantics)
+            loop Each damaged sample (≥200/language)
+                RUN->>FT: Parse(damaged SourceUnit)
+                FT-->>RUN: (*air.Unit, diagnostics, error)
+                RUN->>AIR: compare node-ID sets outside the damaged region → structure retention rate
+                RUN->>MET: append Robustness counts (Timeout / MemExceeded in separate columns)
+            end
+
+            RUN->>COV: CoverageIndex.Degradation(lang, unit)
+            COV->>COV: grammar.Load (6 languages) / go uses self-built list ci/constructs_go.json
+            COV->>COV: coverage.Compute + Observe → degraded-node share / construct coverage rate
+            RUN->>MET: PrecisionRow{ZeroDiagZeroErr, DegradeNodePct, OutsideDamageRetentionPct}
+        end
+
+        RUN->>MET: Aggregate → Columns (text/structure/broken/equivalent four separate columns, never merged)
+        MET-->>RUN: Precision[], Mutation[], Robustness, Equivalence{Gross,Effective,SilentDrops=0}
+        RUN->>REP: Write(Report, []DrilldownRecord)
+        REP->>REP: embed manifestSha256 / planSha256 / thresholdsSha256 / drilldownSha256
+        REP->>REP: no wall clock, no absolute paths, no map iteration order, struct fields in fixed order
+        REP->>ART: e2e_report.json + e2e_drilldown.jsonl + e2e_report.md
+        REP-->>E2E: exit 0 (on panic: process terminates directly, report left incomplete → locate via last Trace line)
+        E2E-->>GATE: exit code
+    end
+    GATE->>GATE: cmp run1/e2e_report.json run2/e2e_report.json (byte-by-byte)
+    end
+
+    %% ---------- Phase 4: recompute / verdict / archive ----------
+    rect rgb(252, 238, 238)
+    Note over GATE,ART: Phase 4 · real FAIL → fix → real PASS closed loop
+    GATE->>REP: Recompute(report, drilldown) recomputes every baseline current value from drilldown records
+    REP-->>GATE: zero-error assertion result
+    GATE->>REP: Evaluate(thresholds, baseline, report)
+    REP-->>GATE: Verdict{Passed, Failures[]}
+    alt zero-tolerance item non-zero or minima unmet / maxima exceeded
+        GATE->>ART: print localization (file sha256 + operator + AIR-ID before/after values + rule id)
+        GATE->>ART: write exit_code=1 + report + manifest + thresholds + plan archive
+        GATE-->>LINT: exit 1 → tenth section FAIL (engineer refines precisely per localization; thresholds not loosened)
+        LINT-->>ENG: CI GATE: FAILED (real red light)
+    else all zero / all 100% / information complete
+        GATE->>ART: archive report + manifest + thresholds + plan + exit_code=0 (directory name from manifestSha256 prefix, deterministic)
+        GATE-->>LINT: exit 0 → tenth section PASS
+        LINT-->>ENG: CI GATE: PASSED (nine sections + tenth section all green, recomputable)
+    end
+    end

@@ -1,0 +1,42 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1176x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 64
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1176x1 struct {
+	seed int
+}
+
+type derived1176x1 struct {
+	base1176x1
+	step int
+}
+
+func (d derived1176x1) Next() int {
+	return d.seed + d.step + 17
+}
+type Encoder1176x2 interface {
+	Encode(value int) int
+}
+
+type scaler1176x2 struct {
+	factor int
+}
+
+func (s scaler1176x2) Encode(value int) int {
+	return value * s.factor + 78
+}

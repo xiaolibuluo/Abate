@@ -1,0 +1,109 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1407x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 60
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe1407x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold1407x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 74
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1407x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 81
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func classify1407x4(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 88:
+		return value * 2
+	case 20:
+		return value + 2
+	default:
+		return value
+	}
+}
+func classify1407x5(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 95:
+		return value * 2
+	case 31:
+		return value + 2
+	default:
+		return value
+	}
+}
+func fold1407x6(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 5
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe1407x7(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

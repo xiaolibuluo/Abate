@@ -1,0 +1,51 @@
+id: TCK-PARSE-068
+spec: "03-ces-spec.md §4 TARGET-004"
+kind: parse
+input: |
+  apiVersion: ces.tencent.com/v1
+  kind: Experiment
+  metadata:
+      name: tck-base
+  spec:
+      target:
+          kind: simulator
+          selector:
+              node: n1
+      steadyState:
+          - probeRef: p1
+            expectation:
+              type: value
+              value: ok
+            tolerance:
+              type: absolute
+              value: 1
+            holdFor: 2s
+      method:
+          expression: m-op ⊗ c-op
+          operators:
+              - id: m-op
+                family: mutation
+                targets: []
+                invertible: true
+                targetKind: source
+              - id: c-op
+                family: chaos
+                targets: []
+                invertible: true
+                targetKind: simulator
+      probes:
+          - id: p1
+            kind: metric
+            spec:
+              query: up
+              expect: "1"
+            interval: 1s
+      rollback:
+          strategy: auto
+          verifySteadyState: false
+      schedule:
+          continuous:
+              duration: 1s
+expect:
+  accept: true
+  ruleIds: []

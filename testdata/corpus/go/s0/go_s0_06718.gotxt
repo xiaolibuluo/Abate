@@ -1,0 +1,81 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1539x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 30
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1539x1 interface {
+	Encode(value int) int
+}
+
+type scaler1539x1 struct {
+	factor int
+}
+
+func (s scaler1539x1) Encode(value int) int {
+	return value * s.factor + 37
+}
+func fold1539x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 44
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold1539x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 51
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe1539x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func describe1539x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

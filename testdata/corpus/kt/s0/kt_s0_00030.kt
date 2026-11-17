@@ -1,0 +1,62 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+class Counter250 {
+    var current: Int by Delegates.observable(39) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+class Counter251 {
+    var current: Int by Delegates.observable(46) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+sealed class Outcome252 {
+    data class Success(val payload: String) : Outcome252()
+    data object Failure : Outcome252()
+}
+
+fun describe252(outcome: Outcome252): String = when (outcome) {
+    is Outcome252.Success -> outcome.payload
+    Outcome252.Failure -> "failed"
+}
+class Counter253 {
+    var current: Int by Delegates.observable(60) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}

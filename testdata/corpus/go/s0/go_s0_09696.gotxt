@@ -1,0 +1,92 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder2271x0 interface {
+	Encode(value int) int
+}
+
+type scaler2271x0 struct {
+	factor int
+}
+
+func (s scaler2271x0) Encode(value int) int {
+	return value * s.factor + 40
+}
+func fold2271x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 47
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay2271x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 54
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder2271x3 interface {
+	Encode(value int) int
+}
+
+type scaler2271x3 struct {
+	factor int
+}
+
+func (s scaler2271x3) Encode(value int) int {
+	return value * s.factor + 61
+}
+func fold2271x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 68
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe2271x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr2271x6 struct {
+	code int
+}
+
+func (e probeErr2271x6) Error() string {
+	return "probe failure"
+}
+
+func check2271x6(value int) error {
+	if value < 0 {
+		return probeErr2271x6{code: value}
+	}
+	return nil
+}

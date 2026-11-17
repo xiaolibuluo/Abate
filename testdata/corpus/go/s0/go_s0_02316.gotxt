@@ -1,0 +1,128 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr533x0 struct {
+	code int
+}
+
+func (e probeErr533x0) Error() string {
+	return "probe failure"
+}
+
+func check533x0(value int) error {
+	if value < 0 {
+		return probeErr533x0{code: value}
+	}
+	return nil
+}
+func describe533x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr533x2 struct {
+	code int
+}
+
+func (e probeErr533x2) Error() string {
+	return "probe failure"
+}
+
+func check533x2(value int) error {
+	if value < 0 {
+		return probeErr533x2{code: value}
+	}
+	return nil
+}
+func classify533x3(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 68:
+		return value * 2
+	case 52:
+		return value + 2
+	default:
+		return value
+	}
+}
+func classify533x4(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 75:
+		return value * 2
+	case 63:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder533x5 interface {
+	Encode(value int) int
+}
+
+type scaler533x5 struct {
+	factor int
+}
+
+func (s scaler533x5) Encode(value int) int {
+	return value * s.factor + 82
+}
+func relay533x6(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 89
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay533x7(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 96
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe533x8(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

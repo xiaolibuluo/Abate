@@ -1,0 +1,100 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr126x0 struct {
+	code int
+}
+
+func (e probeErr126x0) Error() string {
+	return "probe failure"
+}
+
+func check126x0(value int) error {
+	if value < 0 {
+		return probeErr126x0{code: value}
+	}
+	return nil
+}
+type base126x1 struct {
+	seed int
+}
+
+type derived126x1 struct {
+	base126x1
+	step int
+}
+
+func (d derived126x1) Next() int {
+	return d.seed + d.step + 48
+}
+type probeErr126x2 struct {
+	code int
+}
+
+func (e probeErr126x2) Error() string {
+	return "probe failure"
+}
+
+func check126x2(value int) error {
+	if value < 0 {
+		return probeErr126x2{code: value}
+	}
+	return nil
+}
+type base126x3 struct {
+	seed int
+}
+
+type derived126x3 struct {
+	base126x3
+	step int
+}
+
+func (d derived126x3) Next() int {
+	return d.seed + d.step + 9
+}
+type probeErr126x4 struct {
+	code int
+}
+
+func (e probeErr126x4) Error() string {
+	return "probe failure"
+}
+
+func check126x4(value int) error {
+	if value < 0 {
+		return probeErr126x4{code: value}
+	}
+	return nil
+}
+type probeErr126x5 struct {
+	code int
+}
+
+func (e probeErr126x5) Error() string {
+	return "probe failure"
+}
+
+func check126x5(value int) error {
+	if value < 0 {
+		return probeErr126x5{code: value}
+	}
+	return nil
+}
+type Encoder126x6 interface {
+	Encode(value int) int
+}
+
+type scaler126x6 struct {
+	factor int
+}
+
+func (s scaler126x6) Encode(value int) int {
+	return value * s.factor + 36
+

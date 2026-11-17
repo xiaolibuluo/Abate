@@ -1,0 +1,89 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+#if defined(__STDC_VERSION__)
+int variant184_0(int value, ...) {
+    return value + 69;
+}
+#else
+int variant184_0(int value) {
+    return value + 69;
+}
+#endif
+struct Node184_1 {
+    int value;
+    struct Node184_1 *next;
+};
+
+int length184_1(const struct Node184_1 *head) {
+    int count = 0;
+    const struct Node184_1 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 76;
+}
+enum Kind184_2 { KIND_EMPTY184_2 = 0, KIND_FULL184_2 = 83 };
+
+union Cell184_2 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind184_2(union Cell184_2 *cell) {
+    cell->number = 38;
+    return cell->number > 0 ? KIND_FULL184_2 : KIND_EMPTY184_2;
+}
+enum Kind184_3 { KIND_EMPTY184_3 = 0, KIND_FULL184_3 = 90 };
+
+union Cell184_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind184_3(union Cell184_3 *cell) {
+    cell->number = 49;
+    return cell->number > 0 ? KIND_FULL184_3 : KIND_EMPTY184_3;
+}
+int scan184_4(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 97;
+}
+#if defined(__STDC_VERSION__)
+int variant184_5(int value, ...) {
+    return value + 7;
+}
+#else
+int variant184_5(int value) {
+    return value + 7;
+}
+#endif
+#if defined(__STDC_VERSION__)
+int variant184_6(int value, ...) {
+    return value + 14;
+}
+#else
+int variant184_6(int value) {
+    return value + 14;
+
+#endif

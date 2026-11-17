@@ -1,0 +1,54 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def traced171_0(value: int) -> int:
+    return value + 94
+
+
+def decorate171_0(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate171_0
+def doubled171_0(value: int) -> int:
+    return value + value
+def pair171_1(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 101}
+def pair171_2(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 11}
+def traced171_3(value: int) -> int:
+    return value + 18
+
+
+def decorate171_3(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate171_3
+def doubled171_3(value: int) -> int:
+    return value + value
+def pair171_4(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 25}
+def pair171_5(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 32}

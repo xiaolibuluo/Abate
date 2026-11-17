@@ -1,0 +1,60 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay697x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 45
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base697x1 struct {
+	seed int
+}
+
+type derived697x1 struct {
+	base697x1
+	step int
+}
+
+func (d derived697x1) Next() int {
+	return d.seed + d.step + 19
+}
+type base697x2 struct {
+	seed int
+}
+
+type derived697x2 struct {
+	base697x2
+	step int
+}
+
+func (d derived697x2) Next() int {
+	return d.seed + d.step + 30
+}
+type probeErr697x3 struct {
+	code int
+}
+
+func (e probeErr697x3) Error() string {
+	return "probe failure"
+}
+
+func check697x3(value int) error {
+	if value < 0 {
+		return probeErr697x3{code: value}
+	}
+	return nil
+}

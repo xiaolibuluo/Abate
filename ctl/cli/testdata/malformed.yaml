@@ -1,0 +1,4 @@
+apiVersion: ces.tencent.com/v9
+kind: Experiment
+metadata:
+  name: cli-e2e-malformed

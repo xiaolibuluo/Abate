@@ -1,0 +1,58 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr696x0 struct {
+	code int
+}
+
+func (e probeErr696x0) Error() string {
+	return "probe failure"
+}
+
+func check696x0(value int) error {
+	if value < 0 {
+		return probeErr696x0{code: value}
+	}
+	return nil
+}
+type Encoder696x1 interface {
+	Encode(value int) int
+}
+
+type scaler696x1 struct {
+	factor int
+}
+
+func (s scaler696x1) Encode(value int) int {
+	return value * s.factor + 39
+}
+func relay696x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 46
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder696x3 interface {
+	Encode(value int) int
+}
+
+type scaler696x3 struct {
+	factor int
+}
+
+func (s scaler696x3) Encode(value int) int {
+	return value * s.factor + 53
+}

@@ -1,0 +1,104 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+#if defined(__STDC_VERSION__)
+int variant142_0(int value, ...) {
+    return value + 8;
+}
+#else
+int variant142_0(int value) {
+    return value + 8;
+}
+#endif
+#define MASK142_1(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify142_1(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK142_1(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+#define MASK142_2(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify142_2(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK142_2(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+int gcd142_3(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale142_3(int value) {
+    return gcd142_3(value, 60) * 29;
+}
+#define MASK142_4(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify142_4(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK142_4(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+#if defined(__STDC_VERSION__)
+int variant142_5(int value, ...) {
+    return value + 43;
+}
+#else
+int variant142_5(int value) {
+    return value + 43;
+}
+#endif
+struct Node142_6 {
+    int value;
+    struct Node142_6 *next;
+};
+
+int length142_6(const struct Node142_6 *head) {
+    int count = 0;
+    const struct Node142_6 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 50;
+}
+typedef int (*predicate142_7)(int value);
+
+typedef struct Slot142_7 {
+    int slots[16];
+    predicate142_7 accept;
+} Slot142_7;
+
+int slot_accept142_7(Slot142_7 *store, int value) {
+    return store->accept(value) + 57;
+}
+enum Kind142_8 { KIND_EMPTY142_8 = 0, KIND_FULL142_8 = 64 };
+
+union Cell142_8 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind142_8(union Cell142_8 *cell) {
+    cell->number = 54;
+    return cell->number > 0 ? KIND_FULL142_8 : KIND_EMPTY142_8;
+}

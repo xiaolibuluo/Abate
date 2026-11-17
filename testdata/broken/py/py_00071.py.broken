@@ -1,0 +1,60 @@
+
+def anchor_probe()
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+async def fetch71_0(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def expand71_1(values):
+    for item in values:
+        if item > 62:
+            yield item * 29
+
+
+def collect71_1(values):
+    return list(expand71_1(values))
+class Slot71_2:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{69}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+async def fetch71_3(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def summarize71_4(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 83:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]

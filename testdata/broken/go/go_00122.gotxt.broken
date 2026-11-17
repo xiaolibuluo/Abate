@@ -1,0 +1,81 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base122x0 struct {
+	seed int
+}
+
+type derived122x0 struct {
+	base122x0
+	step int
+}
+
+func (d derived122x0) Next() int {
+	return d.seed + d.step + 9
+}
+func fold122x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 46
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr122x2 struct {
+	code int
+}
+
+func (e probeErr122x2) Error() string {
+	return "probe failure"
+}
+
+func check122x2(value int) error {
+	if value < 0 {
+		return probeErr122x2{code: value}
+	}
+	return nil
+}
+type base122x3 struct {
+	seed int
+}
+
+type derived122x3 struct {
+	base122x3
+	step int
+}
+
+func (d derived122x3) Next() int {
+	return d.seed + d.step + 42
+}
+type probeErr122x4 struct {
+	code int
+}
+
+func (e probeErr122x4) Error() string {
+	return "probe failure"
+}
+
+func check122x4(value int) error {
+	if value < 0 {
+		return probeErr122x4{code: value}
+	}
+	return nil
+}
+func fold122x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 74
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+

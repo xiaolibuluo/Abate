@@ -1,0 +1,45 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1373x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 6
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func classify1373x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 13:
+		return value * 2
+	case 54:
+		return value + 2
+	default:
+		return value
+	}
+}
+func relay1373x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 20
+			}
+		case <-done:
+			return
+		}
+	}
+}

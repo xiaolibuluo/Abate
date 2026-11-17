@@ -1,0 +1,76 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr562x0 struct {
+	code int
+}
+
+func (e probeErr562x0) Error() string {
+	return "probe failure"
+}
+
+func check562x0(value int) error {
+	if value < 0 {
+		return probeErr562x0{code: value}
+	}
+	return nil
+}
+type base562x1 struct {
+	seed int
+}
+
+type derived562x1 struct {
+	base562x1
+	step int
+}
+
+func (d derived562x1) Next() int {
+	return d.seed + d.step + 50
+}
+func relay562x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 50
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr562x3 struct {
+	code int
+}
+
+func (e probeErr562x3) Error() string {
+	return "probe failure"
+}
+
+func check562x3(value int) error {
+	if value < 0 {
+		return probeErr562x3{code: value}
+	}
+	return nil
+}
+func describe562x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

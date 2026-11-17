@@ -1,0 +1,129 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe1408x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base1408x1 struct {
+	seed int
+}
+
+type derived1408x1 struct {
+	base1408x1
+	step int
+}
+
+func (d derived1408x1) Next() int {
+	return d.seed + d.step + 55
+}
+type base1408x2 struct {
+	seed int
+}
+
+type derived1408x2 struct {
+	base1408x2
+	step int
+}
+
+func (d derived1408x2) Next() int {
+	return d.seed + d.step + 66
+}
+func relay1408x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 94
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1408x4 interface {
+	Encode(value int) int
+}
+
+type scaler1408x4 struct {
+	factor int
+}
+
+func (s scaler1408x4) Encode(value int) int {
+	return value * s.factor + 101
+}
+func fold1408x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 11
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder1408x6 interface {
+	Encode(value int) int
+}
+
+type scaler1408x6 struct {
+	factor int
+}
+
+func (s scaler1408x6) Encode(value int) int {
+	return value * s.factor + 18
+}
+type base1408x7 struct {
+	seed int
+}
+
+type derived1408x7 struct {
+	base1408x7
+	step int
+}
+
+func (d derived1408x7) Next() int {
+	return d.seed + d.step + 60
+}
+type Encoder1408x8 interface {
+	Encode(value int) int
+}
+
+type scaler1408x8 struct {
+	factor int
+}
+
+func (s scaler1408x8) Encode(value int) int {
+	return value * s.factor + 32
+}
+type probeErr1408x9 struct {
+	code int
+}
+
+func (e probeErr1408x9) Error() string {
+	return "probe failure"
+}
+
+func check1408x9(value int) error {
+	if value < 0 {
+		return probeErr1408x9{code: value}
+	}
+	return nil
+}

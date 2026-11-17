@@ -1,0 +1,91 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base816x0 struct {
+	seed int
+}
+
+type derived816x0 struct {
+	base816x0
+	step int
+}
+
+func (d derived816x0) Next() int {
+	return d.seed + d.step + 48
+}
+type Store816x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store816x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store816x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Store816x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store816x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store816x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Store816x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store816x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store816x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold816x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 68
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store816x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store816x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store816x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

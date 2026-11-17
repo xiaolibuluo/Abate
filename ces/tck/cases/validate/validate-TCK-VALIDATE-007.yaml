@@ -1,0 +1,43 @@
+id: TCK-VALIDATE-007
+spec: "03-ces-spec.md §4 STEADY-005"
+kind: validate
+input: |
+  apiVersion: ces.tencent.com/v1
+  kind: Experiment
+  metadata:
+      name: tck-base
+  spec:
+      target:
+          kind: simulator
+          selector:
+              node: n1
+      steadyState:
+          - probeRef: p1
+            expectation:
+              type: predicate
+              value: ok
+              predicate: not-a-predicate
+            tolerance:
+              type: absolute
+              value: 1
+            holdFor: 2s
+      method:
+          expression: ε
+      probes:
+          - id: p1
+            kind: metric
+            spec:
+              query: up
+              expect: "1"
+            interval: 1s
+      rollback:
+          strategy: auto
+          verifySteadyState: false
+      schedule:
+          continuous:
+              duration: 1s
+expect:
+  accept: false
+  ruleIds:
+    - CES-VALID-STEADY-004
+    - CES-VALID-STEADY-005

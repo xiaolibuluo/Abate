@@ -1,0 +1,107 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1206x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 66
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr1206x1 struct {
+	code int
+}
+
+func (e probeErr1206x1) Error() string {
+	return "probe failure"
+}
+
+func check1206x1(value int) error {
+	if value < 0 {
+		return probeErr1206x1{code: value}
+	}
+	return nil
+}
+type Encoder1206x2 interface {
+	Encode(value int) int
+}
+
+type scaler1206x2 struct {
+	factor int
+}
+
+func (s scaler1206x2) Encode(value int) int {
+	return value * s.factor + 80
+}
+type Encoder1206x3 interface {
+	Encode(value int) int
+}
+
+type scaler1206x3 struct {
+	factor int
+}
+
+func (s scaler1206x3) Encode(value int) int {
+	return value * s.factor + 87
+}
+func fold1206x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 94
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1206x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 101
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1206x6 struct {
+	seed int
+}
+
+type derived1206x6 struct {
+	base1206x6
+	step int
+}
+
+func (d derived1206x6) Next() int {
+	return d.seed + d.step + 38
+}
+func describe1206x7(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

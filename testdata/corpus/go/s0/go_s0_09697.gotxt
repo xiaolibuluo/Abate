@@ -1,0 +1,97 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay2272x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 53
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe2272x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func relay2272x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 67
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base2272x3 struct {
+	seed int
+}
+
+type derived2272x3 struct {
+	base2272x3
+	step int
+}
+
+func (d derived2272x3) Next() int {
+	return d.seed + d.step + 25
+}
+func relay2272x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 81
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base2272x5 struct {
+	seed int
+}
+
+type derived2272x5 struct {
+	base2272x5
+	step int
+}
+
+func (d derived2272x5) Next() int {
+	return d.seed + d.step + 47
+}
+type Encoder2272x6 interface {
+	Encode(value int) int
+}
+
+type scaler2272x6 struct {
+	factor int
+}
+
+func (s scaler2272x6) Encode(value int) int {
+	return value * s.factor + 95
+}

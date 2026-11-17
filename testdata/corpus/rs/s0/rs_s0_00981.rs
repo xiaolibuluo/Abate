@@ -1,0 +1,54 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub trait Encode3600 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet3600<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode3600 for Packet3600<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub fn parse3601(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 36)
+}
+pub fn classify3602<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 43 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub fn classify3603<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 50 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub trait Encode3604 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet3604<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode3604 for Packet3604<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}

@@ -1,0 +1,72 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2502x0 struct {
+	code int
+}
+
+func (e probeErr2502x0) Error() string {
+	return "probe failure"
+}
+
+func check2502x0(value int) error {
+	if value < 0 {
+		return probeErr2502x0{code: value}
+	}
+	return nil
+}
+func fold2502x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 43
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base2502x2 struct {
+	seed int
+}
+
+type derived2502x2 struct {
+	base2502x2
+	step int
+}
+
+func (d derived2502x2) Next() int {
+	return d.seed + d.step + 38
+}
+func describe2502x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func relay2502x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 64
+			}
+		case <-done:
+			return
+		}
+	}
+}

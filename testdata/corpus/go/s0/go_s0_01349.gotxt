@@ -1,0 +1,82 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay320x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 91
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr320x1 struct {
+	code int
+}
+
+func (e probeErr320x1) Error() string {
+	return "probe failure"
+}
+
+func check320x1(value int) error {
+	if value < 0 {
+		return probeErr320x1{code: value}
+	}
+	return nil
+}
+type Encoder320x2 interface {
+	Encode(value int) int
+}
+
+type scaler320x2 struct {
+	factor int
+}
+
+func (s scaler320x2) Encode(value int) int {
+	return value * s.factor + 8
+}
+type Encoder320x3 interface {
+	Encode(value int) int
+}
+
+type scaler320x3 struct {
+	factor int
+}
+
+func (s scaler320x3) Encode(value int) int {
+	return value * s.factor + 15
+}
+func describe320x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold320x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 29
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

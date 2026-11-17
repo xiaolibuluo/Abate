@@ -1,0 +1,110 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1069x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 31
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1069x1 interface {
+	Encode(value int) int
+}
+
+type scaler1069x1 struct {
+	factor int
+}
+
+func (s scaler1069x1) Encode(value int) int {
+	return value * s.factor + 38
+}
+func describe1069x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func describe1069x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold1069x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 59
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe1069x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func relay1069x6(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 73
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1069x7 struct {
+	seed int
+}
+
+type derived1069x7 struct {
+	base1069x7
+	step int
+}
+
+func (d derived1069x7) Next() int {
+	return d.seed + d.step + 66
+}

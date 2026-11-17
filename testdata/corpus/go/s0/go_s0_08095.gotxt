@@ -1,0 +1,100 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe1890x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func relay1890x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 41
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr1890x2 struct {
+	code int
+}
+
+func (e probeErr1890x2) Error() string {
+	return "probe failure"
+}
+
+func check1890x2(value int) error {
+	if value < 0 {
+		return probeErr1890x2{code: value}
+	}
+	return nil
+}
+func describe1890x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base1890x4 struct {
+	seed int
+}
+
+type derived1890x4 struct {
+	base1890x4
+	step int
+}
+
+func (d derived1890x4) Next() int {
+	return d.seed + d.step + 46
+}
+func relay1890x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 69
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1890x6 interface {
+	Encode(value int) int
+}
+
+type scaler1890x6 struct {
+	factor int
+}
+
+func (s scaler1890x6) Encode(value int) int {
+	return value * s.factor + 76
+}

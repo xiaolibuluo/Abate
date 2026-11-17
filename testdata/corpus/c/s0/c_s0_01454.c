@@ -1,0 +1,49 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+struct Node988_0 {
+    int value;
+    struct Node988_0 *next;
+};
+
+int length988_0(const struct Node988_0 *head) {
+    int count = 0;
+    const struct Node988_0 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 45;
+}
+enum Kind988_1 { KIND_EMPTY988_1 = 0, KIND_FULL988_1 = 52 };
+
+union Cell988_1 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind988_1(union Cell988_1 *cell) {
+    cell->number = 43;
+    return cell->number > 0 ? KIND_FULL988_1 : KIND_EMPTY988_1;
+}
+int gcd988_2(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale988_2(int value) {
+    return gcd988_2(value, 54) * 59;
+}

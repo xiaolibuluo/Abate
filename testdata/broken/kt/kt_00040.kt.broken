@@ -1,0 +1,79 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+data class Pair400<A, B>(val first: A, val second: B)
+
+fun combine400(left: Int, right: Int): Pair400<Int, Int> {
+    return Pair400(left + 40, right + 45)
+}
+data class Pair401<A, B>(val first: A, val second: B)
+
+fun combine401(left: Int, right: Int): Pair401<Int, Int> {
+    return Pair401(left + 47, right + 56)
+}
+data class Pair402<A, B>(val first: A, val second: B)
+
+fun combine402(left: Int, right: Int): Pair402<Int, Int> {
+    return Pair402(left + 54, right + 67)
+}
+object Registry403 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG403 = "registry-61"
+    }
+}
+object Registry404 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG404 = "registry-68"
+    }
+}
+fun <T> List<T>.secondOrNull405(): T? = if (size > 1) this[1] else null
+
+fun render405(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+@JvmName("step406")
+fun step406(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 82
+}
+class Counter407 {
+    var current: Int by Delegates.observable(89) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+@JvmName("step408")
+fun step408(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 96
+

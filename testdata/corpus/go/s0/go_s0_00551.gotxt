@@ -1,0 +1,115 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr138x0 struct {
+	code int
+}
+
+func (e probeErr138x0) Error() string {
+	return "probe failure"
+}
+
+func check138x0(value int) error {
+	if value < 0 {
+		return probeErr138x0{code: value}
+	}
+	return nil
+}
+type base138x1 struct {
+	seed int
+}
+
+type derived138x1 struct {
+	base138x1
+	step int
+}
+
+func (d derived138x1) Next() int {
+	return d.seed + d.step + 10
+}
+func describe138x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base138x3 struct {
+	seed int
+}
+
+type derived138x3 struct {
+	base138x3
+	step int
+}
+
+func (d derived138x3) Next() int {
+	return d.seed + d.step + 32
+}
+type probeErr138x4 struct {
+	code int
+}
+
+func (e probeErr138x4) Error() string {
+	return "probe failure"
+}
+
+func check138x4(value int) error {
+	if value < 0 {
+		return probeErr138x4{code: value}
+	}
+	return nil
+}
+type base138x5 struct {
+	seed int
+}
+
+type derived138x5 struct {
+	base138x5
+	step int
+}
+
+func (d derived138x5) Next() int {
+	return d.seed + d.step + 54
+}
+type probeErr138x6 struct {
+	code int
+}
+
+func (e probeErr138x6) Error() string {
+	return "probe failure"
+}
+
+func check138x6(value int) error {
+	if value < 0 {
+		return probeErr138x6{code: value}
+	}
+	return nil
+}
+type probeErr138x7 struct {
+	code int
+}
+
+func (e probeErr138x7) Error() string {
+	return "probe failure"
+}
+
+func check138x7(value int) error {
+	if value < 0 {
+		return probeErr138x7{code: value}
+	}
+	return nil
+}

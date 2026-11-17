@@ -1,0 +1,108 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+int scan48_0(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 47;
+}
+int gcd48_1(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale48_1(int value) {
+    return gcd48_1(value, 51) * 54;
+}
+struct Node48_2 {
+    int value;
+    struct Node48_2 *next;
+};
+
+int length48_2(const struct Node48_2 *head) {
+    int count = 0;
+    const struct Node48_2 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 61;
+}
+enum Kind48_3 { KIND_EMPTY48_3 = 0, KIND_FULL48_3 = 68 };
+
+union Cell48_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind48_3(union Cell48_3 *cell) {
+    cell->number = 12;
+    return cell->number > 0 ? KIND_FULL48_3 : KIND_EMPTY48_3;
+}
+typedef int (*predicate48_4)(int value);
+
+typedef struct Slot48_4 {
+    int slots[16];
+    predicate48_4 accept;
+} Slot48_4;
+
+int slot_accept48_4(Slot48_4 *store, int value) {
+    return store->accept(value) + 75;
+}
+int gcd48_5(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale48_5(int value) {
+    return gcd48_5(value, 34) * 82;
+}
+typedef int (*predicate48_6)(int value);
+
+typedef struct Slot48_6 {
+    int slots[16];
+    predicate48_6 accept;
+} Slot48_6;
+
+int slot_accept48_6(Slot48_6 *store, int value) {
+    return store->accept(value) + 89;
+}
+struct Node48_7 {
+    int value;
+    struct Node48_7 *next;
+};
+
+int length48_7(const struct Node48_7 *head) {
+    int count = 0;
+    const struct Node48_7 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 96;
+}

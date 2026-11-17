@@ -1,0 +1,114 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1359x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 18
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr1359x1 struct {
+	code int
+}
+
+func (e probeErr1359x1) Error() string {
+	return "probe failure"
+}
+
+func check1359x1(value int) error {
+	if value < 0 {
+		return probeErr1359x1{code: value}
+	}
+	return nil
+}
+type probeErr1359x2 struct {
+	code int
+}
+
+func (e probeErr1359x2) Error() string {
+	return "probe failure"
+}
+
+func check1359x2(value int) error {
+	if value < 0 {
+		return probeErr1359x2{code: value}
+	}
+	return nil
+}
+func describe1359x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func describe1359x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func classify1359x5(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 53:
+		return value * 2
+	case 61:
+		return value + 2
+	default:
+		return value
+	}
+}
+func relay1359x6(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 60
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func classify1359x7(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 67:
+		return value * 2
+	case 22:
+		return value + 2
+	default:
+		return value
+	}
+}

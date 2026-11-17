@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "grossDenominatorPolicy": "ALL_MUTATIONS_ENTER_GROSS",
+  "effectiveFormula": "Effective = Gross - EquivalentCount",
+  "silentDropsMustBeZero": true,
+  "commentWhitespaceFormatting": "NOT_IN_REGISTRY",
+  "note": "等价变异是第四分栏，与文本/结构/破损变异并列；Equivalent 只打标，不删除、不豁免。所有条目在 AIR-ID 口径下都会改变节点 attribute 的 text，因此 airIDChanges 一律如实记为 true，由 T03 metrics 单列 Gross/Effective/Captured/CapturePct。",
+  "definitions": [
+    {
+      "operatorID": "literal.integer.radix",
+      "contextPattern": "十进制非负整数字面量出现在表达式、赋值右值或常量声明中",
+      "proofID": "EQ-LITERAL-RADIX-001",
+      "rationale": "把同一整数值改写为十六进制或八进制记法不改变求值结果，例如 16 与 0x10 在整数上下文中完全等价；需排除会影响类型推断的过宽字面量。",
+      "airIDChanges": true
+    },
+    {
+      "operatorID": "expr.commutative.swap",
+      "contextPattern": "纯值表达式中的可交换二元运算符（+ * & | ^ == !=），两侧操作数无副作用且无重载语义",
+      "proofID": "EQ-COMMUTATIVE-001",
+      "rationale": "对无副作用的纯值操作数，交换律保证 a+b 与 b+a 结果相同；浮点 NaN 排序、字符串拼接与用户重载运算符不在此上下文模式内。",
+      "airIDChanges": true
+    },
+    {
+      "operatorID": "expr.associative.regroup",
+      "contextPattern": "同一可结合运算符的连续三个纯值操作数，显式括号重分组",
+      "proofID": "EQ-ASSOCIATIVE-001",
+      "rationale": "(a+b)+c 与 a+(b+c) 在整数与布尔可结合运算下求值相同；浮点舍入顺序与溢出检查语义不在此上下文模式内。",
+      "airIDChanges": true
+    },
+    {
+      "operatorID": "expr.bool.double_negation",
+      "contextPattern": "布尔上下文中的一元逻辑非双重嵌套（!!x）",
+      "proofID": "EQ-BOOL-DNOT-001",
+      "rationale": "在已确定布尔类型的上下文中，两次逻辑非相互抵消，x 与 !!x 真值一致；依赖隐式真值转换的动态类型上下文不在此模式内。",
+      "airIDChanges": true
+    }
+  ]
+}

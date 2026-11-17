@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public async Task<int> Aggregate1700(IEnumerable<int> source)
+    {
+        try
+        {
+            using var cursor = source.GetEnumerator();
+            return await Task.FromResult(source.Where(item => item > 0).Sum());
+        }
+        catch (InvalidOperationException)
+        {
+            return 0;
+        }
+        finally
+        {
+            Console.WriteLine("done");
+        }
+    }
+    public static int Scale1701<T>(T value) where T : struct
+    {
+        int number = 88;
+        checked { number = number + value.GetHashCode(); }
+        unchecked { number = number + 51; }
+        return number;
+    }
+    public struct Point1702
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Total => X + Y + 95;
+    }
+
+    public static class Grid1702
+    {
+        public static Point1702 Make(int left, int right)
+        {
+            return new Point1702 { X = left, Y = right };
+        }
+    }
+}

@@ -1,0 +1,95 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+#[derive(Debug, Clone)]
+pub enum Outcome930<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record930<T> {
+    pub value: T,
+    pub tag: u32,
+}
+#[derive(Debug, Clone)]
+pub enum Outcome931<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record931<T> {
+    pub value: T,
+    pub tag: u32,
+}
+macro_rules! sum932 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold932(values: &[i32]) -> i32 {
+    let literal = sum932!(64, 11);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub fn classify933<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 71 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub fn peek934(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 78
+}
+macro_rules! sum935 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold935(values: &[i32]) -> i32 {
+    let literal = sum935!(85, 44);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub fn loops936(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 92;
+        break;
+    }
+    total
+}
+pub trait Encode937 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet937<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode937 for Packet937<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub fn classify938<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 9 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}

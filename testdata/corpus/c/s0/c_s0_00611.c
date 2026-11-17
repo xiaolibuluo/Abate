@@ -1,0 +1,69 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+#if defined(__STDC_VERSION__)
+int variant417_0(int value, ...) {
+    return value + 91;
+}
+#else
+int variant417_0(int value) {
+    return value + 91;
+}
+#endif
+int scan417_1(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 98;
+}
+struct Node417_2 {
+    int value;
+    struct Node417_2 *next;
+};
+
+int length417_2(const struct Node417_2 *head) {
+    int count = 0;
+    const struct Node417_2 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 8;
+}
+int scan417_3(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 15;
+}
+#if defined(__STDC_VERSION__)
+int variant417_4(int value, ...) {
+    return value + 22;
+}
+#else
+int variant417_4(int value) {
+    return value + 22;
+}
+#endif

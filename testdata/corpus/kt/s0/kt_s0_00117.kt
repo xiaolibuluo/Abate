@@ -1,0 +1,85 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+fun <T, R> List<T>.mapChecked940(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+object Registry941 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG941 = "registry-70"
+    }
+}
+fun <T> List<T>.secondOrNull942(): T? = if (size > 1) this[1] else null
+
+fun render942(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T, R> List<T>.mapChecked943(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+fun <T> List<T>.secondOrNull944(): T? = if (size > 1) this[1] else null
+
+fun render944(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T> List<T>.secondOrNull945(): T? = if (size > 1) this[1] else null
+
+fun render945(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+@JvmName("step946")
+fun step946(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 8
+}
+data class Pair947<A, B>(val first: A, val second: B)
+
+fun combine947(left: Int, right: Int): Pair947<Int, Int> {
+    return Pair947(left + 15, right + 12)
+}
+sealed class Outcome948 {
+    data class Success(val payload: String) : Outcome948()
+    data object Failure : Outcome948()
+}
+
+fun describe948(outcome: Outcome948): String = when (outcome) {
+    is Outcome948.Success -> outcome.payload
+    Outcome948.Failure -> "failed"
+}
+class Counter949 {
+    var current: Int by Delegates.observable(29) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}

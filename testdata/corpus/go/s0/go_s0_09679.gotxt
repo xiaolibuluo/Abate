@@ -1,0 +1,80 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2266x0 struct {
+	code int
+}
+
+func (e probeErr2266x0) Error() string {
+	return "probe failure"
+}
+
+func check2266x0(value int) error {
+	if value < 0 {
+		return probeErr2266x0{code: value}
+	}
+	return nil
+}
+func fold2266x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 79
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold2266x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 86
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base2266x3 struct {
+	seed int
+}
+
+type derived2266x3 struct {
+	base2266x3
+	step int
+}
+
+func (d derived2266x3) Next() int {
+	return d.seed + d.step + 44
+}
+type Encoder2266x4 interface {
+	Encode(value int) int
+}
+
+type scaler2266x4 struct {
+	factor int
+}
+
+func (s scaler2266x4) Encode(value int) int {
+	return value * s.factor + 100
+}
+func describe2266x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

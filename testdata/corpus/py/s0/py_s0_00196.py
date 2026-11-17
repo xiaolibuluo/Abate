@@ -1,0 +1,87 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def project89_0(values):
+    select = lambda item: item + 95
+    return [select(item) for item in values if item != 0]
+class Slot89_1:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{5}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+class Slot89_2:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{12}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+async def fetch89_3(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def summarize89_4(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 26:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def pair89_5(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 33}
+def guarded89_6(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def guarded89_7(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def traced89_8(value: int) -> int:
+    return value + 54
+
+
+def decorate89_8(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate89_8
+def doubled89_8(value: int) -> int:
+    return value + value

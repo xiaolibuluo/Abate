@@ -1,0 +1,97 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr765x0 struct {
+	code int
+}
+
+func (e probeErr765x0) Error() string {
+	return "probe failure"
+}
+
+func check765x0(value int) error {
+	if value < 0 {
+		return probeErr765x0{code: value}
+	}
+	return nil
+}
+func fold765x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 63
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base765x2 struct {
+	seed int
+}
+
+type derived765x2 struct {
+	base765x2
+	step int
+}
+
+func (d derived765x2) Next() int {
+	return d.seed + d.step + 18
+}
+func fold765x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 77
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe765x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func describe765x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr765x6 struct {
+	code int
+}
+
+func (e probeErr765x6) Error() string {
+	return "probe failure"
+}
+
+func check765x6(value int) error {
+	if value < 0 {
+		return probeErr765x6{code: value}
+	}
+	return nil
+}

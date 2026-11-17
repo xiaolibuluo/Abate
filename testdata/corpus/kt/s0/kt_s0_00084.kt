@@ -1,0 +1,51 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+class Counter690 {
+    var current: Int by Delegates.observable(29) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+class Counter691 {
+    var current: Int by Delegates.observable(36) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+data class Pair692<A, B>(val first: A, val second: B)
+
+fun combine692(left: Int, right: Int): Pair692<Int, Int> {
+    return Pair692(left + 43, right + 26)
+}
+fun <T, R> List<T>.mapChecked693(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}

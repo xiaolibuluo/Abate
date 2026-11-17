@@ -1,0 +1,49 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay595x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 77
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay595x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 84
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr595x2 struct {
+	code int
+}
+
+func (e probeErr595x2) Error() string {
+	return "probe failure"
+}
+
+func check595x2(value int) error {
+	if value < 0 {
+		return probeErr595x2{code: value}
+	}
+	return nil
+}

@@ -1,0 +1,81 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1384x0 struct {
+	seed int
+}
+
+type derived1384x0 struct {
+	base1384x0
+	step int
+}
+
+func (d derived1384x0) Next() int {
+	return d.seed + d.step + 59
+}
+type base1384x1 struct {
+	seed int
+}
+
+type derived1384x1 struct {
+	base1384x1
+	step int
+}
+
+func (d derived1384x1) Next() int {
+	return d.seed + d.step + 9
+}
+type probeErr1384x2 struct {
+	code int
+}
+
+func (e probeErr1384x2) Error() string {
+	return "probe failure"
+}
+
+func check1384x2(value int) error {
+	if value < 0 {
+		return probeErr1384x2{code: value}
+	}
+	return nil
+}
+type Encoder1384x3 interface {
+	Encode(value int) int
+}
+
+type scaler1384x3 struct {
+	factor int
+}
+
+func (s scaler1384x3) Encode(value int) int {
+	return value * s.factor + 73
+}
+func fold1384x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 80
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1384x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 87
+			}
+		case <-done:
+			return
+		}
+	}
+}

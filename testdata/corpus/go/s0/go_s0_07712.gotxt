@@ -1,0 +1,105 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr1794x0 struct {
+	code int
+}
+
+func (e probeErr1794x0) Error() string {
+	return "probe failure"
+}
+
+func check1794x0(value int) error {
+	if value < 0 {
+		return probeErr1794x0{code: value}
+	}
+	return nil
+}
+func relay1794x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 54
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Store1794x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1794x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1794x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func relay1794x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 68
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr1794x4 struct {
+	code int
+}
+
+func (e probeErr1794x4) Error() string {
+	return "probe failure"
+}
+
+func check1794x4(value int) error {
+	if value < 0 {
+		return probeErr1794x4{code: value}
+	}
+	return nil
+}
+type Store1794x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1794x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1794x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base1794x6 struct {
+	seed int
+}
+
+type derived1794x6 struct {
+	base1794x6
+	step int
+}
+
+func (d derived1794x6) Next() int {
+	return d.seed + d.step + 67
+}

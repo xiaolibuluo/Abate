@@ -1,0 +1,76 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn loops13430(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 101;
+        break;
+    }
+    total
+}
+pub fn loops13431(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 11;
+        break;
+    }
+    total
+}
+pub fn parse13432(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 18)
+}
+pub fn parse13433(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 25)
+}
+pub fn loops13434(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 32;
+        break;
+    }
+    total
+}
+pub fn loops13435(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 39;
+        break;
+    }
+    total
+}

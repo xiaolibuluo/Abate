@@ -1,0 +1,95 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify1005x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 72:
+		return value * 2
+	case 29:
+		return value + 2
+	default:
+		return value
+	}
+}
+func classify1005x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 79:
+		return value * 2
+	case 40:
+		return value + 2
+	default:
+		return value
+	}
+}
+type base1005x2 struct {
+	seed int
+}
+
+type derived1005x2 struct {
+	base1005x2
+	step int
+}
+
+func (d derived1005x2) Next() int {
+	return d.seed + d.step + 51
+}
+type Encoder1005x3 interface {
+	Encode(value int) int
+}
+
+type scaler1005x3 struct {
+	factor int
+}
+
+func (s scaler1005x3) Encode(value int) int {
+	return value * s.factor + 93
+}
+type base1005x4 struct {
+	seed int
+}
+
+type derived1005x4 struct {
+	base1005x4
+	step int
+}
+
+func (d derived1005x4) Next() int {
+	return d.seed + d.step + 12
+}
+func fold1005x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 10
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store1005x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1005x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1005x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

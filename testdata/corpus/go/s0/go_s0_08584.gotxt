@@ -1,0 +1,57 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2008x0 struct {
+	code int
+}
+
+func (e probeErr2008x0) Error() string {
+	return "probe failure"
+}
+
+func check2008x0(value int) error {
+	if value < 0 {
+		return probeErr2008x0{code: value}
+	}
+	return nil
+}
+type Encoder2008x1 interface {
+	Encode(value int) int
+}
+
+type scaler2008x1 struct {
+	factor int
+}
+
+func (s scaler2008x1) Encode(value int) int {
+	return value * s.factor + 23
+}
+func relay2008x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 30
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold2008x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 37
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

@@ -1,0 +1,71 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay2645x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 52
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base2645x1 struct {
+	seed int
+}
+
+type derived2645x1 struct {
+	base2645x1
+	step int
+}
+
+func (d derived2645x1) Next() int {
+	return d.seed + d.step + 52
+}
+type base2645x2 struct {
+	seed int
+}
+
+type derived2645x2 struct {
+	base2645x2
+	step int
+}
+
+func (d derived2645x2) Next() int {
+	return d.seed + d.step + 63
+}
+type Encoder2645x3 interface {
+	Encode(value int) int
+}
+
+type scaler2645x3 struct {
+	factor int
+}
+
+func (s scaler2645x3) Encode(value int) int {
+	return value * s.factor + 73
+}
+type probeErr2645x4 struct {
+	code int
+}
+
+func (e probeErr2645x4) Error() string {
+	return "probe failure"
+}
+
+func check2645x4(value int) error {
+	if value < 0 {
+		return probeErr2645x4{code: value}
+	}
+	return nil
+}

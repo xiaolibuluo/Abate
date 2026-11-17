@@ -1,0 +1,75 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base854x0 struct {
+	seed int
+}
+
+type derived854x0 struct {
+	base854x0
+	step int
+}
+
+func (d derived854x0) Next() int {
+	return d.seed + d.step + 9
+}
+type Store854x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store854x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store854x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Store854x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store854x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store854x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder854x3 interface {
+	Encode(value int) int
+}
+
+type scaler854x3 struct {
+	factor int
+}
+
+func (s scaler854x3) Encode(value int) int {
+	return value * s.factor + 70
+}
+func relay854x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 77
+			}
+		case <-done:
+			return
+		}
+	}
+}

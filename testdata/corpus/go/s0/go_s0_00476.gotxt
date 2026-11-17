@@ -1,0 +1,56 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold116x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 58
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder116x1 interface {
+	Encode(value int) int
+}
+
+type scaler116x1 struct {
+	factor int
+}
+
+func (s scaler116x1) Encode(value int) int {
+	return value * s.factor + 65
+}
+func describe116x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base116x3 struct {
+	seed int
+}
+
+type derived116x3 struct {
+	base116x3
+	step int
+}
+
+func (d derived116x3) Next() int {
+	return d.seed + d.step + 61
+}

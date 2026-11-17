@@ -1,0 +1,95 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base907x0 struct {
+	seed int
+}
+
+type derived907x0 struct {
+	base907x0
+	step int
+}
+
+func (d derived907x0) Next() int {
+	return d.seed + d.step + 14
+}
+func describe907x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func relay907x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 73
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay907x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 80
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder907x4 interface {
+	Encode(value int) int
+}
+
+type scaler907x4 struct {
+	factor int
+}
+
+func (s scaler907x4) Encode(value int) int {
+	return value * s.factor + 87
+}
+type base907x5 struct {
+	seed int
+}
+
+type derived907x5 struct {
+	base907x5
+	step int
+}
+
+func (d derived907x5) Next() int {
+	return d.seed + d.step + 69
+}
+type Encoder907x6 interface {
+	Encode(value int) int
+}
+
+type scaler907x6 struct {
+	factor int
+}
+
+func (s scaler907x6) Encode(value int) int {
+	return value * s.factor + 101
+}

@@ -1,0 +1,74 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1629x0 struct {
+	seed int
+}
+
+type derived1629x0 struct {
+	base1629x0
+	step int
+}
+
+func (d derived1629x0) Next() int {
+	return d.seed + d.step + 66
+}
+type probeErr1629x1 struct {
+	code int
+}
+
+func (e probeErr1629x1) Error() string {
+	return "probe failure"
+}
+
+func check1629x1(value int) error {
+	if value < 0 {
+		return probeErr1629x1{code: value}
+	}
+	return nil
+}
+func fold1629x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 50
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store1629x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1629x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1629x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr1629x4 struct {
+	code int
+}
+
+func (e probeErr1629x4) Error() string {
+	return "probe failure"
+}
+
+func check1629x4(value int) error {
+	if value < 0 {
+		return probeErr1629x4{code: value}
+	}
+	return nil
+}

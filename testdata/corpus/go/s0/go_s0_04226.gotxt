@@ -1,0 +1,88 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr958x0 struct {
+	code int
+}
+
+func (e probeErr958x0) Error() string {
+	return "probe failure"
+}
+
+func check958x0(value int) error {
+	if value < 0 {
+		return probeErr958x0{code: value}
+	}
+	return nil
+}
+func classify958x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 50:
+		return value * 2
+	case 16:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder958x2 interface {
+	Encode(value int) int
+}
+
+type scaler958x2 struct {
+	factor int
+}
+
+func (s scaler958x2) Encode(value int) int {
+	return value * s.factor + 57
+}
+func relay958x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 64
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe958x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func describe958x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

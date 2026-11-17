@@ -1,0 +1,22 @@
+
+# TLC 模型检验状态转储（可能达数百 MB，禁止入库）
+scripts/tla/specs/states/
+*.tlc/
+
+# libclang-min CMake/Ninja 构建产物（含 79MB 动态库与数十个静态库，
+# 由本机工具链编译生成、与平台绑定，禁止入库；源码在 third_party/_sources/）
+.artifacts/libclang-min/build/
+
+# govulncheck 每次实跑生成的临时扫描报告
+.artifacts/vuln-scan.txt
+
+# E2E 门禁运行产物（双跑报告/verdict，由 ci/gate_e2e.sh 可复现生成，禁止入库）
+.artifacts/e2e/
+
+
+# 已跟踪的历史遗留二进制/测试副产物，正式发布改由 Release asset 提供
+abate
+bench.test
+
+# 所有运行时产物目录（报告/证据/构建缓存，均可由脚本复现，禁止入库）
+.artifacts/

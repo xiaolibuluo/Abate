@@ -1,0 +1,49 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind69_0 { KIND_EMPTY69_0 = 0, KIND_FULL69_0 = 29 };
+
+union Cell69_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind69_0(union Cell69_0 *cell) {
+    cell->number = 65;
+    return cell->number > 0 ? KIND_FULL69_0 : KIND_EMPTY69_0;
+}
+int scan69_1(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 36;
+}
+int scan69_2(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 43;
+}

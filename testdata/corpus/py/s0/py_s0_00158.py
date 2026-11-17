@@ -1,0 +1,59 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+async def fetch72_0(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def expand72_1(values):
+    for item in values:
+        if item > 75:
+            yield item * 36
+
+
+def collect72_1(values):
+    return list(expand72_1(values))
+def expand72_2(values):
+    for item in values:
+        if item > 82:
+            yield item * 47
+
+
+def collect72_2(values):
+    return list(expand72_2(values))
+def guarded72_3(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def pair72_4(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 96}
+def expand72_5(values):
+    for item in values:
+        if item > 6:
+            yield item * 19
+
+
+def collect72_5(values):
+    return list(expand72_5(values))

@@ -1,0 +1,42 @@
+id: TCK-PARSE-017
+spec: "03-ces-spec.md §3 (unknown field rejected)"
+kind: parse
+input: |
+  apiVersion: ces.tencent.com/v1
+  kind: Experiment
+  metadata:
+      name: tck-base
+  spec:
+      method:
+          expression: ε
+      probes:
+          - id: p1
+            interval: 1s
+            kind: metric
+            spec:
+              expect: "1"
+              query: up
+      rollback:
+          strategy: auto
+          verifySteadyState: false
+      schedule:
+          continuous:
+              duration: 1s
+      steadyState:
+          - expectation:
+              type: value
+              value: ok
+            holdFor: 2s
+            probeRef: p1
+            tolerance:
+              type: absolute
+              value: 1
+      target:
+          kind: simulator
+          selector:
+              node: n1
+  unknownField: rejected
+expect:
+  accept: false
+  ruleIds:
+    - CES-PARSE-001

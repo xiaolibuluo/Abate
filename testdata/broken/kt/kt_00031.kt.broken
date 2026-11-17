@@ -1,0 +1,61 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+@JvmName("step310")
+fun step310(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 20
+}
+fun <T> List<T>.secondOrNull311(): T? = if (size > 1) this[1] else null
+
+fun render311(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T, R> List<T>.mapChecked312(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+sealed class Outcome313 {
+    data class Success(val payload: String) : Outcome313()
+    data object Failure : Outcome313()
+}
+
+fun describe313(outcome: Outcome313): String = when (outcome) {
+    is Outcome313.Success -> outcome.payload
+    Outcome313.Failure -> "failed"
+}
+fun <T> List<T>.secondOrNull314(): T? = if (size > 1) this[1] else null
+
+fun render314(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T, R> List<T>.mapChecked315(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+sealed class Outcome316 {
+    data class Success(val payload: String) : Outcome316()
+    data object Failure : Outcome316()
+}
+
+fun describe316(outcome: Outcome316): String = when (outcome) {
+    is Outcome316.Success -> outcome.payload
+    Outcome316.Failure -> "failed"
+

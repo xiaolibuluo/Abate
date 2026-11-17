@@ -1,0 +1,89 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2025x0 struct {
+	seed int
+}
+
+type derived2025x0 struct {
+	base2025x0
+	step int
+}
+
+func (d derived2025x0) Next() int {
+	return d.seed + d.step + 32
+}
+type probeErr2025x1 struct {
+	code int
+}
+
+func (e probeErr2025x1) Error() string {
+	return "probe failure"
+}
+
+func check2025x1(value int) error {
+	if value < 0 {
+		return probeErr2025x1{code: value}
+	}
+	return nil
+}
+func relay2025x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 57
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base2025x3 struct {
+	seed int
+}
+
+type derived2025x3 struct {
+	base2025x3
+	step int
+}
+
+func (d derived2025x3) Next() int {
+	return d.seed + d.step + 65
+}
+type probeErr2025x4 struct {
+	code int
+}
+
+func (e probeErr2025x4) Error() string {
+	return "probe failure"
+}
+
+func check2025x4(value int) error {
+	if value < 0 {
+		return probeErr2025x4{code: value}
+	}
+	return nil
+}
+type Store2025x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2025x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2025x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

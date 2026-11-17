@@ -1,0 +1,79 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay753x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 94
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder753x1 interface {
+	Encode(value int) int
+}
+
+type scaler753x1 struct {
+	factor int
+}
+
+func (s scaler753x1) Encode(value int) int {
+	return value * s.factor + 101
+}
+type probeErr753x2 struct {
+	code int
+}
+
+func (e probeErr753x2) Error() string {
+	return "probe failure"
+}
+
+func check753x2(value int) error {
+	if value < 0 {
+		return probeErr753x2{code: value}
+	}
+	return nil
+}
+type Encoder753x3 interface {
+	Encode(value int) int
+}
+
+type scaler753x3 struct {
+	factor int
+}
+
+func (s scaler753x3) Encode(value int) int {
+	return value * s.factor + 18
+}
+type Encoder753x4 interface {
+	Encode(value int) int
+}
+
+type scaler753x4 struct {
+	factor int
+}
+
+func (s scaler753x4) Encode(value int) int {
+	return value * s.factor + 25
+}
+func fold753x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 32
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

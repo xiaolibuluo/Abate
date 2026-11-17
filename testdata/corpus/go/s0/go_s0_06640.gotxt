@@ -1,0 +1,46 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1520x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 74
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1520x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 81
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr1520x2 struct {
+	code int
+}
+
+func (e probeErr1520x2) Error() string {
+	return "probe failure"
+}
+
+func check1520x2(value int) error {
+	if value < 0 {
+		return probeErr1520x2{code: value}
+	}
+	return nil
+}

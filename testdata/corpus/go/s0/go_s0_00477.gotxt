@@ -1,0 +1,62 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify117x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 71:
+		return value * 2
+	case 35:
+		return value + 2
+	default:
+		return value
+	}
+}
+func describe117x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func classify117x2(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 85:
+		return value * 2
+	case 57:
+		return value + 2
+	default:
+		return value
+	}
+}
+func classify117x3(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 92:
+		return value * 2
+	case 68:
+		return value + 2
+	default:
+		return value
+	}
+}

@@ -1,0 +1,73 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+fun <T> List<T>.secondOrNull1900(): T? = if (size > 1) this[1] else null
+
+fun render1900(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+@JvmName("step1901")
+fun step1901(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 57
+}
+class Counter1902 {
+    var current: Int by Delegates.observable(64) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+sealed class Outcome1903 {
+    data class Success(val payload: String) : Outcome1903()
+    data object Failure : Outcome1903()
+}
+
+fun describe1903(outcome: Outcome1903): String = when (outcome) {
+    is Outcome1903.Success -> outcome.payload
+    Outcome1903.Failure -> "failed"
+}
+fun <T> List<T>.secondOrNull1904(): T? = if (size > 1) this[1] else null
+
+fun render1904(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T> List<T>.secondOrNull1905(): T? = if (size > 1) this[1] else null
+
+fun render1905(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+object Registry1906 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1906 = "registry-92"
+    }
+}
+fun <T, R> List<T>.mapChecked1907(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+

@@ -1,0 +1,76 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe1874x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base1874x1 struct {
+	seed int
+}
+
+type derived1874x1 struct {
+	base1874x1
+	step int
+}
+
+func (d derived1874x1) Next() int {
+	return d.seed + d.step + 23
+}
+func relay1874x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 34
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe1874x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr1874x4 struct {
+	code int
+}
+
+func (e probeErr1874x4) Error() string {
+	return "probe failure"
+}
+
+func check1874x4(value int) error {
+	if value < 0 {
+		return probeErr1874x4{code: value}
+	}
+	return nil
+}

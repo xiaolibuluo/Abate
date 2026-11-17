@@ -1,0 +1,45 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr836x0 struct {
+	code int
+}
+
+func (e probeErr836x0) Error() string {
+	return "probe failure"
+}
+
+func check836x0(value int) error {
+	if value < 0 {
+		return probeErr836x0{code: value}
+	}
+	return nil
+}
+func fold836x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 16
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base836x2 struct {
+	seed int
+}
+
+type derived836x2 struct {
+	base836x2
+	step int
+}
+
+func (d derived836x2) Next() int {
+	return d.seed + d.step + 27
+}

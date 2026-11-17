@@ -1,0 +1,37 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def expand13_0(values):
+    for item in values:
+        if item > 77:
+            yield item * 39
+
+
+def collect13_0(values):
+    return list(expand13_0(values))
+class Slot13_1:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{84}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+def pair13_2(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 91}
+def project13_3(values):
+    select = lambda item: item + 98
+    return [select(item) for item in values if item != 0]

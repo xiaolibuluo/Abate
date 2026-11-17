@@ -1,0 +1,117 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1984x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 92
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold1984x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 99
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1984x2 struct {
+	seed int
+}
+
+type derived1984x2 struct {
+	base1984x2
+	step int
+}
+
+func (d derived1984x2) Next() int {
+	return d.seed + d.step + 11
+}
+type base1984x3 struct {
+	seed int
+}
+
+type derived1984x3 struct {
+	base1984x3
+	step int
+}
+
+func (d derived1984x3) Next() int {
+	return d.seed + d.step + 22
+}
+func fold1984x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 23
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1984x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 30
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func classify1984x6(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 37:
+		return value * 2
+	case 55:
+		return value + 2
+	default:
+		return value
+	}
+}
+type probeErr1984x7 struct {
+	code int
+}
+
+func (e probeErr1984x7) Error() string {
+	return "probe failure"
+}
+
+func check1984x7(value int) error {
+	if value < 0 {
+		return probeErr1984x7{code: value}
+	}
+	return nil
+}
+type probeErr1984x8 struct {
+	code int
+}
+
+func (e probeErr1984x8) Error() string {
+	return "probe failure"
+}
+
+func check1984x8(value int) error {
+	if value < 0 {
+		return probeErr1984x8{code: value}
+	}
+	return nil
+}

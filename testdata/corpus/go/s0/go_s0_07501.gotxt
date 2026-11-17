@@ -1,0 +1,34 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1753x0 interface {
+	Encode(value int) int
+}
+
+type scaler1753x0 struct {
+	factor int
+}
+
+func (s scaler1753x0) Encode(value int) int {
+	return value * s.factor + 96
+}
+type probeErr1753x1 struct {
+	code int
+}
+
+func (e probeErr1753x1) Error() string {
+	return "probe failure"
+}
+
+func check1753x1(value int) error {
+	if value < 0 {
+		return probeErr1753x1{code: value}
+	}
+	return nil
+}

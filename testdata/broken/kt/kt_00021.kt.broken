@@ -1,0 +1,44 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+data class Pair210<A, B>(val first: A, val second: B)
+
+fun combine210(left: Int, right: Int): Pair210<Int, Int> {
+    return Pair210(left + 84, right + 34)
+}
+sealed class Outcome211 {
+    data class Success(val payload: String) : Outcome211()
+    data object Failure : Outcome211()
+}
+
+fun describe211(outcome: Outcome211): String = when (outcome) {
+    is Outcome211.Success -> outcome.payload
+    Outcome211.Failure -> "failed"
+}
+data class Pair212<A, B>(val first: A, val second: B)
+
+fun combine212(left: Int, right: Int): Pair212<Int, Int> {
+    return Pair212(left + 98, right + 56)
+}
+fun <T> List<T>.secondOrNull213(): T? = if (size > 1) this[1] else null
+
+fun render213(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+object Registry214 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG214 = "registry-15"
+    }
+

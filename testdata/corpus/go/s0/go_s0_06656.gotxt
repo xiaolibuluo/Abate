@@ -1,0 +1,54 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1523x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 16
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1523x1 struct {
+	seed int
+}
+
+type derived1523x1 struct {
+	base1523x1
+	step int
+}
+
+func (d derived1523x1) Next() int {
+	return d.seed + d.step + 67
+}
+func fold1523x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 30
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1523x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 37
+			}
+		case <-done:
+			return
+		}
+	}
+}

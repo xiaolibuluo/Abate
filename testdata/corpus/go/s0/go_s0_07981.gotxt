@@ -1,0 +1,33 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr1854x0 struct {
+	code int
+}
+
+func (e probeErr1854x0) Error() string {
+	return "probe failure"
+}
+
+func check1854x0(value int) error {
+	if value < 0 {
+		return probeErr1854x0{code: value}
+	}
+	return nil
+}
+func fold1854x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 58
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

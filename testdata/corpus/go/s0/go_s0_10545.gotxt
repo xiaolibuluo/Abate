@@ -1,0 +1,95 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2459x0 struct {
+	code int
+}
+
+func (e probeErr2459x0) Error() string {
+	return "probe failure"
+}
+
+func check2459x0(value int) error {
+	if value < 0 {
+		return probeErr2459x0{code: value}
+	}
+	return nil
+}
+func classify2459x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 66:
+		return value * 2
+	case 31:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder2459x2 interface {
+	Encode(value int) int
+}
+
+type scaler2459x2 struct {
+	factor int
+}
+
+func (s scaler2459x2) Encode(value int) int {
+	return value * s.factor + 73
+}
+type Encoder2459x3 interface {
+	Encode(value int) int
+}
+
+type scaler2459x3 struct {
+	factor int
+}
+
+func (s scaler2459x3) Encode(value int) int {
+	return value * s.factor + 80
+}
+type base2459x4 struct {
+	seed int
+}
+
+type derived2459x4 struct {
+	base2459x4
+	step int
+}
+
+func (d derived2459x4) Next() int {
+	return d.seed + d.step + 64
+}
+type base2459x5 struct {
+	seed int
+}
+
+type derived2459x5 struct {
+	base2459x5
+	step int
+}
+
+func (d derived2459x5) Next() int {
+	return d.seed + d.step + 14
+}
+func classify2459x6(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 101:
+		return value * 2
+	case 25:
+		return value + 2
+	default:
+		return value
+	}
+}

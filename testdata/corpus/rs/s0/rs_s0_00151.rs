@@ -1,0 +1,21 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub trait Encode500 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet500<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode500 for Packet500<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}

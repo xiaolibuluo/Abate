@@ -1,0 +1,49 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1228x0 struct {
+	seed int
+}
+
+type derived1228x0 struct {
+	base1228x0
+	step int
+}
+
+func (d derived1228x0) Next() int {
+	return d.seed + d.step + 65
+}
+func relay1228x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 68
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Store1228x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1228x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1228x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

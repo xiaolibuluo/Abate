@@ -1,0 +1,132 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay972x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 31
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr972x1 struct {
+	code int
+}
+
+func (e probeErr972x1) Error() string {
+	return "probe failure"
+}
+
+func check972x1(value int) error {
+	if value < 0 {
+		return probeErr972x1{code: value}
+	}
+	return nil
+}
+func fold972x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 45
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func classify972x3(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 52:
+		return value * 2
+	case 14:
+		return value + 2
+	default:
+		return value
+	}
+}
+func classify972x4(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 59:
+		return value * 2
+	case 25:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Store972x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store972x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store972x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base972x6 struct {
+	seed int
+}
+
+type derived972x6 struct {
+	base972x6
+	step int
+}
+
+func (d derived972x6) Next() int {
+	return d.seed + d.step + 47
+}
+func fold972x7(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 80
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold972x8(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 87
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay972x9(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 94
+			}
+		case <-done:
+			return
+		}
+	}
+}

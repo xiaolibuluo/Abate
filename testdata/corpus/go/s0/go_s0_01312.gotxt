@@ -1,0 +1,67 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder309x0 interface {
+	Encode(value int) int
+}
+
+type scaler309x0 struct {
+	factor int
+}
+
+func (s scaler309x0) Encode(value int) int {
+	return value * s.factor + 45
+}
+type Encoder309x1 interface {
+	Encode(value int) int
+}
+
+type scaler309x1 struct {
+	factor int
+}
+
+func (s scaler309x1) Encode(value int) int {
+	return value * s.factor + 52
+}
+func relay309x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 59
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base309x3 struct {
+	seed int
+}
+
+type derived309x3 struct {
+	base309x3
+	step int
+}
+
+func (d derived309x3) Next() int {
+	return d.seed + d.step + 9
+}
+type Encoder309x4 interface {
+	Encode(value int) int
+}
+
+type scaler309x4 struct {
+	factor int
+}
+
+func (s scaler309x4) Encode(value int) int {
+	return value * s.factor + 73
+}

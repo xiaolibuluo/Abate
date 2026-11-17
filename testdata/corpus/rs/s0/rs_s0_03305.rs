@@ -1,0 +1,22 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn peek12210(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 67
+}
+pub fn parse12211(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 74)
+}
+pub fn peek12212(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 81
+}

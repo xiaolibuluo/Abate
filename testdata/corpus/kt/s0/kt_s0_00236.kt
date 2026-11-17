@@ -1,0 +1,85 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome1940 {
+    data class Success(val payload: String) : Outcome1940()
+    data object Failure : Outcome1940()
+}
+
+fun describe1940(outcome: Outcome1940): String = when (outcome) {
+    is Outcome1940.Success -> outcome.payload
+    Outcome1940.Failure -> "failed"
+}
+sealed class Outcome1941 {
+    data class Success(val payload: String) : Outcome1941()
+    data object Failure : Outcome1941()
+}
+
+fun describe1941(outcome: Outcome1941): String = when (outcome) {
+    is Outcome1941.Success -> outcome.payload
+    Outcome1941.Failure -> "failed"
+}
+fun <T, R> List<T>.mapChecked1942(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+sealed class Outcome1943 {
+    data class Success(val payload: String) : Outcome1943()
+    data object Failure : Outcome1943()
+}
+
+fun describe1943(outcome: Outcome1943): String = when (outcome) {
+    is Outcome1943.Success -> outcome.payload
+    Outcome1943.Failure -> "failed"
+}
+data class Pair1944<A, B>(val first: A, val second: B)
+
+fun combine1944(left: Int, right: Int): Pair1944<Int, Int> {
+    return Pair1944(left + 33, right + 69)
+}
+sealed class Outcome1945 {
+    data class Success(val payload: String) : Outcome1945()
+    data object Failure : Outcome1945()
+}
+
+fun describe1945(outcome: Outcome1945): String = when (outcome) {
+    is Outcome1945.Success -> outcome.payload
+    Outcome1945.Failure -> "failed"
+}
+object Registry1946 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1946 = "registry-47"
+    }
+}
+@JvmName("step1947")
+fun step1947(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 54
+}
+object Registry1948 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1948 = "registry-61"
+    }
+}

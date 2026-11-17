@@ -1,0 +1,51 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+#define MASK166_0(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify166_0(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK166_0(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+#if defined(__STDC_VERSION__)
+int variant166_1(int value, ...) {
+    return value + 36;
+}
+#else
+int variant166_1(int value) {
+    return value + 36;
+}
+#endif
+enum Kind166_2 { KIND_EMPTY166_2 = 0, KIND_FULL166_2 = 43 };
+
+union Cell166_2 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind166_2(union Cell166_2 *cell) {
+    cell->number = 34;
+    return cell->number > 0 ? KIND_FULL166_2 : KIND_EMPTY166_2;
+}
+typedef int (*predicate166_3)(int value);
+
+typedef struct Slot166_3 {
+    int slots[16];
+    predicate166_3 accept;
+} Slot166_3;
+
+int slot_accept166_3(Slot166_3 *store, int value) {
+    return store->accept(value) + 50;
+

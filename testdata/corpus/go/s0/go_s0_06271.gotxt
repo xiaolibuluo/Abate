@@ -1,0 +1,99 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1445x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 69
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold1445x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 76
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr1445x2 struct {
+	code int
+}
+
+func (e probeErr1445x2) Error() string {
+	return "probe failure"
+}
+
+func check1445x2(value int) error {
+	if value < 0 {
+		return probeErr1445x2{code: value}
+	}
+	return nil
+}
+type probeErr1445x3 struct {
+	code int
+}
+
+func (e probeErr1445x3) Error() string {
+	return "probe failure"
+}
+
+func check1445x3(value int) error {
+	if value < 0 {
+		return probeErr1445x3{code: value}
+	}
+	return nil
+}
+func relay1445x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 97
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1445x5 struct {
+	seed int
+}
+
+type derived1445x5 struct {
+	base1445x5
+	step int
+}
+
+func (d derived1445x5) Next() int {
+	return d.seed + d.step + 53
+}
+type probeErr1445x6 struct {
+	code int
+}
+
+func (e probeErr1445x6) Error() string {
+	return "probe failure"
+}
+
+func check1445x6(value int) error {
+	if value < 0 {
+		return probeErr1445x6{code: value}
+	}
+	return nil
+}

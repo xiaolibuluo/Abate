@@ -1,0 +1,74 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1096x0 struct {
+	seed int
+}
+
+type derived1096x0 struct {
+	base1096x0
+	step int
+}
+
+func (d derived1096x0) Next() int {
+	return d.seed + d.step + 56
+}
+type Store1096x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1096x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1096x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func relay1096x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 8
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe1096x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder1096x4 interface {
+	Encode(value int) int
+}
+
+type scaler1096x4 struct {
+	factor int
+}
+
+func (s scaler1096x4) Encode(value int) int {
+	return value * s.factor + 22
+}

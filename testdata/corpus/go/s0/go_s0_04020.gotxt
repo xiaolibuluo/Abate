@@ -1,0 +1,82 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold908x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 72
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base908x1 struct {
+	seed int
+}
+
+type derived908x1 struct {
+	base908x1
+	step int
+}
+
+func (d derived908x1) Next() int {
+	return d.seed + d.step + 32
+}
+func relay908x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 86
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold908x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 93
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe908x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func describe908x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

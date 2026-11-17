@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public static int Guard3100(int value)
+    {
+        try
+        {
+            if (value < 0) { throw new ArgumentException("bad value"); }
+            return value + 58;
+        }
+        catch (ArgumentException)
+        {
+            return 0;
+        }
+        finally
+        {
+            Console.WriteLine("guard");
+        }
+    }
+    public struct Point3101
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Total => X + Y + 65;
+    }
+
+    public static class Grid3101
+    {
+        public static Point3101 Make(int left, int right)
+        {
+            return new Point3101 { X = left, Y = right };
+        }
+    }
+}

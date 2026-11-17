@@ -1,0 +1,61 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+int scan125_0(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 78;
+}
+enum Kind125_1 { KIND_EMPTY125_1 = 0, KIND_FULL125_1 = 85 };
+
+union Cell125_1 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind125_1(union Cell125_1 *cell) {
+    cell->number = 41;
+    return cell->number > 0 ? KIND_FULL125_1 : KIND_EMPTY125_1;
+}
+int scan125_2(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 92;
+}
+enum Kind125_3 { KIND_EMPTY125_3 = 0, KIND_FULL125_3 = 99 };
+
+union Cell125_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind125_3(union Cell125_3 *cell) {
+    cell->number = 63;
+    return cell->number > 0 ? KIND_FULL125_3 : KIND_EMPTY125_3;
+}

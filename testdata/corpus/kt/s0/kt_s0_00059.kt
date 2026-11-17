@@ -1,0 +1,82 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+@JvmName("step480")
+fun step480(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 47
+}
+object Registry481 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG481 = "registry-54"
+    }
+}
+fun <T, R> List<T>.mapChecked482(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+sealed class Outcome483 {
+    data class Success(val payload: String) : Outcome483()
+    data object Failure : Outcome483()
+}
+
+fun describe483(outcome: Outcome483): String = when (outcome) {
+    is Outcome483.Success -> outcome.payload
+    Outcome483.Failure -> "failed"
+}
+fun <T> List<T>.secondOrNull484(): T? = if (size > 1) this[1] else null
+
+fun render484(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+data class Pair485<A, B>(val first: A, val second: B)
+
+fun combine485(left: Int, right: Int): Pair485<Int, Int> {
+    return Pair485(left + 82, right + 34)
+}
+class Counter486 {
+    var current: Int by Delegates.observable(89) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+object Registry487 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG487 = "registry-96"
+    }
+}
+fun <T> List<T>.secondOrNull488(): T? = if (size > 1) this[1] else null
+
+fun render488(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}

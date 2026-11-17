@@ -1,0 +1,44 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base834x0 struct {
+	seed int
+}
+
+type derived834x0 struct {
+	base834x0
+	step int
+}
+
+func (d derived834x0) Next() int {
+	return d.seed + d.step + 52
+}
+type base834x1 struct {
+	seed int
+}
+
+type derived834x1 struct {
+	base834x1
+	step int
+}
+
+func (d derived834x1) Next() int {
+	return d.seed + d.step + 63
+}
+type Encoder834x2 interface {
+	Encode(value int) int
+}
+
+type scaler834x2 struct {
+	factor int
+}
+
+func (s scaler834x2) Encode(value int) int {
+	return value * s.factor + 94
+}

@@ -1,0 +1,69 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2456x0 struct {
+	seed int
+}
+
+type derived2456x0 struct {
+	base2456x0
+	step int
+}
+
+func (d derived2456x0) Next() int {
+	return d.seed + d.step + 60
+}
+type base2456x1 struct {
+	seed int
+}
+
+type derived2456x1 struct {
+	base2456x1
+	step int
+}
+
+func (d derived2456x1) Next() int {
+	return d.seed + d.step + 10
+}
+func fold2456x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 34
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder2456x3 interface {
+	Encode(value int) int
+}
+
+type scaler2456x3 struct {
+	factor int
+}
+
+func (s scaler2456x3) Encode(value int) int {
+	return value * s.factor + 41
+}
+type Store2456x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2456x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2456x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

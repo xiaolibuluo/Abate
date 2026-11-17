@@ -1,0 +1,109 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base382x0 struct {
+	seed int
+}
+
+type derived382x0 struct {
+	base382x0
+	step int
+}
+
+func (d derived382x0) Next() int {
+	return d.seed + d.step + 60
+}
+func describe382x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func classify382x2(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 38:
+		return value * 2
+	case 21:
+		return value + 2
+	default:
+		return value
+	}
+}
+type probeErr382x3 struct {
+	code int
+}
+
+func (e probeErr382x3) Error() string {
+	return "probe failure"
+}
+
+func check382x3(value int) error {
+	if value < 0 {
+		return probeErr382x3{code: value}
+	}
+	return nil
+}
+type base382x4 struct {
+	seed int
+}
+
+type derived382x4 struct {
+	base382x4
+	step int
+}
+
+func (d derived382x4) Next() int {
+	return d.seed + d.step + 43
+}
+type Encoder382x5 interface {
+	Encode(value int) int
+}
+
+type scaler382x5 struct {
+	factor int
+}
+
+func (s scaler382x5) Encode(value int) int {
+	return value * s.factor + 59
+}
+func describe382x6(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold382x7(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 73
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

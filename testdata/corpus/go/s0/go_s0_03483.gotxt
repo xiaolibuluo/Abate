@@ -1,0 +1,31 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base783x0 struct {
+	seed int
+}
+
+type derived783x0 struct {
+	base783x0
+	step int
+}
+
+func (d derived783x0) Next() int {
+	return d.seed + d.step + 61
+}
+func fold783x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 6
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

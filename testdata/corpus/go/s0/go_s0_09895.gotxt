@@ -1,0 +1,94 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify2313x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 101:
+		return value * 2
+	case 35:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder2313x1 interface {
+	Encode(value int) int
+}
+
+type scaler2313x1 struct {
+	factor int
+}
+
+func (s scaler2313x1) Encode(value int) int {
+	return value * s.factor + 11
+}
+type Encoder2313x2 interface {
+	Encode(value int) int
+}
+
+type scaler2313x2 struct {
+	factor int
+}
+
+func (s scaler2313x2) Encode(value int) int {
+	return value * s.factor + 18
+}
+type probeErr2313x3 struct {
+	code int
+}
+
+func (e probeErr2313x3) Error() string {
+	return "probe failure"
+}
+
+func check2313x3(value int) error {
+	if value < 0 {
+		return probeErr2313x3{code: value}
+	}
+	return nil
+}
+func fold2313x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 32
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base2313x5 struct {
+	seed int
+}
+
+type derived2313x5 struct {
+	base2313x5
+	step int
+}
+
+func (d derived2313x5) Next() int {
+	return d.seed + d.step + 29
+}
+type probeErr2313x6 struct {
+	code int
+}
+
+func (e probeErr2313x6) Error() string {
+	return "probe failure"
+}
+
+func check2313x6(value int) error {
+	if value < 0 {
+		return probeErr2313x6{code: value}
+	}
+	return nil
+}

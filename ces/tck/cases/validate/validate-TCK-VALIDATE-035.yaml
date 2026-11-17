@@ -1,0 +1,41 @@
+id: TCK-VALIDATE-035
+spec: "03-ces-spec.md §4 ROLLBACK-001"
+kind: validate
+input: |
+  apiVersion: ces.tencent.com/v1
+  kind: Experiment
+  metadata:
+      name: tck-validate-extra-10
+  spec:
+      target:
+          kind: simulator
+          selector:
+              node: n1
+      steadyState:
+          - probeRef: p1
+            expectation:
+              type: value
+              value: ok
+            tolerance:
+              type: absolute
+              value: 1
+            holdFor: 2s
+      method:
+          expression: ε
+      probes:
+          - id: p1
+            kind: metric
+            spec:
+              query: up
+              expect: "1"
+            interval: 1s
+      rollback:
+          strategy: unknown-strategy
+          verifySteadyState: false
+      schedule:
+          continuous:
+              duration: 1s
+expect:
+  accept: false
+  ruleIds:
+    - CES-VALID-ROLLBACK-001

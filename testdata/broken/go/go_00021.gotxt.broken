@@ -1,0 +1,72 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold21x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 84
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr21x1 struct {
+	code int
+}
+
+func (e probeErr21x1) Error() string {
+	return "probe failure"
+}
+
+func check21x1(value int) error {
+	if value < 0 {
+		return probeErr21x1{code: value}
+	}
+	return nil
+}
+func relay21x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 98
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay21x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 8
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay21x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 15
+			}
+		case <-done:
+			return
+		}
+	}
+

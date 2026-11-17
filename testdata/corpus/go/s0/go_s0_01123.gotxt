@@ -1,0 +1,67 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base265x0 struct {
+	seed int
+}
+
+type derived265x0 struct {
+	base265x0
+	step int
+}
+
+func (d derived265x0) Next() int {
+	return d.seed + d.step + 34
+}
+func fold265x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 62
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder265x2 interface {
+	Encode(value int) int
+}
+
+type scaler265x2 struct {
+	factor int
+}
+
+func (s scaler265x2) Encode(value int) int {
+	return value * s.factor + 69
+}
+func describe265x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder265x4 interface {
+	Encode(value int) int
+}
+
+type scaler265x4 struct {
+	factor int
+}
+
+func (s scaler265x4) Encode(value int) int {
+	return value * s.factor + 83
+}

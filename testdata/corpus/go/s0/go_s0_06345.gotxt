@@ -1,0 +1,34 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1466x0 struct {
+	seed int
+}
+
+type derived1466x0 struct {
+	base1466x0
+	step int
+}
+
+func (d derived1466x0) Next() int {
+	return d.seed + d.step + 23
+}
+func relay1466x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 58
+			}
+		case <-done:
+			return
+		}
+	}
+}

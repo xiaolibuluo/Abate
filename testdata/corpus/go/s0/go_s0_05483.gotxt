@@ -1,0 +1,117 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1263x0 interface {
+	Encode(value int) int
+}
+
+type scaler1263x0 struct {
+	factor int
+}
+
+func (s scaler1263x0) Encode(value int) int {
+	return value * s.factor + 31
+}
+func fold1263x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 38
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store1263x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1263x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1263x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold1263x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 52
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1263x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 59
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr1263x5 struct {
+	code int
+}
+
+func (e probeErr1263x5) Error() string {
+	return "probe failure"
+}
+
+func check1263x5(value int) error {
+	if value < 0 {
+		return probeErr1263x5{code: value}
+	}
+	return nil
+}
+func describe1263x6(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold1263x7(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 80
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder1263x8 interface {
+	Encode(value int) int
+}
+
+type scaler1263x8 struct {
+	factor int
+}
+
+func (s scaler1263x8) Encode(value int) int {
+	return value * s.factor + 87
+}

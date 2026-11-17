@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public interface IHandler850
+    {
+        void Handle(int value);
+    }
+
+    [Serializable]
+    public sealed record Envelope850(string Label, int Payload);
+
+    public sealed class Handler850 : IHandler850
+    {
+        public void Handle(int value) { }
+    }
+    public static int Guard851(int value)
+    {
+        try
+        {
+            if (value < 0) { throw new ArgumentException("bad value"); }
+            return value + 50;
+        }
+        catch (ArgumentException)
+        {
+            return 0;
+        }
+        finally
+        {
+            Console.WriteLine("guard");
+        }
+    }
+    public static int Scale852<T>(T value) where T : struct
+    {
+        int number = 57;
+        checked { number = number + value.GetHashCode(); }
+        unchecked { number = number + 16; }
+        return number;
+    }
+    public static int Guard853(int value)
+    {
+        try
+        {
+            if (value < 0) { throw new ArgumentException("bad value"); }
+            return value + 64;
+        }
+        catch (ArgumentException)
+        {
+            return 0;
+        }
+        finally
+        {
+            Console.WriteLine("guard");
+        }
+    }
+    public interface IHandler854
+    {
+        void Handle(int value);
+    }
+
+    [Serializable]
+    public sealed record Envelope854(string Label, int Payload);
+
+    public sealed class Handler854 : IHandler854
+    {
+        public void Handle(int value) { }
+    }
+}

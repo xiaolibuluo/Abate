@@ -1,0 +1,90 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder568x0 interface {
+	Encode(value int) int
+}
+
+type scaler568x0 struct {
+	factor int
+}
+
+func (s scaler568x0) Encode(value int) int {
+	return value * s.factor + 17
+}
+func describe568x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr568x2 struct {
+	code int
+}
+
+func (e probeErr568x2) Error() string {
+	return "probe failure"
+}
+
+func check568x2(value int) error {
+	if value < 0 {
+		return probeErr568x2{code: value}
+	}
+	return nil
+}
+type probeErr568x3 struct {
+	code int
+}
+
+func (e probeErr568x3) Error() string {
+	return "probe failure"
+}
+
+func check568x3(value int) error {
+	if value < 0 {
+		return probeErr568x3{code: value}
+	}
+	return nil
+}
+type probeErr568x4 struct {
+	code int
+}
+
+func (e probeErr568x4) Error() string {
+	return "probe failure"
+}
+
+func check568x4(value int) error {
+	if value < 0 {
+		return probeErr568x4{code: value}
+	}
+	return nil
+}
+func describe568x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

@@ -1,0 +1,89 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base33x0 struct {
+	seed int
+}
+
+type derived33x0 struct {
+	base33x0
+	step int
+}
+
+func (d derived33x0) Next() int {
+	return d.seed + d.step + 57
+}
+func classify33x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 53:
+		return value * 2
+	case 68:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Store33x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store33x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store33x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func describe33x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base33x4 struct {
+	seed int
+}
+
+type derived33x4 struct {
+	base33x4
+	step int
+}
+
+func (d derived33x4) Next() int {
+	return d.seed + d.step + 40
+}
+func describe33x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+

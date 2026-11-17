@@ -1,0 +1,107 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder2375x0 interface {
+	Encode(value int) int
+}
+
+type scaler2375x0 struct {
+	factor int
+}
+
+func (s scaler2375x0) Encode(value int) int {
+	return value * s.factor + 34
+}
+func fold2375x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 41
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold2375x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 48
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store2375x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2375x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2375x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Store2375x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2375x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2375x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base2375x5 struct {
+	seed int
+}
+
+type derived2375x5 struct {
+	base2375x5
+	step int
+}
+
+func (d derived2375x5) Next() int {
+	return d.seed + d.step + 36
+}
+type Encoder2375x6 interface {
+	Encode(value int) int
+}
+
+type scaler2375x6 struct {
+	factor int
+}
+
+func (s scaler2375x6) Encode(value int) int {
+	return value * s.factor + 76
+}
+type probeErr2375x7 struct {
+	code int
+}
+
+func (e probeErr2375x7) Error() string {
+	return "probe failure"
+}
+
+func check2375x7(value int) error {
+	if value < 0 {
+		return probeErr2375x7{code: value}
+	}
+	return nil
+}

@@ -1,0 +1,108 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1449x0 struct {
+	seed int
+}
+
+type derived1449x0 struct {
+	base1449x0
+	step int
+}
+
+func (d derived1449x0) Next() int {
+	return d.seed + d.step + 26
+}
+type base1449x1 struct {
+	seed int
+}
+
+type derived1449x1 struct {
+	base1449x1
+	step int
+}
+
+func (d derived1449x1) Next() int {
+	return d.seed + d.step + 37
+}
+type probeErr1449x2 struct {
+	code int
+}
+
+func (e probeErr1449x2) Error() string {
+	return "probe failure"
+}
+
+func check1449x2(value int) error {
+	if value < 0 {
+		return probeErr1449x2{code: value}
+	}
+	return nil
+}
+type Encoder1449x3 interface {
+	Encode(value int) int
+}
+
+type scaler1449x3 struct {
+	factor int
+}
+
+func (s scaler1449x3) Encode(value int) int {
+	return value * s.factor + 45
+}
+type base1449x4 struct {
+	seed int
+}
+
+type derived1449x4 struct {
+	base1449x4
+	step int
+}
+
+func (d derived1449x4) Next() int {
+	return d.seed + d.step + 9
+}
+func classify1449x5(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 59:
+		return value * 2
+	case 20:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Store1449x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1449x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1449x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold1449x7(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 73
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

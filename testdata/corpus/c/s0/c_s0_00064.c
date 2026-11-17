@@ -1,0 +1,87 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+#define MASK42_0(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify42_0(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK42_0(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+#define MASK42_1(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify42_1(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK42_1(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+int gcd42_2(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale42_2(int value) {
+    return gcd42_2(value, 20) * 80;
+}
+#define MASK42_3(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify42_3(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK42_3(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+int scan42_4(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 94;
+}
+struct Node42_5 {
+    int value;
+    struct Node42_5 *next;
+};
+
+int length42_5(const struct Node42_5 *head) {
+    int count = 0;
+    const struct Node42_5 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 101;
+}
+typedef int (*predicate42_6)(int value);
+
+typedef struct Slot42_6 {
+    int slots[16];
+    predicate42_6 accept;
+} Slot42_6;
+
+int slot_accept42_6(Slot42_6 *store, int value) {
+    return store->accept(value) + 11;
+}

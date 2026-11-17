@@ -1,0 +1,102 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store1740x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1740x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1740x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func classify1740x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 31:
+		return value * 2
+	case 61:
+		return value + 2
+	default:
+		return value
+	}
+}
+type probeErr1740x2 struct {
+	code int
+}
+
+func (e probeErr1740x2) Error() string {
+	return "probe failure"
+}
+
+func check1740x2(value int) error {
+	if value < 0 {
+		return probeErr1740x2{code: value}
+	}
+	return nil
+}
+type Store1740x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1740x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1740x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func relay1740x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 52
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1740x5 interface {
+	Encode(value int) int
+}
+
+type scaler1740x5 struct {
+	factor int
+}
+
+func (s scaler1740x5) Encode(value int) int {
+	return value * s.factor + 59
+}
+type base1740x6 struct {
+	seed int
+}
+
+type derived1740x6 struct {
+	base1740x6
+	step int
+}
+
+func (d derived1740x6) Next() int {
+	return d.seed + d.step + 55
+}

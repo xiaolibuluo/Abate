@@ -1,0 +1,32 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind1368_0 { KIND_EMPTY1368_0 = 0, KIND_FULL1368_0 = 38 };
+
+union Cell1368_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind1368_0(union Cell1368_0 *cell) {
+    cell->number = 69;
+    return cell->number > 0 ? KIND_FULL1368_0 : KIND_EMPTY1368_0;
+}
+#define MASK1368_1(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify1368_1(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK1368_1(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}

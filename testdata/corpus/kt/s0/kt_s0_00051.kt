@@ -1,0 +1,76 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+fun <T> List<T>.secondOrNull410(): T? = if (size > 1) this[1] else null
+
+fun render410(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+data class Pair411<A, B>(val first: A, val second: B)
+
+fun combine411(left: Int, right: Int): Pair411<Int, Int> {
+    return Pair411(left + 60, right + 63)
+}
+data class Pair412<A, B>(val first: A, val second: B)
+
+fun combine412(left: Int, right: Int): Pair412<Int, Int> {
+    return Pair412(left + 67, right + 13)
+}
+class Counter413 {
+    var current: Int by Delegates.observable(74) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+sealed class Outcome414 {
+    data class Success(val payload: String) : Outcome414()
+    data object Failure : Outcome414()
+}
+
+fun describe414(outcome: Outcome414): String = when (outcome) {
+    is Outcome414.Success -> outcome.payload
+    Outcome414.Failure -> "failed"
+}
+object Registry415 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG415 = "registry-88"
+    }
+}
+object Registry416 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG416 = "registry-95"
+    }
+}
+sealed class Outcome417 {
+    data class Success(val payload: String) : Outcome417()
+    data object Failure : Outcome417()
+}
+
+fun describe417(outcome: Outcome417): String = when (outcome) {
+    is Outcome417.Success -> outcome.payload
+    Outcome417.Failure -> "failed"
+}

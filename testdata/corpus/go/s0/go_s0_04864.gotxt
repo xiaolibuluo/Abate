@@ -1,0 +1,108 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1114x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 34
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1114x1 struct {
+	seed int
+}
+
+type derived1114x1 struct {
+	base1114x1
+	step int
+}
+
+func (d derived1114x1) Next() int {
+	return d.seed + d.step + 10
+}
+func describe1114x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder1114x3 interface {
+	Encode(value int) int
+}
+
+type scaler1114x3 struct {
+	factor int
+}
+
+func (s scaler1114x3) Encode(value int) int {
+	return value * s.factor + 55
+}
+type probeErr1114x4 struct {
+	code int
+}
+
+func (e probeErr1114x4) Error() string {
+	return "probe failure"
+}
+
+func check1114x4(value int) error {
+	if value < 0 {
+		return probeErr1114x4{code: value}
+	}
+	return nil
+}
+func fold1114x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 69
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr1114x6 struct {
+	code int
+}
+
+func (e probeErr1114x6) Error() string {
+	return "probe failure"
+}
+
+func check1114x6(value int) error {
+	if value < 0 {
+		return probeErr1114x6{code: value}
+	}
+	return nil
+}
+func describe1114x7(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

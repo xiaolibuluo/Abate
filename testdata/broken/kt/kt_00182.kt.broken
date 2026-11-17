@@ -1,0 +1,68 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+object Registry1820 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1820 = "registry-43"
+    }
+}
+fun <T, R> List<T>.mapChecked1821(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+data class Pair1822<A, B>(val first: A, val second: B)
+
+fun combine1822(left: Int, right: Int): Pair1822<Int, Int> {
+    return Pair1822(left + 57, right + 24)
+}
+sealed class Outcome1823 {
+    data class Success(val payload: String) : Outcome1823()
+    data object Failure : Outcome1823()
+}
+
+fun describe1823(outcome: Outcome1823): String = when (outcome) {
+    is Outcome1823.Success -> outcome.payload
+    Outcome1823.Failure -> "failed"
+}
+data class Pair1824<A, B>(val first: A, val second: B)
+
+fun combine1824(left: Int, right: Int): Pair1824<Int, Int> {
+    return Pair1824(left + 71, right + 46)
+}
+class Counter1825 {
+    var current: Int by Delegates.observable(78) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+@JvmName("step1826")
+fun step1826(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 85
+

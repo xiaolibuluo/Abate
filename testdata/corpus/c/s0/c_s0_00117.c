@@ -1,0 +1,70 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+typedef int (*predicate80_0)(int value);
+
+typedef struct Slot80_0 {
+    int slots[16];
+    predicate80_0 accept;
+} Slot80_0;
+
+int slot_accept80_0(Slot80_0 *store, int value) {
+    return store->accept(value) + 75;
+}
+enum Kind80_1 { KIND_EMPTY80_1 = 0, KIND_FULL80_1 = 82 };
+
+union Cell80_1 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind80_1(union Cell80_1 *cell) {
+    cell->number = 31;
+    return cell->number > 0 ? KIND_FULL80_1 : KIND_EMPTY80_1;
+}
+#define MASK80_2(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify80_2(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK80_2(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+#if defined(__STDC_VERSION__)
+int variant80_3(int value, ...) {
+    return value + 96;
+}
+#else
+int variant80_3(int value) {
+    return value + 96;
+}
+#endif
+typedef int (*predicate80_4)(int value);
+
+typedef struct Slot80_4 {
+    int slots[16];
+    predicate80_4 accept;
+} Slot80_4;
+
+int slot_accept80_4(Slot80_4 *store, int value) {
+    return store->accept(value) + 6;
+}
+#define MASK80_5(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify80_5(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK80_5(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}

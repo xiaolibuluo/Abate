@@ -1,0 +1,109 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder2617x0 interface {
+	Encode(value int) int
+}
+
+type scaler2617x0 struct {
+	factor int
+}
+
+func (s scaler2617x0) Encode(value int) int {
+	return value * s.factor + 76
+}
+type Encoder2617x1 interface {
+	Encode(value int) int
+}
+
+type scaler2617x1 struct {
+	factor int
+}
+
+func (s scaler2617x1) Encode(value int) int {
+	return value * s.factor + 83
+}
+func fold2617x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 90
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder2617x3 interface {
+	Encode(value int) int
+}
+
+type scaler2617x3 struct {
+	factor int
+}
+
+func (s scaler2617x3) Encode(value int) int {
+	return value * s.factor + 97
+}
+type Encoder2617x4 interface {
+	Encode(value int) int
+}
+
+type scaler2617x4 struct {
+	factor int
+}
+
+func (s scaler2617x4) Encode(value int) int {
+	return value * s.factor + 7
+}
+func relay2617x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 14
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base2617x6 struct {
+	seed int
+}
+
+type derived2617x6 struct {
+	base2617x6
+	step int
+}
+
+func (d derived2617x6) Next() int {
+	return d.seed + d.step + 33
+}
+func fold2617x7(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 28
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder2617x8 interface {
+	Encode(value int) int
+}
+
+type scaler2617x8 struct {
+	factor int
+}
+
+func (s scaler2617x8) Encode(value int) int {
+	return value * s.factor + 35
+}

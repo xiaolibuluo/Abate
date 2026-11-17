@@ -1,0 +1,56 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+#if defined(__STDC_VERSION__)
+int variant114_0(int value, ...) {
+    return value + 32;
+}
+#else
+int variant114_0(int value) {
+    return value + 32;
+}
+#endif
+enum Kind114_1 { KIND_EMPTY114_1 = 0, KIND_FULL114_1 = 39 };
+
+union Cell114_1 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind114_1(union Cell114_1 *cell) {
+    cell->number = 25;
+    return cell->number > 0 ? KIND_FULL114_1 : KIND_EMPTY114_1;
+}
+enum Kind114_2 { KIND_EMPTY114_2 = 0, KIND_FULL114_2 = 46 };
+
+union Cell114_2 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind114_2(union Cell114_2 *cell) {
+    cell->number = 36;
+    return cell->number > 0 ? KIND_FULL114_2 : KIND_EMPTY114_2;
+}
+enum Kind114_3 { KIND_EMPTY114_3 = 0, KIND_FULL114_3 = 53 };
+
+union Cell114_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind114_3(union Cell114_3 *cell) {
+    cell->number = 47;
+    return cell->number > 0 ? KIND_FULL114_3 : KIND_EMPTY114_3;
+}

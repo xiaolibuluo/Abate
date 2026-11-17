@@ -1,0 +1,86 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def summarize190_0(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 50:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def guarded190_1(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def expand190_2(values):
+    for item in values:
+        if item > 64:
+            yield item * 19
+
+
+def collect190_2(values):
+    return list(expand190_2(values))
+def guarded190_3(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def pair190_4(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 78}
+class Slot190_5:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{85}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+class Slot190_6:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{92}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+class Slot190_7:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{99}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+def guarded190_8(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()

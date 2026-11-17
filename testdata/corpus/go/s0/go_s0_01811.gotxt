@@ -1,0 +1,118 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify431x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 79:
+		return value * 2
+	case 37:
+		return value + 2
+	default:
+		return value
+	}
+}
+func fold431x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 86
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder431x2 interface {
+	Encode(value int) int
+}
+
+type scaler431x2 struct {
+	factor int
+}
+
+func (s scaler431x2) Encode(value int) int {
+	return value * s.factor + 93
+}
+func fold431x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 100
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe431x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func relay431x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 17
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr431x6 struct {
+	code int
+}
+
+func (e probeErr431x6) Error() string {
+	return "probe failure"
+}
+
+func check431x6(value int) error {
+	if value < 0 {
+		return probeErr431x6{code: value}
+	}
+	return nil
+}
+func classify431x7(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 31:
+		return value * 2
+	case 53:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder431x8 interface {
+	Encode(value int) int
+}
+
+type scaler431x8 struct {
+	factor int
+}
+
+func (s scaler431x8) Encode(value int) int {
+	return value * s.factor + 38
+}

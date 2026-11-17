@@ -1,0 +1,50 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn peek200(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 71
+}
+pub fn classify201<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 78 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub trait Encode202 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet202<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode202 for Packet202<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub fn classify203<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 92 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+macro_rules! sum204 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold204(values: &[i32]) -> i32 {
+    let literal = sum204!(99, 10);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}

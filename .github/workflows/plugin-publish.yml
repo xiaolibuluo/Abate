@@ -1,0 +1,80 @@
+# Abate M4 插件发布工作流（commit → publish ≤ 1h SLA）
+#
+# SLA：从 push(commit) 到签名插件产物上传完成必须在 1 小时（3600 秒）内。
+# timeout-minutes: 60 是 GitHub Actions 层的硬边界；scripts/plugin-publish.sh
+# 额外记录真实起止时间戳、耗时，并在超过 3600 秒时以非零码失败。
+# 证据文件：plugin/CI-EVIDENCE.md 与 .artifacts/plugin-publish/PUBLISH-EVIDENCE.txt。
+#
+# 气隙边界：全局 GOPROXY=off / GOSUMDB=off / GOFLAGS=-mod=vendor 保持全流程离线。
+# 唯一例外是下面「Install golangci-lint」步骤：它是构建期工具自举，用 env: 局部
+# 放开网络，仅用于拉取受版本固定（v2.1.6）的 lint 二进制，装完即恢复离线。
+# 这不是 Abate 运行时 API 接入：运行时零网络、零第三方 import、零 CGO、
+# 零子进程；gate / publish / upload 三个步骤全部继承全局离线 env。
+name: plugin-publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  GO_VERSION: "1.26.11"
+  GOLANGCI_LINT_VERSION: "v2.1.6"
+  GOFLAGS: "-mod=vendor"
+  GOPROXY: "off"
+  GOSUMDB: "off"
+
+jobs:
+  publish:
+    name: gate-then-sign-and-publish
+    runs-on: ubuntu-latest
+    # Hard wall-clock bound for the commit -> publish SLA (<= 1 hour).
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+
+      # 构建期工具安装：唯一允许联网的步骤。全局 GOPROXY=off 与
+      # GOFLAGS=-mod=vendor 会让 `go install ...@v2.1.6` 以
+      # "cannot query module due to -mod=vendor" 退出码 1 失败，而
+      # scripts/lint-gate.sh 第 5 段依赖该二进制。此处用 env: 局部覆盖
+      # GOPROXY / GOSUMDB / GOFLAGS，仅本步放开网络，拉取版本固定的 lint
+      # 二进制并把 $GOPATH/bin 加入 PATH；不 vendor 进仓、不进 go.mod、
+      # 不改变 Abate 运行时依赖面，全程不跳过 lint 门禁。
+      - name: Install golangci-lint v2 (build-time tool fetch, network only here)
+        env:
+          GOPROXY: "https://proxy.golang.org,direct"
+          GOSUMDB: "sum.golang.org"
+          GOFLAGS: ""
+        run: |
+          go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@${{ env.GOLANGCI_LINT_VERSION }}
+          echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      # 以下 gate / publish / upload 步骤继承全局离线 env：
+      # GOPROXY=off + GOSUMDB=off + GOFLAGS=-mod=vendor，lint 二进制已在 PATH。
+      # Step 1 of the publish pipeline: the 9-segment strict gate must pass
+      # before any artifact is signed. It includes gofmt, vet, golangci-lint,
+      # full -race tests, coverage and build.
+      - name: Strict gate (9 segments)
+        run: bash scripts/lint-gate.sh
+
+      # Step 2: build + sign + verify + timestamped evidence, bounded above by
+      # the job timeout and the script's own 3600-second assertion.
+      - name: Build and sign plugin artifact
+        run: bash scripts/plugin-publish.sh
+
+      - name: Upload signed plugin artifact and SLA evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: abate-signed-plugin
+          path: .artifacts/plugin-publish/
+          if-no-files-found: error

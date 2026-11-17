@@ -1,0 +1,80 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+#if defined(__STDC_VERSION__)
+int variant126_0(int value, ...) {
+    return value + 91;
+}
+#else
+int variant126_0(int value) {
+    return value + 91;
+}
+#endif
+#if defined(__STDC_VERSION__)
+int variant126_1(int value, ...) {
+    return value + 98;
+}
+#else
+int variant126_1(int value) {
+    return value + 98;
+}
+#endif
+#define MASK126_2(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify126_2(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK126_2(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+typedef int (*predicate126_3)(int value);
+
+typedef struct Slot126_3 {
+    int slots[16];
+    predicate126_3 accept;
+} Slot126_3;
+
+int slot_accept126_3(Slot126_3 *store, int value) {
+    return store->accept(value) + 15;
+}
+#if defined(__STDC_VERSION__)
+int variant126_4(int value, ...) {
+    return value + 22;
+}
+#else
+int variant126_4(int value) {
+    return value + 22;
+}
+#endif
+#define MASK126_5(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify126_5(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK126_5(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+struct Node126_6 {
+    int value;
+    struct Node126_6 *next;
+};
+
+int length126_6(const struct Node126_6 *head) {
+    int count = 0;
+    const struct Node126_6 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 36;
+}

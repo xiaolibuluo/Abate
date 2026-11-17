@@ -1,0 +1,115 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify2571x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 60:
+		return value * 2
+	case 11:
+		return value + 2
+	default:
+		return value
+	}
+}
+func relay2571x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 67
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe2571x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func classify2571x3(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 81:
+		return value * 2
+	case 44:
+		return value + 2
+	default:
+		return value
+	}
+}
+type base2571x4 struct {
+	seed int
+}
+
+type derived2571x4 struct {
+	base2571x4
+	step int
+}
+
+func (d derived2571x4) Next() int {
+	return d.seed + d.step + 55
+}
+type Store2571x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2571x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2571x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base2571x6 struct {
+	seed int
+}
+
+type derived2571x6 struct {
+	base2571x6
+	step int
+}
+
+func (d derived2571x6) Next() int {
+	return d.seed + d.step + 16
+}
+type probeErr2571x7 struct {
+	code int
+}
+
+func (e probeErr2571x7) Error() string {
+	return "probe failure"
+}
+
+func check2571x7(value int) error {
+	if value < 0 {
+		return probeErr2571x7{code: value}
+	}
+	return nil
+}

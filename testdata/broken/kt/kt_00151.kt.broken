@@ -1,0 +1,25 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome1510 {
+    data class Success(val payload: String) : Outcome1510()
+    data object Failure : Outcome1510()
+}
+
+fun describe1510(outcome: Outcome1510): String = when (outcome) {
+    is Outcome1510.Success -> outcome.payload
+    Outcome1510.Failure -> "failed"
+}
+data class Pair1511<A, B>(val first: A, val second: B)
+
+fun combine1511(left: Int, right: Int): Pair1511<Int, Int> {
+    return Pair1511(left + 35, right + 40)
+

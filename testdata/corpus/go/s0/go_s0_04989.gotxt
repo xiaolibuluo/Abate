@@ -1,0 +1,75 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr1143x0 struct {
+	code int
+}
+
+func (e probeErr1143x0) Error() string {
+	return "probe failure"
+}
+
+func check1143x0(value int) error {
+	if value < 0 {
+		return probeErr1143x0{code: value}
+	}
+	return nil
+}
+func describe1143x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold1143x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 37
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr1143x3 struct {
+	code int
+}
+
+func (e probeErr1143x3) Error() string {
+	return "probe failure"
+}
+
+func check1143x3(value int) error {
+	if value < 0 {
+		return probeErr1143x3{code: value}
+	}
+	return nil
+}
+func describe1143x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

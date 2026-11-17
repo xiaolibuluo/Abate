@@ -1,0 +1,91 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store952x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store952x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store952x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr952x1 struct {
+	code int
+}
+
+func (e probeErr952x1) Error() string {
+	return "probe failure"
+}
+
+func check952x1(value int) error {
+	if value < 0 {
+		return probeErr952x1{code: value}
+	}
+	return nil
+}
+type probeErr952x2 struct {
+	code int
+}
+
+func (e probeErr952x2) Error() string {
+	return "probe failure"
+}
+
+func check952x2(value int) error {
+	if value < 0 {
+		return probeErr952x2{code: value}
+	}
+	return nil
+}
+type base952x3 struct {
+	seed int
+}
+
+type derived952x3 struct {
+	base952x3
+	step int
+}
+
+func (d derived952x3) Next() int {
+	return d.seed + d.step + 57
+}
+func relay952x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 90
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe952x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

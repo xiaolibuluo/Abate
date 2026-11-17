@@ -1,0 +1,127 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe2041x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func classify2041x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 64:
+		return value * 2
+	case 33:
+		return value + 2
+	default:
+		return value
+	}
+}
+type probeErr2041x2 struct {
+	code int
+}
+
+func (e probeErr2041x2) Error() string {
+	return "probe failure"
+}
+
+func check2041x2(value int) error {
+	if value < 0 {
+		return probeErr2041x2{code: value}
+	}
+	return nil
+}
+type base2041x3 struct {
+	seed int
+}
+
+type derived2041x3 struct {
+	base2041x3
+	step int
+}
+
+func (d derived2041x3) Next() int {
+	return d.seed + d.step + 55
+}
+type probeErr2041x4 struct {
+	code int
+}
+
+func (e probeErr2041x4) Error() string {
+	return "probe failure"
+}
+
+func check2041x4(value int) error {
+	if value < 0 {
+		return probeErr2041x4{code: value}
+	}
+	return nil
+}
+func relay2041x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 92
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base2041x6 struct {
+	seed int
+}
+
+type derived2041x6 struct {
+	base2041x6
+	step int
+}
+
+func (d derived2041x6) Next() int {
+	return d.seed + d.step + 27
+}
+func relay2041x7(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 9
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func classify2041x8(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 16:
+		return value * 2
+	case 49:
+		return value + 2
+	default:
+		return value
+	}
+}

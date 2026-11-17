@@ -1,0 +1,54 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+struct Node66_0 {
+    int value;
+    struct Node66_0 *next;
+};
+
+int length66_0(const struct Node66_0 *head) {
+    int count = 0;
+    const struct Node66_0 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 87;
+}
+typedef int (*predicate66_1)(int value);
+
+typedef struct Slot66_1 {
+    int slots[16];
+    predicate66_1 accept;
+} Slot66_1;
+
+int slot_accept66_1(Slot66_1 *store, int value) {
+    return store->accept(value) + 94;
+}
+#if defined(__STDC_VERSION__)
+int variant66_2(int value, ...) {
+    return value + 101;
+}
+#else
+int variant66_2(int value) {
+    return value + 101;
+}
+#endif
+typedef int (*predicate66_3)(int value);
+
+typedef struct Slot66_3 {
+    int slots[16];
+    predicate66_3 accept;
+} Slot66_3;
+
+int slot_accept66_3(Slot66_3 *store, int value) {
+    return store->accept(value) + 11;
+}

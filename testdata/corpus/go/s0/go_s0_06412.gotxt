@@ -1,0 +1,60 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe1477x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr1477x1 struct {
+	code int
+}
+
+func (e probeErr1477x1) Error() string {
+	return "probe failure"
+}
+
+func check1477x1(value int) error {
+	if value < 0 {
+		return probeErr1477x1{code: value}
+	}
+	return nil
+}
+func fold1477x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 14
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1477x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 21
+			}
+		case <-done:
+			return
+		}
+	}
+}

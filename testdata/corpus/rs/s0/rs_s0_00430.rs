@@ -1,0 +1,97 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn classify1450<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 47 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub fn classify1451<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 54 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub fn peek1452(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 61
+}
+pub trait Encode1453 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet1453<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode1453 for Packet1453<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub fn loops1454(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 75;
+        break;
+    }
+    total
+}
+pub fn classify1455<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 82 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub fn peek1456(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 89
+}
+macro_rules! sum1457 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1457(values: &[i32]) -> i32 {
+    let literal = sum1457!(96, 64);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub fn parse1458(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 6)
+}
+pub fn loops1459(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 13;
+        break;
+    }
+    total
+}

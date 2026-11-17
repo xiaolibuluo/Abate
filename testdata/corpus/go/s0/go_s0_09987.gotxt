@@ -1,0 +1,30 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold2338x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 38
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder2338x1 interface {
+	Encode(value int) int
+}
+
+type scaler2338x1 struct {
+	factor int
+}
+
+func (s scaler2338x1) Encode(value int) int {
+	return value * s.factor + 45
+}

@@ -1,0 +1,46 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold111x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 90
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base111x1 struct {
+	seed int
+}
+
+type derived111x1 struct {
+	base111x1
+	step int
+}
+
+func (d derived111x1) Next() int {
+	return d.seed + d.step + 65
+}
+type Store111x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store111x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store111x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+

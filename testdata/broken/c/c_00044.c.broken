@@ -1,0 +1,102 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind44_0 { KIND_EMPTY44_0 = 0, KIND_FULL44_0 = 92 };
+
+union Cell44_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind44_0(union Cell44_0 *cell) {
+    cell->number = 12;
+    return cell->number > 0 ? KIND_FULL44_0 : KIND_EMPTY44_0;
+}
+enum Kind44_1 { KIND_EMPTY44_1 = 0, KIND_FULL44_1 = 99 };
+
+union Cell44_1 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind44_1(union Cell44_1 *cell) {
+    cell->number = 23;
+    return cell->number > 0 ? KIND_FULL44_1 : KIND_EMPTY44_1;
+}
+enum Kind44_2 { KIND_EMPTY44_2 = 0, KIND_FULL44_2 = 9 };
+
+union Cell44_2 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind44_2(union Cell44_2 *cell) {
+    cell->number = 34;
+    return cell->number > 0 ? KIND_FULL44_2 : KIND_EMPTY44_2;
+}
+enum Kind44_3 { KIND_EMPTY44_3 = 0, KIND_FULL44_3 = 16 };
+
+union Cell44_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind44_3(union Cell44_3 *cell) {
+    cell->number = 45;
+    return cell->number > 0 ? KIND_FULL44_3 : KIND_EMPTY44_3;
+}
+typedef int (*predicate44_4)(int value);
+
+typedef struct Slot44_4 {
+    int slots[16];
+    predicate44_4 accept;
+} Slot44_4;
+
+int slot_accept44_4(Slot44_4 *store, int value) {
+    return store->accept(value) + 23;
+}
+typedef int (*predicate44_5)(int value);
+
+typedef struct Slot44_5 {
+    int slots[16];
+    predicate44_5 accept;
+} Slot44_5;
+
+int slot_accept44_5(Slot44_5 *store, int value) {
+    return store->accept(value) + 30;
+}
+typedef int (*predicate44_6)(int value);
+
+typedef struct Slot44_6 {
+    int slots[16];
+    predicate44_6 accept;
+} Slot44_6;
+
+int slot_accept44_6(Slot44_6 *store, int value) {
+    return store->accept(value) + 37;
+}
+int scan44_7(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 44;
+

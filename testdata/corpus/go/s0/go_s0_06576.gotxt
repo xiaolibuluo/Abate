@@ -1,0 +1,128 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr1507x0 struct {
+	code int
+}
+
+func (e probeErr1507x0) Error() string {
+	return "probe failure"
+}
+
+func check1507x0(value int) error {
+	if value < 0 {
+		return probeErr1507x0{code: value}
+	}
+	return nil
+}
+type Encoder1507x1 interface {
+	Encode(value int) int
+}
+
+type scaler1507x1 struct {
+	factor int
+}
+
+func (s scaler1507x1) Encode(value int) int {
+	return value * s.factor + 9
+}
+func relay1507x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 16
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr1507x3 struct {
+	code int
+}
+
+func (e probeErr1507x3) Error() string {
+	return "probe failure"
+}
+
+func check1507x3(value int) error {
+	if value < 0 {
+		return probeErr1507x3{code: value}
+	}
+	return nil
+}
+type Store1507x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1507x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1507x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Store1507x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1507x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1507x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder1507x6 interface {
+	Encode(value int) int
+}
+
+type scaler1507x6 struct {
+	factor int
+}
+
+func (s scaler1507x6) Encode(value int) int {
+	return value * s.factor + 44
+}
+func classify1507x7(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 51:
+		return value * 2
+	case 21:
+		return value + 2
+	default:
+		return value
+	}
+}
+func relay1507x8(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 58
+			}
+		case <-done:
+			return
+		}
+	}
+}

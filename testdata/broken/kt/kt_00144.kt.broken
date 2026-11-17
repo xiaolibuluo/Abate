@@ -1,0 +1,88 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+data class Pair1440<A, B>(val first: A, val second: B)
+
+fun combine1440(left: Int, right: Int): Pair1440<Int, Int> {
+    return Pair1440(left + 34, right + 41)
+}
+data class Pair1441<A, B>(val first: A, val second: B)
+
+fun combine1441(left: Int, right: Int): Pair1441<Int, Int> {
+    return Pair1441(left + 41, right + 52)
+}
+class Counter1442 {
+    var current: Int by Delegates.observable(48) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+object Registry1443 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1443 = "registry-55"
+    }
+}
+data class Pair1444<A, B>(val first: A, val second: B)
+
+fun combine1444(left: Int, right: Int): Pair1444<Int, Int> {
+    return Pair1444(left + 62, right + 24)
+}
+@JvmName("step1445")
+fun step1445(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 69
+}
+sealed class Outcome1446 {
+    data class Success(val payload: String) : Outcome1446()
+    data object Failure : Outcome1446()
+}
+
+fun describe1446(outcome: Outcome1446): String = when (outcome) {
+    is Outcome1446.Success -> outcome.payload
+    Outcome1446.Failure -> "failed"
+}
+class Counter1447 {
+    var current: Int by Delegates.observable(83) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+@JvmName("step1448")
+fun step1448(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 90
+

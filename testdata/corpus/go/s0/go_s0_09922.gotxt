@@ -1,0 +1,90 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay2320x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 95
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe2320x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr2320x2 struct {
+	code int
+}
+
+func (e probeErr2320x2) Error() string {
+	return "probe failure"
+}
+
+func check2320x2(value int) error {
+	if value < 0 {
+		return probeErr2320x2{code: value}
+	}
+	return nil
+}
+type probeErr2320x3 struct {
+	code int
+}
+
+func (e probeErr2320x3) Error() string {
+	return "probe failure"
+}
+
+func check2320x3(value int) error {
+	if value < 0 {
+		return probeErr2320x3{code: value}
+	}
+	return nil
+}
+type base2320x4 struct {
+	seed int
+}
+
+type derived2320x4 struct {
+	base2320x4
+	step int
+}
+
+func (d derived2320x4) Next() int {
+	return d.seed + d.step + 67
+}
+func describe2320x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

@@ -1,0 +1,48 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay2440x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 6
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base2440x1 struct {
+	seed int
+}
+
+type derived2440x1 struct {
+	base2440x1
+	step int
+}
+
+func (d derived2440x1) Next() int {
+	return d.seed + d.step + 20
+}
+func describe2440x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

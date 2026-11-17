@@ -1,0 +1,57 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder2496x0 interface {
+	Encode(value int) int
+}
+
+type scaler2496x0 struct {
+	factor int
+}
+
+func (s scaler2496x0) Encode(value int) int {
+	return value * s.factor + 55
+}
+type base2496x1 struct {
+	seed int
+}
+
+type derived2496x1 struct {
+	base2496x1
+	step int
+}
+
+func (d derived2496x1) Next() int {
+	return d.seed + d.step + 46
+}
+type base2496x2 struct {
+	seed int
+}
+
+type derived2496x2 struct {
+	base2496x2
+	step int
+}
+
+func (d derived2496x2) Next() int {
+	return d.seed + d.step + 57
+}
+func relay2496x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 76
+			}
+		case <-done:
+			return
+		}
+	}
+}

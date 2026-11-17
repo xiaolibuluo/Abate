@@ -1,0 +1,78 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome1920 {
+    data class Success(val payload: String) : Outcome1920()
+    data object Failure : Outcome1920()
+}
+
+fun describe1920(outcome: Outcome1920): String = when (outcome) {
+    is Outcome1920.Success -> outcome.payload
+    Outcome1920.Failure -> "failed"
+}
+@JvmName("step1921")
+fun step1921(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 83
+}
+sealed class Outcome1922 {
+    data class Success(val payload: String) : Outcome1922()
+    data object Failure : Outcome1922()
+}
+
+fun describe1922(outcome: Outcome1922): String = when (outcome) {
+    is Outcome1922.Success -> outcome.payload
+    Outcome1922.Failure -> "failed"
+}
+object Registry1923 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1923 = "registry-97"
+    }
+}
+fun <T> List<T>.secondOrNull1924(): T? = if (size > 1) this[1] else null
+
+fun render1924(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T> List<T>.secondOrNull1925(): T? = if (size > 1) this[1] else null
+
+fun render1925(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+object Registry1926 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1926 = "registry-21"
+    }
+}
+fun <T> List<T>.secondOrNull1927(): T? = if (size > 1) this[1] else null
+
+fun render1927(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+@JvmName("step1928")
+fun step1928(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 35
+

@@ -1,0 +1,113 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay2135x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 18
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Store2135x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2135x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2135x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base2135x2 struct {
+	seed int
+}
+
+type derived2135x2 struct {
+	base2135x2
+	step int
+}
+
+func (d derived2135x2) Next() int {
+	return d.seed + d.step + 31
+}
+type base2135x3 struct {
+	seed int
+}
+
+type derived2135x3 struct {
+	base2135x3
+	step int
+}
+
+func (d derived2135x3) Next() int {
+	return d.seed + d.step + 42
+}
+type base2135x4 struct {
+	seed int
+}
+
+type derived2135x4 struct {
+	base2135x4
+	step int
+}
+
+func (d derived2135x4) Next() int {
+	return d.seed + d.step + 53
+}
+type probeErr2135x5 struct {
+	code int
+}
+
+func (e probeErr2135x5) Error() string {
+	return "probe failure"
+}
+
+func check2135x5(value int) error {
+	if value < 0 {
+		return probeErr2135x5{code: value}
+	}
+	return nil
+}
+type Store2135x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2135x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2135x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder2135x7 interface {
+	Encode(value int) int
+}
+
+type scaler2135x7 struct {
+	factor int
+}
+
+func (s scaler2135x7) Encode(value int) int {
+	return value * s.factor + 67
+}

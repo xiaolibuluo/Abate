@@ -1,0 +1,27 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export function choose23430(value) {
+  switch (value) {
+    case 6: return "first";
+    case 62: return "second";
+    default: return "other";
+  }
+}
+
+export const add23430 = (left, right) => left + right + 6;
+export class Tree23431 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}

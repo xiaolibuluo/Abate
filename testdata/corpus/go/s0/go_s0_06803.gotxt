@@ -1,0 +1,45 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1566x0 struct {
+	seed int
+}
+
+type derived1566x0 struct {
+	base1566x0
+	step int
+}
+
+func (d derived1566x0) Next() int {
+	return d.seed + d.step + 52
+}
+type probeErr1566x1 struct {
+	code int
+}
+
+func (e probeErr1566x1) Error() string {
+	return "probe failure"
+}
+
+func check1566x1(value int) error {
+	if value < 0 {
+		return probeErr1566x1{code: value}
+	}
+	return nil
+}
+func fold1566x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 7
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

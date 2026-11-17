@@ -1,0 +1,53 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn parse720(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 68)
+}
+pub fn classify721<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 75 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub trait Encode722 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet722<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode722 for Packet722<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+#[derive(Debug, Clone)]
+pub enum Outcome723<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record723<T> {
+    pub value: T,
+    pub tag: u32,
+}
+pub fn parse724(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 96)
+}
+pub fn peek725(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 6
+}

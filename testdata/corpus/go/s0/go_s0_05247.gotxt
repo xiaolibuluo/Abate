@@ -1,0 +1,98 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1202x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 14
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1202x1 struct {
+	seed int
+}
+
+type derived1202x1 struct {
+	base1202x1
+	step int
+}
+
+func (d derived1202x1) Next() int {
+	return d.seed + d.step + 16
+}
+type Store1202x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1202x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1202x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Store1202x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1202x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1202x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold1202x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 42
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1202x5 struct {
+	seed int
+}
+
+type derived1202x5 struct {
+	base1202x5
+	step int
+}
+
+func (d derived1202x5) Next() int {
+	return d.seed + d.step + 60
+}
+type base1202x6 struct {
+	seed int
+}
+
+type derived1202x6 struct {
+	base1202x6
+	step int
+}
+
+func (d derived1202x6) Next() int {
+	return d.seed + d.step + 10
+}

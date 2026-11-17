@@ -1,0 +1,128 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1556x0 struct {
+	seed int
+}
+
+type derived1556x0 struct {
+	base1556x0
+	step int
+}
+
+func (d derived1556x0) Next() int {
+	return d.seed + d.step + 43
+}
+type probeErr1556x1 struct {
+	code int
+}
+
+func (e probeErr1556x1) Error() string {
+	return "probe failure"
+}
+
+func check1556x1(value int) error {
+	if value < 0 {
+		return probeErr1556x1{code: value}
+	}
+	return nil
+}
+func relay1556x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 71
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1556x3 struct {
+	seed int
+}
+
+type derived1556x3 struct {
+	base1556x3
+	step int
+}
+
+func (d derived1556x3) Next() int {
+	return d.seed + d.step + 15
+}
+func describe1556x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr1556x5 struct {
+	code int
+}
+
+func (e probeErr1556x5) Error() string {
+	return "probe failure"
+}
+
+func check1556x5(value int) error {
+	if value < 0 {
+		return probeErr1556x5{code: value}
+	}
+	return nil
+}
+type probeErr1556x6 struct {
+	code int
+}
+
+func (e probeErr1556x6) Error() string {
+	return "probe failure"
+}
+
+func check1556x6(value int) error {
+	if value < 0 {
+		return probeErr1556x6{code: value}
+	}
+	return nil
+}
+type base1556x7 struct {
+	seed int
+}
+
+type derived1556x7 struct {
+	base1556x7
+	step int
+}
+
+func (d derived1556x7) Next() int {
+	return d.seed + d.step + 59
+}
+func describe1556x8(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

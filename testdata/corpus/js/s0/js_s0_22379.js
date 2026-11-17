@@ -1,0 +1,51 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export function choose19660(value) {
+  switch (value) {
+    case 52: return "first";
+    case 46: return "second";
+    default: return "other";
+  }
+}
+
+export const add19660 = (left, right) => left + right + 52;
+export async function retry19661(task, attempts) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    try {
+      return await task(attempt);
+    } catch (failure) {
+      if (attempt === attempts - 1) {
+        throw failure;
+      }
+    }
+  }
+  return null;
+}
+export async function retry19662(task, attempts) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    try {
+      return await task(attempt);
+    } catch (failure) {
+      if (attempt === attempts - 1) {
+        throw failure;
+      }
+    }
+  }
+  return null;
+}
+export async function collect19663(sources) {
+  const pending = sources.map((source) => source.read());
+  try {
+    return await Promise.all(pending);
+  } catch (failure) {
+    return [];
+  } finally {
+    pending.length = 0;
+  }
+}

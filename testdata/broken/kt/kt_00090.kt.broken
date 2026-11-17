@@ -1,0 +1,78 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+@JvmName("step900")
+fun step900(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 11
+}
+data class Pair901<A, B>(val first: A, val second: B)
+
+fun combine901(left: Int, right: Int): Pair901<Int, Int> {
+    return Pair901(left + 18, right + 40)
+}
+object Registry902 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG902 = "registry-25"
+    }
+}
+@JvmName("step903")
+fun step903(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 32
+}
+sealed class Outcome904 {
+    data class Success(val payload: String) : Outcome904()
+    data object Failure : Outcome904()
+}
+
+fun describe904(outcome: Outcome904): String = when (outcome) {
+    is Outcome904.Success -> outcome.payload
+    Outcome904.Failure -> "failed"
+}
+fun <T, R> List<T>.mapChecked905(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+data class Pair906<A, B>(val first: A, val second: B)
+
+fun combine906(left: Int, right: Int): Pair906<Int, Int> {
+    return Pair906(left + 53, right + 34)
+}
+sealed class Outcome907 {
+    data class Success(val payload: String) : Outcome907()
+    data object Failure : Outcome907()
+}
+
+fun describe907(outcome: Outcome907): String = when (outcome) {
+    is Outcome907.Success -> outcome.payload
+    Outcome907.Failure -> "failed"
+}
+fun <T, R> List<T>.mapChecked908(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+

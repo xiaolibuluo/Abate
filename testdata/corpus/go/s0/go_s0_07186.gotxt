@@ -1,0 +1,71 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1673x0 interface {
+	Encode(value int) int
+}
+
+type scaler1673x0 struct {
+	factor int
+}
+
+func (s scaler1673x0) Encode(value int) int {
+	return value * s.factor + 26
+}
+func relay1673x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 33
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold1673x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 40
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1673x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 47
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Store1673x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1673x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1673x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

@@ -1,0 +1,41 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold2101x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 61
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold2101x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 68
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base2101x2 struct {
+	seed int
+}
+
+type derived2101x2 struct {
+	base2101x2
+	step int
+}
+
+func (d derived2101x2) Next() int {
+	return d.seed + d.step + 37
+}

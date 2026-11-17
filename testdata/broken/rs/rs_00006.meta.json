@@ -1,0 +1,6 @@
+{
+  "language": "rs",
+  "kind": "unclosed-delimiter",
+  "expectedDiagnostic": "ParseError",
+  "sourceRelPath": "rs/s0/rs_s0_00016.rs"
+}

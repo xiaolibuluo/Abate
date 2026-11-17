@@ -1,0 +1,49 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2155x0 struct {
+	seed int
+}
+
+type derived2155x0 struct {
+	base2155x0
+	step int
+}
+
+func (d derived2155x0) Next() int {
+	return d.seed + d.step + 27
+}
+type probeErr2155x1 struct {
+	code int
+}
+
+func (e probeErr2155x1) Error() string {
+	return "probe failure"
+}
+
+func check2155x1(value int) error {
+	if value < 0 {
+		return probeErr2155x1{code: value}
+	}
+	return nil
+}
+func describe2155x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

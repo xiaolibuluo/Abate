@@ -1,0 +1,89 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr563x0 struct {
+	code int
+}
+
+func (e probeErr563x0) Error() string {
+	return "probe failure"
+}
+
+func check563x0(value int) error {
+	if value < 0 {
+		return probeErr563x0{code: value}
+	}
+	return nil
+}
+type probeErr563x1 struct {
+	code int
+}
+
+func (e probeErr563x1) Error() string {
+	return "probe failure"
+}
+
+func check563x1(value int) error {
+	if value < 0 {
+		return probeErr563x1{code: value}
+	}
+	return nil
+}
+type Store563x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store563x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store563x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base563x3 struct {
+	seed int
+}
+
+type derived563x3 struct {
+	base563x3
+	step int
+}
+
+func (d derived563x3) Next() int {
+	return d.seed + d.step + 18
+}
+type probeErr563x4 struct {
+	code int
+}
+
+func (e probeErr563x4) Error() string {
+	return "probe failure"
+}
+
+func check563x4(value int) error {
+	if value < 0 {
+		return probeErr563x4{code: value}
+	}
+	return nil
+}
+type Encoder563x5 interface {
+	Encode(value int) int
+}
+
+type scaler563x5 struct {
+	factor int
+}
+
+func (s scaler563x5) Encode(value int) int {
+	return value * s.factor + 84
+}

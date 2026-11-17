@@ -1,0 +1,97 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay2419x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 24
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold2419x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 31
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr2419x2 struct {
+	code int
+}
+
+func (e probeErr2419x2) Error() string {
+	return "probe failure"
+}
+
+func check2419x2(value int) error {
+	if value < 0 {
+		return probeErr2419x2{code: value}
+	}
+	return nil
+}
+type probeErr2419x3 struct {
+	code int
+}
+
+func (e probeErr2419x3) Error() string {
+	return "probe failure"
+}
+
+func check2419x3(value int) error {
+	if value < 0 {
+		return probeErr2419x3{code: value}
+	}
+	return nil
+}
+func fold2419x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 52
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay2419x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 59
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr2419x6 struct {
+	code int
+}
+
+func (e probeErr2419x6) Error() string {
+	return "probe failure"
+}
+
+func check2419x6(value int) error {
+	if value < 0 {
+		return probeErr2419x6{code: value}
+	}
+	return nil
+}

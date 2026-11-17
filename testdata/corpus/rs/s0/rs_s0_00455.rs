@@ -1,0 +1,32 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn parse1600(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 48)
+}
+macro_rules! sum1601 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1601(values: &[i32]) -> i32 {
+    let literal = sum1601!(55, 42);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+macro_rules! sum1602 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1602(values: &[i32]) -> i32 {
+    let literal = sum1602!(62, 53);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub fn parse1603(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 69)
+}

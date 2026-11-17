@@ -1,0 +1,26 @@
+{
+  "schema": "abate.report.v1",
+  "command": "run",
+  "apiVersion": "ces.tencent.com/v1",
+  "name": "cli-e2e-ok",
+  "namespace": "default",
+  "seed": 42,
+  "dryRun": false,
+  "strict": false,
+  "status": "COMPLETED",
+  "exitCode": 0,
+  "events": 6,
+  "observations": 4,
+  "end": 10000000000,
+  "runDigest": "32dbea3d9acc1c154a49a869dda11243db1a2e24cbeb64d5248619b3cb318339",
+  "streamDigest": "20220908d7fcaeddb5eb3141230b7908e428b370bf4479362c6d0add98570e1d",
+  "violations": [],
+  "verdicts": [
+    {
+      "probeId": "health",
+      "outcome": "HELD",
+      "reason": "held span 3000000000 satisfies holdFor 1000000000",
+      "firstSeq": 0
+    }
+  ]
+}

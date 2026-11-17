@@ -1,0 +1,107 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe1651x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder1651x1 interface {
+	Encode(value int) int
+}
+
+type scaler1651x1 struct {
+	factor int
+}
+
+func (s scaler1651x1) Encode(value int) int {
+	return value * s.factor + 38
+}
+func describe1651x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder1651x3 interface {
+	Encode(value int) int
+}
+
+type scaler1651x3 struct {
+	factor int
+}
+
+func (s scaler1651x3) Encode(value int) int {
+	return value * s.factor + 52
+}
+type base1651x4 struct {
+	seed int
+}
+
+type derived1651x4 struct {
+	base1651x4
+	step int
+}
+
+func (d derived1651x4) Next() int {
+	return d.seed + d.step + 20
+}
+func fold1651x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 66
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe1651x6(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base1651x7 struct {
+	seed int
+}
+
+type derived1651x7 struct {
+	base1651x7
+	step int
+}
+
+func (d derived1651x7) Next() int {
+	return d.seed + d.step + 53
+}

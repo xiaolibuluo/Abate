@@ -1,0 +1,71 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub trait Encode270 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet270<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode270 for Packet270<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub trait Encode271 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet271<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode271 for Packet271<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub trait Encode272 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet272<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode272 for Packet272<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+#[derive(Debug, Clone)]
+pub enum Outcome273<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record273<T> {
+    pub value: T,
+    pub tag: u32,
+}
+pub trait Encode274 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet274<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode274 for Packet274<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}

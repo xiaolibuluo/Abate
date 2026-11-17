@@ -1,0 +1,95 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1060x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 11
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe1060x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base1060x2 struct {
+	seed int
+}
+
+type derived1060x2 struct {
+	base1060x2
+	step int
+}
+
+func (d derived1060x2) Next() int {
+	return d.seed + d.step + 9
+}
+func fold1060x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 32
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1060x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 39
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe1060x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold1060x6(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 53
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

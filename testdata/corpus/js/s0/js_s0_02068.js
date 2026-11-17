@@ -1,0 +1,78 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export class Ring1820 extends Object {
+  #cursor = 0;
+  constructor(capacity) {
+    super();
+    this.slots = new Array(capacity).fill(null);
+  }
+  get position() { return this.#cursor; }
+  push(item) {
+    this.slots[this.#cursor] = item;
+    this.#cursor = (this.#cursor + 1) % this.slots.length;
+  }
+}
+export function choose1821(value) {
+  switch (value) {
+    case 50: return "first";
+    case 13: return "second";
+    default: return "other";
+  }
+}
+
+export const add1821 = (left, right) => left + right + 50;
+export class Tree1822 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}
+export function* expand1823({ head, tail = [] }) {
+  yield `${head}:${tail?.length ?? 0}`;
+  for (const item of tail) {
+    if (item && item.enabled) {
+      yield item.label;
+    }
+  }
+}
+export class Ring1824 extends Object {
+  #cursor = 0;
+  constructor(capacity) {
+    super();
+    this.slots = new Array(capacity).fill(null);
+  }
+  get position() { return this.#cursor; }
+  push(item) {
+    this.slots[this.#cursor] = item;
+    this.#cursor = (this.#cursor + 1) % this.slots.length;
+  }
+}
+export class Tree1825 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}
+export function choose1826(value) {
+  switch (value) {
+    case 85: return "first";
+    case 68: return "second";
+    default: return "other";
+  }
+}
+
+export const add1826 = (left, right) => left + right + 85;

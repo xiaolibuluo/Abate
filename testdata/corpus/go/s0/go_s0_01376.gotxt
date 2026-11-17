@@ -1,0 +1,97 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr325x0 struct {
+	code int
+}
+
+func (e probeErr325x0) Error() string {
+	return "probe failure"
+}
+
+func check325x0(value int) error {
+	if value < 0 {
+		return probeErr325x0{code: value}
+	}
+	return nil
+}
+type Store325x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store325x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store325x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr325x2 struct {
+	code int
+}
+
+func (e probeErr325x2) Error() string {
+	return "probe failure"
+}
+
+func check325x2(value int) error {
+	if value < 0 {
+		return probeErr325x2{code: value}
+	}
+	return nil
+}
+type Encoder325x3 interface {
+	Encode(value int) int
+}
+
+type scaler325x3 struct {
+	factor int
+}
+
+func (s scaler325x3) Encode(value int) int {
+	return value * s.factor + 80
+}
+func relay325x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 87
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold325x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 94
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder325x6 interface {
+	Encode(value int) int
+}
+
+type scaler325x6 struct {
+	factor int
+}
+
+func (s scaler325x6) Encode(value int) int {
+	return value * s.factor + 101
+}

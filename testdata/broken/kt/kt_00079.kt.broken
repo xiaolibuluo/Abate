@@ -1,0 +1,67 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+@JvmName("step790")
+fun step790(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 62
+}
+fun <T> List<T>.secondOrNull791(): T? = if (size > 1) this[1] else null
+
+fun render791(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+sealed class Outcome792 {
+    data class Success(val payload: String) : Outcome792()
+    data object Failure : Outcome792()
+}
+
+fun describe792(outcome: Outcome792): String = when (outcome) {
+    is Outcome792.Success -> outcome.payload
+    Outcome792.Failure -> "failed"
+}
+@JvmName("step793")
+fun step793(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 83
+}
+fun <T, R> List<T>.mapChecked794(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+data class Pair795<A, B>(val first: A, val second: B)
+
+fun combine795(left: Int, right: Int): Pair795<Int, Int> {
+    return Pair795(left + 97, right + 68)
+}
+class Counter796 {
+    var current: Int by Delegates.observable(7) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+

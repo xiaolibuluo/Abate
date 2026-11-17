@@ -1,0 +1,15 @@
+{
+  "seed": 20261114,
+  "languages": ["go", "py", "js", "c", "cs", "rs", "kt"],
+  "filesPerLanguage": 220,
+  "minFileBytes": 128,
+  "maxFileBytes": 184320,
+  "strataCount": 8,
+  "parseTimeoutMillis": 5000,
+  "memLimitBytes": 268435456,
+  "maxRuns": 200000,
+  "brokenPerLanguage": 200,
+  "operators": ["cmp", "op", "digit", "cond", "literal", "return", "block", "call"],
+  "reportDir": ".artifacts/e2e",
+  "thresholdsBaselineSha256": "b967afbba18efdfc62d5d5e4f79e7e802468130f10788603f71d9938a39312d2"
+}

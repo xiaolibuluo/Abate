@@ -1,0 +1,74 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public struct Point1330
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Total => X + Y + 85;
+    }
+
+    public static class Grid1330
+    {
+        public static Point1330 Make(int left, int right)
+        {
+            return new Point1330 { X = left, Y = right };
+        }
+    }
+    public sealed class SlotMap1331
+    {
+        private readonly Dictionary<int, string> items = new Dictionary<int, string>();
+
+        public string this[int index]
+        {
+            get => items.TryGetValue(index, out var value) ? value : string.Empty;
+            set => items[index] = value;
+        }
+
+        public string Describe(int index) => index switch
+        {
+            0 => "zero",
+            _ => items.ContainsKey(index) ? "present" : "absent"
+        };
+    }
+    public interface IHandler1332
+    {
+        void Handle(int value);
+    }
+
+    [Serializable]
+    public sealed record Envelope1332(string Label, int Payload);
+
+    public sealed class Handler1332 : IHandler1332
+    {
+        public void Handle(int value) { }
+    }
+    public struct Point1333
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Total => X + Y + 9;
+    }
+
+    public static class Grid1333
+    {
+        public static Point1333 Make(int left, int right)
+        {
+            return new Point1333 { X = left, Y = right };
+        }
+    }
+}

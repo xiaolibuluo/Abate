@@ -1,0 +1,98 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1738x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 95
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1738x1 interface {
+	Encode(value int) int
+}
+
+type scaler1738x1 struct {
+	factor int
+}
+
+func (s scaler1738x1) Encode(value int) int {
+	return value * s.factor + 5
+}
+type Store1738x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1738x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1738x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base1738x3 struct {
+	seed int
+}
+
+type derived1738x3 struct {
+	base1738x3
+	step int
+}
+
+func (d derived1738x3) Next() int {
+	return d.seed + d.step + 69
+}
+type Encoder1738x4 interface {
+	Encode(value int) int
+}
+
+type scaler1738x4 struct {
+	factor int
+}
+
+func (s scaler1738x4) Encode(value int) int {
+	return value * s.factor + 26
+}
+func relay1738x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 33
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr1738x6 struct {
+	code int
+}
+
+func (e probeErr1738x6) Error() string {
+	return "probe failure"
+}
+
+func check1738x6(value int) error {
+	if value < 0 {
+		return probeErr1738x6{code: value}
+	}
+	return nil
+}

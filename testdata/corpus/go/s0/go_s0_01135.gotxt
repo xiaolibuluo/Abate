@@ -1,0 +1,85 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr269x0 struct {
+	code int
+}
+
+func (e probeErr269x0) Error() string {
+	return "probe failure"
+}
+
+func check269x0(value int) error {
+	if value < 0 {
+		return probeErr269x0{code: value}
+	}
+	return nil
+}
+func relay269x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 17
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base269x2 struct {
+	seed int
+}
+
+type derived269x2 struct {
+	base269x2
+	step int
+}
+
+func (d derived269x2) Next() int {
+	return d.seed + d.step + 23
+}
+func fold269x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 31
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay269x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 38
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr269x5 struct {
+	code int
+}
+
+func (e probeErr269x5) Error() string {
+	return "probe failure"
+}
+
+func check269x5(value int) error {
+	if value < 0 {
+		return probeErr269x5{code: value}
+	}
+	return nil
+}

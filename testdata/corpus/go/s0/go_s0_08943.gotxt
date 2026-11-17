@@ -1,0 +1,113 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold2084x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 34
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr2084x1 struct {
+	code int
+}
+
+func (e probeErr2084x1) Error() string {
+	return "probe failure"
+}
+
+func check2084x1(value int) error {
+	if value < 0 {
+		return probeErr2084x1{code: value}
+	}
+	return nil
+}
+type probeErr2084x2 struct {
+	code int
+}
+
+func (e probeErr2084x2) Error() string {
+	return "probe failure"
+}
+
+func check2084x2(value int) error {
+	if value < 0 {
+		return probeErr2084x2{code: value}
+	}
+	return nil
+}
+func fold2084x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 55
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store2084x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2084x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2084x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func describe2084x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base2084x6 struct {
+	seed int
+}
+
+type derived2084x6 struct {
+	base2084x6
+	step int
+}
+
+func (d derived2084x6) Next() int {
+	return d.seed + d.step + 23
+}
+type Store2084x7[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2084x7[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2084x7[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

@@ -1,0 +1,61 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+@JvmName("step330")
+fun step330(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 46
+}
+sealed class Outcome331 {
+    data class Success(val payload: String) : Outcome331()
+    data object Failure : Outcome331()
+}
+
+fun describe331(outcome: Outcome331): String = when (outcome) {
+    is Outcome331.Success -> outcome.payload
+    Outcome331.Failure -> "failed"
+}
+object Registry332 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG332 = "registry-60"
+    }
+}
+sealed class Outcome333 {
+    data class Success(val payload: String) : Outcome333()
+    data object Failure : Outcome333()
+}
+
+fun describe333(outcome: Outcome333): String = when (outcome) {
+    is Outcome333.Success -> outcome.payload
+    Outcome333.Failure -> "failed"
+}
+fun <T> List<T>.secondOrNull334(): T? = if (size > 1) this[1] else null
+
+fun render334(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T> List<T>.secondOrNull335(): T? = if (size > 1) this[1] else null
+
+fun render335(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+data class Pair336<A, B>(val first: A, val second: B)
+
+fun combine336(left: Int, right: Int): Pair336<Int, Int> {
+    return Pair336(left + 88, right + 62)
+

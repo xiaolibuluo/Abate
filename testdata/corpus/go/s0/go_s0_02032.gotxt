@@ -1,0 +1,106 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder472x0 interface {
+	Encode(value int) int
+}
+
+type scaler472x0 struct {
+	factor int
+}
+
+func (s scaler472x0) Encode(value int) int {
+	return value * s.factor + 30
+}
+func describe472x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base472x2 struct {
+	seed int
+}
+
+type derived472x2 struct {
+	base472x2
+	step int
+}
+
+func (d derived472x2) Next() int {
+	return d.seed + d.step + 41
+}
+type Encoder472x3 interface {
+	Encode(value int) int
+}
+
+type scaler472x3 struct {
+	factor int
+}
+
+func (s scaler472x3) Encode(value int) int {
+	return value * s.factor + 51
+}
+type probeErr472x4 struct {
+	code int
+}
+
+func (e probeErr472x4) Error() string {
+	return "probe failure"
+}
+
+func check472x4(value int) error {
+	if value < 0 {
+		return probeErr472x4{code: value}
+	}
+	return nil
+}
+type base472x5 struct {
+	seed int
+}
+
+type derived472x5 struct {
+	base472x5
+	step int
+}
+
+func (d derived472x5) Next() int {
+	return d.seed + d.step + 13
+}
+type base472x6 struct {
+	seed int
+}
+
+type derived472x6 struct {
+	base472x6
+	step int
+}
+
+func (d derived472x6) Next() int {
+	return d.seed + d.step + 24
+}
+type Encoder472x7 interface {
+	Encode(value int) int
+}
+
+type scaler472x7 struct {
+	factor int
+}
+
+func (s scaler472x7) Encode(value int) int {
+	return value * s.factor + 79
+}

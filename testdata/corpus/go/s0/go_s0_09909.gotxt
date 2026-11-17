@@ -1,0 +1,72 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2315x0 struct {
+	seed int
+}
+
+type derived2315x0 struct {
+	base2315x0
+	step int
+}
+
+func (d derived2315x0) Next() int {
+	return d.seed + d.step + 49
+}
+func describe2315x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func relay2315x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 44
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe2315x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold2315x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 58
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

@@ -1,0 +1,108 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder38x0 interface {
+	Encode(value int) int
+}
+
+type scaler38x0 struct {
+	factor int
+}
+
+func (s scaler38x0) Encode(value int) int {
+	return value * s.factor + 14
+}
+type Encoder38x1 interface {
+	Encode(value int) int
+}
+
+type scaler38x1 struct {
+	factor int
+}
+
+func (s scaler38x1) Encode(value int) int {
+	return value * s.factor + 21
+}
+type probeErr38x2 struct {
+	code int
+}
+
+func (e probeErr38x2) Error() string {
+	return "probe failure"
+}
+
+func check38x2(value int) error {
+	if value < 0 {
+		return probeErr38x2{code: value}
+	}
+	return nil
+}
+type base38x3 struct {
+	seed int
+}
+
+type derived38x3 struct {
+	base38x3
+	step int
+}
+
+func (d derived38x3) Next() int {
+	return d.seed + d.step + 64
+}
+func relay38x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 42
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe38x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold38x6(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 56
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe38x7(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

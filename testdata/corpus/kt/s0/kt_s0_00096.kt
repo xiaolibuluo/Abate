@@ -1,0 +1,61 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+fun <T> List<T>.secondOrNull780(): T? = if (size > 1) this[1] else null
+
+fun render780(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+@JvmName("step781")
+fun step781(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 56
+}
+object Registry782 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG782 = "registry-63"
+    }
+}
+sealed class Outcome783 {
+    data class Success(val payload: String) : Outcome783()
+    data object Failure : Outcome783()
+}
+
+fun describe783(outcome: Outcome783): String = when (outcome) {
+    is Outcome783.Success -> outcome.payload
+    Outcome783.Failure -> "failed"
+}
+fun <T> List<T>.secondOrNull784(): T? = if (size > 1) this[1] else null
+
+fun render784(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+class Counter785 {
+    var current: Int by Delegates.observable(84) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}

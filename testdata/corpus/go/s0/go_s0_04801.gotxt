@@ -1,0 +1,91 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1099x0 interface {
+	Encode(value int) int
+}
+
+type scaler1099x0 struct {
+	factor int
+}
+
+func (s scaler1099x0) Encode(value int) int {
+	return value * s.factor + 33
+}
+func fold1099x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 40
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder1099x2 interface {
+	Encode(value int) int
+}
+
+type scaler1099x2 struct {
+	factor int
+}
+
+func (s scaler1099x2) Encode(value int) int {
+	return value * s.factor + 47
+}
+func fold1099x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 54
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1099x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 61
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1099x5 struct {
+	seed int
+}
+
+type derived1099x5 struct {
+	base1099x5
+	step int
+}
+
+func (d derived1099x5) Next() int {
+	return d.seed + d.step + 10
+}
+type Store1099x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1099x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1099x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

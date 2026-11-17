@@ -1,0 +1,70 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public interface IHandler360
+    {
+        void Handle(int value);
+    }
+
+    [Serializable]
+    public sealed record Envelope360(string Label, int Payload);
+
+    public sealed class Handler360 : IHandler360
+    {
+        public void Handle(int value) { }
+    }
+    public struct Point361
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Total => X + Y + 92;
+    }
+
+    public static class Grid361
+    {
+        public static Point361 Make(int left, int right)
+        {
+            return new Point361 { X = left, Y = right };
+        }
+    }
+    public interface IHandler362
+    {
+        void Handle(int value);
+    }
+
+    [Serializable]
+    public sealed record Envelope362(string Label, int Payload);
+
+    public sealed class Handler362 : IHandler362
+    {
+        public void Handle(int value) { }
+    }
+    public static int Scale363<T>(T value) where T : struct
+    {
+        int number = 9;
+        checked { number = number + value.GetHashCode(); }
+        unchecked { number = number + 50; }
+        return number;
+    }
+    public static int Scale364<T>(T value) where T : struct
+    {
+        int number = 16;
+        checked { number = number + value.GetHashCode(); }
+        unchecked { number = number + 61; }
+        return number;
+    }
+}

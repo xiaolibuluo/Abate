@@ -1,0 +1,33 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1169x0 struct {
+	seed int
+}
+
+type derived1169x0 struct {
+	base1169x0
+	step int
+}
+
+func (d derived1169x0) Next() int {
+	return d.seed + d.step + 18
+}
+type base1169x1 struct {
+	seed int
+}
+
+type derived1169x1 struct {
+	base1169x1
+	step int
+}
+
+func (d derived1169x1) Next() int {
+	return d.seed + d.step + 29
+}

@@ -1,0 +1,93 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold959x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 56
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay959x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 63
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder959x2 interface {
+	Encode(value int) int
+}
+
+type scaler959x2 struct {
+	factor int
+}
+
+func (s scaler959x2) Encode(value int) int {
+	return value * s.factor + 70
+}
+type Encoder959x3 interface {
+	Encode(value int) int
+}
+
+type scaler959x3 struct {
+	factor int
+}
+
+func (s scaler959x3) Encode(value int) int {
+	return value * s.factor + 77
+}
+type Store959x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store959x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store959x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold959x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 91
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr959x6 struct {
+	code int
+}
+
+func (e probeErr959x6) Error() string {
+	return "probe failure"
+}
+
+func check959x6(value int) error {
+	if value < 0 {
+		return probeErr959x6{code: value}
+	}
+	return nil
+}

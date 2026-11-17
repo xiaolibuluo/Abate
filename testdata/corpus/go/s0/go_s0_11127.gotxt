@@ -1,0 +1,86 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store2616x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2616x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2616x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base2616x1 struct {
+	seed int
+}
+
+type derived2616x1 struct {
+	base2616x1
+	step int
+}
+
+func (d derived2616x1) Next() int {
+	return d.seed + d.step + 32
+}
+type Encoder2616x2 interface {
+	Encode(value int) int
+}
+
+type scaler2616x2 struct {
+	factor int
+}
+
+func (s scaler2616x2) Encode(value int) int {
+	return value * s.factor + 77
+}
+type Store2616x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2616x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2616x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold2616x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 91
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe2616x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

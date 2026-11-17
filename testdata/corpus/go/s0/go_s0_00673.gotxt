@@ -1,0 +1,59 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe162x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold162x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 81
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base162x2 struct {
+	seed int
+}
+
+type derived162x2 struct {
+	base162x2
+	step int
+}
+
+func (d derived162x2) Next() int {
+	return d.seed + d.step + 67
+}
+type probeErr162x3 struct {
+	code int
+}
+
+func (e probeErr162x3) Error() string {
+	return "probe failure"
+}
+
+func check162x3(value int) error {
+	if value < 0 {
+		return probeErr162x3{code: value}
+	}
+	return nil
+}

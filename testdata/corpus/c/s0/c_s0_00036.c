@@ -1,0 +1,59 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+#if defined(__STDC_VERSION__)
+int variant22_0(int value, ...) {
+    return value + 97;
+}
+#else
+int variant22_0(int value) {
+    return value + 97;
+}
+#endif
+enum Kind22_1 { KIND_EMPTY22_1 = 0, KIND_FULL22_1 = 7 };
+
+union Cell22_1 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind22_1(union Cell22_1 *cell) {
+    cell->number = 52;
+    return cell->number > 0 ? KIND_FULL22_1 : KIND_EMPTY22_1;
+}
+#if defined(__STDC_VERSION__)
+int variant22_2(int value, ...) {
+    return value + 14;
+}
+#else
+int variant22_2(int value) {
+    return value + 14;
+}
+#endif
+#define MASK22_3(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify22_3(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK22_3(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+#define MASK22_4(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify22_4(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK22_4(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}

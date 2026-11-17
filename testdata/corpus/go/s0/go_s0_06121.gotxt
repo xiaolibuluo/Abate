@@ -1,0 +1,35 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr1414x0 struct {
+	code int
+}
+
+func (e probeErr1414x0) Error() string {
+	return "probe failure"
+}
+
+func check1414x0(value int) error {
+	if value < 0 {
+		return probeErr1414x0{code: value}
+	}
+	return nil
+}
+type base1414x1 struct {
+	seed int
+}
+
+type derived1414x1 struct {
+	base1414x1
+	step int
+}
+
+func (d derived1414x1) Next() int {
+	return d.seed + d.step + 36
+}

@@ -1,0 +1,73 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def summarize84_0(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 30:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def summarize84_1(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 37:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def guarded84_2(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def expand84_3(values):
+    for item in values:
+        if item > 51:
+            yield item * 20
+
+
+def collect84_3(values):
+    return list(expand84_3(values))
+def expand84_4(values):
+    for item in values:
+        if item > 58:
+            yield item * 31
+
+
+def collect84_4(values):
+    return list(expand84_4(values))
+def pair84_5(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 65}
+def pair84_6(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 72}
+def traced84_7(value: int) -> int:
+    return value + 79
+
+
+def decorate84_7(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate84_7
+def doubled84_7(value: int) -> int:
+    return value + value

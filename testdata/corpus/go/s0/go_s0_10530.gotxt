@@ -1,0 +1,74 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder2457x0 interface {
+	Encode(value int) int
+}
+
+type scaler2457x0 struct {
+	factor int
+}
+
+func (s scaler2457x0) Encode(value int) int {
+	return value * s.factor + 33
+}
+type probeErr2457x1 struct {
+	code int
+}
+
+func (e probeErr2457x1) Error() string {
+	return "probe failure"
+}
+
+func check2457x1(value int) error {
+	if value < 0 {
+		return probeErr2457x1{code: value}
+	}
+	return nil
+}
+func describe2457x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base2457x3 struct {
+	seed int
+}
+
+type derived2457x3 struct {
+	base2457x3
+	step int
+}
+
+func (d derived2457x3) Next() int {
+	return d.seed + d.step + 39
+}
+type probeErr2457x4 struct {
+	code int
+}
+
+func (e probeErr2457x4) Error() string {
+	return "probe failure"
+}
+
+func check2457x4(value int) error {
+	if value < 0 {
+		return probeErr2457x4{code: value}
+	}
+	return nil
+}

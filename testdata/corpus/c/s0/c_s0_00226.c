@@ -1,0 +1,37 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind156_0 { KIND_EMPTY156_0 = 0, KIND_FULL156_0 = 93 };
+
+union Cell156_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind156_0(union Cell156_0 *cell) {
+    cell->number = 64;
+    return cell->number > 0 ? KIND_FULL156_0 : KIND_EMPTY156_0;
+}
+struct Node156_1 {
+    int value;
+    struct Node156_1 *next;
+};
+
+int length156_1(const struct Node156_1 *head) {
+    int count = 0;
+    const struct Node156_1 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 100;
+}

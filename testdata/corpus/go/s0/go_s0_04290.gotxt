@@ -1,0 +1,131 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base970x0 struct {
+	seed int
+}
+
+type derived970x0 struct {
+	base970x0
+	step int
+}
+
+func (d derived970x0) Next() int {
+	return d.seed + d.step + 28
+}
+func describe970x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func classify970x2(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 19:
+		return value * 2
+	case 50:
+		return value + 2
+	default:
+		return value
+	}
+}
+func fold970x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 26
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder970x4 interface {
+	Encode(value int) int
+}
+
+type scaler970x4 struct {
+	factor int
+}
+
+func (s scaler970x4) Encode(value int) int {
+	return value * s.factor + 33
+}
+func relay970x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 40
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func classify970x6(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 47:
+		return value * 2
+	case 33:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder970x7 interface {
+	Encode(value int) int
+}
+
+type scaler970x7 struct {
+	factor int
+}
+
+func (s scaler970x7) Encode(value int) int {
+	return value * s.factor + 54
+}
+type Encoder970x8 interface {
+	Encode(value int) int
+}
+
+type scaler970x8 struct {
+	factor int
+}
+
+func (s scaler970x8) Encode(value int) int {
+	return value * s.factor + 61
+}
+type probeErr970x9 struct {
+	code int
+}
+
+func (e probeErr970x9) Error() string {
+	return "probe failure"
+}
+
+func check970x9(value int) error {
+	if value < 0 {
+		return probeErr970x9{code: value}
+	}
+	return nil
+}

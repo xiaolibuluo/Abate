@@ -1,0 +1,79 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn loops330(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 46;
+        break;
+    }
+    total
+}
+#[derive(Debug, Clone)]
+pub enum Outcome331<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record331<T> {
+    pub value: T,
+    pub tag: u32,
+}
+pub fn peek332(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 60
+}
+macro_rules! sum333 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold333(values: &[i32]) -> i32 {
+    let literal = sum333!(67, 29);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub fn loops334(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 74;
+        break;
+    }
+    total
+}
+pub fn parse335(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 81)
+}
+pub trait Encode336 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet336<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode336 for Packet336<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+

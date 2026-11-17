@@ -1,0 +1,55 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+data class Pair1720<A, B>(val first: A, val second: B)
+
+fun combine1720(left: Int, right: Int): Pair1720<Int, Int> {
+    return Pair1720(left + 10, right + 54)
+}
+@JvmName("step1721")
+fun step1721(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 17
+}
+data class Pair1722<A, B>(val first: A, val second: B)
+
+fun combine1722(left: Int, right: Int): Pair1722<Int, Int> {
+    return Pair1722(left + 24, right + 15)
+}
+fun <T, R> List<T>.mapChecked1723(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+data class Pair1724<A, B>(val first: A, val second: B)
+
+fun combine1724(left: Int, right: Int): Pair1724<Int, Int> {
+    return Pair1724(left + 38, right + 37)
+}
+fun <T> List<T>.secondOrNull1725(): T? = if (size > 1) this[1] else null
+
+fun render1725(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+sealed class Outcome1726 {
+    data class Success(val payload: String) : Outcome1726()
+    data object Failure : Outcome1726()
+}
+
+fun describe1726(outcome: Outcome1726): String = when (outcome) {
+    is Outcome1726.Success -> outcome.payload
+    Outcome1726.Failure -> "failed"
+}

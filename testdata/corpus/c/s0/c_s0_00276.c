@@ -1,0 +1,104 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind191_0 { KIND_EMPTY191_0 = 0, KIND_FULL191_0 = 63 };
+
+union Cell191_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind191_0(union Cell191_0 *cell) {
+    cell->number = 65;
+    return cell->number > 0 ? KIND_FULL191_0 : KIND_EMPTY191_0;
+}
+typedef int (*predicate191_1)(int value);
+
+typedef struct Slot191_1 {
+    int slots[16];
+    predicate191_1 accept;
+} Slot191_1;
+
+int slot_accept191_1(Slot191_1 *store, int value) {
+    return store->accept(value) + 70;
+}
+#define MASK191_2(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify191_2(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK191_2(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+struct Node191_3 {
+    int value;
+    struct Node191_3 *next;
+};
+
+int length191_3(const struct Node191_3 *head) {
+    int count = 0;
+    const struct Node191_3 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 84;
+}
+enum Kind191_4 { KIND_EMPTY191_4 = 0, KIND_FULL191_4 = 91 };
+
+union Cell191_4 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind191_4(union Cell191_4 *cell) {
+    cell->number = 48;
+    return cell->number > 0 ? KIND_FULL191_4 : KIND_EMPTY191_4;
+}
+int gcd191_5(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale191_5(int value) {
+    return gcd191_5(value, 59) * 98;
+}
+typedef int (*predicate191_6)(int value);
+
+typedef struct Slot191_6 {
+    int slots[16];
+    predicate191_6 accept;
+} Slot191_6;
+
+int slot_accept191_6(Slot191_6 *store, int value) {
+    return store->accept(value) + 8;
+}
+struct Node191_7 {
+    int value;
+    struct Node191_7 *next;
+};
+
+int length191_7(const struct Node191_7 *head) {
+    int count = 0;
+    const struct Node191_7 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 15;
+}

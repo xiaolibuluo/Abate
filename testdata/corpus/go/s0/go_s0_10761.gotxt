@@ -1,0 +1,91 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store2518x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2518x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2518x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base2518x1 struct {
+	seed int
+}
+
+type derived2518x1 struct {
+	base2518x1
+	step int
+}
+
+func (d derived2518x1) Next() int {
+	return d.seed + d.step + 17
+}
+type Store2518x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2518x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2518x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func relay2518x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 71
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base2518x4 struct {
+	seed int
+}
+
+type derived2518x4 struct {
+	base2518x4
+	step int
+}
+
+func (d derived2518x4) Next() int {
+	return d.seed + d.step + 50
+}
+type Store2518x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2518x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2518x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

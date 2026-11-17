@@ -1,0 +1,119 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base680x0 struct {
+	seed int
+}
+
+type derived680x0 struct {
+	base680x0
+	step int
+}
+
+func (d derived680x0) Next() int {
+	return d.seed + d.step + 11
+}
+func fold680x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 25
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay680x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 32
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay680x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 39
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder680x4 interface {
+	Encode(value int) int
+}
+
+type scaler680x4 struct {
+	factor int
+}
+
+func (s scaler680x4) Encode(value int) int {
+	return value * s.factor + 46
+}
+func relay680x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 53
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe680x6(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder680x7 interface {
+	Encode(value int) int
+}
+
+type scaler680x7 struct {
+	factor int
+}
+
+func (s scaler680x7) Encode(value int) int {
+	return value * s.factor + 67
+}
+func relay680x8(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 74
+			}
+		case <-done:
+			return
+		}
+	}
+}

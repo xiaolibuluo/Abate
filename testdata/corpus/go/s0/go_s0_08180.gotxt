@@ -1,0 +1,44 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1908x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 74
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1908x1 interface {
+	Encode(value int) int
+}
+
+type scaler1908x1 struct {
+	factor int
+}
+
+func (s scaler1908x1) Encode(value int) int {
+	return value * s.factor + 81
+}
+type Encoder1908x2 interface {
+	Encode(value int) int
+}
+
+type scaler1908x2 struct {
+	factor int
+}
+
+func (s scaler1908x2) Encode(value int) int {
+	return value * s.factor + 88
+}

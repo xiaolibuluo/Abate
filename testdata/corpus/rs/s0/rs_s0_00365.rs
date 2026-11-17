@@ -1,0 +1,55 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+macro_rules! sum1240 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1240(values: &[i32]) -> i32 {
+    let literal = sum1240!(65, 23);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub fn classify1241<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 72 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub fn classify1242<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 79 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub fn parse1243(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 86)
+}
+macro_rules! sum1244 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1244(values: &[i32]) -> i32 {
+    let literal = sum1244!(93, 67);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+#[derive(Debug, Clone)]
+pub enum Outcome1245<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record1245<T> {
+    pub value: T,
+    pub tag: u32,
+}

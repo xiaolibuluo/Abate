@@ -1,0 +1,112 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2128x0 struct {
+	code int
+}
+
+func (e probeErr2128x0) Error() string {
+	return "probe failure"
+}
+
+func check2128x0(value int) error {
+	if value < 0 {
+		return probeErr2128x0{code: value}
+	}
+	return nil
+}
+func classify2128x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 31:
+		return value * 2
+	case 32:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder2128x2 interface {
+	Encode(value int) int
+}
+
+type scaler2128x2 struct {
+	factor int
+}
+
+func (s scaler2128x2) Encode(value int) int {
+	return value * s.factor + 38
+}
+type probeErr2128x3 struct {
+	code int
+}
+
+func (e probeErr2128x3) Error() string {
+	return "probe failure"
+}
+
+func check2128x3(value int) error {
+	if value < 0 {
+		return probeErr2128x3{code: value}
+	}
+	return nil
+}
+type base2128x4 struct {
+	seed int
+}
+
+type derived2128x4 struct {
+	base2128x4
+	step int
+}
+
+func (d derived2128x4) Next() int {
+	return d.seed + d.step + 65
+}
+func relay2128x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 59
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr2128x6 struct {
+	code int
+}
+
+func (e probeErr2128x6) Error() string {
+	return "probe failure"
+}
+
+func check2128x6(value int) error {
+	if value < 0 {
+		return probeErr2128x6{code: value}
+	}
+	return nil
+}
+type base2128x7 struct {
+	seed int
+}
+
+type derived2128x7 struct {
+	base2128x7
+	step int
+}
+
+func (d derived2128x7) Next() int {
+	return d.seed + d.step + 37
+}

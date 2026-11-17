@@ -1,0 +1,21 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2141x0 struct {
+	seed int
+}
+
+type derived2141x0 struct {
+	base2141x0
+	step int
+}
+
+func (d derived2141x0) Next() int {
+	return d.seed + d.step + 51
+}

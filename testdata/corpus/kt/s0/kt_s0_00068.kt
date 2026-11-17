@@ -1,0 +1,29 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome540 {
+    data class Success(val payload: String) : Outcome540()
+    data object Failure : Outcome540()
+}
+
+fun describe540(outcome: Outcome540): String = when (outcome) {
+    is Outcome540.Success -> outcome.payload
+    Outcome540.Failure -> "failed"
+}
+sealed class Outcome541 {
+    data class Success(val payload: String) : Outcome541()
+    data object Failure : Outcome541()
+}
+
+fun describe541(outcome: Outcome541): String = when (outcome) {
+    is Outcome541.Success -> outcome.payload
+    Outcome541.Failure -> "failed"
+}

@@ -1,0 +1,133 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1212x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 47
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1212x1 interface {
+	Encode(value int) int
+}
+
+type scaler1212x1 struct {
+	factor int
+}
+
+func (s scaler1212x1) Encode(value int) int {
+	return value * s.factor + 54
+}
+type probeErr1212x2 struct {
+	code int
+}
+
+func (e probeErr1212x2) Error() string {
+	return "probe failure"
+}
+
+func check1212x2(value int) error {
+	if value < 0 {
+		return probeErr1212x2{code: value}
+	}
+	return nil
+}
+func relay1212x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 68
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1212x4 struct {
+	seed int
+}
+
+type derived1212x4 struct {
+	base1212x4
+	step int
+}
+
+func (d derived1212x4) Next() int {
+	return d.seed + d.step + 58
+}
+type base1212x5 struct {
+	seed int
+}
+
+type derived1212x5 struct {
+	base1212x5
+	step int
+}
+
+func (d derived1212x5) Next() int {
+	return d.seed + d.step + 69
+}
+type Encoder1212x6 interface {
+	Encode(value int) int
+}
+
+type scaler1212x6 struct {
+	factor int
+}
+
+func (s scaler1212x6) Encode(value int) int {
+	return value * s.factor + 89
+}
+type probeErr1212x7 struct {
+	code int
+}
+
+func (e probeErr1212x7) Error() string {
+	return "probe failure"
+}
+
+func check1212x7(value int) error {
+	if value < 0 {
+		return probeErr1212x7{code: value}
+	}
+	return nil
+}
+func fold1212x8(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 6
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe1212x9(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

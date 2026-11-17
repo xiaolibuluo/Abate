@@ -1,0 +1,105 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2527x0 struct {
+	code int
+}
+
+func (e probeErr2527x0) Error() string {
+	return "probe failure"
+}
+
+func check2527x0(value int) error {
+	if value < 0 {
+		return probeErr2527x0{code: value}
+	}
+	return nil
+}
+type Store2527x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2527x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2527x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder2527x2 interface {
+	Encode(value int) int
+}
+
+type scaler2527x2 struct {
+	factor int
+}
+
+func (s scaler2527x2) Encode(value int) int {
+	return value * s.factor + 84
+}
+type Store2527x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2527x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2527x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Store2527x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2527x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2527x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Store2527x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2527x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2527x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder2527x6 interface {
+	Encode(value int) int
+}
+
+type scaler2527x6 struct {
+	factor int
+}
+
+func (s scaler2527x6) Encode(value int) int {
+	return value * s.factor + 15
+}

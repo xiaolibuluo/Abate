@@ -1,0 +1,43 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+object Registry18120 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG18120 = "registry-87"
+    }
+}
+sealed class Outcome18121 {
+    data class Success(val payload: String) : Outcome18121()
+    data object Failure : Outcome18121()
+}
+
+fun describe18121(outcome: Outcome18121): String = when (outcome) {
+    is Outcome18121.Success -> outcome.payload
+    Outcome18121.Failure -> "failed"
+}
+class Counter18122 {
+    var current: Int by Delegates.observable(101) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}

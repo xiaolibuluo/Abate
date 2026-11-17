@@ -1,0 +1,88 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+object Registry1410 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1410 = "registry-92"
+    }
+}
+@JvmName("step1411")
+fun step1411(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 99
+}
+class Counter1412 {
+    var current: Int by Delegates.observable(9) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+sealed class Outcome1413 {
+    data class Success(val payload: String) : Outcome1413()
+    data object Failure : Outcome1413()
+}
+
+fun describe1413(outcome: Outcome1413): String = when (outcome) {
+    is Outcome1413.Success -> outcome.payload
+    Outcome1413.Failure -> "failed"
+}
+data class Pair1414<A, B>(val first: A, val second: B)
+
+fun combine1414(left: Int, right: Int): Pair1414<Int, Int> {
+    return Pair1414(left + 23, right + 64)
+}
+object Registry1415 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1415 = "registry-30"
+    }
+}
+sealed class Outcome1416 {
+    data class Success(val payload: String) : Outcome1416()
+    data object Failure : Outcome1416()
+}
+
+fun describe1416(outcome: Outcome1416): String = when (outcome) {
+    is Outcome1416.Success -> outcome.payload
+    Outcome1416.Failure -> "failed"
+}
+class Counter1417 {
+    var current: Int by Delegates.observable(44) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}

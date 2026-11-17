@@ -1,0 +1,121 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold629x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 34
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay629x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 41
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder629x2 interface {
+	Encode(value int) int
+}
+
+type scaler629x2 struct {
+	factor int
+}
+
+func (s scaler629x2) Encode(value int) int {
+	return value * s.factor + 48
+}
+type base629x3 struct {
+	seed int
+}
+
+type derived629x3 struct {
+	base629x3
+	step int
+}
+
+func (d derived629x3) Next() int {
+	return d.seed + d.step + 53
+}
+type Store629x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store629x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store629x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold629x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 69
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store629x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store629x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store629x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base629x7 struct {
+	seed int
+}
+
+type derived629x7 struct {
+	base629x7
+	step int
+}
+
+func (d derived629x7) Next() int {
+	return d.seed + d.step + 36
+}
+type probeErr629x8 struct {
+	code int
+}
+
+func (e probeErr629x8) Error() string {
+	return "probe failure"
+}
+
+func check629x8(value int) error {
+	if value < 0 {
+		return probeErr629x8{code: value}
+	}
+	return nil
+}

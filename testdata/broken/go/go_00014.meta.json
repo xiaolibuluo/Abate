@@ -1,0 +1,6 @@
+{
+  "language": "go",
+  "kind": "unclosed-delimiter",
+  "expectedDiagnostic": "ParseError",
+  "sourceRelPath": "go/s0/go_s0_00059.gotxt"
+}

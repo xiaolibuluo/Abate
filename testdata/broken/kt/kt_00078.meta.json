@@ -1,0 +1,6 @@
+{
+  "language": "kt",
+  "kind": "unclosed-delimiter",
+  "expectedDiagnostic": "ParseError",
+  "sourceRelPath": "kt/s0/kt_s0_00096.kt"
+}

@@ -1,0 +1,87 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+macro_rules! sum1380 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1380(values: &[i32]) -> i32 {
+    let literal = sum1380!(53, 60);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+macro_rules! sum1381 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1381(values: &[i32]) -> i32 {
+    let literal = sum1381!(60, 10);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+#[derive(Debug, Clone)]
+pub enum Outcome1382<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record1382<T> {
+    pub value: T,
+    pub tag: u32,
+}
+pub fn classify1383<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 74 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub trait Encode1384 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet1384<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode1384 for Packet1384<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+macro_rules! sum1385 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1385(values: &[i32]) -> i32 {
+    let literal = sum1385!(88, 54);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub fn classify1386<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 95 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub fn loops1387(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 5;
+        break;
+    }
+    total
+

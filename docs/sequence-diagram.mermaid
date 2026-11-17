@@ -1,0 +1,143 @@
+sequenceDiagram
+    autonumber
+    actor ENG as 工程师 / 主理人
+    participant FETCH as scripts/corpus_fetch.sh<br/>(离线准备工具)
+    participant FS as third_party/_sources/<br/>_validation/… (只读 fs.FS)
+    participant CTL as cmd/corpusctl
+    participant MAN as ci/corpus_manifest.json
+    participant LINT as scripts/lint-gate.sh<br/>(既有九段 + 第十段)
+    participant GATE as ci/gate_e2e.sh<br/>(第十段门禁)
+    participant THR as ci/e2e_thresholds.json<br/>+ baseline
+    participant NEU as internal/e2e/neutrality<br/>(go/ast 反向检查)
+    participant E2E as cmd/e2e
+    participant RUN as internal/e2e.Runner
+    participant SMP as internal/corpus<br/>StratifiedSample + RNG
+    participant FT as FrontendTable<br/>(7 语言 air.Frontend)
+    participant AIR as lang/air<br/>Unit / Node / IDOf
+    participant MUT as internal/e2e/mutate<br/>Registry + EquivalentSet
+    participant CHA as internal/e2e/chaos<br/>Generator + Merge
+    participant COV as internal/e2e/coverage<br/>CoverageIndex
+    participant MET as internal/e2e/metrics
+    participant REP as internal/e2e/report<br/>Write / Recompute / Evaluate
+    participant ART as .artifacts/e2e/&lt;manifestSha256&gt;/
+
+    %% ---------- 阶段 0：语料落地与登记（离线，门禁不联网）----------
+    rect rgb(235, 244, 252)
+    Note over ENG,FS: 阶段 0 · 语料双轨落地（一次性离线准备，门禁绝不触发下载）
+    ENG->>FETCH: bash scripts/corpus_fetch.sh（7 个 pinned URL + sha256）
+    FETCH->>FS: 解压到 _sources/_validation/&lt;lang&gt;/&lt;project-tag&gt;/
+    FETCH->>FETCH: 逐包重算 tarball sha256，不符即 exit 1
+    FETCH-->>ENG: 目录只读、全部目录名以 _ 开头
+    end
+
+    rect rgb(240, 248, 240)
+    Note over ENG,MAN: 阶段 1 · 登记 / 校验（CRUD：Create + Read + Verify）
+    ENG->>CTL: corpusctl register
+    CTL->>FS: fs.WalkDir(_sources) 按扩展名收集，路径升序
+    loop 每个文件（不跳过、不按 source 分支）
+        CTL->>FS: fs.ReadFile(fsys, relPath)
+        CTL->>CTL: sha256(原始字节) / 字节数 / SPDX / 证据路径 / 构造标签 / source 标签
+    end
+    CTL->>MAN: 写 Entries（RelPath 升序，无时间戳、无绝对路径）
+    ENG->>CTL: corpusctl verify
+    CTL->>MAN: Load
+    CTL->>FS: 全量重算 sha256（逐条）
+    CTL->>CTL: SPDX 分类（GPL/UNKNOWN 硬 FAIL；boundary 单列计数）
+    CTL->>CTL: 按 source 双轨统计 parseablePerLanguage（≥200 断言）
+    CTL-->>ENG: VerifyResult{registered, recomputed, mismatches=0, spdxViolations=0}
+    end
+
+    %% ---------- 阶段 2：第十段门禁启动 ----------
+    rect rgb(255, 248, 232)
+    Note over LINT,THR: 阶段 2 · 第十段门禁入口（既有九段不改动）
+    ENG->>LINT: bash scripts/lint-gate.sh
+    LINT->>LINT: [0..8] 既有九段全部保持
+    LINT->>GATE: [9] bash ci/gate_e2e.sh（追加段）
+    GATE->>MAN: 计算 manifestSha256
+    GATE->>THR: 加载 thresholds + baseline
+    GATE->>THR: 只收紧校验：minima ≥ baseline / maxima ≤ baseline / 零容忍键齐全且恒 0
+    GATE->>NEU: neutralitycheck --sources ci/e2e_sources.txt
+    NEU->>NEU: go/ast 扫描：条件中的 Source/Project/SPDX 选择器、语料循环 continue/break、WithTypeCheck(false)、recover、time.Now、math/rand、os/exec、http.Do、net.Dial
+    NEU->>NEU: 完备性反查：find(新增根) 与 e2e_sources.txt 逐行 cmp
+    NEU-->>GATE: Findings（零命中才继续；命中打印文件:行:规则）
+    end
+
+    %% ---------- 阶段 3：Runner 双跑 ----------
+    rect rgb(245, 240, 255)
+    Note over GATE,ART: 阶段 3 · 同 seed + 同 manifest 双跑逐字节一致
+    loop runIndex ∈ {1, 2}（seed 与 manifest 完全相同）
+        GATE->>E2E: go run ./cmd/e2e -plan -manifest -out
+        E2E->>RUN: NewRunner(plan, manifest)
+        RUN->>SMP: StratifiedSample(manifest, plan, rng)
+        SMP->>SMP: rng = SplitMix64(sha256(seed ‖ manifestSha256 ‖ label) 前 8 字节)
+        SMP->>SMP: 256B~180KB 分 StrataCount 层，层内按 sha256(RelPath) 升序等距抽取
+        SMP-->>RUN: 每语言 FilesPerLanguage 个样本（无任何排除分支）
+        RUN->>FT: For(lang) → (air.Frontend, dialect)
+        Note over FT: NewGoFrontend() 默认 typeCheck=true<br/>禁止 WithTypeCheck(false) 规避 G1 路径
+
+        loop 每个登记样本（顺序确定，processedFiles 必须 == registeredFiles）
+            RUN->>RUN: Trace.Mark(fileSha256, relPath, 阶段) 写确定性进度行
+            RUN->>RUN: ResourceProbe.Measure 准备 context.WithTimeout + ReadMemStats 基线
+            RUN->>FT: Parse(air.SourceUnit{Language, Dialect, Files:[]SourceFile})
+            FT->>AIR: NewNodeAt(kind, pos, end, text=真实运算符 token 文本, children...)
+            AIR->>AIR: ComputeNodeID(kind, text, 子节点ID) → NodeID（FNV-1a）
+            FT-->>RUN: (*air.Unit, []air.Diagnostic, error)
+            RUN->>AIR: air.IDOf(unit.Roots[i]) → AIRIDBefore
+            RUN->>AIR: air.CheckIntervals(root, size) / Unit.Validate()
+
+            RUN->>MUT: Registry.All() → 逐算子 Apply(OpContext)
+            MUT->>MUT: 逐点生成 Edit（cmp/op/digit + P1 六类）
+            loop 每个有效变异点
+                RUN->>RUN: 内存内替换字节（绝不写回只读语料树）
+                RUN->>FT: Parse(变异后 SourceUnit)
+                FT-->>RUN: (*air.Unit, diagnostics, error)
+                RUN->>AIR: air.IDOf(root) → AIRIDAfter
+                RUN->>MUT: EquivalentSet.Classify(record) 仅打标，gross 分母不删
+                RUN->>MET: 追加 DrilldownRecord{FileSHA256, OperatorID, AIRIDBefore/After, Captured, ProofID}
+            end
+
+            RUN->>CHA: Generator.Generate(entry, DamageKind, rng)（含 truncate-half 复现 G1）
+            CHA->>CHA: Merge() 按输入 sha256 去重（-merge=1 语义）
+            loop 每个破损样本（≥200/语言）
+                RUN->>FT: Parse(破损 SourceUnit)
+                FT-->>RUN: (*air.Unit, diagnostics, error)
+                RUN->>AIR: 破损区外节点 ID 集合比对 → 结构保持率
+                RUN->>MET: 追加 Robustness 计数（Timeout / MemExceeded 独立列）
+            end
+
+            RUN->>COV: CoverageIndex.Degradation(lang, unit)
+            COV->>COV: grammar.Load(6 语言) / go 用 ci/constructs_go.json 自建清单
+            COV->>COV: coverage.Compute + Observe → 降级节点占比 / 构造覆盖率
+            RUN->>MET: PrecisionRow{ZeroDiagZeroErr, DegradeNodePct, OutsideDamageRetentionPct}
+        end
+
+        RUN->>MET: Aggregate → Columns（文本/结构/破损/等价 四分栏，绝不合并）
+        MET-->>RUN: Precision[], Mutation[], Robustness, Equivalence{Gross,Effective,SilentDrops=0}
+        RUN->>REP: Write(Report, []DrilldownRecord)
+        REP->>REP: 内嵌 manifestSha256 / planSha256 / thresholdsSha256 / drilldownSha256
+        REP->>REP: 无墙钟、无绝对路径、无 map 迭代序、结构体字段定序
+        REP->>ART: e2e_report.json + e2e_drilldown.jsonl + e2e_report.md
+        REP-->>E2E: exit 0（若 panic：进程直接终止、报告写不完 → 由 Trace 末行定位）
+        E2E-->>GATE: 退出码
+    end
+    GATE->>GATE: cmp run1/e2e_report.json run2/e2e_report.json（逐字节）
+    end
+
+    %% ---------- 阶段 4：重算 / 判定 / 归档 ----------
+    rect rgb(252, 238, 238)
+    Note over GATE,ART: 阶段 4 · 真实 FAIL→修复→真实 PASS 闭环
+    GATE->>REP: Recompute(report, drilldown) 从下钻记录重算基线每个当前值
+    REP-->>GATE: 误差 0 断言结果
+    GATE->>REP: Evaluate(thresholds, baseline, report)
+    REP-->>GATE: Verdict{Passed, Failures[]}
+    alt 零容忍项非 0 或 minima 未达 / maxima 超线
+        GATE->>ART: 打印定位（文件 sha256 + 算子 + AIR-ID 前后值 + 规则 id）
+        GATE->>ART: 写 exit_code=1 + 报告 + manifest + thresholds + plan 归档
+        GATE-->>LINT: exit 1 → 第十段 FAIL（工程师按定位精准重构，不放宽阈值）
+        LINT-->>ENG: CI GATE: FAILED（真实红灯）
+    else 全 0 / 全 100% / 信息完备
+        GATE->>ART: 归档 report + manifest + thresholds + plan + exit_code=0（目录名取 manifestSha256 前缀，确定性）
+        GATE-->>LINT: exit 0 → 第十段 PASS
+        LINT-->>ENG: CI GATE: PASSED（九段 + 第十段全绿，可复算）
+    end
+    end

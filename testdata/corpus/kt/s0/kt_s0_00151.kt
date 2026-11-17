@@ -1,0 +1,49 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+data class Pair1220<A, B>(val first: A, val second: B)
+
+fun combine1220(left: Int, right: Int): Pair1220<Int, Int> {
+    return Pair1220(left + 39, right + 9)
+}
+fun <T> List<T>.secondOrNull1221(): T? = if (size > 1) this[1] else null
+
+fun render1221(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+class Counter1222 {
+    var current: Int by Delegates.observable(53) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+class Counter1223 {
+    var current: Int by Delegates.observable(60) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}

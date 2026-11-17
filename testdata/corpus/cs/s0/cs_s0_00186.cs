@@ -1,0 +1,73 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public async Task<int> Aggregate1770(IEnumerable<int> source)
+    {
+        try
+        {
+            using var cursor = source.GetEnumerator();
+            return await Task.FromResult(source.Where(item => item > 0).Sum());
+        }
+        catch (InvalidOperationException)
+        {
+            return 0;
+        }
+        finally
+        {
+            Console.WriteLine("done");
+        }
+    }
+    public async Task<int> Aggregate1771(IEnumerable<int> source)
+    {
+        try
+        {
+            using var cursor = source.GetEnumerator();
+            return await Task.FromResult(source.Where(item => item > 0).Sum());
+        }
+        catch (InvalidOperationException)
+        {
+            return 0;
+        }
+        finally
+        {
+            Console.WriteLine("done");
+        }
+    }
+    public static int Scale1772<T>(T value) where T : struct
+    {
+        int number = 89;
+        checked { number = number + value.GetHashCode(); }
+        unchecked { number = number + 50; }
+        return number;
+    }
+    public async Task<int> Aggregate1773(IEnumerable<int> source)
+    {
+        try
+        {
+            using var cursor = source.GetEnumerator();
+            return await Task.FromResult(source.Where(item => item > 0).Sum());
+        }
+        catch (InvalidOperationException)
+        {
+            return 0;
+        }
+        finally
+        {
+            Console.WriteLine("done");
+        }
+    }
+}

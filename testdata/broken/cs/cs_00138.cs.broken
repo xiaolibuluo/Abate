@@ -1,0 +1,72 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public interface IHandler1380
+    {
+        void Handle(int value);
+    }
+
+    [Serializable]
+    public sealed record Envelope1380(string Label, int Payload);
+
+    public sealed class Handler1380 : IHandler1380
+    {
+        public void Handle(int value) { }
+    }
+    public static int Scale1381<T>(T value) where T : struct
+    {
+        int number = 60;
+        checked { number = number + value.GetHashCode(); }
+        unchecked { number = number + 10; }
+        return number;
+    }
+    public delegate void Notifier1382(int value);
+
+    public sealed class Source1382
+    {
+        public event Notifier1382 Changed;
+        public void Raise(int value) { Changed?.Invoke(value); }
+    }
+    public delegate void Notifier1383(int value);
+
+    public sealed class Source1383
+    {
+        public event Notifier1383 Changed;
+        public void Raise(int value) { Changed?.Invoke(value); }
+    }
+    public static int Scale1384<T>(T value) where T : struct
+    {
+        int number = 81;
+        checked { number = number + value.GetHashCode(); }
+        unchecked { number = number + 43; }
+        return number;
+    }
+    public struct Point1385
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Total => X + Y + 88;
+    }
+
+    public static class Grid1385
+    {
+        public static Point1385 Make(int left, int right)
+        {
+            return new Point1385 { X = left, Y = right };
+        }
+    }
+

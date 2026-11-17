@@ -1,0 +1,98 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay376x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 43
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base376x1 struct {
+	seed int
+}
+
+type derived376x1 struct {
+	base376x1
+	step int
+}
+
+func (d derived376x1) Next() int {
+	return d.seed + d.step + 29
+}
+type Encoder376x2 interface {
+	Encode(value int) int
+}
+
+type scaler376x2 struct {
+	factor int
+}
+
+func (s scaler376x2) Encode(value int) int {
+	return value * s.factor + 57
+}
+func describe376x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func classify376x4(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 71:
+		return value * 2
+	case 62:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder376x5 interface {
+	Encode(value int) int
+}
+
+type scaler376x5 struct {
+	factor int
+}
+
+func (s scaler376x5) Encode(value int) int {
+	return value * s.factor + 78
+}
+type Store376x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store376x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store376x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

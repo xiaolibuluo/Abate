@@ -1,0 +1,137 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay97x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 5
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func classify97x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 12:
+		return value * 2
+	case 28:
+		return value + 2
+	default:
+		return value
+	}
+}
+func fold97x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 19
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr97x3 struct {
+	code int
+}
+
+func (e probeErr97x3) Error() string {
+	return "probe failure"
+}
+
+func check97x3(value int) error {
+	if value < 0 {
+		return probeErr97x3{code: value}
+	}
+	return nil
+}
+func classify97x4(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 33:
+		return value * 2
+	case 61:
+		return value + 2
+	default:
+		return value
+	}
+}
+func relay97x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 40
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold97x6(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 47
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store97x7[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store97x7[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store97x7[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base97x8 struct {
+	seed int
+}
+
+type derived97x8 struct {
+	base97x8
+	step int
+}
+
+func (d derived97x8) Next() int {
+	return d.seed + d.step + 44
+}
+type Store97x9[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store97x9[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store97x9[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+

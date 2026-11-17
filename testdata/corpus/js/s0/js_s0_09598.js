@@ -1,0 +1,38 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export async function collect8410(sources) {
+  const pending = sources.map((source) => source.read());
+  try {
+    return await Promise.all(pending);
+  } catch (failure) {
+    return [];
+  } finally {
+    pending.length = 0;
+  }
+}
+export async function collect8411(sources) {
+  const pending = sources.map((source) => source.read());
+  try {
+    return await Promise.all(pending);
+  } catch (failure) {
+    return [];
+  } finally {
+    pending.length = 0;
+  }
+}
+export async function collect8412(sources) {
+  const pending = sources.map((source) => source.read());
+  try {
+    return await Promise.all(pending);
+  } catch (failure) {
+    return [];
+  } finally {
+    pending.length = 0;
+  }
+}

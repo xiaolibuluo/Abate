@@ -1,0 +1,109 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder912x0 interface {
+	Encode(value int) int
+}
+
+type scaler912x0 struct {
+	factor int
+}
+
+func (s scaler912x0) Encode(value int) int {
+	return value * s.factor + 27
+}
+type Store912x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store912x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store912x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr912x2 struct {
+	code int
+}
+
+func (e probeErr912x2) Error() string {
+	return "probe failure"
+}
+
+func check912x2(value int) error {
+	if value < 0 {
+		return probeErr912x2{code: value}
+	}
+	return nil
+}
+type base912x3 struct {
+	seed int
+}
+
+type derived912x3 struct {
+	base912x3
+	step int
+}
+
+func (d derived912x3) Next() int {
+	return d.seed + d.step + 21
+}
+func fold912x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 55
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder912x5 interface {
+	Encode(value int) int
+}
+
+type scaler912x5 struct {
+	factor int
+}
+
+func (s scaler912x5) Encode(value int) int {
+	return value * s.factor + 62
+}
+func relay912x6(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 69
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr912x7 struct {
+	code int
+}
+
+func (e probeErr912x7) Error() string {
+	return "probe failure"
+}
+
+func check912x7(value int) error {
+	if value < 0 {
+		return probeErr912x7{code: value}
+	}
+	return nil
+}

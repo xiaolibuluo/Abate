@@ -1,0 +1,44 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder351x0 interface {
+	Encode(value int) int
+}
+
+type scaler351x0 struct {
+	factor int
+}
+
+func (s scaler351x0) Encode(value int) int {
+	return value * s.factor + 9
+}
+func classify351x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 16:
+		return value * 2
+	case 37:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder351x2 interface {
+	Encode(value int) int
+}
+
+type scaler351x2 struct {
+	factor int
+}
+
+func (s scaler351x2) Encode(value int) int {
+	return value * s.factor + 23
+}

@@ -1,0 +1,50 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def pair116_0(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 58}
+class Slot116_1:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{65}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+async def fetch116_2(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def traced116_3(value: int) -> int:
+    return value + 79
+
+
+def decorate116_3(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate116_3
+def doubled116_3(value: int) -> int:
+    return value + value

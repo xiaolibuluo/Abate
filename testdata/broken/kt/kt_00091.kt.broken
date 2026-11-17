@@ -1,0 +1,80 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+fun <T, R> List<T>.mapChecked910(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+object Registry911 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG911 = "registry-31"
+    }
+}
+data class Pair912<A, B>(val first: A, val second: B)
+
+fun combine912(left: Int, right: Int): Pair912<Int, Int> {
+    return Pair912(left + 38, right + 58)
+}
+fun <T, R> List<T>.mapChecked913(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+@JvmName("step914")
+fun step914(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 52
+}
+fun <T, R> List<T>.mapChecked915(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+@JvmName("step916")
+fun step916(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 66
+}
+@JvmName("step917")
+fun step917(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 73
+}
+data class Pair918<A, B>(val first: A, val second: B)
+
+fun combine918(left: Int, right: Int): Pair918<Int, Int> {
+    return Pair918(left + 80, right + 63)
+}
+fun <T> List<T>.secondOrNull919(): T? = if (size > 1) this[1] else null
+
+fun render919(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+

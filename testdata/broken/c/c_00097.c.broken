@@ -1,0 +1,108 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind97_0 { KIND_EMPTY97_0 = 0, KIND_FULL97_0 = 5 };
+
+union Cell97_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind97_0(union Cell97_0 *cell) {
+    cell->number = 17;
+    return cell->number > 0 ? KIND_FULL97_0 : KIND_EMPTY97_0;
+}
+#if defined(__STDC_VERSION__)
+int variant97_1(int value, ...) {
+    return value + 12;
+}
+#else
+int variant97_1(int value) {
+    return value + 12;
+}
+#endif
+int gcd97_2(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale97_2(int value) {
+    return gcd97_2(value, 39) * 19;
+}
+typedef int (*predicate97_3)(int value);
+
+typedef struct Slot97_3 {
+    int slots[16];
+    predicate97_3 accept;
+} Slot97_3;
+
+int slot_accept97_3(Slot97_3 *store, int value) {
+    return store->accept(value) + 26;
+}
+struct Node97_4 {
+    int value;
+    struct Node97_4 *next;
+};
+
+int length97_4(const struct Node97_4 *head) {
+    int count = 0;
+    const struct Node97_4 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 33;
+}
+struct Node97_5 {
+    int value;
+    struct Node97_5 *next;
+};
+
+int length97_5(const struct Node97_5 *head) {
+    int count = 0;
+    const struct Node97_5 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 40;
+}
+enum Kind97_6 { KIND_EMPTY97_6 = 0, KIND_FULL97_6 = 47 };
+
+union Cell97_6 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind97_6(union Cell97_6 *cell) {
+    cell->number = 22;
+    return cell->number > 0 ? KIND_FULL97_6 : KIND_EMPTY97_6;
+}
+struct Node97_7 {
+    int value;
+    struct Node97_7 *next;
+};
+
+int length97_7(const struct Node97_7 *head) {
+    int count = 0;
+    const struct Node97_7 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 54;
+

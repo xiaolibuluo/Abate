@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "tightenOnly": true,
+  "zeroTolerance": {
+    "panicLocalizerEmpty": 0,
+    "timeoutCount": 0,
+    "oomCount": 0,
+    "determinismFailureCount": 0,
+    "spdxViolations": 0,
+    "sha256Mismatches": 0,
+    "sourceNeutralityHits": 0,
+    "recoverUsageCount": 0,
+    "equivalenceSilentDrops": 0,
+    "corpusExclusionCount": 0,
+    "typeCheckBypassCount": 0
+  },
+  "minima": {
+    "airIDCmpCapturePct": 100,
+    "airIDOpCapturePct": 100,
+    "airIDDigitCapturePct": 100,
+    "parseableFilesPerLanguage": 200,
+    "validMutationPointsPerOperator": 30,
+    "brokenCorpusPerLanguage": 200,
+    "spdxCoveragePct": 100,
+    "drilldownCoveragePct": 100,
+    "manifestCoveragePct": 100
+  },
+  "maxima": {
+    "degradeCsPct": 5,
+    "degradeKtPct": 5,
+    "degradeRsPct": 3,
+    "degradePyPct": 3,
+    "timeoutRatePct": 0,
+    "oomRatePct": 0
+  }
+}

@@ -1,0 +1,69 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold2304x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 81
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base2304x1 struct {
+	seed int
+}
+
+type derived2304x1 struct {
+	base2304x1
+	step int
+}
+
+func (d derived2304x1) Next() int {
+	return d.seed + d.step + 44
+}
+type base2304x2 struct {
+	seed int
+}
+
+type derived2304x2 struct {
+	base2304x2
+	step int
+}
+
+func (d derived2304x2) Next() int {
+	return d.seed + d.step + 55
+}
+type probeErr2304x3 struct {
+	code int
+}
+
+func (e probeErr2304x3) Error() string {
+	return "probe failure"
+}
+
+func check2304x3(value int) error {
+	if value < 0 {
+		return probeErr2304x3{code: value}
+	}
+	return nil
+}
+type base2304x4 struct {
+	seed int
+}
+
+type derived2304x4 struct {
+	base2304x4
+	step int
+}
+
+func (d derived2304x4) Next() int {
+	return d.seed + d.step + 16
+}

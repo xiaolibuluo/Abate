@@ -1,0 +1,42 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold2588x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 87
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold2588x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 94
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay2588x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 101
+			}
+		case <-done:
+			return
+		}
+	}
+}

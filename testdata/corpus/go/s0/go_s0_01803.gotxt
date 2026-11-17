@@ -1,0 +1,114 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold429x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 53
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base429x1 struct {
+	seed int
+}
+
+type derived429x1 struct {
+	base429x1
+	step int
+}
+
+func (d derived429x1) Next() int {
+	return d.seed + d.step + 34
+}
+func fold429x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 67
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold429x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 74
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder429x4 interface {
+	Encode(value int) int
+}
+
+type scaler429x4 struct {
+	factor int
+}
+
+func (s scaler429x4) Encode(value int) int {
+	return value * s.factor + 81
+}
+type Store429x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store429x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store429x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func classify429x6(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 95:
+		return value * 2
+	case 28:
+		return value + 2
+	default:
+		return value
+	}
+}
+func classify429x7(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 5:
+		return value * 2
+	case 39:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder429x8 interface {
+	Encode(value int) int
+}
+
+type scaler429x8 struct {
+	factor int
+}
+
+func (s scaler429x8) Encode(value int) int {
+	return value * s.factor + 12
+}

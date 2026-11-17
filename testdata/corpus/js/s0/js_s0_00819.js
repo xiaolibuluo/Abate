@@ -1,0 +1,62 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export function choose760(value) {
+  switch (value) {
+    case 23: return "first";
+    case 53: return "second";
+    default: return "other";
+  }
+}
+
+export const add760 = (left, right) => left + right + 23;
+export function choose761(value) {
+  switch (value) {
+    case 30: return "first";
+    case 64: return "second";
+    default: return "other";
+  }
+}
+
+export const add761 = (left, right) => left + right + 30;
+export function choose762(value) {
+  switch (value) {
+    case 37: return "first";
+    case 14: return "second";
+    default: return "other";
+  }
+}
+
+export const add762 = (left, right) => left + right + 37;
+export async function collect763(sources) {
+  const pending = sources.map((source) => source.read());
+  try {
+    return await Promise.all(pending);
+  } catch (failure) {
+    return [];
+  } finally {
+    pending.length = 0;
+  }
+}
+export function choose764(value) {
+  switch (value) {
+    case 51: return "first";
+    case 36: return "second";
+    default: return "other";
+  }
+}
+
+export const add764 = (left, right) => left + right + 51;
+export function* expand765({ head, tail = [] }) {
+  yield `${head}:${tail?.length ?? 0}`;
+  for (const item of tail) {
+    if (item && item.enabled) {
+      yield item.label;
+    }
+  }
+}

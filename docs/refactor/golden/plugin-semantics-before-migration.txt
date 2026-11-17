@@ -1,0 +1,46 @@
+# Abate 迁移前语义观测值（历史记录，非当前依赖）
+# 由 plugin/wasm/gen_golden.go 在删除 wazero 薄层前一次性生成。
+# 性能未测量：NOT_MEASURED。本文件不声称与任何第三方运行时等价。
+
+## FuelMeter
+fuel budget=0 initial=0 remaining=0 used=0 halted=false
+  consume=0 -> remaining=18446744073709551615 halted=false | state remaining=0 used=0 halted=false
+  consume=1 -> remaining=18446744073709551615 halted=false | state remaining=0 used=0 halted=false
+  consume=3 -> remaining=18446744073709551615 halted=false | state remaining=0 used=0 halted=false
+  consume=0 -> remaining=18446744073709551615 halted=false | state remaining=0 used=0 halted=false
+  consume=1 -> remaining=18446744073709551615 halted=false | state remaining=0 used=0 halted=false
+fuel budget=1 initial=1 remaining=1 used=0 halted=false
+  consume=0 -> remaining=1 halted=false | state remaining=1 used=0 halted=false
+  consume=1 -> remaining=0 halted=true | state remaining=0 used=1 halted=true
+  consume=3 -> remaining=0 halted=true | state remaining=0 used=1 halted=true
+  consume=1 -> remaining=0 halted=true | state remaining=0 used=1 halted=true
+  consume=2 -> remaining=0 halted=true | state remaining=0 used=1 halted=true
+fuel budget=10 initial=10 remaining=10 used=0 halted=false
+  consume=0 -> remaining=10 halted=false | state remaining=10 used=0 halted=false
+  consume=1 -> remaining=9 halted=false | state remaining=9 used=1 halted=false
+  consume=3 -> remaining=6 halted=false | state remaining=6 used=4 halted=false
+  consume=10 -> remaining=0 halted=true | state remaining=0 used=10 halted=true
+  consume=11 -> remaining=0 halted=true | state remaining=0 used=10 halted=true
+fuel budget=1048576 initial=1048576 remaining=1048576 used=0 halted=false
+  consume=0 -> remaining=1048576 halted=false | state remaining=1048576 used=0 halted=false
+  consume=1 -> remaining=1048575 halted=false | state remaining=1048575 used=1 halted=false
+  consume=3 -> remaining=1048572 halted=false | state remaining=1048572 used=4 halted=false
+  consume=1048576 -> remaining=0 halted=true | state remaining=0 used=1048576 halted=true
+  consume=1048577 -> remaining=0 halted=true | state remaining=0 used=1048576 halted=true
+
+## VirtualClock
+clock epoch=0 epochGet=0 now=0
+  advance=0 -> now=0
+  advance=1 -> now=1
+  advance=7 -> now=8
+  reset -> now=0
+clock epoch=1000 epochGet=1000 now=1000
+  advance=0 -> now=1000
+  advance=1 -> now=1001
+  advance=7 -> now=1008
+  reset -> now=1000
+
+## Config
+default fuel=1048576 min=1 max=256 clock=true epoch=0 validate=<nil>
+zero-max validate=wasm: config: memory max pages must be positive
+min-above-max validate=wasm: config: memory min pages exceeds max

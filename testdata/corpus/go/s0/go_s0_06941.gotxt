@@ -1,0 +1,127 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1602x0 interface {
+	Encode(value int) int
+}
+
+type scaler1602x0 struct {
+	factor int
+}
+
+func (s scaler1602x0) Encode(value int) int {
+	return value * s.factor + 73
+}
+type Store1602x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1602x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1602x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr1602x2 struct {
+	code int
+}
+
+func (e probeErr1602x2) Error() string {
+	return "probe failure"
+}
+
+func check1602x2(value int) error {
+	if value < 0 {
+		return probeErr1602x2{code: value}
+	}
+	return nil
+}
+func relay1602x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 94
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1602x4 struct {
+	seed int
+}
+
+type derived1602x4 struct {
+	base1602x4
+	step int
+}
+
+func (d derived1602x4) Next() int {
+	return d.seed + d.step + 43
+}
+type base1602x5 struct {
+	seed int
+}
+
+type derived1602x5 struct {
+	base1602x5
+	step int
+}
+
+func (d derived1602x5) Next() int {
+	return d.seed + d.step + 54
+}
+type probeErr1602x6 struct {
+	code int
+}
+
+func (e probeErr1602x6) Error() string {
+	return "probe failure"
+}
+
+func check1602x6(value int) error {
+	if value < 0 {
+		return probeErr1602x6{code: value}
+	}
+	return nil
+}
+type base1602x7 struct {
+	seed int
+}
+
+type derived1602x7 struct {
+	base1602x7
+	step int
+}
+
+func (d derived1602x7) Next() int {
+	return d.seed + d.step + 15
+}
+type Store1602x8[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1602x8[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1602x8[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

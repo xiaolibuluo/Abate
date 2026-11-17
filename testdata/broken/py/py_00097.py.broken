@@ -1,0 +1,90 @@
+
+def anchor_probe()
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def summarize97_0(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 5:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def pair97_1(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 12}
+def summarize97_2(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 19:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def project97_3(values):
+    select = lambda item: item + 26
+    return [select(item) for item in values if item != 0]
+def project97_4(values):
+    select = lambda item: item + 33
+    return [select(item) for item in values if item != 0]
+class Slot97_5:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{40}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+def expand97_6(values):
+    for item in values:
+        if item > 47:
+            yield item * 22
+
+
+def collect97_6(values):
+    return list(expand97_6(values))
+def traced97_7(value: int) -> int:
+    return value + 54
+
+
+def decorate97_7(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate97_7
+def doubled97_7(value: int) -> int:
+    return value + value
+def guarded97_8(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def traced97_9(value: int) -> int:
+    return value + 68
+
+
+def decorate97_9(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate97_9
+def doubled97_9(value: int) -> int:
+    return value + value

@@ -1,0 +1,83 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1486x0 interface {
+	Encode(value int) int
+}
+
+type scaler1486x0 struct {
+	factor int
+}
+
+func (s scaler1486x0) Encode(value int) int {
+	return value * s.factor + 20
+}
+type probeErr1486x1 struct {
+	code int
+}
+
+func (e probeErr1486x1) Error() string {
+	return "probe failure"
+}
+
+func check1486x1(value int) error {
+	if value < 0 {
+		return probeErr1486x1{code: value}
+	}
+	return nil
+}
+type probeErr1486x2 struct {
+	code int
+}
+
+func (e probeErr1486x2) Error() string {
+	return "probe failure"
+}
+
+func check1486x2(value int) error {
+	if value < 0 {
+		return probeErr1486x2{code: value}
+	}
+	return nil
+}
+func relay1486x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 41
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1486x4 interface {
+	Encode(value int) int
+}
+
+type scaler1486x4 struct {
+	factor int
+}
+
+func (s scaler1486x4) Encode(value int) int {
+	return value * s.factor + 48
+}
+type Encoder1486x5 interface {
+	Encode(value int) int
+}
+
+type scaler1486x5 struct {
+	factor int
+}
+
+func (s scaler1486x5) Encode(value int) int {
+	return value * s.factor + 55
+}

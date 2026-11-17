@@ -1,0 +1,121 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder963x0 interface {
+	Encode(value int) int
+}
+
+type scaler963x0 struct {
+	factor int
+}
+
+func (s scaler963x0) Encode(value int) int {
+	return value * s.factor + 11
+}
+type base963x1 struct {
+	seed int
+}
+
+type derived963x1 struct {
+	base963x1
+	step int
+}
+
+func (d derived963x1) Next() int {
+	return d.seed + d.step + 51
+}
+type Store963x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store963x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store963x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base963x3 struct {
+	seed int
+}
+
+type derived963x3 struct {
+	base963x3
+	step int
+}
+
+func (d derived963x3) Next() int {
+	return d.seed + d.step + 12
+}
+type probeErr963x4 struct {
+	code int
+}
+
+func (e probeErr963x4) Error() string {
+	return "probe failure"
+}
+
+func check963x4(value int) error {
+	if value < 0 {
+		return probeErr963x4{code: value}
+	}
+	return nil
+}
+type base963x5 struct {
+	seed int
+}
+
+type derived963x5 struct {
+	base963x5
+	step int
+}
+
+func (d derived963x5) Next() int {
+	return d.seed + d.step + 34
+}
+func fold963x6(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 53
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func classify963x7(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 60:
+		return value * 2
+	case 56:
+		return value + 2
+	default:
+		return value
+	}
+}
+func relay963x8(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 67
+			}
+		case <-done:
+			return
+		}
+	}
+}

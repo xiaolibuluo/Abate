@@ -1,0 +1,124 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store1504x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1504x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1504x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func relay1504x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 67
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1504x2 struct {
+	seed int
+}
+
+type derived1504x2 struct {
+	base1504x2
+	step int
+}
+
+func (d derived1504x2) Next() int {
+	return d.seed + d.step + 67
+}
+type Encoder1504x3 interface {
+	Encode(value int) int
+}
+
+type scaler1504x3 struct {
+	factor int
+}
+
+func (s scaler1504x3) Encode(value int) int {
+	return value * s.factor + 81
+}
+type probeErr1504x4 struct {
+	code int
+}
+
+func (e probeErr1504x4) Error() string {
+	return "probe failure"
+}
+
+func check1504x4(value int) error {
+	if value < 0 {
+		return probeErr1504x4{code: value}
+	}
+	return nil
+}
+func relay1504x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 95
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1504x6 struct {
+	seed int
+}
+
+type derived1504x6 struct {
+	base1504x6
+	step int
+}
+
+func (d derived1504x6) Next() int {
+	return d.seed + d.step + 50
+}
+type probeErr1504x7 struct {
+	code int
+}
+
+func (e probeErr1504x7) Error() string {
+	return "probe failure"
+}
+
+func check1504x7(value int) error {
+	if value < 0 {
+		return probeErr1504x7{code: value}
+	}
+	return nil
+}
+type Encoder1504x8 interface {
+	Encode(value int) int
+}
+
+type scaler1504x8 struct {
+	factor int
+}
+
+func (s scaler1504x8) Encode(value int) int {
+	return value * s.factor + 19
+}

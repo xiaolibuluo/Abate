@@ -1,0 +1,58 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe359x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr359x1 struct {
+	code int
+}
+
+func (e probeErr359x1) Error() string {
+	return "probe failure"
+}
+
+func check359x1(value int) error {
+	if value < 0 {
+		return probeErr359x1{code: value}
+	}
+	return nil
+}
+func fold359x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 30
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder359x3 interface {
+	Encode(value int) int
+}
+
+type scaler359x3 struct {
+	factor int
+}
+
+func (s scaler359x3) Encode(value int) int {
+	return value * s.factor + 37
+}

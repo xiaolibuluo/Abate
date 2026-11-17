@@ -1,0 +1,77 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def guarded80_0(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def traced80_1(value: int) -> int:
+    return value + 82
+
+
+def decorate80_1(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate80_1
+def doubled80_1(value: int) -> int:
+    return value + value
+def expand80_2(values):
+    for item in values:
+        if item > 89:
+            yield item * 42
+
+
+def collect80_2(values):
+    return list(expand80_2(values))
+async def fetch80_3(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def project80_4(values):
+    select = lambda item: item + 6
+    return [select(item) for item in values if item != 0]
+async def fetch80_5(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def project80_6(values):
+    select = lambda item: item + 20
+    return [select(item) for item in values if item != 0]
+def expand80_7(values):
+    for item in values:
+        if item > 27:
+            yield item * 36
+
+
+def collect80_7(values):
+    return list(expand80_7(values))

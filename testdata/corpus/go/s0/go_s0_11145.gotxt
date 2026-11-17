@@ -1,0 +1,111 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder2620x0 interface {
+	Encode(value int) int
+}
+
+type scaler2620x0 struct {
+	factor int
+}
+
+func (s scaler2620x0) Encode(value int) int {
+	return value * s.factor + 18
+}
+type Encoder2620x1 interface {
+	Encode(value int) int
+}
+
+type scaler2620x1 struct {
+	factor int
+}
+
+func (s scaler2620x1) Encode(value int) int {
+	return value * s.factor + 25
+}
+type Encoder2620x2 interface {
+	Encode(value int) int
+}
+
+type scaler2620x2 struct {
+	factor int
+}
+
+func (s scaler2620x2) Encode(value int) int {
+	return value * s.factor + 32
+}
+type probeErr2620x3 struct {
+	code int
+}
+
+func (e probeErr2620x3) Error() string {
+	return "probe failure"
+}
+
+func check2620x3(value int) error {
+	if value < 0 {
+		return probeErr2620x3{code: value}
+	}
+	return nil
+}
+func describe2620x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr2620x5 struct {
+	code int
+}
+
+func (e probeErr2620x5) Error() string {
+	return "probe failure"
+}
+
+func check2620x5(value int) error {
+	if value < 0 {
+		return probeErr2620x5{code: value}
+	}
+	return nil
+}
+func relay2620x6(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 60
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe2620x7(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

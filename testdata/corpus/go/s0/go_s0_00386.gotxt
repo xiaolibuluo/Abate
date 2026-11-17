@@ -1,0 +1,105 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe96x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr96x1 struct {
+	code int
+}
+
+func (e probeErr96x1) Error() string {
+	return "probe failure"
+}
+
+func check96x1(value int) error {
+	if value < 0 {
+		return probeErr96x1{code: value}
+	}
+	return nil
+}
+type Store96x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store96x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store96x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder96x3 interface {
+	Encode(value int) int
+}
+
+type scaler96x3 struct {
+	factor int
+}
+
+func (s scaler96x3) Encode(value int) int {
+	return value * s.factor + 13
+}
+type Store96x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store96x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store96x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func relay96x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 27
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe96x6(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

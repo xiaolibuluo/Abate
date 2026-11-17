@@ -1,0 +1,28 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome60 {
+    data class Success(val payload: String) : Outcome60()
+    data object Failure : Outcome60()
+}
+
+fun describe60(outcome: Outcome60): String = when (outcome) {
+    is Outcome60.Success -> outcome.payload
+    Outcome60.Failure -> "failed"
+}
+@JvmName("step61")
+fun step61(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 90
+

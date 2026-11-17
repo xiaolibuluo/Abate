@@ -1,0 +1,54 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def summarize25_0(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 39:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def guarded25_1(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+class Slot25_2:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{53}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+def expand25_3(values):
+    for item in values:
+        if item > 60:
+            yield item * 34
+
+
+def collect25_3(values):
+    return list(expand25_3(values))
+def summarize25_4(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 67:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]

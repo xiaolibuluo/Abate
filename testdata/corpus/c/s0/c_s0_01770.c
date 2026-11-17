@@ -1,0 +1,58 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+struct Node1187_0 {
+    int value;
+    struct Node1187_0 *next;
+};
+
+int length1187_0(const struct Node1187_0 *head) {
+    int count = 0;
+    const struct Node1187_0 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 13;
+}
+enum Kind1187_1 { KIND_EMPTY1187_1 = 0, KIND_FULL1187_1 = 20 };
+
+union Cell1187_1 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind1187_1(union Cell1187_1 *cell) {
+    cell->number = 33;
+    return cell->number > 0 ? KIND_FULL1187_1 : KIND_EMPTY1187_1;
+}
+#if defined(__STDC_VERSION__)
+int variant1187_2(int value, ...) {
+    return value + 27;
+}
+#else
+int variant1187_2(int value) {
+    return value + 27;
+}
+#endif
+enum Kind1187_3 { KIND_EMPTY1187_3 = 0, KIND_FULL1187_3 = 34 };
+
+union Cell1187_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind1187_3(union Cell1187_3 *cell) {
+    cell->number = 55;
+    return cell->number > 0 ? KIND_FULL1187_3 : KIND_EMPTY1187_3;
+}

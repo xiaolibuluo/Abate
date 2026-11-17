@@ -1,0 +1,119 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1748x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 31
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store1748x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1748x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1748x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder1748x2 interface {
+	Encode(value int) int
+}
+
+type scaler1748x2 struct {
+	factor int
+}
+
+func (s scaler1748x2) Encode(value int) int {
+	return value * s.factor + 45
+}
+type base1748x3 struct {
+	seed int
+}
+
+type derived1748x3 struct {
+	base1748x3
+	step int
+}
+
+func (d derived1748x3) Next() int {
+	return d.seed + d.step + 17
+}
+func relay1748x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 59
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1748x5 interface {
+	Encode(value int) int
+}
+
+type scaler1748x5 struct {
+	factor int
+}
+
+func (s scaler1748x5) Encode(value int) int {
+	return value * s.factor + 66
+}
+type Encoder1748x6 interface {
+	Encode(value int) int
+}
+
+type scaler1748x6 struct {
+	factor int
+}
+
+func (s scaler1748x6) Encode(value int) int {
+	return value * s.factor + 73
+}
+type probeErr1748x7 struct {
+	code int
+}
+
+func (e probeErr1748x7) Error() string {
+	return "probe failure"
+}
+
+func check1748x7(value int) error {
+	if value < 0 {
+		return probeErr1748x7{code: value}
+	}
+	return nil
+}
+func relay1748x8(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 87
+			}
+		case <-done:
+			return
+		}
+	}
+}

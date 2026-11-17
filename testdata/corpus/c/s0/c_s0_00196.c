@@ -1,0 +1,81 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+struct Node134_0 {
+    int value;
+    struct Node134_0 *next;
+};
+
+int length134_0(const struct Node134_0 *head) {
+    int count = 0;
+    const struct Node134_0 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 98;
+}
+int scan134_1(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 8;
+}
+typedef int (*predicate134_2)(int value);
+
+typedef struct Slot134_2 {
+    int slots[16];
+    predicate134_2 accept;
+} Slot134_2;
+
+int slot_accept134_2(Slot134_2 *store, int value) {
+    return store->accept(value) + 15;
+}
+enum Kind134_3 { KIND_EMPTY134_3 = 0, KIND_FULL134_3 = 22 };
+
+union Cell134_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind134_3(union Cell134_3 *cell) {
+    cell->number = 65;
+    return cell->number > 0 ? KIND_FULL134_3 : KIND_EMPTY134_3;
+}
+#if defined(__STDC_VERSION__)
+int variant134_4(int value, ...) {
+    return value + 29;
+}
+#else
+int variant134_4(int value) {
+    return value + 29;
+}
+#endif
+enum Kind134_5 { KIND_EMPTY134_5 = 0, KIND_FULL134_5 = 36 };
+
+union Cell134_5 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind134_5(union Cell134_5 *cell) {
+    cell->number = 26;
+    return cell->number > 0 ? KIND_FULL134_5 : KIND_EMPTY134_5;
+}

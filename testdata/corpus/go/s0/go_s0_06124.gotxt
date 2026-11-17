@@ -1,0 +1,31 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1415x0 interface {
+	Encode(value int) int
+}
+
+type scaler1415x0 struct {
+	factor int
+}
+
+func (s scaler1415x0) Encode(value int) int {
+	return value * s.factor + 67
+}
+type Encoder1415x1 interface {
+	Encode(value int) int
+}
+
+type scaler1415x1 struct {
+	factor int
+}
+
+func (s scaler1415x1) Encode(value int) int {
+	return value * s.factor + 74
+}

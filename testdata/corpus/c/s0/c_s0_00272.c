@@ -1,0 +1,94 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+typedef int (*predicate190_0)(int value);
+
+typedef struct Slot190_0 {
+    int slots[16];
+    predicate190_0 accept;
+} Slot190_0;
+
+int slot_accept190_0(Slot190_0 *store, int value) {
+    return store->accept(value) + 50;
+}
+#if defined(__STDC_VERSION__)
+int variant190_1(int value, ...) {
+    return value + 57;
+}
+#else
+int variant190_1(int value) {
+    return value + 57;
+}
+#endif
+struct Node190_2 {
+    int value;
+    struct Node190_2 *next;
+};
+
+int length190_2(const struct Node190_2 *head) {
+    int count = 0;
+    const struct Node190_2 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 64;
+}
+#define MASK190_3(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify190_3(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK190_3(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+int scan190_4(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 78;
+}
+#define MASK190_5(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify190_5(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK190_5(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+#if defined(__STDC_VERSION__)
+int variant190_6(int value, ...) {
+    return value + 92;
+}
+#else
+int variant190_6(int value) {
+    return value + 92;
+}
+#endif
+typedef int (*predicate190_7)(int value);
+
+typedef struct Slot190_7 {
+    int slots[16];
+    predicate190_7 accept;
+} Slot190_7;
+
+int slot_accept190_7(Slot190_7 *store, int value) {
+    return store->accept(value) + 99;
+}

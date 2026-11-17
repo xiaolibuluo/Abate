@@ -1,0 +1,77 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr897x0 struct {
+	code int
+}
+
+func (e probeErr897x0) Error() string {
+	return "probe failure"
+}
+
+func check897x0(value int) error {
+	if value < 0 {
+		return probeErr897x0{code: value}
+	}
+	return nil
+}
+type probeErr897x1 struct {
+	code int
+}
+
+func (e probeErr897x1) Error() string {
+	return "probe failure"
+}
+
+func check897x1(value int) error {
+	if value < 0 {
+		return probeErr897x1{code: value}
+	}
+	return nil
+}
+type base897x2 struct {
+	seed int
+}
+
+type derived897x2 struct {
+	base897x2
+	step int
+}
+
+func (d derived897x2) Next() int {
+	return d.seed + d.step + 27
+}
+type probeErr897x3 struct {
+	code int
+}
+
+func (e probeErr897x3) Error() string {
+	return "probe failure"
+}
+
+func check897x3(value int) error {
+	if value < 0 {
+		return probeErr897x3{code: value}
+	}
+	return nil
+}
+type probeErr897x4 struct {
+	code int
+}
+
+func (e probeErr897x4) Error() string {
+	return "probe failure"
+}
+
+func check897x4(value int) error {
+	if value < 0 {
+		return probeErr897x4{code: value}
+	}
+	return nil
+}

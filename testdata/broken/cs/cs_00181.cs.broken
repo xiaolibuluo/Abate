@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public delegate void Notifier1810(int value);
+
+    public sealed class Source1810
+    {
+        public event Notifier1810 Changed;
+        public void Raise(int value) { Changed?.Invoke(value); }
+    }
+    public static int Guard1811(int value)
+    {
+        try
+        {
+            if (value < 0) { throw new ArgumentException("bad value"); }
+            return value + 37;
+        }
+        catch (ArgumentException)
+        {
+            return 0;
+        }
+        finally
+        {
+            Console.WriteLine("guard");
+        }
+    }
+    public struct Point1812
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Total => X + Y + 44;
+    }
+
+    public static class Grid1812
+    {
+        public static Point1812 Make(int left, int right)
+        {
+            return new Point1812 { X = left, Y = right };
+        }
+    }
+    public delegate void Notifier1813(int value);
+
+    public sealed class Source1813
+    {
+        public event Notifier1813 Changed;
+        public void Raise(int value) { Changed?.Invoke(value); }
+    }
+    public delegate void Notifier1814(int value);
+
+    public sealed class Source1814
+    {
+        public event Notifier1814 Changed;
+        public void Raise(int value) { Changed?.Invoke(value); }
+    }
+

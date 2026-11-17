@@ -1,0 +1,115 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe875x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func describe875x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func relay875x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 45
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base875x3 struct {
+	seed int
+}
+
+type derived875x3 struct {
+	base875x3
+	step int
+}
+
+func (d derived875x3) Next() int {
+	return d.seed + d.step + 67
+}
+type Store875x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store875x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store875x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base875x5 struct {
+	seed int
+}
+
+type derived875x5 struct {
+	base875x5
+	step int
+}
+
+func (d derived875x5) Next() int {
+	return d.seed + d.step + 28
+}
+type Encoder875x6 interface {
+	Encode(value int) int
+}
+
+type scaler875x6 struct {
+	factor int
+}
+
+func (s scaler875x6) Encode(value int) int {
+	return value * s.factor + 73
+}
+type Store875x7[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store875x7[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store875x7[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

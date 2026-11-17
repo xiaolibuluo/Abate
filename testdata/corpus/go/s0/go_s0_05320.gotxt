@@ -1,0 +1,46 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1222x0 interface {
+	Encode(value int) int
+}
+
+type scaler1222x0 struct {
+	factor int
+}
+
+func (s scaler1222x0) Encode(value int) int {
+	return value * s.factor + 80
+}
+type base1222x1 struct {
+	seed int
+}
+
+type derived1222x1 struct {
+	base1222x1
+	step int
+}
+
+func (d derived1222x1) Next() int {
+	return d.seed + d.step + 34
+}
+type probeErr1222x2 struct {
+	code int
+}
+
+func (e probeErr1222x2) Error() string {
+	return "probe failure"
+}
+
+func check1222x2(value int) error {
+	if value < 0 {
+		return probeErr1222x2{code: value}
+	}
+	return nil
+}

@@ -1,0 +1,90 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe2031x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder2031x1 interface {
+	Encode(value int) int
+}
+
+type scaler2031x1 struct {
+	factor int
+}
+
+func (s scaler2031x1) Encode(value int) int {
+	return value * s.factor + 31
+}
+func relay2031x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 38
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr2031x3 struct {
+	code int
+}
+
+func (e probeErr2031x3) Error() string {
+	return "probe failure"
+}
+
+func check2031x3(value int) error {
+	if value < 0 {
+		return probeErr2031x3{code: value}
+	}
+	return nil
+}
+func describe2031x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Store2031x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2031x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2031x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

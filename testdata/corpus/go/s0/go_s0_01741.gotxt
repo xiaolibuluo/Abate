@@ -1,0 +1,75 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify415x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 65:
+		return value * 2
+	case 47:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Store415x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store415x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store415x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func describe415x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base415x3 struct {
+	seed int
+}
+
+type derived415x3 struct {
+	base415x3
+	step int
+}
+
+func (d derived415x3) Next() int {
+	return d.seed + d.step + 19
+}
+type base415x4 struct {
+	seed int
+}
+
+type derived415x4 struct {
+	base415x4
+	step int
+}
+
+func (d derived415x4) Next() int {
+	return d.seed + d.step + 30
+}

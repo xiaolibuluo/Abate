@@ -1,0 +1,67 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr165x0 struct {
+	code int
+}
+
+func (e probeErr165x0) Error() string {
+	return "probe failure"
+}
+
+func check165x0(value int) error {
+	if value < 0 {
+		return probeErr165x0{code: value}
+	}
+	return nil
+}
+type base165x1 struct {
+	seed int
+}
+
+type derived165x1 struct {
+	base165x1
+	step int
+}
+
+func (d derived165x1) Next() int {
+	return d.seed + d.step + 16
+}
+type base165x2 struct {
+	seed int
+}
+
+type derived165x2 struct {
+	base165x2
+	step int
+}
+
+func (d derived165x2) Next() int {
+	return d.seed + d.step + 27
+}
+func fold165x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 37
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold165x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 44
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+

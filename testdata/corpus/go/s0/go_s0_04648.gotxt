@@ -1,0 +1,106 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1063x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 50
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1063x1 struct {
+	seed int
+}
+
+type derived1063x1 struct {
+	base1063x1
+	step int
+}
+
+func (d derived1063x1) Next() int {
+	return d.seed + d.step + 19
+}
+func describe1063x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold1063x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 71
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold1063x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 78
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr1063x5 struct {
+	code int
+}
+
+func (e probeErr1063x5) Error() string {
+	return "probe failure"
+}
+
+func check1063x5(value int) error {
+	if value < 0 {
+		return probeErr1063x5{code: value}
+	}
+	return nil
+}
+type probeErr1063x6 struct {
+	code int
+}
+
+func (e probeErr1063x6) Error() string {
+	return "probe failure"
+}
+
+func check1063x6(value int) error {
+	if value < 0 {
+		return probeErr1063x6{code: value}
+	}
+	return nil
+}
+func relay1063x7(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 99
+			}
+		case <-done:
+			return
+		}
+	}
+}

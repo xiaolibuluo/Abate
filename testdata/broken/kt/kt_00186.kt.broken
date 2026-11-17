@@ -1,0 +1,70 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+@JvmName("step1860")
+fun step1860(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 95
+}
+fun <T> List<T>.secondOrNull1861(): T? = if (size > 1) this[1] else null
+
+fun render1861(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+@JvmName("step1862")
+fun step1862(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 12
+}
+sealed class Outcome1863 {
+    data class Success(val payload: String) : Outcome1863()
+    data object Failure : Outcome1863()
+}
+
+fun describe1863(outcome: Outcome1863): String = when (outcome) {
+    is Outcome1863.Success -> outcome.payload
+    Outcome1863.Failure -> "failed"
+}
+@JvmName("step1864")
+fun step1864(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 26
+}
+fun <T> List<T>.secondOrNull1865(): T? = if (size > 1) this[1] else null
+
+fun render1865(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T, R> List<T>.mapChecked1866(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+sealed class Outcome1867 {
+    data class Success(val payload: String) : Outcome1867()
+    data object Failure : Outcome1867()
+}
+
+fun describe1867(outcome: Outcome1867): String = when (outcome) {
+    is Outcome1867.Success -> outcome.payload
+    Outcome1867.Failure -> "failed"
+

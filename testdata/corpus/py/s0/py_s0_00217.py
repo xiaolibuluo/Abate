@@ -1,0 +1,102 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def project95_0(values):
+    select = lambda item: item + 76
+    return [select(item) for item in values if item != 0]
+def traced95_1(value: int) -> int:
+    return value + 83
+
+
+def decorate95_1(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate95_1
+def doubled95_1(value: int) -> int:
+    return value + value
+async def fetch95_2(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def traced95_3(value: int) -> int:
+    return value + 97
+
+
+def decorate95_3(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate95_3
+def doubled95_3(value: int) -> int:
+    return value + value
+def expand95_4(values):
+    for item in values:
+        if item > 7:
+            yield item * 47
+
+
+def collect95_4(values):
+    return list(expand95_4(values))
+async def fetch95_5(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+class Slot95_6:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{21}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+def pair95_7(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 28}
+def pair95_8(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 35}
+def traced95_9(value: int) -> int:
+    return value + 42
+
+
+def decorate95_9(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate95_9
+def doubled95_9(value: int) -> int:
+    return value + value

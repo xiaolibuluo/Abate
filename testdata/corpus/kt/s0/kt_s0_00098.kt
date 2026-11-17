@@ -1,0 +1,68 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+fun <T> List<T>.secondOrNull800(): T? = if (size > 1) this[1] else null
+
+fun render800(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+@JvmName("step801")
+fun step801(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 82
+}
+data class Pair802<A, B>(val first: A, val second: B)
+
+fun combine802(left: Int, right: Int): Pair802<Int, Int> {
+    return Pair802(left + 89, right + 42)
+}
+sealed class Outcome803 {
+    data class Success(val payload: String) : Outcome803()
+    data object Failure : Outcome803()
+}
+
+fun describe803(outcome: Outcome803): String = when (outcome) {
+    is Outcome803.Success -> outcome.payload
+    Outcome803.Failure -> "failed"
+}
+data class Pair804<A, B>(val first: A, val second: B)
+
+fun combine804(left: Int, right: Int): Pair804<Int, Int> {
+    return Pair804(left + 6, right + 64)
+}
+@JvmName("step805")
+fun step805(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 13
+}
+@JvmName("step806")
+fun step806(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 20
+}
+object Registry807 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG807 = "registry-27"
+    }
+}

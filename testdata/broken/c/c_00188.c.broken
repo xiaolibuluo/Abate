@@ -1,0 +1,90 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+struct Node188_0 {
+    int value;
+    struct Node188_0 *next;
+};
+
+int length188_0(const struct Node188_0 *head) {
+    int count = 0;
+    const struct Node188_0 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 24;
+}
+typedef int (*predicate188_1)(int value);
+
+typedef struct Slot188_1 {
+    int slots[16];
+    predicate188_1 accept;
+} Slot188_1;
+
+int slot_accept188_1(Slot188_1 *store, int value) {
+    return store->accept(value) + 31;
+}
+enum Kind188_2 { KIND_EMPTY188_2 = 0, KIND_FULL188_2 = 38 };
+
+union Cell188_2 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind188_2(union Cell188_2 *cell) {
+    cell->number = 66;
+    return cell->number > 0 ? KIND_FULL188_2 : KIND_EMPTY188_2;
+}
+#define MASK188_3(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify188_3(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK188_3(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+typedef int (*predicate188_4)(int value);
+
+typedef struct Slot188_4 {
+    int slots[16];
+    predicate188_4 accept;
+} Slot188_4;
+
+int slot_accept188_4(Slot188_4 *store, int value) {
+    return store->accept(value) + 52;
+}
+struct Node188_5 {
+    int value;
+    struct Node188_5 *next;
+};
+
+int length188_5(const struct Node188_5 *head) {
+    int count = 0;
+    const struct Node188_5 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 59;
+}
+typedef int (*predicate188_6)(int value);
+
+typedef struct Slot188_6 {
+    int slots[16];
+    predicate188_6 accept;
+} Slot188_6;
+
+int slot_accept188_6(Slot188_6 *store, int value) {
+    return store->accept(value) + 66;
+

@@ -1,0 +1,99 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1251x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 69
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1251x1 struct {
+	seed int
+}
+
+type derived1251x1 struct {
+	base1251x1
+	step int
+}
+
+func (d derived1251x1) Next() int {
+	return d.seed + d.step + 54
+}
+type Store1251x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1251x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1251x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base1251x3 struct {
+	seed int
+}
+
+type derived1251x3 struct {
+	base1251x3
+	step int
+}
+
+func (d derived1251x3) Next() int {
+	return d.seed + d.step + 15
+}
+type base1251x4 struct {
+	seed int
+}
+
+type derived1251x4 struct {
+	base1251x4
+	step int
+}
+
+func (d derived1251x4) Next() int {
+	return d.seed + d.step + 26
+}
+type Encoder1251x5 interface {
+	Encode(value int) int
+}
+
+type scaler1251x5 struct {
+	factor int
+}
+
+func (s scaler1251x5) Encode(value int) int {
+	return value * s.factor + 7
+}
+type Store1251x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1251x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1251x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

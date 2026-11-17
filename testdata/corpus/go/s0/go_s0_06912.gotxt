@@ -1,0 +1,105 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1592x0 struct {
+	seed int
+}
+
+type derived1592x0 struct {
+	base1592x0
+	step int
+}
+
+func (d derived1592x0) Next() int {
+	return d.seed + d.step + 51
+}
+type probeErr1592x1 struct {
+	code int
+}
+
+func (e probeErr1592x1) Error() string {
+	return "probe failure"
+}
+
+func check1592x1(value int) error {
+	if value < 0 {
+		return probeErr1592x1{code: value}
+	}
+	return nil
+}
+func fold1592x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 54
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold1592x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 61
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr1592x4 struct {
+	code int
+}
+
+func (e probeErr1592x4) Error() string {
+	return "probe failure"
+}
+
+func check1592x4(value int) error {
+	if value < 0 {
+		return probeErr1592x4{code: value}
+	}
+	return nil
+}
+func fold1592x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 75
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder1592x6 interface {
+	Encode(value int) int
+}
+
+type scaler1592x6 struct {
+	factor int
+}
+
+func (s scaler1592x6) Encode(value int) int {
+	return value * s.factor + 82
+}
+type Store1592x7[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1592x7[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1592x7[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

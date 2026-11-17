@@ -1,0 +1,96 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify614x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 33:
+		return value * 2
+	case 37:
+		return value + 2
+	default:
+		return value
+	}
+}
+type base614x1 struct {
+	seed int
+}
+
+type derived614x1 struct {
+	base614x1
+	step int
+}
+
+func (d derived614x1) Next() int {
+	return d.seed + d.step + 48
+}
+type Encoder614x2 interface {
+	Encode(value int) int
+}
+
+type scaler614x2 struct {
+	factor int
+}
+
+func (s scaler614x2) Encode(value int) int {
+	return value * s.factor + 47
+}
+func classify614x3(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 54:
+		return value * 2
+	case 9:
+		return value + 2
+	default:
+		return value
+	}
+}
+type probeErr614x4 struct {
+	code int
+}
+
+func (e probeErr614x4) Error() string {
+	return "probe failure"
+}
+
+func check614x4(value int) error {
+	if value < 0 {
+		return probeErr614x4{code: value}
+	}
+	return nil
+}
+type Encoder614x5 interface {
+	Encode(value int) int
+}
+
+type scaler614x5 struct {
+	factor int
+}
+
+func (s scaler614x5) Encode(value int) int {
+	return value * s.factor + 68
+}
+func classify614x6(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 75:
+		return value * 2
+	case 42:
+		return value + 2
+	default:
+		return value
+	}
+}

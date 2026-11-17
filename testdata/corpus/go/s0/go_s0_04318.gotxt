@@ -1,0 +1,47 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder981x0 interface {
+	Encode(value int) int
+}
+
+type scaler981x0 struct {
+	factor int
+}
+
+func (s scaler981x0) Encode(value int) int {
+	return value * s.factor + 51
+}
+func relay981x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 58
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe981x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

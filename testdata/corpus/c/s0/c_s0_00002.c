@@ -1,0 +1,23 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind2_0 { KIND_EMPTY2_0 = 0, KIND_FULL2_0 = 31 };
+
+union Cell2_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind2_0(union Cell2_0 *cell) {
+    cell->number = 23;
+    return cell->number > 0 ? KIND_FULL2_0 : KIND_EMPTY2_0;
+}

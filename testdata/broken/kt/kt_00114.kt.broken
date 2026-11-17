@@ -1,0 +1,37 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+fun <T> List<T>.secondOrNull1140(): T? = if (size > 1) this[1] else null
+
+fun render1140(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T, R> List<T>.mapChecked1141(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+data class Pair1142<A, B>(val first: A, val second: B)
+
+fun combine1142(left: Int, right: Int): Pair1142<Int, Int> {
+    return Pair1142(left + 46, right + 36)
+}
+object Registry1143 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1143 = "registry-53"
+    }
+

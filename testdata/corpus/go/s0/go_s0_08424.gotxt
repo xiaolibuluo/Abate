@@ -1,0 +1,70 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1967x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 65
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe1967x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr1967x2 struct {
+	code int
+}
+
+func (e probeErr1967x2) Error() string {
+	return "probe failure"
+}
+
+func check1967x2(value int) error {
+	if value < 0 {
+		return probeErr1967x2{code: value}
+	}
+	return nil
+}
+type Encoder1967x3 interface {
+	Encode(value int) int
+}
+
+type scaler1967x3 struct {
+	factor int
+}
+
+func (s scaler1967x3) Encode(value int) int {
+	return value * s.factor + 86
+}
+type base1967x4 struct {
+	seed int
+}
+
+type derived1967x4 struct {
+	base1967x4
+	step int
+}
+
+func (d derived1967x4) Next() int {
+	return d.seed + d.step + 36
+}

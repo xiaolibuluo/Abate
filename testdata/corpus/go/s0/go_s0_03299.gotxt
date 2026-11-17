@@ -1,0 +1,58 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store746x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store746x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store746x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base746x1 struct {
+	seed int
+}
+
+type derived746x1 struct {
+	base746x1
+	step int
+}
+
+func (d derived746x1) Next() int {
+	return d.seed + d.step + 57
+}
+type Encoder746x2 interface {
+	Encode(value int) int
+}
+
+type scaler746x2 struct {
+	factor int
+}
+
+func (s scaler746x2) Encode(value int) int {
+	return value * s.factor + 17
+}
+type Encoder746x3 interface {
+	Encode(value int) int
+}
+
+type scaler746x3 struct {
+	factor int
+}
+
+func (s scaler746x3) Encode(value int) int {
+	return value * s.factor + 24
+}

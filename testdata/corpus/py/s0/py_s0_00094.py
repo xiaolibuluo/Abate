@@ -1,0 +1,86 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def traced43_0(value: int) -> int:
+    return value + 79
+
+
+def decorate43_0(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate43_0
+def doubled43_0(value: int) -> int:
+    return value + value
+def pair43_1(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 86}
+async def fetch43_2(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def pair43_3(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 100}
+def summarize43_4(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 10:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def summarize43_5(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 17:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def expand43_6(values):
+    for item in values:
+        if item > 24:
+            yield item * 10
+
+
+def collect43_6(values):
+    return list(expand43_6(values))
+class Slot43_7:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{31}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+def guarded43_8(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()

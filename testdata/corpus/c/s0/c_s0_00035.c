@@ -1,0 +1,60 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+struct Node21_0 {
+    int value;
+    struct Node21_0 *next;
+};
+
+int length21_0(const struct Node21_0 *head) {
+    int count = 0;
+    const struct Node21_0 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 84;
+}
+typedef int (*predicate21_1)(int value);
+
+typedef struct Slot21_1 {
+    int slots[16];
+    predicate21_1 accept;
+} Slot21_1;
+
+int slot_accept21_1(Slot21_1 *store, int value) {
+    return store->accept(value) + 91;
+}
+int scan21_2(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 98;
+}
+int gcd21_3(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale21_3(int value) {
+    return gcd21_3(value, 67) * 8;
+}

@@ -1,0 +1,42 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome620 {
+    data class Success(val payload: String) : Outcome620()
+    data object Failure : Outcome620()
+}
+
+fun describe620(outcome: Outcome620): String = when (outcome) {
+    is Outcome620.Success -> outcome.payload
+    Outcome620.Failure -> "failed"
+}
+data class Pair621<A, B>(val first: A, val second: B)
+
+fun combine621(left: Int, right: Int): Pair621<Int, Int> {
+    return Pair621(left + 42, right + 27)
+}
+@JvmName("step622")
+fun step622(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 49
+}
+object Registry623 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG623 = "registry-56"
+    }
+

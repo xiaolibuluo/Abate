@@ -1,0 +1,64 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+object Registry1340 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1340 = "registry-98"
+    }
+}
+class Counter1341 {
+    var current: Int by Delegates.observable(8) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+sealed class Outcome1342 {
+    data class Success(val payload: String) : Outcome1342()
+    data object Failure : Outcome1342()
+}
+
+fun describe1342(outcome: Outcome1342): String = when (outcome) {
+    is Outcome1342.Success -> outcome.payload
+    Outcome1342.Failure -> "failed"
+}
+fun <T, R> List<T>.mapChecked1343(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+fun <T> List<T>.secondOrNull1344(): T? = if (size > 1) this[1] else null
+
+fun render1344(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+sealed class Outcome1345 {
+    data class Success(val payload: String) : Outcome1345()
+    data object Failure : Outcome1345()
+}
+
+fun describe1345(outcome: Outcome1345): String = when (outcome) {
+    is Outcome1345.Success -> outcome.payload
+    Outcome1345.Failure -> "failed"
+}

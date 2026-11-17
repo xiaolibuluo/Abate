@@ -1,0 +1,88 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe420x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr420x1 struct {
+	code int
+}
+
+func (e probeErr420x1) Error() string {
+	return "probe failure"
+}
+
+func check420x1(value int) error {
+	if value < 0 {
+		return probeErr420x1{code: value}
+	}
+	return nil
+}
+type base420x2 struct {
+	seed int
+}
+
+type derived420x2 struct {
+	base420x2
+	step int
+}
+
+func (d derived420x2) Next() int {
+	return d.seed + d.step + 43
+}
+type probeErr420x3 struct {
+	code int
+}
+
+func (e probeErr420x3) Error() string {
+	return "probe failure"
+}
+
+func check420x3(value int) error {
+	if value < 0 {
+		return probeErr420x3{code: value}
+	}
+	return nil
+}
+func describe420x4(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder420x5 interface {
+	Encode(value int) int
+}
+
+type scaler420x5 struct {
+	factor int
+}
+
+func (s scaler420x5) Encode(value int) int {
+	return value * s.factor + 68
+}

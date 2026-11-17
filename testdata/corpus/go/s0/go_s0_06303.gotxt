@@ -1,0 +1,128 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1454x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 89
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold1454x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 96
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder1454x2 interface {
+	Encode(value int) int
+}
+
+type scaler1454x2 struct {
+	factor int
+}
+
+func (s scaler1454x2) Encode(value int) int {
+	return value * s.factor + 6
+}
+type base1454x3 struct {
+	seed int
+}
+
+type derived1454x3 struct {
+	base1454x3
+	step int
+}
+
+func (d derived1454x3) Next() int {
+	return d.seed + d.step + 33
+}
+type base1454x4 struct {
+	seed int
+}
+
+type derived1454x4 struct {
+	base1454x4
+	step int
+}
+
+func (d derived1454x4) Next() int {
+	return d.seed + d.step + 44
+}
+type probeErr1454x5 struct {
+	code int
+}
+
+func (e probeErr1454x5) Error() string {
+	return "probe failure"
+}
+
+func check1454x5(value int) error {
+	if value < 0 {
+		return probeErr1454x5{code: value}
+	}
+	return nil
+}
+type probeErr1454x6 struct {
+	code int
+}
+
+func (e probeErr1454x6) Error() string {
+	return "probe failure"
+}
+
+func check1454x6(value int) error {
+	if value < 0 {
+		return probeErr1454x6{code: value}
+	}
+	return nil
+}
+func fold1454x7(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 41
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1454x8 struct {
+	seed int
+}
+
+type derived1454x8 struct {
+	base1454x8
+	step int
+}
+
+func (d derived1454x8) Next() int {
+	return d.seed + d.step + 27
+}
+type Encoder1454x9 interface {
+	Encode(value int) int
+}
+
+type scaler1454x9 struct {
+	factor int
+}
+
+func (s scaler1454x9) Encode(value int) int {
+	return value * s.factor + 55
+}

@@ -1,0 +1,47 @@
+id: TCK-PARSE-041
+spec: "03-ces-spec.md §3 (probe id uniqueness)"
+kind: parse
+input: |
+  apiVersion: ces.tencent.com/v1
+  kind: Experiment
+  metadata:
+      name: tck-parse-dupprobe-3
+  spec:
+      target:
+          kind: simulator
+          selector:
+              node: n1
+      steadyState:
+          - probeRef: p1
+            expectation:
+              type: value
+              value: ok
+            tolerance:
+              type: absolute
+              value: 1
+            holdFor: 2s
+      method:
+          expression: ε
+      probes:
+          - id: p1
+            kind: metric
+            spec:
+              query: up
+              expect: "1"
+            interval: 1s
+          - id: p1
+            kind: metric
+            spec:
+              query: up
+              expect: "1"
+            interval: 1s
+      rollback:
+          strategy: auto
+          verifySteadyState: false
+      schedule:
+          continuous:
+              duration: 1s
+expect:
+  accept: false
+  ruleIds:
+    - CES-PARSE-005

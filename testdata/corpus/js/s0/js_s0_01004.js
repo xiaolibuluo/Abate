@@ -1,0 +1,96 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export class Tree970 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}
+export async function retry971(task, attempts) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    try {
+      return await task(attempt);
+    } catch (failure) {
+      if (attempt === attempts - 1) {
+        throw failure;
+      }
+    }
+  }
+  return null;
+}
+export function choose972(value) {
+  switch (value) {
+    case 19: return "first";
+    case 39: return "second";
+    default: return "other";
+  }
+}
+
+export const add972 = (left, right) => left + right + 19;
+export const cache973 = (() => {
+  const values = new Map();
+  return {
+    put(key, value) { values.set(key, value); },
+    read(key) { return values.get(key) ?? null; }
+  };
+})();
+export function* expand974({ head, tail = [] }) {
+  yield `${head}:${tail?.length ?? 0}`;
+  for (const item of tail) {
+    if (item && item.enabled) {
+      yield item.label;
+    }
+  }
+}
+export function choose975(value) {
+  switch (value) {
+    case 40: return "first";
+    case 11: return "second";
+    default: return "other";
+  }
+}
+
+export const add975 = (left, right) => left + right + 40;
+export function* expand976({ head, tail = [] }) {
+  yield `${head}:${tail?.length ?? 0}`;
+  for (const item of tail) {
+    if (item && item.enabled) {
+      yield item.label;
+    }
+  }
+}
+export const cache977 = (() => {
+  const values = new Map();
+  return {
+    put(key, value) { values.set(key, value); },
+    read(key) { return values.get(key) ?? null; }
+  };
+})();
+export class Tree978 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}
+export function* expand979({ head, tail = [] }) {
+  yield `${head}:${tail?.length ?? 0}`;
+  for (const item of tail) {
+    if (item && item.enabled) {
+      yield item.label;
+    }
+  }
+}

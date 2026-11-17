@@ -1,0 +1,99 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify1786x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 40:
+		return value * 2
+	case 67:
+		return value + 2
+	default:
+		return value
+	}
+}
+func classify1786x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 47:
+		return value * 2
+	case 17:
+		return value + 2
+	default:
+		return value
+	}
+}
+func relay1786x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 54
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay1786x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 61
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func classify1786x4(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 68:
+		return value * 2
+	case 50:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Store1786x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1786x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1786x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold1786x6(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 82
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

@@ -1,0 +1,56 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+class Counter300 {
+    var current: Int by Delegates.observable(7) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+fun <T> List<T>.secondOrNull301(): T? = if (size > 1) this[1] else null
+
+fun render301(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+object Registry302 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG302 = "registry-21"
+    }
+}
+fun <T, R> List<T>.mapChecked303(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+data class Pair304<A, B>(val first: A, val second: B)
+
+fun combine304(left: Int, right: Int): Pair304<Int, Int> {
+    return Pair304(left + 35, right + 19)
+}
+data class Pair305<A, B>(val first: A, val second: B)
+
+fun combine305(left: Int, right: Int): Pair305<Int, Int> {
+    return Pair305(left + 42, right + 30)
+}

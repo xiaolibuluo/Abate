@@ -1,0 +1,137 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold486x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 18
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold486x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 25
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder486x2 interface {
+	Encode(value int) int
+}
+
+type scaler486x2 struct {
+	factor int
+}
+
+func (s scaler486x2) Encode(value int) int {
+	return value * s.factor + 32
+}
+func classify486x3(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 39:
+		return value * 2
+	case 28:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder486x4 interface {
+	Encode(value int) int
+}
+
+type scaler486x4 struct {
+	factor int
+}
+
+func (s scaler486x4) Encode(value int) int {
+	return value * s.factor + 46
+}
+func relay486x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 53
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr486x6 struct {
+	code int
+}
+
+func (e probeErr486x6) Error() string {
+	return "probe failure"
+}
+
+func check486x6(value int) error {
+	if value < 0 {
+		return probeErr486x6{code: value}
+	}
+	return nil
+}
+type base486x7 struct {
+	seed int
+}
+
+type derived486x7 struct {
+	base486x7
+	step int
+}
+
+func (d derived486x7) Next() int {
+	return d.seed + d.step + 11
+}
+type base486x8 struct {
+	seed int
+}
+
+type derived486x8 struct {
+	base486x8
+	step int
+}
+
+func (d derived486x8) Next() int {
+	return d.seed + d.step + 22
+}
+func fold486x9(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 81
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base486x10 struct {
+	seed int
+}
+
+type derived486x10 struct {
+	base486x10
+	step int
+}
+
+func (d derived486x10) Next() int {
+	return d.seed + d.step + 44
+}

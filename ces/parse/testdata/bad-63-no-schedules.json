@@ -1,0 +1,17 @@
+{
+  "apiVersion": "ces.tencent.com/v1",
+  "kind": "Experiment",
+  "metadata": {"name": "sample", "namespace": "default"},
+  "spec": {
+    "target": {"kind": "simulator", "selector": {"node": "n1"}},
+    "steadyState": [{"probeRef": "p1", "expectation": {"type": "value", "value": "42"},
+      "tolerance": {"type": "absolute", "value": 1}, "holdFor": "1s"}],
+    "method": {"expression": "ε"},
+    "probes": [{"id": "p1", "kind": "http",
+      "spec": {"url": "http://sim/health", "method": "GET", "expectStatus": 200},
+      "interval": "1s"}],
+    "rollback": {"strategy": "auto", "verifySteadyState": true},
+    "schedule": {},
+    "seed": 12345
+  }
+}

@@ -1,0 +1,99 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+#if defined(__STDC_VERSION__)
+int variant41_0(int value, ...) {
+    return value + 53;
+}
+#else
+int variant41_0(int value) {
+    return value + 53;
+}
+#endif
+int gcd41_1(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale41_1(int value) {
+    return gcd41_1(value, 63) * 60;
+}
+#if defined(__STDC_VERSION__)
+int variant41_2(int value, ...) {
+    return value + 67;
+}
+#else
+int variant41_2(int value) {
+    return value + 67;
+}
+#endif
+typedef int (*predicate41_3)(int value);
+
+typedef struct Slot41_3 {
+    int slots[16];
+    predicate41_3 accept;
+} Slot41_3;
+
+int slot_accept41_3(Slot41_3 *store, int value) {
+    return store->accept(value) + 74;
+}
+struct Node41_4 {
+    int value;
+    struct Node41_4 *next;
+};
+
+int length41_4(const struct Node41_4 *head) {
+    int count = 0;
+    const struct Node41_4 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 81;
+}
+enum Kind41_5 { KIND_EMPTY41_5 = 0, KIND_FULL41_5 = 88 };
+
+union Cell41_5 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind41_5(union Cell41_5 *cell) {
+    cell->number = 46;
+    return cell->number > 0 ? KIND_FULL41_5 : KIND_EMPTY41_5;
+}
+enum Kind41_6 { KIND_EMPTY41_6 = 0, KIND_FULL41_6 = 95 };
+
+union Cell41_6 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind41_6(union Cell41_6 *cell) {
+    cell->number = 57;
+    return cell->number > 0 ? KIND_FULL41_6 : KIND_EMPTY41_6;
+}
+typedef int (*predicate41_7)(int value);
+
+typedef struct Slot41_7 {
+    int slots[16];
+    predicate41_7 accept;
+} Slot41_7;
+
+int slot_accept41_7(Slot41_7 *store, int value) {
+    return store->accept(value) + 5;
+}

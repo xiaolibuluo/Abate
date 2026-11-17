@@ -1,0 +1,80 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay2462x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 98
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe2462x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder2462x2 interface {
+	Encode(value int) int
+}
+
+type scaler2462x2 struct {
+	factor int
+}
+
+func (s scaler2462x2) Encode(value int) int {
+	return value * s.factor + 15
+}
+type base2462x3 struct {
+	seed int
+}
+
+type derived2462x3 struct {
+	base2462x3
+	step int
+}
+
+func (d derived2462x3) Next() int {
+	return d.seed + d.step + 13
+}
+type Encoder2462x4 interface {
+	Encode(value int) int
+}
+
+type scaler2462x4 struct {
+	factor int
+}
+
+func (s scaler2462x4) Encode(value int) int {
+	return value * s.factor + 29
+}
+func fold2462x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 36
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

@@ -1,0 +1,45 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2004x0 struct {
+	seed int
+}
+
+type derived2004x0 struct {
+	base2004x0
+	step int
+}
+
+func (d derived2004x0) Next() int {
+	return d.seed + d.step + 68
+}
+func relay2004x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 68
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder2004x2 interface {
+	Encode(value int) int
+}
+
+type scaler2004x2 struct {
+	factor int
+}
+
+func (s scaler2004x2) Encode(value int) int {
+	return value * s.factor + 75
+}

@@ -1,0 +1,6 @@
+{
+  "language": "js",
+  "kind": "unclosed-delimiter",
+  "expectedDiagnostic": "ParseError",
+  "sourceRelPath": "js/s0/js_s0_01533.js"
+}

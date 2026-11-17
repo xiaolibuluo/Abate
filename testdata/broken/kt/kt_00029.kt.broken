@@ -1,0 +1,58 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome290 {
+    data class Success(val payload: String) : Outcome290()
+    data object Failure : Outcome290()
+}
+
+fun describe290(outcome: Outcome290): String = when (outcome) {
+    is Outcome290.Success -> outcome.payload
+    Outcome290.Failure -> "failed"
+}
+fun <T, R> List<T>.mapChecked291(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+object Registry292 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG292 = "registry-8"
+    }
+}
+data class Pair293<A, B>(val first: A, val second: B)
+
+fun combine293(left: Int, right: Int): Pair293<Int, Int> {
+    return Pair293(left + 15, right + 62)
+}
+sealed class Outcome294 {
+    data class Success(val payload: String) : Outcome294()
+    data object Failure : Outcome294()
+}
+
+fun describe294(outcome: Outcome294): String = when (outcome) {
+    is Outcome294.Success -> outcome.payload
+    Outcome294.Failure -> "failed"
+}
+@JvmName("step295")
+fun step295(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 29
+

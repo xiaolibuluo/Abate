@@ -1,0 +1,116 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr1403x0 struct {
+	code int
+}
+
+func (e probeErr1403x0) Error() string {
+	return "probe failure"
+}
+
+func check1403x0(value int) error {
+	if value < 0 {
+		return probeErr1403x0{code: value}
+	}
+	return nil
+}
+type base1403x1 struct {
+	seed int
+}
+
+type derived1403x1 struct {
+	base1403x1
+	step int
+}
+
+func (d derived1403x1) Next() int {
+	return d.seed + d.step + 20
+}
+type probeErr1403x2 struct {
+	code int
+}
+
+func (e probeErr1403x2) Error() string {
+	return "probe failure"
+}
+
+func check1403x2(value int) error {
+	if value < 0 {
+		return probeErr1403x2{code: value}
+	}
+	return nil
+}
+func relay1403x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 29
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1403x4 struct {
+	seed int
+}
+
+type derived1403x4 struct {
+	base1403x4
+	step int
+}
+
+func (d derived1403x4) Next() int {
+	return d.seed + d.step + 53
+}
+type probeErr1403x5 struct {
+	code int
+}
+
+func (e probeErr1403x5) Error() string {
+	return "probe failure"
+}
+
+func check1403x5(value int) error {
+	if value < 0 {
+		return probeErr1403x5{code: value}
+	}
+	return nil
+}
+func relay1403x6(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 50
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Store1403x7[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1403x7[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1403x7[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

@@ -1,0 +1,35 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+#[derive(Debug, Clone)]
+pub enum Outcome5950<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record5950<T> {
+    pub value: T,
+    pub tag: u32,
+}
+macro_rules! sum5951 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold5951(values: &[i32]) -> i32 {
+    let literal = sum5951!(84, 37);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+macro_rules! sum5952 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold5952(values: &[i32]) -> i32 {
+    let literal = sum5952!(91, 48);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}

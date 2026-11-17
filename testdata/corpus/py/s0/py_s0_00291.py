@@ -1,0 +1,75 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def guarded132_0(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def traced132_1(value: int) -> int:
+    return value + 79
+
+
+def decorate132_1(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate132_1
+def doubled132_1(value: int) -> int:
+    return value + value
+def project132_2(values):
+    select = lambda item: item + 86
+    return [select(item) for item in values if item != 0]
+def guarded132_3(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def guarded132_4(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+async def fetch132_5(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def pair132_6(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 17}
+def guarded132_7(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()

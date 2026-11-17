@@ -1,0 +1,80 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1337x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 23
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold1337x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 30
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1337x2 struct {
+	seed int
+}
+
+type derived1337x2 struct {
+	base1337x2
+	step int
+}
+
+func (d derived1337x2) Next() int {
+	return d.seed + d.step + 57
+}
+func relay1337x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 44
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1337x4 struct {
+	seed int
+}
+
+type derived1337x4 struct {
+	base1337x4
+	step int
+}
+
+func (d derived1337x4) Next() int {
+	return d.seed + d.step + 18
+}
+type Encoder1337x5 interface {
+	Encode(value int) int
+}
+
+type scaler1337x5 struct {
+	factor int
+}
+
+func (s scaler1337x5) Encode(value int) int {
+	return value * s.factor + 58
+}

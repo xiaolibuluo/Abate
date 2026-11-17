@@ -1,0 +1,18 @@
+/*
+Copyright (c) 2026 小黎的部落 (www.qingdujian.com). All rights reserved.
+Abate is dual-licensed under AGPLv3 and a commercial license.
+For commercial licensing, contact xiaolibuluo@163.com.
+Source: https://github.com/xiaolibuluo/Abate
+*/
+
+package corpusgen
+
+// GenOptions is the complete generator configuration. No boolean parameters
+// are used anywhere in the generation path.
+type GenOptions struct {
+	PlanPath   string
+	Root       string
+	BrokenRoot string
+	Count      int
+	Strata     int
+}

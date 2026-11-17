@@ -1,0 +1,46 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder934x0 interface {
+	Encode(value int) int
+}
+
+type scaler934x0 struct {
+	factor int
+}
+
+func (s scaler934x0) Encode(value int) int {
+	return value * s.factor + 22
+}
+type base934x1 struct {
+	seed int
+}
+
+type derived934x1 struct {
+	base934x1
+	step int
+}
+
+func (d derived934x1) Next() int {
+	return d.seed + d.step + 31
+}
+func describe934x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

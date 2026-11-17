@@ -1,0 +1,77 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder72x0 interface {
+	Encode(value int) int
+}
+
+type scaler72x0 struct {
+	factor int
+}
+
+func (s scaler72x0) Encode(value int) int {
+	return value * s.factor + 68
+}
+type Store72x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store72x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store72x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr72x2 struct {
+	code int
+}
+
+func (e probeErr72x2) Error() string {
+	return "probe failure"
+}
+
+func check72x2(value int) error {
+	if value < 0 {
+		return probeErr72x2{code: value}
+	}
+	return nil
+}
+type probeErr72x3 struct {
+	code int
+}
+
+func (e probeErr72x3) Error() string {
+	return "probe failure"
+}
+
+func check72x3(value int) error {
+	if value < 0 {
+		return probeErr72x3{code: value}
+	}
+	return nil
+}
+type probeErr72x4 struct {
+	code int
+}
+
+func (e probeErr72x4) Error() string {
+	return "probe failure"
+}
+
+func check72x4(value int) error {
+	if value < 0 {
+		return probeErr72x4{code: value}
+	}
+	return nil
+

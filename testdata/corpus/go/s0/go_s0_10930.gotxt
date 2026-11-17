@@ -1,0 +1,96 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2564x0 struct {
+	code int
+}
+
+func (e probeErr2564x0) Error() string {
+	return "probe failure"
+}
+
+func check2564x0(value int) error {
+	if value < 0 {
+		return probeErr2564x0{code: value}
+	}
+	return nil
+}
+type Store2564x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2564x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2564x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder2564x2 interface {
+	Encode(value int) int
+}
+
+type scaler2564x2 struct {
+	factor int
+}
+
+func (s scaler2564x2) Encode(value int) int {
+	return value * s.factor + 80
+}
+func relay2564x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 87
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold2564x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 94
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base2564x5 struct {
+	seed int
+}
+
+type derived2564x5 struct {
+	base2564x5
+	step int
+}
+
+func (d derived2564x5) Next() int {
+	return d.seed + d.step + 17
+}
+type base2564x6 struct {
+	seed int
+}
+
+type derived2564x6 struct {
+	base2564x6
+	step int
+}
+
+func (d derived2564x6) Next() int {
+	return d.seed + d.step + 28
+}

@@ -1,0 +1,134 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe46x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr46x1 struct {
+	code int
+}
+
+func (e probeErr46x1) Error() string {
+	return "probe failure"
+}
+
+func check46x1(value int) error {
+	if value < 0 {
+		return probeErr46x1{code: value}
+	}
+	return nil
+}
+type base46x2 struct {
+	seed int
+}
+
+type derived46x2 struct {
+	base46x2
+	step int
+}
+
+func (d derived46x2) Next() int {
+	return d.seed + d.step + 48
+}
+type probeErr46x3 struct {
+	code int
+}
+
+func (e probeErr46x3) Error() string {
+	return "probe failure"
+}
+
+func check46x3(value int) error {
+	if value < 0 {
+		return probeErr46x3{code: value}
+	}
+	return nil
+}
+func relay46x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 49
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay46x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 56
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold46x6(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 63
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base46x7 struct {
+	seed int
+}
+
+type derived46x7 struct {
+	base46x7
+	step int
+}
+
+func (d derived46x7) Next() int {
+	return d.seed + d.step + 42
+}
+type base46x8 struct {
+	seed int
+}
+
+type derived46x8 struct {
+	base46x8
+	step int
+}
+
+func (d derived46x8) Next() int {
+	return d.seed + d.step + 53
+}
+type Encoder46x9 interface {
+	Encode(value int) int
+}
+
+type scaler46x9 struct {
+	factor int
+}
+
+func (s scaler46x9) Encode(value int) int {
+	return value * s.factor + 84
+}

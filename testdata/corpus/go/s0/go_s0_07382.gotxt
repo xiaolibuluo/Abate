@@ -1,0 +1,60 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1726x0 interface {
+	Encode(value int) int
+}
+
+type scaler1726x0 struct {
+	factor int
+}
+
+func (s scaler1726x0) Encode(value int) int {
+	return value * s.factor + 36
+}
+func describe1726x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder1726x2 interface {
+	Encode(value int) int
+}
+
+type scaler1726x2 struct {
+	factor int
+}
+
+func (s scaler1726x2) Encode(value int) int {
+	return value * s.factor + 50
+}
+type Store1726x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1726x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1726x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

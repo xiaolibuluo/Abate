@@ -1,0 +1,63 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe1435x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func describe1435x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr1435x2 struct {
+	code int
+}
+
+func (e probeErr1435x2) Error() string {
+	return "probe failure"
+}
+
+func check1435x2(value int) error {
+	if value < 0 {
+		return probeErr1435x2{code: value}
+	}
+	return nil
+}
+type base1435x3 struct {
+	seed int
+}
+
+type derived1435x3 struct {
+	base1435x3
+	step int
+}
+
+func (d derived1435x3) Next() int {
+	return d.seed + d.step + 22
+}

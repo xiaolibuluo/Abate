@@ -1,0 +1,20 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome1490 {
+    data class Success(val payload: String) : Outcome1490()
+    data object Failure : Outcome1490()
+}
+
+fun describe1490(outcome: Outcome1490): String = when (outcome) {
+    is Outcome1490.Success -> outcome.payload
+    Outcome1490.Failure -> "failed"
+}

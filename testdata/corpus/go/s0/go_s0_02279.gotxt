@@ -1,0 +1,108 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay523x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 14
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base523x1 struct {
+	seed int
+}
+
+type derived523x1 struct {
+	base523x1
+	step int
+}
+
+func (d derived523x1) Next() int {
+	return d.seed + d.step + 21
+}
+type probeErr523x2 struct {
+	code int
+}
+
+func (e probeErr523x2) Error() string {
+	return "probe failure"
+}
+
+func check523x2(value int) error {
+	if value < 0 {
+		return probeErr523x2{code: value}
+	}
+	return nil
+}
+type Encoder523x3 interface {
+	Encode(value int) int
+}
+
+type scaler523x3 struct {
+	factor int
+}
+
+func (s scaler523x3) Encode(value int) int {
+	return value * s.factor + 35
+}
+func fold523x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 42
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base523x5 struct {
+	seed int
+}
+
+type derived523x5 struct {
+	base523x5
+	step int
+}
+
+func (d derived523x5) Next() int {
+	return d.seed + d.step + 65
+}
+type probeErr523x6 struct {
+	code int
+}
+
+func (e probeErr523x6) Error() string {
+	return "probe failure"
+}
+
+func check523x6(value int) error {
+	if value < 0 {
+		return probeErr523x6{code: value}
+	}
+	return nil
+}
+func relay523x7(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 63
+			}
+		case <-done:
+			return
+		}
+	}
+}

@@ -1,0 +1,126 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2137x0 struct {
+	code int
+}
+
+func (e probeErr2137x0) Error() string {
+	return "probe failure"
+}
+
+func check2137x0(value int) error {
+	if value < 0 {
+		return probeErr2137x0{code: value}
+	}
+	return nil
+}
+func fold2137x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 51
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder2137x2 interface {
+	Encode(value int) int
+}
+
+type scaler2137x2 struct {
+	factor int
+}
+
+func (s scaler2137x2) Encode(value int) int {
+	return value * s.factor + 58
+}
+type base2137x3 struct {
+	seed int
+}
+
+type derived2137x3 struct {
+	base2137x3
+	step int
+}
+
+func (d derived2137x3) Next() int {
+	return d.seed + d.step + 56
+}
+func classify2137x4(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 72:
+		return value * 2
+	case 67:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder2137x5 interface {
+	Encode(value int) int
+}
+
+type scaler2137x5 struct {
+	factor int
+}
+
+func (s scaler2137x5) Encode(value int) int {
+	return value * s.factor + 79
+}
+type probeErr2137x6 struct {
+	code int
+}
+
+func (e probeErr2137x6) Error() string {
+	return "probe failure"
+}
+
+func check2137x6(value int) error {
+	if value < 0 {
+		return probeErr2137x6{code: value}
+	}
+	return nil
+}
+func fold2137x7(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 93
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder2137x8 interface {
+	Encode(value int) int
+}
+
+type scaler2137x8 struct {
+	factor int
+}
+
+func (s scaler2137x8) Encode(value int) int {
+	return value * s.factor + 100
+}
+type Encoder2137x9 interface {
+	Encode(value int) int
+}
+
+type scaler2137x9 struct {
+	factor int
+}
+
+func (s scaler2137x9) Encode(value int) int {
+	return value * s.factor + 10
+}

@@ -1,0 +1,117 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold2182x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 47
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func classify2182x1(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 54:
+		return value * 2
+	case 44:
+		return value + 2
+	default:
+		return value
+	}
+}
+func fold2182x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 61
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay2182x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 68
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder2182x4 interface {
+	Encode(value int) int
+}
+
+type scaler2182x4 struct {
+	factor int
+}
+
+func (s scaler2182x4) Encode(value int) int {
+	return value * s.factor + 75
+}
+type Store2182x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2182x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2182x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base2182x6 struct {
+	seed int
+}
+
+type derived2182x6 struct {
+	base2182x6
+	step int
+}
+
+func (d derived2182x6) Next() int {
+	return d.seed + d.step + 38
+}
+type Encoder2182x7 interface {
+	Encode(value int) int
+}
+
+type scaler2182x7 struct {
+	factor int
+}
+
+func (s scaler2182x7) Encode(value int) int {
+	return value * s.factor + 96
+}
+func relay2182x8(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 6
+			}
+		case <-done:
+			return
+		}
+	}
+}

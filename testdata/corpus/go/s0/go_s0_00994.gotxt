@@ -1,0 +1,107 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base230x0 struct {
+	seed int
+}
+
+type derived230x0 struct {
+	base230x0
+	step int
+}
+
+func (d derived230x0) Next() int {
+	return d.seed + d.step + 33
+}
+func describe230x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base230x2 struct {
+	seed int
+}
+
+type derived230x2 struct {
+	base230x2
+	step int
+}
+
+func (d derived230x2) Next() int {
+	return d.seed + d.step + 55
+}
+type probeErr230x3 struct {
+	code int
+}
+
+func (e probeErr230x3) Error() string {
+	return "probe failure"
+}
+
+func check230x3(value int) error {
+	if value < 0 {
+		return probeErr230x3{code: value}
+	}
+	return nil
+}
+func relay230x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 16
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold230x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 23
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base230x6 struct {
+	seed int
+}
+
+type derived230x6 struct {
+	base230x6
+	step int
+}
+
+func (d derived230x6) Next() int {
+	return d.seed + d.step + 38
+}
+type Encoder230x7 interface {
+	Encode(value int) int
+}
+
+type scaler230x7 struct {
+	factor int
+}
+
+func (s scaler230x7) Encode(value int) int {
+	return value * s.factor + 37
+}

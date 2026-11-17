@@ -1,0 +1,97 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay2132x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 76
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe2132x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold2132x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 90
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe2132x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder2132x4 interface {
+	Encode(value int) int
+}
+
+type scaler2132x4 struct {
+	factor int
+}
+
+func (s scaler2132x4) Encode(value int) int {
+	return value * s.factor + 7
+}
+func describe2132x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base2132x6 struct {
+	seed int
+}
+
+type derived2132x6 struct {
+	base2132x6
+	step int
+}
+
+func (d derived2132x6) Next() int {
+	return d.seed + d.step + 54
+}

@@ -1,0 +1,94 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe865x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func describe865x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold865x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 12
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder865x3 interface {
+	Encode(value int) int
+}
+
+type scaler865x3 struct {
+	factor int
+}
+
+func (s scaler865x3) Encode(value int) int {
+	return value * s.factor + 19
+}
+type probeErr865x4 struct {
+	code int
+}
+
+func (e probeErr865x4) Error() string {
+	return "probe failure"
+}
+
+func check865x4(value int) error {
+	if value < 0 {
+		return probeErr865x4{code: value}
+	}
+	return nil
+}
+type base865x5 struct {
+	seed int
+}
+
+type derived865x5 struct {
+	base865x5
+	step int
+}
+
+func (d derived865x5) Next() int {
+	return d.seed + d.step + 19
+}
+func fold865x6(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 40
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

@@ -1,0 +1,102 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay2181x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 34
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr2181x1 struct {
+	code int
+}
+
+func (e probeErr2181x1) Error() string {
+	return "probe failure"
+}
+
+func check2181x1(value int) error {
+	if value < 0 {
+		return probeErr2181x1{code: value}
+	}
+	return nil
+}
+func fold2181x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 48
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store2181x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2181x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2181x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Store2181x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2181x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2181x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type base2181x5 struct {
+	seed int
+}
+
+type derived2181x5 struct {
+	base2181x5
+	step int
+}
+
+func (d derived2181x5) Next() int {
+	return d.seed + d.step + 20
+}
+func describe2181x6(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

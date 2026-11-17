@@ -1,0 +1,85 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+int gcd860_0(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale860_0(int value) {
+    return gcd860_0(value, 51) * 30;
+}
+int scan860_1(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 37;
+}
+int gcd860_2(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale860_2(int value) {
+    return gcd860_2(value, 12) * 44;
+}
+enum Kind860_3 { KIND_EMPTY860_3 = 0, KIND_FULL860_3 = 51 };
+
+union Cell860_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind860_3(union Cell860_3 *cell) {
+    cell->number = 23;
+    return cell->number > 0 ? KIND_FULL860_3 : KIND_EMPTY860_3;
+}
+int gcd860_4(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale860_4(int value) {
+    return gcd860_4(value, 34) * 58;
+}
+int scan860_5(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 65;
+}

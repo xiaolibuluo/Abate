@@ -1,0 +1,36 @@
+
+def anchor_probe()
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def traced7_0(value: int) -> int:
+    return value + 96
+
+
+def decorate7_0(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate7_0
+def doubled7_0(value: int) -> int:
+    return value + value
+def guarded7_1(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def project7_2(values):
+    select = lambda item: item + 13
+    return [select(item) for item in values if item != 0]

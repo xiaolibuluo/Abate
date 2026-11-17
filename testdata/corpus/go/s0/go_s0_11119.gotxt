@@ -1,0 +1,104 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify2612x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 11:
+		return value * 2
+	case 54:
+		return value + 2
+	default:
+		return value
+	}
+}
+func fold2612x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 18
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func classify2612x2(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 25:
+		return value * 2
+	case 15:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder2612x3 interface {
+	Encode(value int) int
+}
+
+type scaler2612x3 struct {
+	factor int
+}
+
+func (s scaler2612x3) Encode(value int) int {
+	return value * s.factor + 32
+}
+func fold2612x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 39
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold2612x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 46
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr2612x6 struct {
+	code int
+}
+
+func (e probeErr2612x6) Error() string {
+	return "probe failure"
+}
+
+func check2612x6(value int) error {
+	if value < 0 {
+		return probeErr2612x6{code: value}
+	}
+	return nil
+}
+func describe2612x7(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

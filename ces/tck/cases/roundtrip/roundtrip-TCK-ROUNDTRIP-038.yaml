@@ -1,0 +1,42 @@
+id: TCK-ROUNDTRIP-038
+spec: "03-ces-spec.md §3 (YAML/JSON round-trip lossless)"
+kind: roundtrip
+input: |
+  apiVersion: ces.tencent.com/v1
+  kind: Experiment
+  metadata:
+      name: tck-roundtrip-37
+  spec:
+      target:
+          kind: simulator
+          selector:
+              node: n1
+      steadyState:
+          - probeRef: p1
+            expectation:
+              type: value
+              value: v2
+            tolerance:
+              type: absolute
+              value: 1
+            holdFor: 2s
+      method:
+          expression: ε
+      probes:
+          - id: p1
+            kind: http
+            spec:
+              url: sim://health
+              method: GET
+              expectStatus: 200
+            interval: 1s
+      rollback:
+          strategy: auto
+          verifySteadyState: false
+      schedule:
+          cron:
+              expression: '*/5 * * * *'
+              timezone: UTC
+expect:
+  accept: true
+  ruleIds: []

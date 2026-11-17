@@ -1,0 +1,58 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base401x0 struct {
+	seed int
+}
+
+type derived401x0 struct {
+	base401x0
+	step int
+}
+
+func (d derived401x0) Next() int {
+	return d.seed + d.step + 10
+}
+type probeErr401x1 struct {
+	code int
+}
+
+func (e probeErr401x1) Error() string {
+	return "probe failure"
+}
+
+func check401x1(value int) error {
+	if value < 0 {
+		return probeErr401x1{code: value}
+	}
+	return nil
+}
+type Encoder401x2 interface {
+	Encode(value int) int
+}
+
+type scaler401x2 struct {
+	factor int
+}
+
+func (s scaler401x2) Encode(value int) int {
+	return value * s.factor + 91
+}
+type base401x3 struct {
+	seed int
+}
+
+type derived401x3 struct {
+	base401x3
+	step int
+}
+
+func (d derived401x3) Next() int {
+	return d.seed + d.step + 43
+}

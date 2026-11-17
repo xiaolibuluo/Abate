@@ -1,0 +1,34 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr3x0 struct {
+	code int
+}
+
+func (e probeErr3x0) Error() string {
+	return "probe failure"
+}
+
+func check3x0(value int) error {
+	if value < 0 {
+		return probeErr3x0{code: value}
+	}
+	return nil
+}
+type Encoder3x1 interface {
+	Encode(value int) int
+}
+
+type scaler3x1 struct {
+	factor int
+}
+
+func (s scaler3x1) Encode(value int) int {
+	return value * s.factor + 51
+}

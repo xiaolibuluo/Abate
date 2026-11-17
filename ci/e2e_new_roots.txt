@@ -1,0 +1,12 @@
+cmd/corpusctl
+cmd/corpusgen
+cmd/e2e
+cmd/neutralitycheck
+internal/corpus
+internal/corpusgen
+internal/determinism
+lang/frontkit/opbind.go
+lang/gofront/astnil.go
+lang/gofront/gofront_fidelity_test.go
+lang/gofront/gofront_panic_regression_test.go
+internal/e2e

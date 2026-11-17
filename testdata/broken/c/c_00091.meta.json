@@ -1,0 +1,6 @@
+{
+  "language": "c",
+  "kind": "unclosed-delimiter",
+  "expectedDiagnostic": "ParseError",
+  "sourceRelPath": "c/s0/c_s0_00137.c"
+}

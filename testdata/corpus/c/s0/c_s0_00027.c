@@ -1,0 +1,45 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+int scan16_0(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 19;
+}
+#if defined(__STDC_VERSION__)
+int variant16_1(int value, ...) {
+    return value + 26;
+}
+#else
+int variant16_1(int value) {
+    return value + 26;
+}
+#endif
+enum Kind16_2 { KIND_EMPTY16_2 = 0, KIND_FULL16_2 = 33 };
+
+union Cell16_2 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind16_2(union Cell16_2 *cell) {
+    cell->number = 21;
+    return cell->number > 0 ? KIND_FULL16_2 : KIND_EMPTY16_2;
+}

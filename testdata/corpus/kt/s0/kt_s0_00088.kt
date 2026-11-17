@@ -1,0 +1,48 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome720 {
+    data class Success(val payload: String) : Outcome720()
+    data object Failure : Outcome720()
+}
+
+fun describe720(outcome: Outcome720): String = when (outcome) {
+    is Outcome720.Success -> outcome.payload
+    Outcome720.Failure -> "failed"
+}
+data class Pair721<A, B>(val first: A, val second: B)
+
+fun combine721(left: Int, right: Int): Pair721<Int, Int> {
+    return Pair721(left + 75, right + 36)
+}
+data class Pair722<A, B>(val first: A, val second: B)
+
+fun combine722(left: Int, right: Int): Pair722<Int, Int> {
+    return Pair722(left + 82, right + 47)
+}
+data class Pair723<A, B>(val first: A, val second: B)
+
+fun combine723(left: Int, right: Int): Pair723<Int, Int> {
+    return Pair723(left + 89, right + 58)
+}
+@JvmName("step724")
+fun step724(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 96
+}
+data class Pair725<A, B>(val first: A, val second: B)
+
+fun combine725(left: Int, right: Int): Pair725<Int, Int> {
+    return Pair725(left + 6, right + 19)
+}

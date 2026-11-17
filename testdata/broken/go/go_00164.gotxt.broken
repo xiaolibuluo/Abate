@@ -1,0 +1,59 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe164x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func relay164x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 10
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder164x2 interface {
+	Encode(value int) int
+}
+
+type scaler164x2 struct {
+	factor int
+}
+
+func (s scaler164x2) Encode(value int) int {
+	return value * s.factor + 17
+}
+type base164x3 struct {
+	seed int
+}
+
+type derived164x3 struct {
+	base164x3
+	step int
+}
+
+func (d derived164x3) Next() int {
+	return d.seed + d.step + 31
+

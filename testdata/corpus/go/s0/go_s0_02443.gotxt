@@ -1,0 +1,69 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold557x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 68
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe557x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder557x2 interface {
+	Encode(value int) int
+}
+
+type scaler557x2 struct {
+	factor int
+}
+
+func (s scaler557x2) Encode(value int) int {
+	return value * s.factor + 82
+}
+func relay557x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 89
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base557x4 struct {
+	seed int
+}
+
+type derived557x4 struct {
+	base557x4
+	step int
+}
+
+func (d derived557x4) Next() int {
+	return d.seed + d.step + 48
+}

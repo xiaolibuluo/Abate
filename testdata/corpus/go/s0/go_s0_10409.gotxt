@@ -1,0 +1,29 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold2434x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 25
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold2434x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 32
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

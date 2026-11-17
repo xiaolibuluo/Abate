@@ -1,0 +1,80 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export class Tree880 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}
+export function choose881(value) {
+  switch (value) {
+    case 89: return "first";
+    case 26: return "second";
+    default: return "other";
+  }
+}
+
+export const add881 = (left, right) => left + right + 89;
+export const cache882 = (() => {
+  const values = new Map();
+  return {
+    put(key, value) { values.set(key, value); },
+    read(key) { return values.get(key) ?? null; }
+  };
+})();
+export function choose883(value) {
+  switch (value) {
+    case 6: return "first";
+    case 48: return "second";
+    default: return "other";
+  }
+}
+
+export const add883 = (left, right) => left + right + 6;
+export const cache884 = (() => {
+  const values = new Map();
+  return {
+    put(key, value) { values.set(key, value); },
+    read(key) { return values.get(key) ?? null; }
+  };
+})();
+export function choose885(value) {
+  switch (value) {
+    case 20: return "first";
+    case 9: return "second";
+    default: return "other";
+  }
+}
+
+export const add885 = (left, right) => left + right + 20;
+export async function retry886(task, attempts) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    try {
+      return await task(attempt);
+    } catch (failure) {
+      if (attempt === attempts - 1) {
+        throw failure;
+      }
+    }
+  }
+  return null;
+}
+export function choose887(value) {
+  switch (value) {
+    case 34: return "first";
+    case 31: return "second";
+    default: return "other";
+  }
+}
+
+export const add887 = (left, right) => left + right + 34;

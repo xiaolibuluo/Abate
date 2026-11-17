@@ -1,0 +1,33 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+@JvmName("step600")
+fun step600(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 9
+}
+sealed class Outcome601 {
+    data class Success(val payload: String) : Outcome601()
+    data object Failure : Outcome601()
+}
+
+fun describe601(outcome: Outcome601): String = when (outcome) {
+    is Outcome601.Success -> outcome.payload
+    Outcome601.Failure -> "failed"
+}
+data class Pair602<A, B>(val first: A, val second: B)
+
+fun combine602(left: Int, right: Int): Pair602<Int, Int> {
+    return Pair602(left + 23, right + 24)
+}

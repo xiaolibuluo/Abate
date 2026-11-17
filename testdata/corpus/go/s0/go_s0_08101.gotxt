@@ -1,0 +1,111 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func classify1893x0(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 73:
+		return value * 2
+	case 23:
+		return value + 2
+	default:
+		return value
+	}
+}
+type probeErr1893x1 struct {
+	code int
+}
+
+func (e probeErr1893x1) Error() string {
+	return "probe failure"
+}
+
+func check1893x1(value int) error {
+	if value < 0 {
+		return probeErr1893x1{code: value}
+	}
+	return nil
+}
+func relay1893x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 87
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe1893x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold1893x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 101
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func classify1893x5(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 11:
+		return value * 2
+	case 17:
+		return value + 2
+	default:
+		return value
+	}
+}
+type Encoder1893x6 interface {
+	Encode(value int) int
+}
+
+type scaler1893x6 struct {
+	factor int
+}
+
+func (s scaler1893x6) Encode(value int) int {
+	return value * s.factor + 18
+}
+func describe1893x7(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

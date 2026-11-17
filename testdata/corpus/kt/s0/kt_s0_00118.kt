@@ -1,0 +1,85 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+fun <T, R> List<T>.mapChecked950(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+class Counter951 {
+    var current: Int by Delegates.observable(83) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+class Counter952 {
+    var current: Int by Delegates.observable(90) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+object Registry953 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG953 = "registry-97"
+    }
+}
+sealed class Outcome954 {
+    data class Success(val payload: String) : Outcome954()
+    data object Failure : Outcome954()
+}
+
+fun describe954(outcome: Outcome954): String = when (outcome) {
+    is Outcome954.Success -> outcome.payload
+    Outcome954.Failure -> "failed"
+}
+object Registry955 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG955 = "registry-14"
+    }
+}
+data class Pair956<A, B>(val first: A, val second: B)
+
+fun combine956(left: Int, right: Int): Pair956<Int, Int> {
+    return Pair956(left + 21, right + 69)
+}
+fun <T, R> List<T>.mapChecked957(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}

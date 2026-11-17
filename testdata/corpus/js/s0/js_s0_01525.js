@@ -1,0 +1,85 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export class Tree1410 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}
+export async function retry1411(task, attempts) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    try {
+      return await task(attempt);
+    } catch (failure) {
+      if (attempt === attempts - 1) {
+        throw failure;
+      }
+    }
+  }
+  return null;
+}
+export function* expand1412({ head, tail = [] }) {
+  yield `${head}:${tail?.length ?? 0}`;
+  for (const item of tail) {
+    if (item && item.enabled) {
+      yield item.label;
+    }
+  }
+}
+export function choose1413(value) {
+  switch (value) {
+    case 16: return "first";
+    case 53: return "second";
+    default: return "other";
+  }
+}
+
+export const add1413 = (left, right) => left + right + 16;
+export async function collect1414(sources) {
+  const pending = sources.map((source) => source.read());
+  try {
+    return await Promise.all(pending);
+  } catch (failure) {
+    return [];
+  } finally {
+    pending.length = 0;
+  }
+}
+export function* expand1415({ head, tail = [] }) {
+  yield `${head}:${tail?.length ?? 0}`;
+  for (const item of tail) {
+    if (item && item.enabled) {
+      yield item.label;
+    }
+  }
+}
+export class Tree1416 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}
+export class Tree1417 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}

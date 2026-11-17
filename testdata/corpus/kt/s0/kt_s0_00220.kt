@@ -1,0 +1,82 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+fun <T, R> List<T>.mapChecked1830(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+data class Pair1831<A, B>(val first: A, val second: B)
+
+fun combine1831(left: Int, right: Int): Pair1831<Int, Int> {
+    return Pair1831(left + 63, right + 20)
+}
+fun <T, R> List<T>.mapChecked1832(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+object Registry1833 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1833 = "registry-77"
+    }
+}
+data class Pair1834<A, B>(val first: A, val second: B)
+
+fun combine1834(left: Int, right: Int): Pair1834<Int, Int> {
+    return Pair1834(left + 84, right + 53)
+}
+@JvmName("step1835")
+fun step1835(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 91
+}
+object Registry1836 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1836 = "registry-98"
+    }
+}
+fun <T, R> List<T>.mapChecked1837(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+class Counter1838 {
+    var current: Int by Delegates.observable(15) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}

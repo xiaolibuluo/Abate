@@ -1,0 +1,91 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def traced96_0(value: int) -> int:
+    return value + 89
+
+
+def decorate96_0(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate96_0
+def doubled96_0(value: int) -> int:
+    return value + value
+def pair96_1(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 96}
+def traced96_2(value: int) -> int:
+    return value + 6
+
+
+def decorate96_2(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate96_2
+def doubled96_2(value: int) -> int:
+    return value + value
+def project96_3(values):
+    select = lambda item: item + 13
+    return [select(item) for item in values if item != 0]
+def project96_4(values):
+    select = lambda item: item + 20
+    return [select(item) for item in values if item != 0]
+def pair96_5(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 27}
+async def fetch96_6(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def project96_7(values):
+    select = lambda item: item + 41
+    return [select(item) for item in values if item != 0]
+async def fetch96_8(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def project96_9(values):
+    select = lambda item: item + 55
+    return [select(item) for item in values if item != 0]
+def project96_10(values):
+    select = lambda item: item + 62
+    return [select(item) for item in values if item != 0]
+def guarded96_11(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()

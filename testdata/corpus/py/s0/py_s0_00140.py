@@ -1,0 +1,49 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def expand65_0(values):
+    for item in values:
+        if item > 74:
+            yield item * 37
+
+
+def collect65_0(values):
+    return list(expand65_0(values))
+def summarize65_1(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 81:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def expand65_2(values):
+    for item in values:
+        if item > 88:
+            yield item * 59
+
+
+def collect65_2(values):
+    return list(expand65_2(values))
+def traced65_3(value: int) -> int:
+    return value + 95
+
+
+def decorate65_3(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate65_3
+def doubled65_3(value: int) -> int:
+    return value + value

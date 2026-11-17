@@ -1,0 +1,103 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+int gcd45_0(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale45_0(int value) {
+    return gcd45_0(value, 19) * 8;
+}
+enum Kind45_1 { KIND_EMPTY45_1 = 0, KIND_FULL45_1 = 15 };
+
+union Cell45_1 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind45_1(union Cell45_1 *cell) {
+    cell->number = 30;
+    return cell->number > 0 ? KIND_FULL45_1 : KIND_EMPTY45_1;
+}
+#define MASK45_2(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify45_2(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK45_2(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}
+struct Node45_3 {
+    int value;
+    struct Node45_3 *next;
+};
+
+int length45_3(const struct Node45_3 *head) {
+    int count = 0;
+    const struct Node45_3 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 29;
+}
+typedef int (*predicate45_4)(int value);
+
+typedef struct Slot45_4 {
+    int slots[16];
+    predicate45_4 accept;
+} Slot45_4;
+
+int slot_accept45_4(Slot45_4 *store, int value) {
+    return store->accept(value) + 36;
+}
+struct Node45_5 {
+    int value;
+    struct Node45_5 *next;
+};
+
+int length45_5(const struct Node45_5 *head) {
+    int count = 0;
+    const struct Node45_5 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 43;
+}
+#if defined(__STDC_VERSION__)
+int variant45_6(int value, ...) {
+    return value + 50;
+}
+#else
+int variant45_6(int value) {
+    return value + 50;
+}
+#endif
+enum Kind45_7 { KIND_EMPTY45_7 = 0, KIND_FULL45_7 = 57 };
+
+union Cell45_7 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind45_7(union Cell45_7 *cell) {
+    cell->number = 35;
+    return cell->number > 0 ? KIND_FULL45_7 : KIND_EMPTY45_7;
+

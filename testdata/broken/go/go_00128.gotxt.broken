@@ -1,0 +1,91 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store128x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store128x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store128x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder128x1 interface {
+	Encode(value int) int
+}
+
+type scaler128x1 struct {
+	factor int
+}
+
+func (s scaler128x1) Encode(value int) int {
+	return value * s.factor + 27
+}
+func fold128x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 34
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay128x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 41
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder128x4 interface {
+	Encode(value int) int
+}
+
+type scaler128x4 struct {
+	factor int
+}
+
+func (s scaler128x4) Encode(value int) int {
+	return value * s.factor + 48
+}
+type Encoder128x5 interface {
+	Encode(value int) int
+}
+
+type scaler128x5 struct {
+	factor int
+}
+
+func (s scaler128x5) Encode(value int) int {
+	return value * s.factor + 55
+}
+type Encoder128x6 interface {
+	Encode(value int) int
+}
+
+type scaler128x6 struct {
+	factor int
+}
+
+func (s scaler128x6) Encode(value int) int {
+	return value * s.factor + 62
+

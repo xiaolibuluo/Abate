@@ -1,0 +1,14 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3
+}
+
+fun step0x0(): Int = 5 + 0
+fun step0x1(): Int = 12 + 1
+fun step0x2(): Int = 19 + 2
+fun step0x3(): Int = 26 + 3
+fun step0x4(): Int = 33 + 4
+fun step0x5(): Int = 40 + 5

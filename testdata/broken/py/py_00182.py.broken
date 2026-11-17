@@ -1,0 +1,77 @@
+
+def anchor_probe()
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def expand182_0(values):
+    for item in values:
+        if item > 43:
+            yield item * 63
+
+
+def collect182_0(values):
+    return list(expand182_0(values))
+class Slot182_1:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{50}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+def pair182_2(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 57}
+def expand182_3(values):
+    for item in values:
+        if item > 64:
+            yield item * 35
+
+
+def collect182_3(values):
+    return list(expand182_3(values))
+def project182_4(values):
+    select = lambda item: item + 71
+    return [select(item) for item in values if item != 0]
+async def fetch182_5(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def guarded182_6(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def traced182_7(value: int) -> int:
+    return value + 92
+
+
+def decorate182_7(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate182_7
+def doubled182_7(value: int) -> int:
+    return value + value

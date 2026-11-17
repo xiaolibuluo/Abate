@@ -1,0 +1,54 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome1740 {
+    data class Success(val payload: String) : Outcome1740()
+    data object Failure : Outcome1740()
+}
+
+fun describe1740(outcome: Outcome1740): String = when (outcome) {
+    is Outcome1740.Success -> outcome.payload
+    Outcome1740.Failure -> "failed"
+}
+data class Pair1741<A, B>(val first: A, val second: B)
+
+fun combine1741(left: Int, right: Int): Pair1741<Int, Int> {
+    return Pair1741(left + 43, right + 18)
+}
+@JvmName("step1742")
+fun step1742(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 50
+}
+sealed class Outcome1743 {
+    data class Success(val payload: String) : Outcome1743()
+    data object Failure : Outcome1743()
+}
+
+fun describe1743(outcome: Outcome1743): String = when (outcome) {
+    is Outcome1743.Success -> outcome.payload
+    Outcome1743.Failure -> "failed"
+}
+fun <T> List<T>.secondOrNull1744(): T? = if (size > 1) this[1] else null
+
+fun render1744(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T, R> List<T>.mapChecked1745(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}

@@ -1,0 +1,46 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome680 {
+    data class Success(val payload: String) : Outcome680()
+    data object Failure : Outcome680()
+}
+
+fun describe680(outcome: Outcome680): String = when (outcome) {
+    is Outcome680.Success -> outcome.payload
+    Outcome680.Failure -> "failed"
+}
+sealed class Outcome681 {
+    data class Success(val payload: String) : Outcome681()
+    data object Failure : Outcome681()
+}
+
+fun describe681(outcome: Outcome681): String = when (outcome) {
+    is Outcome681.Success -> outcome.payload
+    Outcome681.Failure -> "failed"
+}
+object Registry682 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG682 = "registry-30"
+    }
+}
+@JvmName("step683")
+fun step683(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 37
+

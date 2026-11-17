@@ -1,0 +1,115 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1597x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 8
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay1597x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 15
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1597x2 struct {
+	seed int
+}
+
+type derived1597x2 struct {
+	base1597x2
+	step int
+}
+
+func (d derived1597x2) Next() int {
+	return d.seed + d.step + 47
+}
+func fold1597x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 29
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder1597x4 interface {
+	Encode(value int) int
+}
+
+type scaler1597x4 struct {
+	factor int
+}
+
+func (s scaler1597x4) Encode(value int) int {
+	return value * s.factor + 36
+}
+type probeErr1597x5 struct {
+	code int
+}
+
+func (e probeErr1597x5) Error() string {
+	return "probe failure"
+}
+
+func check1597x5(value int) error {
+	if value < 0 {
+		return probeErr1597x5{code: value}
+	}
+	return nil
+}
+func relay1597x6(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 50
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1597x7 struct {
+	seed int
+}
+
+type derived1597x7 struct {
+	base1597x7
+	step int
+}
+
+func (d derived1597x7) Next() int {
+	return d.seed + d.step + 41
+}
+type Encoder1597x8 interface {
+	Encode(value int) int
+}
+
+type scaler1597x8 struct {
+	factor int
+}
+
+func (s scaler1597x8) Encode(value int) int {
+	return value * s.factor + 64
+}

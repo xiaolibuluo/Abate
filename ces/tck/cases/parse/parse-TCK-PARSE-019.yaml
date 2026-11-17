@@ -1,0 +1,11 @@
+id: TCK-PARSE-019
+spec: "03-ces-spec.md §3 (malformed document)"
+kind: parse
+input: |
+  apiVersion: ces.tencent.com/v1
+   kind: Experiment
+    bad indent
+expect:
+  accept: false
+  ruleIds:
+    - CES-PARSE-005

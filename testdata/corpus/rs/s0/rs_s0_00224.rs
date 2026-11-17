@@ -1,0 +1,63 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn classify770<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 36 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub fn parse771(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 43)
+}
+pub trait Encode772 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet772<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode772 for Packet772<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub fn parse773(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 57)
+}
+pub trait Encode774 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet774<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode774 for Packet774<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub trait Encode775 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet775<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode775 for Packet775<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}

@@ -1,0 +1,104 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store1940x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1940x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1940x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func describe1940x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func relay1940x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 19
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1940x3 interface {
+	Encode(value int) int
+}
+
+type scaler1940x3 struct {
+	factor int
+}
+
+func (s scaler1940x3) Encode(value int) int {
+	return value * s.factor + 26
+}
+type probeErr1940x4 struct {
+	code int
+}
+
+func (e probeErr1940x4) Error() string {
+	return "probe failure"
+}
+
+func check1940x4(value int) error {
+	if value < 0 {
+		return probeErr1940x4{code: value}
+	}
+	return nil
+}
+func describe1940x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr1940x6 struct {
+	code int
+}
+
+func (e probeErr1940x6) Error() string {
+	return "probe failure"
+}
+
+func check1940x6(value int) error {
+	if value < 0 {
+		return probeErr1940x6{code: value}
+	}
+	return nil
+}

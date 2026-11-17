@@ -1,0 +1,81 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind174_0 { KIND_EMPTY174_0 = 0, KIND_FULL174_0 = 36 };
+
+union Cell174_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind174_0(union Cell174_0 *cell) {
+    cell->number = 68;
+    return cell->number > 0 ? KIND_FULL174_0 : KIND_EMPTY174_0;
+}
+#if defined(__STDC_VERSION__)
+int variant174_1(int value, ...) {
+    return value + 43;
+}
+#else
+int variant174_1(int value) {
+    return value + 43;
+}
+#endif
+struct Node174_2 {
+    int value;
+    struct Node174_2 *next;
+};
+
+int length174_2(const struct Node174_2 *head) {
+    int count = 0;
+    const struct Node174_2 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 50;
+}
+int gcd174_3(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale174_3(int value) {
+    return gcd174_3(value, 40) * 57;
+}
+#if defined(__STDC_VERSION__)
+int variant174_4(int value, ...) {
+    return value + 64;
+}
+#else
+int variant174_4(int value) {
+    return value + 64;
+}
+#endif
+struct Node174_5 {
+    int value;
+    struct Node174_5 *next;
+};
+
+int length174_5(const struct Node174_5 *head) {
+    int count = 0;
+    const struct Node174_5 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 71;
+}

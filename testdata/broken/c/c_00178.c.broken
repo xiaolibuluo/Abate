@@ -1,0 +1,74 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind178_0 { KIND_EMPTY178_0 = 0, KIND_FULL178_0 = 88 };
+
+union Cell178_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind178_0(union Cell178_0 *cell) {
+    cell->number = 35;
+    return cell->number > 0 ? KIND_FULL178_0 : KIND_EMPTY178_0;
+}
+struct Node178_1 {
+    int value;
+    struct Node178_1 *next;
+};
+
+int length178_1(const struct Node178_1 *head) {
+    int count = 0;
+    const struct Node178_1 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 95;
+}
+enum Kind178_2 { KIND_EMPTY178_2 = 0, KIND_FULL178_2 = 5 };
+
+union Cell178_2 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind178_2(union Cell178_2 *cell) {
+    cell->number = 57;
+    return cell->number > 0 ? KIND_FULL178_2 : KIND_EMPTY178_2;
+}
+int gcd178_3(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale178_3(int value) {
+    return gcd178_3(value, 68) * 12;
+}
+int scan178_4(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 19;
+

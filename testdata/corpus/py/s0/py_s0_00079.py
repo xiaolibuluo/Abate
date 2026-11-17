@@ -1,0 +1,88 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def pair38_0(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 14}
+async def fetch38_1(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def expand38_2(values):
+    for item in values:
+        if item > 28:
+            yield item * 53
+
+
+def collect38_2(values):
+    return list(expand38_2(values))
+def guarded38_3(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+def traced38_4(value: int) -> int:
+    return value + 42
+
+
+def decorate38_4(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate38_4
+def doubled38_4(value: int) -> int:
+    return value + value
+def expand38_5(values):
+    for item in values:
+        if item > 49:
+            yield item * 25
+
+
+def collect38_5(values):
+    return list(expand38_5(values))
+def expand38_6(values):
+    for item in values:
+        if item > 56:
+            yield item * 36
+
+
+def collect38_6(values):
+    return list(expand38_6(values))
+def traced38_7(value: int) -> int:
+    return value + 63
+
+
+def decorate38_7(fn):
+    def wrapper(value):
+        return fn(value)
+    return wrapper
+
+
+@decorate38_7
+def doubled38_7(value: int) -> int:
+    return value + value
+def project38_8(values):
+    select = lambda item: item + 70
+    return [select(item) for item in values if item != 0]

@@ -1,0 +1,34 @@
+# Abate 自研变异语义冻结 golden（历史观测值，非上游官方产物）
+# 由 kernel/mutation/pitparity/gen_golden.go 用本仓引擎与同构夹具生成，可复跑。
+total=28
+comparable=21
+consistent=21
+rate=100.00%
+outcome	1	accepts	49	ConditionalsBoundaryMutator	KILLED	b-bound	boundary-value	KILLED	detected	comparable	true
+outcome	2	accepts	49	RemoveConditionalMutator_ORDER_ELSE	KILLED			N/A	detected	excluded	false
+outcome	3	accepts	49	BooleanTrueReturnValsMutator	KILLED	e-return	return-value	KILLED	detected	comparable	true
+outcome	4	add	15	MathMutator	KILLED	a-arith	arith-replace	KILLED	detected	comparable	true
+outcome	5	add	15	PrimitiveReturnsMutator	KILLED	c-const	constant-perturb	KILLED	detected	comparable	true
+outcome	6	audited	63	ConditionalsBoundaryMutator	KILLED	b-bound	boundary-value	KILLED	detected	comparable	true
+outcome	7	audited	63	RemoveConditionalMutator_ORDER_ELSE	KILLED			N/A	detected	excluded	false
+outcome	8	audited	64	VoidMethodCallMutator	KILLED	g-call	remove-call	KILLED	detected	comparable	true
+outcome	9	cap	29	ConditionalsBoundaryMutator	SURVIVED	h-equivalent	boundary-value	EQUIVALENT	equivalent	comparable	true
+outcome	10	cap	29	RemoveConditionalMutator_ORDER_ELSE	KILLED			N/A	detected	excluded	false
+outcome	11	cap	30	PrimitiveReturnsMutator	KILLED	c-const	constant-perturb	KILLED	detected	comparable	true
+outcome	12	cap	32	PrimitiveReturnsMutator	KILLED	c-const	constant-perturb	KILLED	detected	comparable	true
+outcome	13	clamp	20	ConditionalsBoundaryMutator	SURVIVED	h-equivalent	boundary-value	EQUIVALENT	equivalent	comparable	true
+outcome	14	clamp	20	RemoveConditionalMutator_ORDER_ELSE	KILLED			N/A	detected	excluded	false
+outcome	15	clamp	21	PrimitiveReturnsMutator	KILLED	c-const	constant-perturb	KILLED	detected	comparable	true
+outcome	16	clamp	23	PrimitiveReturnsMutator	KILLED	c-const	constant-perturb	KILLED	detected	comparable	true
+outcome	17	label	54	RemoveConditionalMutator_EQUAL_ELSE	KILLED	f-negate	negate-condition	KILLED	detected	comparable	true
+outcome	18	label	55	EmptyObjectReturnValsMutator	KILLED			N/A	detected	excluded	false
+outcome	19	label	57	EmptyObjectReturnValsMutator	KILLED			N/A	detected	excluded	false
+outcome	20	log	74	MathMutator	KILLED	a-arith	arith-replace	KILLED	detected	comparable	true
+outcome	21	logCalls	79	PrimitiveReturnsMutator	KILLED	c-const	constant-perturb	KILLED	detected	comparable	true
+outcome	22	sumUntil	38	ConditionalsBoundaryMutator	SURVIVED	h-equivalent	boundary-value	EQUIVALENT	equivalent	comparable	true
+outcome	23	sumUntil	42	MathMutator	KILLED	a-arith	arith-replace	KILLED	detected	comparable	true
+outcome	24	sumUntil	39	RemoveConditionalMutator_EQUAL_ELSE	KILLED	d-control	control-flow	KILLED	detected	comparable	true
+outcome	25	sumUntil	38	RemoveConditionalMutator_ORDER_ELSE	KILLED			N/A	detected	excluded	false
+outcome	26	sumUntil	44	PrimitiveReturnsMutator	KILLED	c-const	constant-perturb	KILLED	detected	comparable	true
+outcome	27	uncovered	70	MathMutator	NO_COVERAGE	j-survived	arith-replace	SURVIVED	uncovered	comparable	true
+outcome	28	uncovered	70	PrimitiveReturnsMutator	NO_COVERAGE	j-survived	constant-perturb	SURVIVED	uncovered	comparable	true

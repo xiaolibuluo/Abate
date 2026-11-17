@@ -1,0 +1,92 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1835x0 struct {
+	seed int
+}
+
+type derived1835x0 struct {
+	base1835x0
+	step int
+}
+
+func (d derived1835x0) Next() int {
+	return d.seed + d.step + 44
+}
+func fold1835x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 5
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder1835x2 interface {
+	Encode(value int) int
+}
+
+type scaler1835x2 struct {
+	factor int
+}
+
+func (s scaler1835x2) Encode(value int) int {
+	return value * s.factor + 12
+}
+type Encoder1835x3 interface {
+	Encode(value int) int
+}
+
+type scaler1835x3 struct {
+	factor int
+}
+
+func (s scaler1835x3) Encode(value int) int {
+	return value * s.factor + 19
+}
+func relay1835x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 26
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1835x5 interface {
+	Encode(value int) int
+}
+
+type scaler1835x5 struct {
+	factor int
+}
+
+func (s scaler1835x5) Encode(value int) int {
+	return value * s.factor + 33
+}
+type Store1835x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1835x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1835x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

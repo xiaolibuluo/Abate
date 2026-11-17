@@ -1,0 +1,93 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func describe520x0(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base520x1 struct {
+	seed int
+}
+
+type derived520x1 struct {
+	base520x1
+	step int
+}
+
+func (d derived520x1) Next() int {
+	return d.seed + d.step + 61
+}
+func describe520x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold520x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 93
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder520x4 interface {
+	Encode(value int) int
+}
+
+type scaler520x4 struct {
+	factor int
+}
+
+func (s scaler520x4) Encode(value int) int {
+	return value * s.factor + 100
+}
+func fold520x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 10
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay520x6(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 17
+			}
+		case <-done:
+			return
+		}
+	}
+}

@@ -1,0 +1,33 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+typedef int (*predicate10_0)(int value);
+
+typedef struct Slot10_0 {
+    int slots[16];
+    predicate10_0 accept;
+} Slot10_0;
+
+int slot_accept10_0(Slot10_0 *store, int value) {
+    return store->accept(value) + 38;
+}
+enum Kind10_1 { KIND_EMPTY10_1 = 0, KIND_FULL10_1 = 45 };
+
+union Cell10_1 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind10_1(union Cell10_1 *cell) {
+    cell->number = 29;
+    return cell->number > 0 ? KIND_FULL10_1 : KIND_EMPTY10_1;
+}

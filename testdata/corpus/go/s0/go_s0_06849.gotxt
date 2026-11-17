@@ -1,0 +1,70 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1575x0 interface {
+	Encode(value int) int
+}
+
+type scaler1575x0 struct {
+	factor int
+}
+
+func (s scaler1575x0) Encode(value int) int {
+	return value * s.factor + 13
+}
+type probeErr1575x1 struct {
+	code int
+}
+
+func (e probeErr1575x1) Error() string {
+	return "probe failure"
+}
+
+func check1575x1(value int) error {
+	if value < 0 {
+		return probeErr1575x1{code: value}
+	}
+	return nil
+}
+type Encoder1575x2 interface {
+	Encode(value int) int
+}
+
+type scaler1575x2 struct {
+	factor int
+}
+
+func (s scaler1575x2) Encode(value int) int {
+	return value * s.factor + 27
+}
+type Encoder1575x3 interface {
+	Encode(value int) int
+}
+
+type scaler1575x3 struct {
+	factor int
+}
+
+func (s scaler1575x3) Encode(value int) int {
+	return value * s.factor + 34
+}
+type probeErr1575x4 struct {
+	code int
+}
+
+func (e probeErr1575x4) Error() string {
+	return "probe failure"
+}
+
+func check1575x4(value int) error {
+	if value < 0 {
+		return probeErr1575x4{code: value}
+	}
+	return nil
+}

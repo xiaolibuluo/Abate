@@ -1,0 +1,23 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2092x0 struct {
+	code int
+}
+
+func (e probeErr2092x0) Error() string {
+	return "probe failure"
+}
+
+func check2092x0(value int) error {
+	if value < 0 {
+		return probeErr2092x0{code: value}
+	}
+	return nil
+}

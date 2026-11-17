@@ -1,0 +1,6 @@
+{
+  "language": "py",
+  "kind": "missing-colon",
+  "expectedDiagnostic": "ParseError",
+  "sourceRelPath": "py/s0/py_s0_00268.py"
+}

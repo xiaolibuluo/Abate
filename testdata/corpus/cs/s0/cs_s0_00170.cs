@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public interface IHandler1620
+    {
+        void Handle(int value);
+    }
+
+    [Serializable]
+    public sealed record Envelope1620(string Label, int Payload);
+
+    public sealed class Handler1620 : IHandler1620
+    {
+        public void Handle(int value) { }
+    }
+    public delegate void Notifier1621(int value);
+
+    public sealed class Source1621
+    {
+        public event Notifier1621 Changed;
+        public void Raise(int value) { Changed?.Invoke(value); }
+    }
+    public static int Scale1622<T>(T value) where T : struct
+    {
+        int number = 88;
+        checked { number = number + value.GetHashCode(); }
+        unchecked { number = number + 67; }
+        return number;
+    }
+}

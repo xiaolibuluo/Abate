@@ -1,0 +1,54 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold402x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 90
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold402x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 97
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay402x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 7
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base402x3 struct {
+	seed int
+}
+
+type derived402x3 struct {
+	base402x3
+	step int
+}
+
+func (d derived402x3) Next() int {
+	return d.seed + d.step + 50
+}

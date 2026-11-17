@@ -1,0 +1,31 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+typedef int (*predicate1710_0)(int value);
+
+typedef struct Slot1710_0 {
+    int slots[16];
+    predicate1710_0 accept;
+} Slot1710_0;
+
+int slot_accept1710_0(Slot1710_0 *store, int value) {
+    return store->accept(value) + 22;
+}
+typedef int (*predicate1710_1)(int value);
+
+typedef struct Slot1710_1 {
+    int slots[16];
+    predicate1710_1 accept;
+} Slot1710_1;
+
+int slot_accept1710_1(Slot1710_1 *store, int value) {
+    return store->accept(value) + 29;
+}

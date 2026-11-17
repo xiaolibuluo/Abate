@@ -1,0 +1,117 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay922x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 60
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe922x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Store922x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store922x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store922x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr922x3 struct {
+	code int
+}
+
+func (e probeErr922x3) Error() string {
+	return "probe failure"
+}
+
+func check922x3(value int) error {
+	if value < 0 {
+		return probeErr922x3{code: value}
+	}
+	return nil
+}
+type base922x4 struct {
+	seed int
+}
+
+type derived922x4 struct {
+	base922x4
+	step int
+}
+
+func (d derived922x4) Next() int {
+	return d.seed + d.step + 41
+}
+func relay922x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 95
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr922x6 struct {
+	code int
+}
+
+func (e probeErr922x6) Error() string {
+	return "probe failure"
+}
+
+func check922x6(value int) error {
+	if value < 0 {
+		return probeErr922x6{code: value}
+	}
+	return nil
+}
+func classify922x7(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 12:
+		return value * 2
+	case 13:
+		return value + 2
+	default:
+		return value
+	}
+}

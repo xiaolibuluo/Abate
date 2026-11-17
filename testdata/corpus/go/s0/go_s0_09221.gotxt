@@ -1,0 +1,62 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold2157x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 13
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store2157x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2157x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2157x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr2157x2 struct {
+	code int
+}
+
+func (e probeErr2157x2) Error() string {
+	return "probe failure"
+}
+
+func check2157x2(value int) error {
+	if value < 0 {
+		return probeErr2157x2{code: value}
+	}
+	return nil
+}
+type probeErr2157x3 struct {
+	code int
+}
+
+func (e probeErr2157x3) Error() string {
+	return "probe failure"
+}
+
+func check2157x3(value int) error {
+	if value < 0 {
+		return probeErr2157x3{code: value}
+	}
+	return nil
+}

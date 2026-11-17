@@ -1,0 +1,63 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1769x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 13
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr1769x1 struct {
+	code int
+}
+
+func (e probeErr1769x1) Error() string {
+	return "probe failure"
+}
+
+func check1769x1(value int) error {
+	if value < 0 {
+		return probeErr1769x1{code: value}
+	}
+	return nil
+}
+type base1769x2 struct {
+	seed int
+}
+
+type derived1769x2 struct {
+	base1769x2
+	step int
+}
+
+func (d derived1769x2) Next() int {
+	return d.seed + d.step + 31
+}
+type Store1769x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1769x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1769x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

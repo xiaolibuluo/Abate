@@ -1,0 +1,111 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2467x0 struct {
+	seed int
+}
+
+type derived2467x0 struct {
+	base2467x0
+	step int
+}
+
+func (d derived2467x0) Next() int {
+	return d.seed + d.step + 15
+}
+func relay2467x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 73
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder2467x2 interface {
+	Encode(value int) int
+}
+
+type scaler2467x2 struct {
+	factor int
+}
+
+func (s scaler2467x2) Encode(value int) int {
+	return value * s.factor + 80
+}
+type base2467x3 struct {
+	seed int
+}
+
+type derived2467x3 struct {
+	base2467x3
+	step int
+}
+
+func (d derived2467x3) Next() int {
+	return d.seed + d.step + 48
+}
+func relay2467x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 94
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base2467x5 struct {
+	seed int
+}
+
+type derived2467x5 struct {
+	base2467x5
+	step int
+}
+
+func (d derived2467x5) Next() int {
+	return d.seed + d.step + 9
+}
+type probeErr2467x6 struct {
+	code int
+}
+
+func (e probeErr2467x6) Error() string {
+	return "probe failure"
+}
+
+func check2467x6(value int) error {
+	if value < 0 {
+		return probeErr2467x6{code: value}
+	}
+	return nil
+}
+type Store2467x7[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2467x7[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2467x7[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

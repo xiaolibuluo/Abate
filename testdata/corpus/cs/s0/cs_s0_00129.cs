@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public async Task<int> Aggregate1250(IEnumerable<int> source)
+    {
+        try
+        {
+            using var cursor = source.GetEnumerator();
+            return await Task.FromResult(source.Where(item => item > 0).Sum());
+        }
+        catch (InvalidOperationException)
+        {
+            return 0;
+        }
+        finally
+        {
+            Console.WriteLine("done");
+        }
+    }
+    public delegate void Notifier1251(int value);
+
+    public sealed class Source1251
+    {
+        public event Notifier1251 Changed;
+        public void Raise(int value) { Changed?.Invoke(value); }
+    }
+    public struct Point1252
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Total => X + Y + 92;
+    }
+
+    public static class Grid1252
+    {
+        public static Point1252 Make(int left, int right)
+        {
+            return new Point1252 { X = left, Y = right };
+        }
+    }
+    public delegate void Notifier1253(int value);
+
+    public sealed class Source1253
+    {
+        public event Notifier1253 Changed;
+        public void Raise(int value) { Changed?.Invoke(value); }
+    }
+}

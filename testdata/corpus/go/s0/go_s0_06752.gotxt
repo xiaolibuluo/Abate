@@ -1,0 +1,124 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1550x0 struct {
+	seed int
+}
+
+type derived1550x0 struct {
+	base1550x0
+	step int
+}
+
+func (d derived1550x0) Next() int {
+	return d.seed + d.step + 62
+}
+type base1550x1 struct {
+	seed int
+}
+
+type derived1550x1 struct {
+	base1550x1
+	step int
+}
+
+func (d derived1550x1) Next() int {
+	return d.seed + d.step + 12
+}
+func fold1550x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 90
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold1550x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 97
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1550x4 struct {
+	seed int
+}
+
+type derived1550x4 struct {
+	base1550x4
+	step int
+}
+
+func (d derived1550x4) Next() int {
+	return d.seed + d.step + 45
+}
+func fold1550x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 14
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1550x6 struct {
+	seed int
+}
+
+type derived1550x6 struct {
+	base1550x6
+	step int
+}
+
+func (d derived1550x6) Next() int {
+	return d.seed + d.step + 67
+}
+type probeErr1550x7 struct {
+	code int
+}
+
+func (e probeErr1550x7) Error() string {
+	return "probe failure"
+}
+
+func check1550x7(value int) error {
+	if value < 0 {
+		return probeErr1550x7{code: value}
+	}
+	return nil
+}
+type base1550x8 struct {
+	seed int
+}
+
+type derived1550x8 struct {
+	base1550x8
+	step int
+}
+
+func (d derived1550x8) Next() int {
+	return d.seed + d.step + 28
+}
+type Encoder1550x9 interface {
+	Encode(value int) int
+}
+
+type scaler1550x9 struct {
+	factor int
+}
+
+func (s scaler1550x9) Encode(value int) int {
+	return value * s.factor + 42
+}

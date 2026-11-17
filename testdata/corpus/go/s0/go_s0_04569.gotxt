@@ -1,0 +1,72 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1043x0 struct {
+	seed int
+}
+
+type derived1043x0 struct {
+	base1043x0
+	step int
+}
+
+func (d derived1043x0) Next() int {
+	return d.seed + d.step + 51
+}
+type probeErr1043x1 struct {
+	code int
+}
+
+func (e probeErr1043x1) Error() string {
+	return "probe failure"
+}
+
+func check1043x1(value int) error {
+	if value < 0 {
+		return probeErr1043x1{code: value}
+	}
+	return nil
+}
+type probeErr1043x2 struct {
+	code int
+}
+
+func (e probeErr1043x2) Error() string {
+	return "probe failure"
+}
+
+func check1043x2(value int) error {
+	if value < 0 {
+		return probeErr1043x2{code: value}
+	}
+	return nil
+}
+func relay1043x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 5
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func fold1043x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 12
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}

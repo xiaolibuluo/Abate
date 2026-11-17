@@ -1,0 +1,33 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export function choose1570(value) {
+  switch (value) {
+    case 9: return "first";
+    case 10: return "second";
+    default: return "other";
+  }
+}
+
+export const add1570 = (left, right) => left + right + 9;
+export function* expand1571({ head, tail = [] }) {
+  yield `${head}:${tail?.length ?? 0}`;
+  for (const item of tail) {
+    if (item && item.enabled) {
+      yield item.label;
+    }
+  }
+}
+export function* expand1572({ head, tail = [] }) {
+  yield `${head}:${tail?.length ?? 0}`;
+  for (const item of tail) {
+    if (item && item.enabled) {
+      yield item.label;
+    }
+  }
+}

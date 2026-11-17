@@ -1,0 +1,404 @@
+{
+  "$defs": {
+    "ContinuousSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "duration": {
+          "description": "Integer nanosecond duration with optional unit suffixes.",
+          "pattern": "^-?[0-9]+(ns|us|µs|ms|s|m|h)*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "duration"
+      ],
+      "type": "object"
+    },
+    "CronSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "expression": {
+          "type": "string"
+        },
+        "timezone": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "expression"
+      ],
+      "type": "object"
+    },
+    "Expectation": {
+      "additionalProperties": false,
+      "properties": {
+        "max": {
+          "type": "string"
+        },
+        "min": {
+          "type": "string"
+        },
+        "predicate": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ExperimentSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "$ref": "#/$defs/Method"
+        },
+        "probes": {
+          "items": {
+            "$ref": "#/$defs/Probe"
+          },
+          "type": "array"
+        },
+        "rollback": {
+          "$ref": "#/$defs/Rollback"
+        },
+        "schedule": {
+          "$ref": "#/$defs/Schedule"
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "steadyState": {
+          "items": {
+            "$ref": "#/$defs/SteadyState"
+          },
+          "type": "array"
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "timeout": {
+          "description": "Integer nanosecond duration with optional unit suffixes.",
+          "pattern": "^-?[0-9]+(ns|us|µs|ms|s|m|h)*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "steadyState",
+        "method",
+        "rollback",
+        "schedule"
+      ],
+      "type": "object"
+    },
+    "Metadata": {
+      "additionalProperties": false,
+      "properties": {
+        "annotations": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "labels": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "name": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
+    "Method": {
+      "additionalProperties": false,
+      "properties": {
+        "expression": {
+          "type": "string"
+        },
+        "operators": {
+          "items": {
+            "$ref": "#/$defs/OperatorDef"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "expression"
+      ],
+      "type": "object"
+    },
+    "OnceSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "at": {
+          "description": "Integer nanosecond duration with optional unit suffixes.",
+          "pattern": "^-?[0-9]+(ns|us|µs|ms|s|m|h)*$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "at"
+      ],
+      "type": "object"
+    },
+    "OperatorDef": {
+      "additionalProperties": false,
+      "properties": {
+        "compensation": {
+          "type": "string"
+        },
+        "family": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "invertible": {
+          "type": "boolean"
+        },
+        "params": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "targetKind": {
+          "type": "string"
+        },
+        "targets": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "family",
+        "targets",
+        "invertible"
+      ],
+      "type": "object"
+    },
+    "Probe": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "interval": {
+          "description": "Integer nanosecond duration with optional unit suffixes.",
+          "pattern": "^-?[0-9]+(ns|us|µs|ms|s|m|h)*$",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "http",
+            "shell",
+            "metric",
+            "prom"
+          ],
+          "type": "string"
+        },
+        "spec": {
+          "$ref": "#/$defs/ProbeSpec"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "spec",
+        "interval"
+      ],
+      "type": "object"
+    },
+    "ProbeSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "type": "string"
+        },
+        "expect": {
+          "type": "string"
+        },
+        "expectExitCode": {
+          "type": "integer"
+        },
+        "expectStatus": {
+          "type": "integer"
+        },
+        "headers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "method": {
+          "type": "string"
+        },
+        "promql": {
+          "type": "string"
+        },
+        "query": {
+          "type": "string"
+        },
+        "range": {
+          "description": "Integer nanosecond duration with optional unit suffixes.",
+          "pattern": "^-?[0-9]+(ns|us|µs|ms|s|m|h)*$",
+          "type": "string"
+        },
+        "timeout": {
+          "description": "Integer nanosecond duration with optional unit suffixes.",
+          "pattern": "^-?[0-9]+(ns|us|µs|ms|s|m|h)*$",
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "Rollback": {
+      "additionalProperties": false,
+      "properties": {
+        "strategy": {
+          "enum": [
+            "auto",
+            "manual",
+            "timeout"
+          ],
+          "type": "string"
+        },
+        "timeout": {
+          "description": "Integer nanosecond duration with optional unit suffixes.",
+          "pattern": "^-?[0-9]+(ns|us|µs|ms|s|m|h)*$",
+          "type": "string"
+        },
+        "verifySteadyState": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "verifySteadyState"
+      ],
+      "type": "object"
+    },
+    "Schedule": {
+      "additionalProperties": false,
+      "properties": {
+        "continuous": {
+          "$ref": "#/$defs/ContinuousSpec"
+        },
+        "cron": {
+          "$ref": "#/$defs/CronSpec"
+        },
+        "once": {
+          "$ref": "#/$defs/OnceSpec"
+        }
+      },
+      "type": "object"
+    },
+    "SteadyState": {
+      "additionalProperties": false,
+      "properties": {
+        "expectation": {
+          "$ref": "#/$defs/Expectation"
+        },
+        "holdFor": {
+          "description": "Integer nanosecond duration with optional unit suffixes.",
+          "pattern": "^-?[0-9]+(ns|us|µs|ms|s|m|h)*$",
+          "type": "string"
+        },
+        "probeRef": {
+          "type": "string"
+        },
+        "tolerance": {
+          "$ref": "#/$defs/Tolerance"
+        }
+      },
+      "required": [
+        "probeRef",
+        "expectation",
+        "tolerance",
+        "holdFor"
+      ],
+      "type": "object"
+    },
+    "Target": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "selector": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "kind",
+        "selector"
+      ],
+      "type": "object"
+    },
+    "Tolerance": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "value"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://github.com/xiaolibuluo/Abate/ces/v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "apiVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "metadata": {
+      "$ref": "#/$defs/Metadata"
+    },
+    "spec": {
+      "$ref": "#/$defs/ExperimentSpec"
+    }
+  },
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "title": "CES Experiment v1",
+  "type": "object"
+}

@@ -1,0 +1,58 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+class Counter1300 {
+    var current: Int by Delegates.observable(46) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+object Registry1301 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1301 = "registry-53"
+    }
+}
+sealed class Outcome1302 {
+    data class Success(val payload: String) : Outcome1302()
+    data object Failure : Outcome1302()
+}
+
+fun describe1302(outcome: Outcome1302): String = when (outcome) {
+    is Outcome1302.Success -> outcome.payload
+    Outcome1302.Failure -> "failed"
+}
+fun <T> List<T>.secondOrNull1303(): T? = if (size > 1) this[1] else null
+
+fun render1303(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T> List<T>.secondOrNull1304(): T? = if (size > 1) this[1] else null
+
+fun render1304(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+data class Pair1305<A, B>(val first: A, val second: B)
+
+fun combine1305(left: Int, right: Int): Pair1305<Int, Int> {
+    return Pair1305(left + 81, right + 59)
+

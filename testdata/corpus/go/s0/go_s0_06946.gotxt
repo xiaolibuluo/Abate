@@ -1,0 +1,124 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder1604x0 interface {
+	Encode(value int) int
+}
+
+type scaler1604x0 struct {
+	factor int
+}
+
+func (s scaler1604x0) Encode(value int) int {
+	return value * s.factor + 99
+}
+func relay1604x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 9
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay1604x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 16
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr1604x3 struct {
+	code int
+}
+
+func (e probeErr1604x3) Error() string {
+	return "probe failure"
+}
+
+func check1604x3(value int) error {
+	if value < 0 {
+		return probeErr1604x3{code: value}
+	}
+	return nil
+}
+type Store1604x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1604x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1604x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold1604x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 37
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store1604x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1604x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1604x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold1604x7(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 51
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe1604x8(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

@@ -1,0 +1,40 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+data class Pair180<A, B>(val first: A, val second: B)
+
+fun combine180(left: Int, right: Int): Pair180<Int, Int> {
+    return Pair180(left + 45, right + 13)
+}
+sealed class Outcome181 {
+    data class Success(val payload: String) : Outcome181()
+    data object Failure : Outcome181()
+}
+
+fun describe181(outcome: Outcome181): String = when (outcome) {
+    is Outcome181.Success -> outcome.payload
+    Outcome181.Failure -> "failed"
+}
+data class Pair182<A, B>(val first: A, val second: B)
+
+fun combine182(left: Int, right: Int): Pair182<Int, Int> {
+    return Pair182(left + 59, right + 35)
+}
+data class Pair183<A, B>(val first: A, val second: B)
+
+fun combine183(left: Int, right: Int): Pair183<Int, Int> {
+    return Pair183(left + 66, right + 46)
+}
+fun <T> List<T>.secondOrNull184(): T? = if (size > 1) this[1] else null
+
+fun render184(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}

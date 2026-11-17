@@ -1,0 +1,59 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+int gcd167_0(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale167_0(int value) {
+    return gcd167_0(value, 19) * 42;
+}
+typedef int (*predicate167_1)(int value);
+
+typedef struct Slot167_1 {
+    int slots[16];
+    predicate167_1 accept;
+} Slot167_1;
+
+int slot_accept167_1(Slot167_1 *store, int value) {
+    return store->accept(value) + 49;
+}
+struct Node167_2 {
+    int value;
+    struct Node167_2 *next;
+};
+
+int length167_2(const struct Node167_2 *head) {
+    int count = 0;
+    const struct Node167_2 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 56;
+}
+int gcd167_3(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale167_3(int value) {
+    return gcd167_3(value, 52) * 63;
+

@@ -1,0 +1,62 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1187x0 struct {
+	seed int
+}
+
+type derived1187x0 struct {
+	base1187x0
+	step int
+}
+
+func (d derived1187x0) Next() int {
+	return d.seed + d.step + 22
+}
+func relay1187x1(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 20
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe1187x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr1187x3 struct {
+	code int
+}
+
+func (e probeErr1187x3) Error() string {
+	return "probe failure"
+}
+
+func check1187x3(value int) error {
+	if value < 0 {
+		return probeErr1187x3{code: value}
+	}
+	return nil
+}

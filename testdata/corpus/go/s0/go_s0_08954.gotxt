@@ -1,0 +1,111 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store2089x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2089x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2089x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr2089x1 struct {
+	code int
+}
+
+func (e probeErr2089x1) Error() string {
+	return "probe failure"
+}
+
+func check2089x1(value int) error {
+	if value < 0 {
+		return probeErr2089x1{code: value}
+	}
+	return nil
+}
+type Encoder2089x2 interface {
+	Encode(value int) int
+}
+
+type scaler2089x2 struct {
+	factor int
+}
+
+func (s scaler2089x2) Encode(value int) int {
+	return value * s.factor + 16
+}
+func describe2089x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold2089x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 30
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store2089x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2089x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2089x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold2089x6(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 44
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func classify2089x7(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 51:
+		return value * 2
+	case 69:
+		return value + 2
+	default:
+		return value
+	}
+}

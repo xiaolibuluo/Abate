@@ -1,0 +1,32 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+enum Kind54_0 { KIND_EMPTY54_0 = 0, KIND_FULL54_0 = 28 };
+
+union Cell54_0 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind54_0(union Cell54_0 *cell) {
+    cell->number = 21;
+    return cell->number > 0 ? KIND_FULL54_0 : KIND_EMPTY54_0;
+}
+#if defined(__STDC_VERSION__)
+int variant54_1(int value, ...) {
+    return value + 35;
+}
+#else
+int variant54_1(int value) {
+    return value + 35;
+}
+#endif

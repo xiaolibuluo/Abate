@@ -1,0 +1,110 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2327x0 struct {
+	seed int
+}
+
+type derived2327x0 struct {
+	base2327x0
+	step int
+}
+
+func (d derived2327x0) Next() int {
+	return d.seed + d.step + 11
+}
+type Store2327x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2327x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2327x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func relay2327x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 6
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type probeErr2327x3 struct {
+	code int
+}
+
+func (e probeErr2327x3) Error() string {
+	return "probe failure"
+}
+
+func check2327x3(value int) error {
+	if value < 0 {
+		return probeErr2327x3{code: value}
+	}
+	return nil
+}
+type Encoder2327x4 interface {
+	Encode(value int) int
+}
+
+type scaler2327x4 struct {
+	factor int
+}
+
+func (s scaler2327x4) Encode(value int) int {
+	return value * s.factor + 20
+}
+func fold2327x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 27
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay2327x6(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 34
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay2327x7(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 41
+			}
+		case <-done:
+			return
+		}
+	}
+}

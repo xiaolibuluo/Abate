@@ -1,0 +1,44 @@
+<!--
+  Copyright (c) 小黎的部落 (www.qingdujian.com)
+  Project: xiaolibuluo/Abate — https://github.com/xiaolibuluo/Abate
+  SPDX-License-Identifier: AGPL-3.0-or-later (subject to confirmation by the rights holder / 需权利人确认)
+  Abate dual-license (AGPLv3 or commercial) bilingual documentation.
+  本文件不构成法律意见 / This document does not constitute legal advice.
+-->
+> Language / 语言：[English](#english) | [中文](#中文) · 本文件为单文件双语，无并列译本 / single-file bilingual, no companion `.en.md`
+
+# NOTICE
+
+## English
+
+Abate
+Copyright (c) 小黎的部落 (www.qingdujian.com)
+Source: https://github.com/xiaolibuluo/Abate
+Commercial contact: xiaolibuluo@163.com
+
+This project is dual-licensed under **AGPLv3 (open-source side) + a commercial license (closed-source side)**. The verbatim AGPLv3 official full text is in `LICENSE`; see `LICENSING.md` for the two-path overview and `COMMERCIAL-LICENSE.md` for the commercial-side informational entry point (subject to confirmation by the rights holder).
+
+SPDX is stated as `AGPL-3.0-or-later` (**subject to confirmation by the rights holder / 需权利人确认; not stated as settled**). The `only` / `or-later` election is subject to confirmation by the rights holder.
+
+Attribution of third-party dependencies is recorded in `THIRD-PARTY-NOTICES.md`; dependency allowlist notes are in `LICENSE-COMPATIBILITY.md`; governance review is in `governance/THIRD-PARTY.md`. The project watermark is `小黎的部落`.
+
+The DCO does not grant the project a relicensing right; under dual licensing a CLA or an explicit relicensing clause is needed — subject to confirmation by the rights holder or legal counsel. `competitorAbsolute = NOT_MEASURED` and `NOT_MEASURED` are retained verbatim.
+
+**This document does not constitute legal advice / 本文件不构成法律意见; subject to confirmation by the rights holder or legal counsel / 需权利人或法务确认.**
+
+## 中文
+
+Abate
+版权所有 (c) 小黎的部落 (www.qingdujian.com)
+来源：https://github.com/xiaolibuluo/Abate
+商业联系：xiaolibuluo@163.com
+
+本项目采用「**AGPLv3（开源侧）+ 商业授权（闭源侧）**」双许可。AGPLv3 官方全文逐字副本见 `LICENSE`；两路径总览见 `LICENSING.md`；商业侧信息入口见 `COMMERCIAL-LICENSE.md`（需权利人确认）。
+
+SPDX 写作 `AGPL-3.0-or-later`（**需权利人确认 / subject to confirmation by the rights holder，不写成已定**）；`only` / `or-later` 的选择待权利人确认。
+
+第三方依赖归属登记见 `THIRD-PARTY-NOTICES.md`；依赖白名单说明见 `LICENSE-COMPATIBILITY.md`；治理审查见 `governance/THIRD-PARTY.md`。项目数字水印为「小黎的部落」。
+
+**DCO 不授予项目方再许可（relicense）权；双许可下需 CLA 或明确再许可条款 —— 需权利人或法务确认**。`competitorAbsolute = NOT_MEASURED`、`NOT_MEASURED` 原样保留。
+
+**本文件不构成法律意见 / This document does not constitute legal advice；需权利人或法务确认 / Subject to confirmation by the rights holder or legal counsel。**

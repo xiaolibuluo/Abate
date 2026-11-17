@@ -1,0 +1,47 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2443x0 struct {
+	seed int
+}
+
+type derived2443x0 struct {
+	base2443x0
+	step int
+}
+
+func (d derived2443x0) Next() int {
+	return d.seed + d.step + 30
+}
+type base2443x1 struct {
+	seed int
+}
+
+type derived2443x1 struct {
+	base2443x1
+	step int
+}
+
+func (d derived2443x1) Next() int {
+	return d.seed + d.step + 41
+}
+func describe2443x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}

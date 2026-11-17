@@ -1,0 +1,62 @@
+
+def anchor_probe()
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def pair126_0(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 91}
+def pair126_1(left, right):
+    first, second = left, right
+    merged = {**first, **second}
+    return {key: value for key, value in merged.items() if value >= 98}
+def expand126_2(values):
+    for item in values:
+        if item > 8:
+            yield item * 59
+
+
+def collect126_2(values):
+    return list(expand126_2(values))
+def summarize126_3(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 15:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]
+def expand126_4(values):
+    for item in values:
+        if item > 22:
+            yield item * 20
+
+
+def collect126_4(values):
+    return list(expand126_4(values))
+class Slot126_5:
+    def __init__(self, size: int) -> None:
+        self.size = size
+
+    def describe(self) -> str:
+        return f"slot-{self.size}-{29}"
+
+    @property
+    def doubled(self) -> int:
+        return self.size * 2
+def summarize126_6(records):
+    match records:
+        case []:
+            return "empty"
+        case [first, *rest] if first > 36:
+            return [item for item in rest if item]
+        case _:
+            return [item for item in records if item is not None]

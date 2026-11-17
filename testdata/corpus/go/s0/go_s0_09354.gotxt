@@ -1,0 +1,112 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2187x0 struct {
+	code int
+}
+
+func (e probeErr2187x0) Error() string {
+	return "probe failure"
+}
+
+func check2187x0(value int) error {
+	if value < 0 {
+		return probeErr2187x0{code: value}
+	}
+	return nil
+}
+type base2187x1 struct {
+	seed int
+}
+
+type derived2187x1 struct {
+	base2187x1
+	step int
+}
+
+func (d derived2187x1) Next() int {
+	return d.seed + d.step + 18
+}
+type Store2187x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2187x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2187x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold2187x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 36
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder2187x4 interface {
+	Encode(value int) int
+}
+
+type scaler2187x4 struct {
+	factor int
+}
+
+func (s scaler2187x4) Encode(value int) int {
+	return value * s.factor + 43
+}
+type Store2187x5[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2187x5[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2187x5[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func describe2187x6(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base2187x7 struct {
+	seed int
+}
+
+type derived2187x7 struct {
+	base2187x7
+	step int
+}
+
+func (d derived2187x7) Next() int {
+	return d.seed + d.step + 23
+}

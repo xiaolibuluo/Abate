@@ -1,0 +1,73 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome430 {
+    data class Success(val payload: String) : Outcome430()
+    data object Failure : Outcome430()
+}
+
+fun describe430(outcome: Outcome430): String = when (outcome) {
+    is Outcome430.Success -> outcome.payload
+    Outcome430.Failure -> "failed"
+}
+class Counter431 {
+    var current: Int by Delegates.observable(86) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+sealed class Outcome432 {
+    data class Success(val payload: String) : Outcome432()
+    data object Failure : Outcome432()
+}
+
+fun describe432(outcome: Outcome432): String = when (outcome) {
+    is Outcome432.Success -> outcome.payload
+    Outcome432.Failure -> "failed"
+}
+fun <T> List<T>.secondOrNull433(): T? = if (size > 1) this[1] else null
+
+fun render433(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+fun <T> List<T>.secondOrNull434(): T? = if (size > 1) this[1] else null
+
+fun render434(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+@JvmName("step435")
+fun step435(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 17
+}
+data class Pair436<A, B>(val first: A, val second: B)
+
+fun combine436(left: Int, right: Int): Pair436<Int, Int> {
+    return Pair436(left + 24, right + 10)
+}
+fun <T, R> List<T>.mapChecked437(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}

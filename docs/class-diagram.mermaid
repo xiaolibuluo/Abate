@@ -1,0 +1,338 @@
+classDiagram
+direction LR
+
+%% ============ 外部既有契约（lang/air, lang/frontkit）============
+class air_Frontend {
+  <<interface>>
+  +Parse(air.SourceUnit) (*air.Unit, []air.Diagnostic, error)
+  +ParseIncremental(air.SourceUnit, *air.Unit, []air.Edit) (*air.Unit, air.Diff, error)
+}
+class air_Unit {
+  +Roots []air.Node
+  +Files []air.FileRef
+  +NodeCount() int
+  +Fingerprint() [32]byte
+  +Validate() error
+}
+class air_Node {
+  <<interface>>
+  +Kind() air.NodeKind
+  +Pos() air.Position
+  +End() air.Position
+  +Children() []air.Node
+  +Sem(air.SemKey) any
+}
+class air_IDOf {
+  <<function>>
+  +IDOf(n air.Node) air.NodeID
+}
+class grammar_Grammar {
+  +Constructs() []grammar.NodeType
+  +Load(tag string) (*grammar.Grammar, error)
+  +DefaultRules(tag string) []grammar.MappingRule
+}
+class coverage_Compute {
+  <<function>>
+  +Compute(g, mappings, observed) coverage.Coverage
+  +Observe(*air.Unit) map[air.NodeKind]int
+}
+
+%% ============ 语料层 ============
+class CorpusEntry {
+  +Language string
+  +Project string
+  +UpstreamURL string
+  +Commit string
+  +SPDX string
+  +SPDXEvidence string
+  +RelPath string
+  +Bytes int64
+  +SHA256 string
+  +ConstructTags []string
+  +Source string
+}
+class Manifest {
+  +SchemaVersion int
+  +Entries []CorpusEntry
+  +Sorted() []CorpusEntry
+  +Digest() string
+}
+class corpus_Register {
+  <<function>>
+  +Register(fsys fs.FS, projects []ProjectRef) (Manifest, error)
+}
+class corpus_Verify {
+  <<function>>
+  +Verify(fsys fs.FS, m Manifest) (VerifyResult, error)
+}
+class VerifyResult {
+  +Registered int
+  +Recomputed int
+  +SHA256Mismatches int
+  +SPDXViolations int
+  +ParseablePerLanguage map[string]int
+}
+class corpus_Sample {
+  <<function>>
+  +StratifiedSample(m Manifest, p Plan, rng *RNG) []CorpusEntry
+}
+class RNG {
+  +state uint64
+  +Next() uint64
+  +Intn(n int) int
+}
+
+%% ============ 变异 / 混沌 / 覆盖 ============
+class MutationClass {
+  <<enumeration>>
+  Text
+  Structure
+  Broken
+  Equivalent
+}
+class OpContext {
+  +Content []byte
+  +Seed uint64
+  +Language string
+  +Offset int
+}
+class Edit {
+  +OperatorID string
+  +Offset int
+  +EndOffset int
+  +Before string
+  +After string
+}
+class OperatorSpec {
+  +ID string
+  +Class MutationClass
+  +MinValidPoints int
+  +Apply(OpContext) ([]Edit, error)
+}
+class Registry {
+  +specs []OperatorSpec
+  +All() []OperatorSpec
+  +Lookup(id string) (OperatorSpec, bool)
+}
+class EquivalentDef {
+  +OperatorID string
+  +ContextPattern string
+  +ProofID string
+  +Rationale string
+}
+class EquivalentSet {
+  +defs []EquivalentDef
+  +Classify(DrilldownRecord) (string, bool)
+}
+class DamageKind {
+  <<enumeration>>
+  TruncateHalf
+  ByteSplice
+  TokenDrop
+}
+class chaos_Generator {
+  +Generate(CorpusEntry, DamageKind, *RNG) []DamageUnit
+  +Merge([]DamageUnit) []DamageUnit
+}
+class CoverageIndex {
+  +grammars map[string]*grammar.Grammar
+  +Expected(lang string) []string
+  +Degradation(lang string, u *air.Unit) float64
+}
+
+%% ============ 运行层 ============
+class Plan {
+  +Seed uint64
+  +Languages []string
+  +FilesPerLanguage int
+  +MinFileBytes int64
+  +MaxFileBytes int64
+  +StrataCount int
+  +ParseTimeoutMillis int64
+  +MemLimitBytes uint64
+  +MaxRuns int
+  +Operators []string
+  +BrokenPerLanguage int
+  +ReportDir string
+  +ThresholdsBaselineSHA256 string
+}
+class FrontendTable {
+  +byLang map[string]air.Frontend
+  +dialect map[string]string
+  +For(lang string) (air.Frontend, string, error)
+  +Languages() []string
+}
+class ResourceProbe {
+  +budget ProbeBudget
+  +Measure(ParseJob) Outcome
+}
+class Outcome {
+  +Kind string
+  +AllocDeltaBytes uint64
+  +Diagnostics int
+  +Errors int
+  +AIRIDBefore string
+  +AIRIDAfter string
+}
+class Trace {
+  +w io.Writer
+  +Mark(CorpusEntry, string)
+}
+class Runner {
+  +plan Plan
+  +manifest Manifest
+  +frontends FrontendTable
+  +registry Registry
+  +Run() (Report, []DrilldownRecord, error)
+}
+
+%% ============ 指标 / 报告 / 门禁 ============
+class Columns {
+  +Text ColumnStats
+  +Structure ColumnStats
+  +Broken ColumnStats
+  +Equivalent ColumnStats
+}
+class ColumnStats {
+  +Gross int
+  +Effective int
+  +Captured int
+  +CapturePct float64
+}
+class PrecisionRow {
+  +Language string
+  +ZeroDiagnosticZeroError int
+  +DegradeNodePct float64
+  +OutsideDamageRetentionPct float64
+  +ConstructCoveragePct float64
+  +Diagnostics int
+}
+class MutationRow {
+  +Language string
+  +OperatorID string
+  +Class string
+  +Gross int
+  +Effective int
+  +Equivalent int
+  +Captured int
+  +CapturePct float64
+}
+class Robustness {
+  +PanicLocalizer string
+  +TimeoutCount int
+  +OOMCount int
+  +DeterminismFailureCount int
+}
+class Equivalence {
+  +Gross int
+  +Effective int
+  +EquivalentCount int
+  +SilentDrops int
+}
+class DrilldownRecord {
+  +Language string
+  +FileSHA256 string
+  +RelPath string
+  +OperatorID string
+  +Class string
+  +Offset int
+  +AIRIDBefore string
+  +AIRIDAfter string
+  +Captured bool
+  +EquivalentProofID string
+  +OutcomeKind string
+}
+class Report {
+  +SchemaVersion int
+  +ToolVersion string
+  +PlanSHA256 string
+  +ManifestSHA256 string
+  +ThresholdsSHA256 string
+  +DrilldownSHA256 string
+  +Seed uint64
+  +Columns Columns
+  +Precision []PrecisionRow
+  +Mutation []MutationRow
+  +Robustness Robustness
+  +Equivalence Equivalence
+  +Localizers []string
+}
+class Thresholds {
+  +SchemaVersion int
+  +ZeroTolerance map[string]int
+  +Minima map[string]float64
+  +Maxima map[string]float64
+}
+class Verdict {
+  +Passed bool
+  +Failures []Failure
+}
+class report_Evaluate {
+  <<function>>
+  +Evaluate(t, baseline Thresholds, r Report) Verdict
+  +Recompute(r Report, d []DrilldownRecord) Report
+}
+class Finding {
+  +File string
+  +Line int
+  +Rule string
+  +Snippet string
+}
+class Analyzer {
+  +Check(paths []string) ([]Finding, error)
+}
+class incremental_Probe {
+  +Check(u *air.Unit, edits []air.Edit) (IncrementalResult, error)
+}
+
+%% ============ 关系 ============
+Manifest "1" *-- "0..*" CorpusEntry : 按 RelPath 升序持有
+corpus_Register ..> Manifest : 生成
+corpus_Verify ..> Manifest : 全量重算 sha256
+corpus_Verify ..> VerifyResult : 产出
+corpus_Sample ..> Manifest : 只读
+corpus_Sample ..> RNG : 派生 SplitMix64
+corpus_Sample ..> Plan : 分层等距参数
+RNG ..> DrilldownRecord : 种子化变异点选择
+
+Registry "1" *-- "0..*" OperatorSpec : 注册
+OperatorSpec ..> OpContext : 消费
+OperatorSpec ..> Edit : 产出
+OperatorSpec --> MutationClass : 归类
+EquivalentSet "1" *-- "0..*" EquivalentDef : 显式集合
+EquivalentSet ..> DrilldownRecord : 单列分类（不删分母）
+chaos_Generator ..> DamageKind : 使用
+chaos_Generator ..> RNG : 确定性
+CoverageIndex ..> grammar_Grammar : 复用嵌入 node-types
+CoverageIndex ..> coverage_Compute : 复用 Compute/Observe
+CoverageIndex ..> air_Unit : 观测 AIR Kind
+
+Runner *-- Plan
+Runner *-- Manifest
+Runner *-- FrontendTable
+Runner *-- Registry
+Runner *-- ResourceProbe
+Runner *-- Trace
+FrontendTable o-- air_Frontend : 7 语言构造器归一
+air_Frontend ..> air_Unit : Parse 产出
+air_Unit "1" *-- "0..*" air_Node : Roots
+air_IDOf ..> air_Node : FNV(kind+text+子ID)
+ResourceProbe ..> Outcome : 产出
+Trace ..> CorpusEntry : 崩溃定位轨迹
+Runner ..> DrilldownRecord : 每条变异落盘
+Runner ..> Report : 聚合
+Runner ..> incremental_Probe : P1 一致性探针
+incremental_Probe ..> air_Frontend : ParseIncremental
+
+Report *-- Columns
+Columns *-- ColumnStats
+Report *-- Robustness
+Report *-- Equivalence
+Report "1" o-- "0..*" PrecisionRow
+Report "1" o-- "0..*" MutationRow
+Report ..> DrilldownRecord : 摘要 + sha256 链
+report_Evaluate ..> Report : 重算与判定
+report_Evaluate ..> Thresholds : 只收紧比对
+report_Evaluate ..> Verdict : 产出
+Analyzer ..> Finding : 零豁免反向静态检查
+Analyzer ..> Report : 命中数进零容忍列

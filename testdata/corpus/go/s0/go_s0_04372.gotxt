@@ -1,0 +1,77 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold996x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 52
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder996x1 interface {
+	Encode(value int) int
+}
+
+type scaler996x1 struct {
+	factor int
+}
+
+func (s scaler996x1) Encode(value int) int {
+	return value * s.factor + 59
+}
+func fold996x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 66
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay996x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 73
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder996x4 interface {
+	Encode(value int) int
+}
+
+type scaler996x4 struct {
+	factor int
+}
+
+func (s scaler996x4) Encode(value int) int {
+	return value * s.factor + 80
+}
+func relay996x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 87
+			}
+		case <-done:
+			return
+		}
+	}
+}

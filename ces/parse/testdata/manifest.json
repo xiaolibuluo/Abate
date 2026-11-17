@@ -1,0 +1,602 @@
+[
+  {
+    "file": "ok-00.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-01.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-02.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-03.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-04.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-05.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-06.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-07.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-08.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-09.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-10.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-11.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-12.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-13.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-14.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-15.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-16.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-17.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-18.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-19.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-20.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-21.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-22.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-23.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-24.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-25.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-26.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-27.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-28.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-29.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-30.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-31.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-32.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-33.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-34.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-35.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-36.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-37.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-38.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-39.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-40.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-41.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-42.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-43.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-44.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-45.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-46.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-47.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-48.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-49.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-50.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-51.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-52.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-53.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-54.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-55.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-56.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-57.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-58.yaml",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "ok-59.json",
+    "accept": true,
+    "rule": "",
+    "format": "auto"
+  },
+  {
+    "file": "bad-00-empty.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-004",
+    "format": "auto"
+  },
+  {
+    "file": "bad-01-empty.json",
+    "accept": false,
+    "rule": "CES-PARSE-004",
+    "format": "auto"
+  },
+  {
+    "file": "bad-02-blank.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-005",
+    "format": "auto"
+  },
+  {
+    "file": "bad-10-version.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-002",
+    "format": "auto"
+  },
+  {
+    "file": "bad-11-version.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-002",
+    "format": "auto"
+  },
+  {
+    "file": "bad-12-version.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-002",
+    "format": "auto"
+  },
+  {
+    "file": "bad-20-no-version.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-006",
+    "format": "auto"
+  },
+  {
+    "file": "bad-21-no-name.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-006",
+    "format": "auto"
+  },
+  {
+    "file": "bad-22-no-name.json",
+    "accept": false,
+    "rule": "CES-PARSE-006",
+    "format": "auto"
+  },
+  {
+    "file": "bad-23-no-version.json",
+    "accept": false,
+    "rule": "CES-PARSE-006",
+    "format": "auto"
+  },
+  {
+    "file": "bad-30-kind.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-005",
+    "format": "auto"
+  },
+  {
+    "file": "bad-31-kind.json",
+    "accept": false,
+    "rule": "CES-PARSE-005",
+    "format": "auto"
+  },
+  {
+    "file": "bad-32-truncated.json",
+    "accept": false,
+    "rule": "CES-PARSE-005",
+    "format": "auto"
+  },
+  {
+    "file": "bad-33-truncated.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-005",
+    "format": "auto"
+  },
+  {
+    "file": "bad-34-badtype.json",
+    "accept": false,
+    "rule": "CES-PARSE-005",
+    "format": "auto"
+  },
+  {
+    "file": "bad-40-unknown.json",
+    "accept": false,
+    "rule": "CES-PARSE-001",
+    "format": "auto"
+  },
+  {
+    "file": "bad-41-unknown.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-001",
+    "format": "auto"
+  },
+  {
+    "file": "bad-42-unknown.json",
+    "accept": false,
+    "rule": "CES-PARSE-001",
+    "format": "auto"
+  },
+  {
+    "file": "bad-43-unknown.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-001",
+    "format": "auto"
+  },
+  {
+    "file": "bad-50-dangling.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-007",
+    "format": "auto"
+  },
+  {
+    "file": "bad-51-dangling.json",
+    "accept": false,
+    "rule": "CES-PARSE-007",
+    "format": "auto"
+  },
+  {
+    "file": "bad-52-dangling.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-007",
+    "format": "auto"
+  },
+  {
+    "file": "bad-53-dangling.json",
+    "accept": false,
+    "rule": "CES-PARSE-007",
+    "format": "auto"
+  },
+  {
+    "file": "bad-60-two-schedules.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-008",
+    "format": "auto"
+  },
+  {
+    "file": "bad-61-two-schedules.json",
+    "accept": false,
+    "rule": "CES-PARSE-008",
+    "format": "auto"
+  },
+  {
+    "file": "bad-62-no-schedules.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-008",
+    "format": "auto"
+  },
+  {
+    "file": "bad-63-no-schedules.json",
+    "accept": false,
+    "rule": "CES-PARSE-008",
+    "format": "auto"
+  },
+  {
+    "file": "bad-70-expr.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-009",
+    "format": "auto"
+  },
+  {
+    "file": "bad-71-expr.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-009",
+    "format": "auto"
+  },
+  {
+    "file": "bad-72-expr.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-009",
+    "format": "auto"
+  },
+  {
+    "file": "bad-73-expr.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-009",
+    "format": "auto"
+  },
+  {
+    "file": "bad-74-expr.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-009",
+    "format": "auto"
+  },
+  {
+    "file": "bad-80-depth.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-010",
+    "format": "auto"
+  },
+  {
+    "file": "bad-81-depth.json",
+    "accept": false,
+    "rule": "CES-PARSE-010",
+    "format": "auto"
+  },
+  {
+    "file": "bad-90-unknownop.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-011",
+    "format": "auto"
+  },
+  {
+    "file": "bad-91-unknownop.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-011",
+    "format": "auto"
+  },
+  {
+    "file": "bad-92-unknownop.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-011",
+    "format": "auto"
+  },
+  {
+    "file": "bad-a0-notinvertible.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-012",
+    "format": "auto"
+  },
+  {
+    "file": "bad-a1-notinvertible.json",
+    "accept": false,
+    "rule": "CES-PARSE-012",
+    "format": "auto"
+  },
+  {
+    "file": "bad-b0-format.yaml",
+    "accept": false,
+    "rule": "CES-PARSE-003",
+    "format": "xml"
+  }
+]

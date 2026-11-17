@@ -1,0 +1,31 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+async def fetch152_0(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def expand152_1(values):
+    for item in values:
+        if item > 48:
+            yield item * 47
+
+
+def collect152_1(values):
+    return list(expand152_1(values))

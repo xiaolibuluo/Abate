@@ -1,0 +1,73 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store1240x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1240x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1240x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func fold1240x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 30
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder1240x2 interface {
+	Encode(value int) int
+}
+
+type scaler1240x2 struct {
+	factor int
+}
+
+func (s scaler1240x2) Encode(value int) int {
+	return value * s.factor + 37
+}
+func relay1240x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 44
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Store1240x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1240x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1240x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

@@ -1,0 +1,60 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay2598x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 23
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func describe2598x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base2598x2 struct {
+	seed int
+}
+
+type derived2598x2 struct {
+	base2598x2
+	step int
+}
+
+func (d derived2598x2) Next() int {
+	return d.seed + d.step + 39
+}
+type base2598x3 struct {
+	seed int
+}
+
+type derived2598x3 struct {
+	base2598x3
+	step int
+}
+
+func (d derived2598x3) Next() int {
+	return d.seed + d.step + 50
+}

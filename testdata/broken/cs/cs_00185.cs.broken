@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Synth;
+
+public class SynthFile
+{
+    public static bool AnchorProbe()
+    {
+        return 1 + 2 == 3 && f() == g();
+    }
+
+    public static int f() { return 1; }
+    public static int g() { return 2; }
+
+    public delegate void Notifier1850(int value);
+
+    public sealed class Source1850
+    {
+        public event Notifier1850 Changed;
+        public void Raise(int value) { Changed?.Invoke(value); }
+    }
+    public interface IHandler1851
+    {
+        void Handle(int value);
+    }
+
+    [Serializable]
+    public sealed record Envelope1851(string Label, int Payload);
+
+    public sealed class Handler1851 : IHandler1851
+    {
+        public void Handle(int value) { }
+    }
+    public async Task<int> Aggregate1852(IEnumerable<int> source)
+    {
+        try
+        {
+            using var cursor = source.GetEnumerator();
+            return await Task.FromResult(source.Where(item => item > 0).Sum());
+        }
+        catch (InvalidOperationException)
+        {
+            return 0;
+        }
+        finally
+        {
+            Console.WriteLine("done");
+        }
+    }
+    public struct Point1853
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Total => X + Y + 6;
+    }
+
+    public static class Grid1853
+    {
+        public static Point1853 Make(int left, int right)
+        {
+            return new Point1853 { X = left, Y = right };
+        }
+    }
+    public struct Point1854
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int Total => X + Y + 13;
+    }
+
+    public static class Grid1854
+    {
+        public static Point1854 Make(int left, int right)
+        {
+            return new Point1854 { X = left, Y = right };
+        }
+    }
+

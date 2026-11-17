@@ -1,0 +1,97 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1587x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 72
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1587x1 struct {
+	seed int
+}
+
+type derived1587x1 struct {
+	base1587x1
+	step int
+}
+
+func (d derived1587x1) Next() int {
+	return d.seed + d.step + 27
+}
+type base1587x2 struct {
+	seed int
+}
+
+type derived1587x2 struct {
+	base1587x2
+	step int
+}
+
+func (d derived1587x2) Next() int {
+	return d.seed + d.step + 38
+}
+type Store1587x3[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1587x3[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1587x3[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr1587x4 struct {
+	code int
+}
+
+func (e probeErr1587x4) Error() string {
+	return "probe failure"
+}
+
+func check1587x4(value int) error {
+	if value < 0 {
+		return probeErr1587x4{code: value}
+	}
+	return nil
+}
+func fold1587x5(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 10
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Store1587x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1587x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1587x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

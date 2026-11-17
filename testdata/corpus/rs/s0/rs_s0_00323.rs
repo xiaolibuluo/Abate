@@ -1,0 +1,37 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+macro_rules! sum1110 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1110(values: &[i32]) -> i32 {
+    let literal = sum1110!(90, 54);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub trait Encode1111 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet1111<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode1111 for Packet1111<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+macro_rules! sum1112 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1112(values: &[i32]) -> i32 {
+    let literal = sum1112!(7, 15);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}

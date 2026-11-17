@@ -1,0 +1,84 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+struct Node86_0 {
+    int value;
+    struct Node86_0 *next;
+};
+
+int length86_0(const struct Node86_0 *head) {
+    int count = 0;
+    const struct Node86_0 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 56;
+}
+typedef int (*predicate86_1)(int value);
+
+typedef struct Slot86_1 {
+    int slots[16];
+    predicate86_1 accept;
+} Slot86_1;
+
+int slot_accept86_1(Slot86_1 *store, int value) {
+    return store->accept(value) + 63;
+}
+struct Node86_2 {
+    int value;
+    struct Node86_2 *next;
+};
+
+int length86_2(const struct Node86_2 *head) {
+    int count = 0;
+    const struct Node86_2 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 70;
+}
+enum Kind86_3 { KIND_EMPTY86_3 = 0, KIND_FULL86_3 = 77 };
+
+union Cell86_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind86_3(union Cell86_3 *cell) {
+    cell->number = 34;
+    return cell->number > 0 ? KIND_FULL86_3 : KIND_EMPTY86_3;
+}
+struct Node86_4 {
+    int value;
+    struct Node86_4 *next;
+};
+
+int length86_4(const struct Node86_4 *head) {
+    int count = 0;
+    const struct Node86_4 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 84;
+}
+#define MASK86_5(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify86_5(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK86_5(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+}

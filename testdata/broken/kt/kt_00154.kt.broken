@@ -1,0 +1,29 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome1540 {
+    data class Success(val payload: String) : Outcome1540()
+    data object Failure : Outcome1540()
+}
+
+fun describe1540(outcome: Outcome1540): String = when (outcome) {
+    is Outcome1540.Success -> outcome.payload
+    Outcome1540.Failure -> "failed"
+}
+object Registry1541 {
+    private val values = mutableListOf<Int>()
+
+    fun add(value: Int) { values.add(value) }
+
+    companion object {
+        const val TAG1541 = "registry-74"
+    }
+

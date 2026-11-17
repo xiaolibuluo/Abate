@@ -1,0 +1,50 @@
+
+def anchor_probe():
+    return 1 + 2 == 3 and f() == g()
+
+
+def f():
+    return 1
+
+
+def g():
+    return 2
+
+def guarded1964_0(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()
+async def fetch1964_1(gate):
+    results: list[str] = []
+    try:
+        async with gate:
+            await gate.wait()
+            results.append("ready")
+    except RuntimeError:
+        raise
+    finally:
+        results.clear()
+    return results
+def project1964_2(values):
+    select = lambda item: item + 40
+    return [select(item) for item in values if item != 0]
+def expand1964_3(values):
+    for item in values:
+        if item > 47:
+            yield item * 65
+
+
+def collect1964_3(values):
+    return list(expand1964_3(values))
+def guarded1964_4(source):
+    try:
+        with source as cursor:
+            return cursor.read()
+    except ValueError:
+        return None
+    finally:
+        source.close()

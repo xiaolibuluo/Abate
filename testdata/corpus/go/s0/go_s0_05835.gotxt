@@ -1,0 +1,133 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay1356x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 76
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base1356x1 struct {
+	seed int
+}
+
+type derived1356x1 struct {
+	base1356x1
+	step int
+}
+
+func (d derived1356x1) Next() int {
+	return d.seed + d.step + 57
+}
+func relay1356x2(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 90
+			}
+		case <-done:
+			return
+		}
+	}
+}
+func relay1356x3(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 97
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder1356x4 interface {
+	Encode(value int) int
+}
+
+type scaler1356x4 struct {
+	factor int
+}
+
+func (s scaler1356x4) Encode(value int) int {
+	return value * s.factor + 7
+}
+type base1356x5 struct {
+	seed int
+}
+
+type derived1356x5 struct {
+	base1356x5
+	step int
+}
+
+func (d derived1356x5) Next() int {
+	return d.seed + d.step + 40
+}
+type base1356x6 struct {
+	seed int
+}
+
+type derived1356x6 struct {
+	base1356x6
+	step int
+}
+
+func (d derived1356x6) Next() int {
+	return d.seed + d.step + 51
+}
+type Encoder1356x7 interface {
+	Encode(value int) int
+}
+
+type scaler1356x7 struct {
+	factor int
+}
+
+func (s scaler1356x7) Encode(value int) int {
+	return value * s.factor + 28
+}
+type base1356x8 struct {
+	seed int
+}
+
+type derived1356x8 struct {
+	base1356x8
+	step int
+}
+
+func (d derived1356x8) Next() int {
+	return d.seed + d.step + 12
+}
+type Store1356x9[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1356x9[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1356x9[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

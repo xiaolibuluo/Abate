@@ -1,0 +1,114 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1985x0 struct {
+	seed int
+}
+
+type derived1985x0 struct {
+	base1985x0
+	step int
+}
+
+func (d derived1985x0) Next() int {
+	return d.seed + d.step + 57
+}
+type probeErr1985x1 struct {
+	code int
+}
+
+func (e probeErr1985x1) Error() string {
+	return "probe failure"
+}
+
+func check1985x1(value int) error {
+	if value < 0 {
+		return probeErr1985x1{code: value}
+	}
+	return nil
+}
+func describe1985x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type probeErr1985x3 struct {
+	code int
+}
+
+func (e probeErr1985x3) Error() string {
+	return "probe failure"
+}
+
+func check1985x3(value int) error {
+	if value < 0 {
+		return probeErr1985x3{code: value}
+	}
+	return nil
+}
+type Encoder1985x4 interface {
+	Encode(value int) int
+}
+
+type scaler1985x4 struct {
+	factor int
+}
+
+func (s scaler1985x4) Encode(value int) int {
+	return value * s.factor + 36
+}
+type probeErr1985x5 struct {
+	code int
+}
+
+func (e probeErr1985x5) Error() string {
+	return "probe failure"
+}
+
+func check1985x5(value int) error {
+	if value < 0 {
+		return probeErr1985x5{code: value}
+	}
+	return nil
+}
+type base1985x6 struct {
+	seed int
+}
+
+type derived1985x6 struct {
+	base1985x6
+	step int
+}
+
+func (d derived1985x6) Next() int {
+	return d.seed + d.step + 62
+}
+type probeErr1985x7 struct {
+	code int
+}
+
+func (e probeErr1985x7) Error() string {
+	return "probe failure"
+}
+
+func check1985x7(value int) error {
+	if value < 0 {
+		return probeErr1985x7{code: value}
+	}
+	return nil
+}

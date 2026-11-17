@@ -1,0 +1,65 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+sealed class Outcome850 {
+    data class Success(val payload: String) : Outcome850()
+    data object Failure : Outcome850()
+}
+
+fun describe850(outcome: Outcome850): String = when (outcome) {
+    is Outcome850.Success -> outcome.payload
+    Outcome850.Failure -> "failed"
+}
+fun <T, R> List<T>.mapChecked851(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+}
+fun <T> List<T>.secondOrNull852(): T? = if (size > 1) this[1] else null
+
+fun render852(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+sealed class Outcome853 {
+    data class Success(val payload: String) : Outcome853()
+    data object Failure : Outcome853()
+}
+
+fun describe853(outcome: Outcome853): String = when (outcome) {
+    is Outcome853.Success -> outcome.payload
+    Outcome853.Failure -> "failed"
+}
+@JvmName("step854")
+fun step854(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 71
+}
+sealed class Outcome855 {
+    data class Success(val payload: String) : Outcome855()
+    data object Failure : Outcome855()
+}
+
+fun describe855(outcome: Outcome855): String = when (outcome) {
+    is Outcome855.Success -> outcome.payload
+    Outcome855.Failure -> "failed"
+}
+fun <T, R> List<T>.mapChecked856(transform: (T) -> R): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result.add(transform(item))
+    }
+    return result
+

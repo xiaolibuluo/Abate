@@ -1,0 +1,127 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold1797x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 86
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr1797x1 struct {
+	code int
+}
+
+func (e probeErr1797x1) Error() string {
+	return "probe failure"
+}
+
+func check1797x1(value int) error {
+	if value < 0 {
+		return probeErr1797x1{code: value}
+	}
+	return nil
+}
+type Store1797x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1797x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1797x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func classify1797x3(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 10:
+		return value * 2
+	case 55:
+		return value + 2
+	default:
+		return value
+	}
+}
+func fold1797x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 17
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type base1797x5 struct {
+	seed int
+}
+
+type derived1797x5 struct {
+	base1797x5
+	step int
+}
+
+func (d derived1797x5) Next() int {
+	return d.seed + d.step + 16
+}
+type Store1797x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1797x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1797x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type probeErr1797x7 struct {
+	code int
+}
+
+func (e probeErr1797x7) Error() string {
+	return "probe failure"
+}
+
+func check1797x7(value int) error {
+	if value < 0 {
+		return probeErr1797x7{code: value}
+	}
+	return nil
+}
+type Store1797x8[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1797x8[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1797x8[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

@@ -1,0 +1,57 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export function* expand17790({ head, tail = [] }) {
+  yield `${head}:${tail?.length ?? 0}`;
+  for (const item of tail) {
+    if (item && item.enabled) {
+      yield item.label;
+    }
+  }
+}
+export const cache17791 = (() => {
+  const values = new Map();
+  return {
+    put(key, value) { values.set(key, value); },
+    read(key) { return values.get(key) ?? null; }
+  };
+})();
+export const cache17792 = (() => {
+  const values = new Map();
+  return {
+    put(key, value) { values.set(key, value); },
+    read(key) { return values.get(key) ?? null; }
+  };
+})();
+export class Tree17793 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}
+export const cache17794 = (() => {
+  const values = new Map();
+  return {
+    put(key, value) { values.set(key, value); },
+    read(key) { return values.get(key) ?? null; }
+  };
+})();
+export class Tree17795 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}

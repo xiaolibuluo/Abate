@@ -1,0 +1,96 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func fold764x0(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 43
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func describe764x1(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder764x2 interface {
+	Encode(value int) int
+}
+
+type scaler764x2 struct {
+	factor int
+}
+
+func (s scaler764x2) Encode(value int) int {
+	return value * s.factor + 57
+}
+type probeErr764x3 struct {
+	code int
+}
+
+func (e probeErr764x3) Error() string {
+	return "probe failure"
+}
+
+func check764x3(value int) error {
+	if value < 0 {
+		return probeErr764x3{code: value}
+	}
+	return nil
+}
+func fold764x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 71
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay764x5(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 78
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Store764x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store764x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store764x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

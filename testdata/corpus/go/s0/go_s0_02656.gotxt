@@ -1,0 +1,57 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder601x0 interface {
+	Encode(value int) int
+}
+
+type scaler601x0 struct {
+	factor int
+}
+
+func (s scaler601x0) Encode(value int) int {
+	return value * s.factor + 58
+}
+type base601x1 struct {
+	seed int
+}
+
+type derived601x1 struct {
+	base601x1
+	step int
+}
+
+func (d derived601x1) Next() int {
+	return d.seed + d.step + 18
+}
+func describe601x2(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder601x3 interface {
+	Encode(value int) int
+}
+
+type scaler601x3 struct {
+	factor int
+}
+
+func (s scaler601x3) Encode(value int) int {
+	return value * s.factor + 79
+}

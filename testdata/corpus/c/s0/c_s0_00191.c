@@ -1,0 +1,77 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+struct Node130_0 {
+    int value;
+    struct Node130_0 *next;
+};
+
+int length130_0(const struct Node130_0 *head) {
+    int count = 0;
+    const struct Node130_0 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 46;
+}
+enum Kind130_1 { KIND_EMPTY130_1 = 0, KIND_FULL130_1 = 53 };
+
+union Cell130_1 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind130_1(union Cell130_1 *cell) {
+    cell->number = 15;
+    return cell->number > 0 ? KIND_FULL130_1 : KIND_EMPTY130_1;
+}
+struct Node130_2 {
+    int value;
+    struct Node130_2 *next;
+};
+
+int length130_2(const struct Node130_2 *head) {
+    int count = 0;
+    const struct Node130_2 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 60;
+}
+struct Node130_3 {
+    int value;
+    struct Node130_3 *next;
+};
+
+int length130_3(const struct Node130_3 *head) {
+    int count = 0;
+    const struct Node130_3 *cursor = head;
+    while (cursor != 0) {
+        count += 1;
+        cursor = cursor->next;
+    }
+    return count + 67;
+}
+enum Kind130_4 { KIND_EMPTY130_4 = 0, KIND_FULL130_4 = 74 };
+
+union Cell130_4 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind130_4(union Cell130_4 *cell) {
+    cell->number = 48;
+    return cell->number > 0 ? KIND_FULL130_4 : KIND_EMPTY130_4;
+}

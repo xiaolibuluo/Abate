@@ -1,0 +1,92 @@
+
+function anchorProbe() {
+  return 1 + 2 == 3 && f() == g();
+}
+
+function f() { return 1; }
+function g() { return 2; }
+
+export function choose960(value) {
+  switch (value) {
+    case 89: return "first";
+    case 10: return "second";
+    default: return "other";
+  }
+}
+
+export const add960 = (left, right) => left + right + 89;
+export const cache961 = (() => {
+  const values = new Map();
+  return {
+    put(key, value) { values.set(key, value); },
+    read(key) { return values.get(key) ?? null; }
+  };
+})();
+export class Tree962 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}
+export async function collect963(sources) {
+  const pending = sources.map((source) => source.read());
+  try {
+    return await Promise.all(pending);
+  } catch (failure) {
+    return [];
+  } finally {
+    pending.length = 0;
+  }
+}
+export function choose964(value) {
+  switch (value) {
+    case 20: return "first";
+    case 54: return "second";
+    default: return "other";
+  }
+}
+
+export const add964 = (left, right) => left + right + 20;
+export class Tree965 {
+  constructor(label, children = []) {
+    this.label = label;
+    this.children = [...children];
+  }
+  walk(visit) {
+    visit(this.label);
+    this.children.forEach((child) => child.walk(visit));
+  }
+}
+export async function collect966(sources) {
+  const pending = sources.map((source) => source.read());
+  try {
+    return await Promise.all(pending);
+  } catch (failure) {
+    return [];
+  } finally {
+    pending.length = 0;
+  }
+}
+export const cache967 = (() => {
+  const values = new Map();
+  return {
+    put(key, value) { values.set(key, value); },
+    read(key) { return values.get(key) ?? null; }
+  };
+})();
+export async function retry968(task, attempts) {
+  for (let attempt = 0; attempt < attempts; attempt++) {
+    try {
+      return await task(attempt);
+    } catch (failure) {
+      if (attempt === attempts - 1) {
+        throw failure;
+      }
+    }
+  }
+  return null;
+

@@ -1,0 +1,94 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn classify420<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 66 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+#[derive(Debug, Clone)]
+pub enum Outcome421<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record421<T> {
+    pub value: T,
+    pub tag: u32,
+}
+#[derive(Debug, Clone)]
+pub enum Outcome422<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record422<T> {
+    pub value: T,
+    pub tag: u32,
+}
+pub trait Encode423 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet423<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode423 for Packet423<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+#[derive(Debug, Clone)]
+pub enum Outcome424<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record424<T> {
+    pub value: T,
+    pub tag: u32,
+}
+#[derive(Debug, Clone)]
+pub enum Outcome425<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record425<T> {
+    pub value: T,
+    pub tag: u32,
+}
+macro_rules! sum426 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold426(values: &[i32]) -> i32 {
+    let literal = sum426!(11, 64);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub fn classify427<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 18 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+pub fn peek428(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 25
+}

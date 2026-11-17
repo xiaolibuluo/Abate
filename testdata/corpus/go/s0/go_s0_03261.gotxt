@@ -1,0 +1,33 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+func relay734x0(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 41
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type Encoder734x1 interface {
+	Encode(value int) int
+}
+
+type scaler734x1 struct {
+	factor int
+}
+
+func (s scaler734x1) Encode(value int) int {
+	return value * s.factor + 48
+}

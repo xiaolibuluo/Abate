@@ -1,0 +1,124 @@
+<!--
+  Copyright (c) 小黎的部落 (www.qingdujian.com) — Project: xiaolibuluo/Abate (https://github.com/xiaolibuluo/Abate)
+  SPDX-License-Identifier: AGPL-3.0-or-later (subject to confirmation by the rights holder / 需权利人确认)
+  Abate dual-license (AGPLv3 or commercial) bilingual documentation.
+  本文件不构成法律意见 / This document does not constitute legal advice.
+-->
+
+> Language / 语言：[English](CHANGELOG.en.md) | [中文](CHANGELOG.md)
+
+# Changelog
+
+All notable changes to Abate are documented here. The format follows a
+milestone-based record; released engine versions use `v<year-ring>.<minor>.<patch>`
+per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
+
+Version-number consistency is enforced by CI: the `ldflags` version, this
+CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
+
+## [v1.0.0]
+
+GA release. Closes the M1–M6 program.
+
+- **Kernel (L0)**: the four perturbation-algebra operations and algebraic-law
+  checks, deterministic scheduler, observation pipeline, verifier, mutation
+  core (PIT algorithm port), injection core (chaosblade source merged in).
+- **CES (L2)**: canonical schema / parsing / validation / TCK in place; 164 TCK
+  cases (parse 68 / validate 46 / roundtrip 50), including a sample
+  third-party conforming implementation.
+- **Simulator (L3)**: virtual clock / deterministic PRNG / virtual network /
+  virtual filesystem / virtual scheduling / record-and-replay (frame hash
+  chain + full-tier SHA-256).
+- **Language frontends (L4)**: AIR + seven-language frontends for
+  Go/Python/JS/C/C#/Rust/Kotlin + rule engine + in-house checker (SARIF) +
+  operator derivation.
+- **Control plane (L7)**: CLI / REST / Web console; REST enforces Bearer
+  authentication and refuses to start on a remote listener without a token.
+- **Security (XCU-SEC)**: threat model T1–T10 established; executable attack
+  case sets for T1/T6/T7/T8/T10 (including -race) in CI; signature chain /
+  report escaping / archive tamper resistance verified.
+- **Security increments (T2/T3/T9 landed)**: added the `security/redact`
+  deterministic redaction middleware and wired it into the two log points in
+  `ctl/rest/middleware.go` (panic log and access log); added three executable
+  attack cases under `security/tests`:
+  `TestThreatT2CapabilityEscalation`, `TestThreatT3ResourceExhaustion`,
+  `TestThreatT9SecretRedaction`; updated the threat-model alignment check to
+  10/10. The gVisor platform-level sandbox (`kernel/abi/`) and the real WASM
+  runtime (`plugin/wasm/` + wazero) were delivered incrementally after GA;
+  see "Post-GA incremental wrap-up" below. The version number was not changed;
+  the single source of truth stays consistent.
+- **Governance (XCU-GOV)**: copyright-header gate + watermark + dual
+  licensing + third-party source incorporation registry.
+- **Release (XCU-REL)**: `release.sh` reproducible build matrix + checksum
+  manifest (watermark) + SBOM (SPDX 2.3) + GPG signing rehearsal.
+
+### Post-GA incremental wrap-up (2026-11-13 ~ 2026-11-14)
+
+The following are incremental deliveries and governance wrap-up after v1.0.0;
+**the version number is unchanged** and the single source of truth stays
+consistent.
+
+- **Real WASM runtime**: `plugin/wasm/` contains 32 `.go` files (WAT lexing /
+  parsing / encoding, module loading, fuel/gas limits, deterministic clock,
+  host function binding), with wazero v1.12.0 fully vendored
+  (`go.mod` / `vendor/modules.txt` / `third_party/_sources/wazero/`).
+  Corrects the earlier boundary statement that "the real WASM runtime has not
+  been delivered".
+- **gVisor ABI-trimmed port**: `kernel/abi/` syscall tables (amd64 352 / arm64
+  295), errno, hostarch primitives; `syscall_test.go` reads upstream values at
+  runtime for an item-by-item cross-check; see
+  `docs/dev/abi-port-parity.md`. Corrects the earlier statement that "the
+  gVisor platform-level sandbox has not been delivered".
+- **Lint fully cleared**: 7 high-complexity production functions and 6
+  over-limit test functions were split into single-responsibility helpers,
+  removing 8 knock-on findings; 9 companion source files were split out at
+  ≤300 lines each; `golangci-lint` reports **0 issues** (revive with
+  enable-all-rules on).
+- **Security upgrade**: Go 1.26.10 → **1.26.11**, fixing GO-2026-6859
+  (`net/http` MaxBytesReader header race); `govulncheck` actually run and
+  reported `No vulnerabilities found`.
+- **Rule precision**: section ③ of `m5-reference-scan.sh` changed to a
+  `go.mod`-authoritative bidirectional vendor/require consistency check;
+  `license-check.sh` gained standard BSD legal-text signature phrases.
+  Neither check was loosened; no whitelist or skip was introduced.
+- **All gates green**: all nine CI gate sections `PASSED`; 3 TLA+ specs;
+  determinism / drift / pit-parity(100%) / m5-reference-scan /
+  `go mod verify` all passed.
+- **Repository governance**: 1013 CMake/Ninja build artifacts under
+  `libclang-min/build/` were removed from version control and added to
+  `.gitignore` (workspace files retained); `docs/dev/pending-work.md` was
+  rewritten to an as-is completion archive.
+
+## [M6] GA wrap-up (before v1.0.0)
+
+- CES-TCK released and the sample third-party conformance process walked
+  through.
+- Security audit gates (signature chain / sandbox escape / dependency
+  vulnerability scan) all green.
+- Full documentation set (user / developer / specification / ADR) in place.
+- Release engineering rehearsal (tag + assets + checksums + SBOM).
+
+## [M5] Seven languages + control plane
+
+- LNG-PY/JS/C/RS/CS/KT all landed; CTL-REST online; HTML/JSON/JUnit/OTel
+  reports.
+
+## [M4] WASM runtime + minimal ecosystem loop
+
+- WAS-HOST/CAP/HOT/SIG four modules; plugin signature chain + capability
+  sandbox; SARIF report validation.
+
+## [M3] Go language frontend loop (dogfooding)
+
+- LNG-AIR/GO/RULE/CHK/MUT complete; Go rule set ≥100 rules; repository
+  self-check 0 violations.
+
+## [M2] Simulator complete + dual cores merged
+
+- SIM-NET/FS/SCHED/REC + KRN-MUT/INJ; PIT/chaosblade merged at source level.
+
+## [M1] Minimal kernel loop
+
+- KRN-ALG/SCH/OBS/VER + CES-SCHEMA/PARSE/VALID + SIM-CLK/RNG + CTL-CLI.
+- 100 runs with the same seed produce byte-identical reports; the
+  perturbation-algebra laws are fully covered.

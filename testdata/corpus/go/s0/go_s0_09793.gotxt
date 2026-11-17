@@ -1,0 +1,48 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2292x0 struct {
+	seed int
+}
+
+type derived2292x0 struct {
+	base2292x0
+	step int
+}
+
+func (d derived2292x0) Next() int {
+	return d.seed + d.step + 10
+}
+type base2292x1 struct {
+	seed int
+}
+
+type derived2292x1 struct {
+	base2292x1
+	step int
+}
+
+func (d derived2292x1) Next() int {
+	return d.seed + d.step + 21
+}
+type Store2292x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2292x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2292x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}

@@ -1,0 +1,57 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Store2501x0[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2501x0[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2501x0[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder2501x1 interface {
+	Encode(value int) int
+}
+
+type scaler2501x1 struct {
+	factor int
+}
+
+func (s scaler2501x1) Encode(value int) int {
+	return value * s.factor + 30
+}
+type Encoder2501x2 interface {
+	Encode(value int) int
+}
+
+type scaler2501x2 struct {
+	factor int
+}
+
+func (s scaler2501x2) Encode(value int) int {
+	return value * s.factor + 37
+}
+type Encoder2501x3 interface {
+	Encode(value int) int
+}
+
+type scaler2501x3 struct {
+	factor int
+}
+
+func (s scaler2501x3) Encode(value int) int {
+	return value * s.factor + 44
+}

@@ -1,0 +1,6 @@
+{
+  "language": "cs",
+  "kind": "unclosed-delimiter",
+  "expectedDiagnostic": "ParseError",
+  "sourceRelPath": "cs/s0/cs_s0_00175.cs"
+}

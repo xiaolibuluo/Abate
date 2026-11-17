@@ -1,0 +1,122 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base1459x0 struct {
+	seed int
+}
+
+type derived1459x0 struct {
+	base1459x0
+	step int
+}
+
+func (d derived1459x0) Next() int {
+	return d.seed + d.step + 35
+}
+type Encoder1459x1 interface {
+	Encode(value int) int
+}
+
+type scaler1459x1 struct {
+	factor int
+}
+
+func (s scaler1459x1) Encode(value int) int {
+	return value * s.factor + 64
+}
+type Store1459x2[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store1459x2[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store1459x2[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func describe1459x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+func fold1459x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 85
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func classify1459x5(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 92:
+		return value * 2
+	case 29:
+		return value + 2
+	default:
+		return value
+	}
+}
+func describe1459x6(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Encoder1459x7 interface {
+	Encode(value int) int
+}
+
+type scaler1459x7 struct {
+	factor int
+}
+
+func (s scaler1459x7) Encode(value int) int {
+	return value * s.factor + 9
+}
+func classify1459x8(value int) int {
+	defer func() {
+		value = value + 1
+	}()
+	switch value {
+	case 16:
+		return value * 2
+	case 62:
+		return value + 2
+	default:
+		return value
+	}
+}

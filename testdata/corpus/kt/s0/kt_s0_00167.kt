@@ -1,0 +1,70 @@
+package synth
+
+import kotlin.properties.Delegates
+
+fun anchorProbe(): Boolean {
+    return 1 + 2 == 3 && f() == g()
+}
+
+fun f(): Int = 1
+fun g(): Int = 2
+
+@JvmName("step1360")
+fun step1360(limit: Int): Int {
+    var total = 0
+    for (index in 1..limit) {
+        total += index
+    }
+    return total + 27
+}
+class Counter1361 {
+    var current: Int by Delegates.observable(34) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+class Counter1362 {
+    var current: Int by Delegates.observable(41) { _, _, new -> println(new) }
+
+    suspend fun advance(): Int {
+        try {
+            current += 1
+        } catch (failure: IllegalStateException) {
+            current = 0
+        } finally {
+            println("advanced")
+        }
+        return current
+    }
+}
+sealed class Outcome1363 {
+    data class Success(val payload: String) : Outcome1363()
+    data object Failure : Outcome1363()
+}
+
+fun describe1363(outcome: Outcome1363): String = when (outcome) {
+    is Outcome1363.Success -> outcome.payload
+    Outcome1363.Failure -> "failed"
+}
+fun <T> List<T>.secondOrNull1364(): T? = if (size > 1) this[1] else null
+
+fun render1364(values: List<String>?): String {
+    return values?.filter { it.isNotBlank() }?.joinToString(separator = ",") ?: "empty"
+}
+sealed class Outcome1365 {
+    data class Success(val payload: String) : Outcome1365()
+    data object Failure : Outcome1365()
+}
+
+fun describe1365(outcome: Outcome1365): String = when (outcome) {
+    is Outcome1365.Success -> outcome.payload
+    Outcome1365.Failure -> "failed"
+}

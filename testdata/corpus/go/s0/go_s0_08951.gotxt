@@ -1,0 +1,106 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type Encoder2087x0 interface {
+	Encode(value int) int
+}
+
+type scaler2087x0 struct {
+	factor int
+}
+
+func (s scaler2087x0) Encode(value int) int {
+	return value * s.factor + 73
+}
+type Store2087x1[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2087x1[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2087x1[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder2087x2 interface {
+	Encode(value int) int
+}
+
+type scaler2087x2 struct {
+	factor int
+}
+
+func (s scaler2087x2) Encode(value int) int {
+	return value * s.factor + 87
+}
+func fold2087x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 94
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold2087x4(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 101
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type probeErr2087x5 struct {
+	code int
+}
+
+func (e probeErr2087x5) Error() string {
+	return "probe failure"
+}
+
+func check2087x5(value int) error {
+	if value < 0 {
+		return probeErr2087x5{code: value}
+	}
+	return nil
+}
+type Store2087x6[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2087x6[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2087x6[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+type Encoder2087x7 interface {
+	Encode(value int) int
+}
+
+type scaler2087x7 struct {
+	factor int
+}
+
+func (s scaler2087x7) Encode(value int) int {
+	return value * s.factor + 25
+}

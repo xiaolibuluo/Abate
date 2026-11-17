@@ -1,0 +1,92 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+int gcd138_0(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale138_0(int value) {
+    return gcd138_0(value, 60) * 53;
+}
+typedef int (*predicate138_1)(int value);
+
+typedef struct Slot138_1 {
+    int slots[16];
+    predicate138_1 accept;
+} Slot138_1;
+
+int slot_accept138_1(Slot138_1 *store, int value) {
+    return store->accept(value) + 60;
+}
+int scan138_2(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 67;
+}
+int gcd138_3(int left, int right) {
+    while (right != 0) {
+        int next = left % right;
+        left = right;
+        right = next;
+    }
+    return left;
+}
+
+int scale138_3(int value) {
+    return gcd138_3(value, 32) * 74;
+}
+int scan138_4(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 81;
+}
+enum Kind138_5 { KIND_EMPTY138_5 = 0, KIND_FULL138_5 = 88 };
+
+union Cell138_5 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind138_5(union Cell138_5 *cell) {
+    cell->number = 54;
+    return cell->number > 0 ? KIND_FULL138_5 : KIND_EMPTY138_5;
+}
+#define MASK138_6(v) (((v) << 4) | ((v) & 0x0F))
+
+int classify138_6(int value) {
+    switch (value & 0x0F) {
+    case 0: return MASK138_6(value);
+    case 1: return value >> 1;
+    default: return value ^ 0x0F;
+    }
+

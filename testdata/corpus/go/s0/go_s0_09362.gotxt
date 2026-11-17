@@ -1,0 +1,122 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type base2189x0 struct {
+	seed int
+}
+
+type derived2189x0 struct {
+	base2189x0
+	step int
+}
+
+func (d derived2189x0) Next() int {
+	return d.seed + d.step + 21
+}
+type probeErr2189x1 struct {
+	code int
+}
+
+func (e probeErr2189x1) Error() string {
+	return "probe failure"
+}
+
+func check2189x1(value int) error {
+	if value < 0 {
+		return probeErr2189x1{code: value}
+	}
+	return nil
+}
+type Encoder2189x2 interface {
+	Encode(value int) int
+}
+
+type scaler2189x2 struct {
+	factor int
+}
+
+func (s scaler2189x2) Encode(value int) int {
+	return value * s.factor + 55
+}
+func describe2189x3(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type Store2189x4[Key comparable, Value any] struct {
+	items map[Key]Value
+}
+
+func (s *Store2189x4[Key, Value]) Put(key Key, value Value) {
+	if s.items == nil {
+		s.items = make(map[Key]Value)
+	}
+	s.items[key] = value
+}
+
+func (s *Store2189x4[Key, Value]) ValueAt(key Key) (Value, bool) {
+	value, found := s.items[key]
+	return value, found
+}
+func describe2189x5(items []any) []string {
+	result := make([]string, 0, len(items))
+	for _, item := range items {
+		switch value := item.(type) {
+		case int:
+			result = append(result, "int"+string(rune(value)))
+		case string:
+			result = append(result, value)
+		default:
+			result = append(result, "other")
+		}
+	}
+	return result
+}
+type base2189x6 struct {
+	seed int
+}
+
+type derived2189x6 struct {
+	base2189x6
+	step int
+}
+
+func (d derived2189x6) Next() int {
+	return d.seed + d.step + 26
+}
+func fold2189x7(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 90
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+type Encoder2189x8 interface {
+	Encode(value int) int
+}
+
+type scaler2189x8 struct {
+	factor int
+}
+
+func (s scaler2189x8) Encode(value int) int {
+	return value * s.factor + 97
+}

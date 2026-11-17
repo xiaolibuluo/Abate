@@ -1,0 +1,93 @@
+
+pub fn anchor_probe() {
+    return 1 + 2 == 3 && f() == g();
+}
+
+pub fn f() -> i32 { 1 }
+pub fn g() -> i32 { 2 }
+
+pub fn parse1410(text: &str) -> Result<i32, std::num::ParseIntError> {
+    let value = text.parse::<i32>()?;
+    Ok(value + 92)
+}
+macro_rules! sum1411 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1411(values: &[i32]) -> i32 {
+    let literal = sum1411!(99, 31);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub fn classify1412<'a>(value: Option<&'a str>) -> &'a str {
+    match value {
+        Some("ready") => "ready",
+        Some(name) if name.len() > 9 => name,
+        Some(_) => "other",
+        None => "empty",
+    }
+}
+macro_rules! sum1413 {
+    ($($item:expr),+ $(,)?) => { 0 $(+ $item)+ };
+}
+
+pub fn fold1413(values: &[i32]) -> i32 {
+    let literal = sum1413!(16, 53);
+    values.iter().filter(|v| **v >= 0).fold(literal, |acc, v| acc + *v)
+}
+pub fn peek1414(values: &[i32]) -> i32 {
+    let pointer = values.as_ptr();
+    let first = unsafe { *pointer };
+    first + 23
+}
+#[derive(Debug, Clone)]
+pub enum Outcome1415<T> {
+    Success(T),
+    Failure(String),
+}
+
+#[derive(Debug)]
+pub struct Record1415<T> {
+    pub value: T,
+    pub tag: u32,
+}
+pub trait Encode1416 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet1416<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode1416 for Packet1416<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}
+pub fn loops1417(limit: i32) -> i32 {
+    let mut total = 0;
+    for value in 0..limit {
+        total += value;
+    }
+    let mut cursor = limit;
+    while cursor > 0 {
+        cursor -= 1;
+    }
+    loop {
+        total += 44;
+        break;
+    }
+    total
+}
+pub trait Encode1418 {
+    fn encode(&self) -> Result<String, ()>;
+}
+
+pub struct Packet1418<T> {
+    pub body: T,
+}
+
+impl<T: std::fmt::Display> Encode1418 for Packet1418<T> {
+    fn encode(&self) -> Result<String, ()> {
+        Ok(format!("{}", self.body))
+    }
+}

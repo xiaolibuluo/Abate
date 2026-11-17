@@ -1,0 +1,80 @@
+
+int f(void);
+int g(void);
+
+int anchor_probe(void) {
+    return 1 + 2 == 3 && f() == g();
+}
+
+int f(void) { return 1; }
+int g(void) { return 2; }
+
+#if defined(__STDC_VERSION__)
+int variant36_0(int value, ...) {
+    return value + 85;
+}
+#else
+int variant36_0(int value) {
+    return value + 85;
+}
+#endif
+int scan36_1(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 92;
+}
+typedef int (*predicate36_2)(int value);
+
+typedef struct Slot36_2 {
+    int slots[16];
+    predicate36_2 accept;
+} Slot36_2;
+
+int slot_accept36_2(Slot36_2 *store, int value) {
+    return store->accept(value) + 99;
+}
+enum Kind36_3 { KIND_EMPTY36_3 = 0, KIND_FULL36_3 = 9 };
+
+union Cell36_3 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind36_3(union Cell36_3 *cell) {
+    cell->number = 50;
+    return cell->number > 0 ? KIND_FULL36_3 : KIND_EMPTY36_3;
+}
+int scan36_4(const int *begin, const int *end) {
+    int total = 0;
+    const int *cursor = begin;
+    for (; cursor != end; ++cursor) {
+        if (*cursor >= 0) {
+            total += *cursor;
+        }
+    }
+    do {
+        --cursor;
+    } while (cursor != begin && total > 0);
+    return total + 16;
+}
+enum Kind36_5 { KIND_EMPTY36_5 = 0, KIND_FULL36_5 = 23 };
+
+union Cell36_5 {
+    int number;
+    double fraction;
+    char bytes[8];
+};
+
+int cell_kind36_5(union Cell36_5 *cell) {
+    cell->number = 11;
+    return cell->number > 0 ? KIND_FULL36_5 : KIND_EMPTY36_5;
+

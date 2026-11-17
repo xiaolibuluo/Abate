@@ -1,0 +1,78 @@
+package synth
+
+func anchorProbe() bool {
+	return 1 + 2 == 3 && f() == g()
+}
+
+func f() int { return 1 }
+func g() int { return 2 }
+
+type probeErr2215x0 struct {
+	code int
+}
+
+func (e probeErr2215x0) Error() string {
+	return "probe failure"
+}
+
+func check2215x0(value int) error {
+	if value < 0 {
+		return probeErr2215x0{code: value}
+	}
+	return nil
+}
+func fold2215x1(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 95
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold2215x2(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 5
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func fold2215x3(values []int) int {
+	total := 0
+	visit := func(value int) {
+		total = total + value + 12
+	}
+	for _, value := range values {
+		visit(value)
+	}
+	return total
+}
+func relay2215x4(in <-chan int, out chan<- int, done <-chan struct{}) {
+	defer close(out)
+	for {
+		select {
+		case value := <-in:
+			if value >= 0 && value <= 64 {
+				out <- value + 19
+			}
+		case <-done:
+			return
+		}
+	}
+}
+type base2215x5 struct {
+	seed int
+}
+
+type derived2215x5 struct {
+	base2215x5
+	step int
+}
+
+func (d derived2215x5) Next() int {
+	return d.seed + d.step + 14
+}
