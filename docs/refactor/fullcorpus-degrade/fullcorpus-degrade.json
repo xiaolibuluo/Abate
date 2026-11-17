@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "manifestSha256": "4469b28a01b8af40b3504c118b5a2c76ebfb093da8830148dfc581b3ad017333",
+  "formula": "degraded mappings with observed kind\u003e0 / (exact+degraded mappings) * 100",
+  "results": [
+    {
+      "language": "go",
+      "status": "NOT_MEASURED",
+      "files": 2932,
+      "parseOK": 2932,
+      "parseFail": 0,
+      "emptyUnit": 0,
+      "observedKinds": 38,
+      "mappings": 0,
+      "degradedObserved": 0,
+      "degradePct": 0
+    },
+    {
+      "language": "py",
+      "status": "MEASURED",
+      "files": 2932,
+      "parseOK": 2932,
+      "parseFail": 0,
+      "emptyUnit": 0,
+      "observedKinds": 43,
+      "mappings": 122,
+      "degradedObserved": 6,
+      "degradePct": 5.042016806722689
+    },
+    {
+      "language": "js",
+      "status": "MEASURED",
+      "files": 2932,
+      "parseOK": 2932,
+      "parseFail": 0,
+      "emptyUnit": 0,
+      "observedKinds": 32,
+      "mappings": 114,
+      "degradedObserved": 53,
+      "degradePct": 46.49122807017544
+    },
+    {
+      "language": "c",
+      "status": "MEASURED",
+      "files": 2932,
+      "parseOK": 2932,
+      "parseFail": 0,
+      "emptyUnit": 0,
+      "observedKinds": 28,
+      "mappings": 125,
+      "degradedObserved": 13,
+      "degradePct": 10.4
+    },
+    {
+      "language": "cs",
+      "status": "MEASURED",
+      "files": 2932,
+      "parseOK": 2932,
+      "parseFail": 0,
+      "emptyUnit": 0,
+      "observedKinds": 43,
+      "mappings": 215,
+      "degradedObserved": 11,
+      "degradePct": 5.116279069767442
+    },
+    {
+      "language": "rs",
+      "status": "MEASURED",
+      "files": 2932,
+      "parseOK": 2932,
+      "parseFail": 0,
+      "emptyUnit": 0,
+      "observedKinds": 45,
+      "mappings": 163,
+      "degradedObserved": 10,
+      "degradePct": 6.134969325153374
+    },
+    {
+      "language": "kt",
+      "status": "MEASURED",
+      "files": 2928,
+      "parseOK": 2928,
+      "parseFail": 0,
+      "emptyUnit": 0,
+      "observedKinds": 33,
+      "mappings": 134,
+      "degradedObserved": 7,
+      "degradePct": 5.223880597014926
+    }
+  ]
+}

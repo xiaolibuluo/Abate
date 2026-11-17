@@ -153,11 +153,16 @@ that was hit; CI fails in sync.
     figures are a **historical measurement taken before the corpus was fully
     self-researched**, preserved only in historical audit evidence such as
     `docs/i18n/QA-ANTI-FRAUD-AUDIT.md`, and **do not represent the current
-    corpus**. The test corpus is now 100% replaced with high-fidelity
-    self-researched sources (see `docs/refactor/`); the full-corpus degrade rate
-    on the self-researched corpus has not been re-measured and is
-    `NOT_MEASURED`. External conclusions must not be extrapolated beyond the
-    single-file caliber, nor may the above historical figures be presented as
-    current self-researched measurements;
+    corpus**. The test corpus is now 100% replaced with self-researched sources
+    (see `docs/refactor/`); the **full-corpus** degrade rate on the self-researched
+    corpus has been re-measured by parsing all 20520 entries with their real
+    frontends via `scripts/fullcorpus-degrade.sh`: py 5.04% / js 46.49% /
+    c 10.40% / cs 5.12% / rs 6.13% / kt 5.22%, with go `NOT_MEASURED` (no embedded
+    grammar mappings). Raw data and SHA-256 are under
+    `docs/refactor/fullcorpus-degrade/`. These full-corpus values **do not meet**
+    the frozen single-file thresholds and are disclosed honestly; they are not a
+    "high-fidelity / meets-threshold" claim. The single-file and full-corpus
+    calibers must not be mixed or extrapolated, nor may the historical
+    third-party figures above be presented as current self-research measurements;
   - `derive` killing is a **static AIR-level approximation, not a real go test
     execution**.

@@ -134,8 +134,12 @@ bash scripts/lint-gate.sh
     公式测得六语均超阈（js 49.12% / c 28.00% / py 26.89% / rs 42.33% / kt 8.21% /
     cs 6.98%），go 为 `NOT_MEASURED`——该组数值是**语料全面自研化之前的历史测量**，
     仅见 `docs/i18n/QA-ANTI-FRAUD-AUDIT.md` 等历史审计证据，**不代表当前语料状态**。
-    当前测试语料已 100% 替换为高保真自研语料（见 `docs/refactor/`），自研语料的全语料
-    降级率尚未重测，为 `NOT_MEASURED`。对外结论禁止脱离单文件口径外推，也禁止把上述
-    历史数值当作当前自研语料的实测值；
+    当前测试语料已 100% 替换为自研语料（见 `docs/refactor/`）；自研语料的**全语料口径**
+    降级率已用 `scripts/fullcorpus-degrade.sh` 对全部 20520 条逐条真实 parse 重测，
+    实测为 py 5.04% / js 46.49% / c 10.40% / cs 5.12% / rs 6.13% / kt 5.22%，
+    go 无嵌入语法映射仍为 `NOT_MEASURED`（原始数据与 SHA-256 见
+    `docs/refactor/fullcorpus-degrade/`）。该全语料数值**未达**单文件冻结口径的阈值，
+    只作诚实披露，不构成「高保真/达标」结论；单文件口径与全语料口径不得混用外推，
+    也禁止把上述历史第三方数值当作当前自研语料的实测值；
   - `derive` 的 killing 是 **static AIR-level approximation, not a real go test
     execution**（静态 AIR 级近似，非真实执行 go test）。
