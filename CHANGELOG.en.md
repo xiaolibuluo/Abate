@@ -16,6 +16,26 @@ per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
 Version-number consistency is enforced by CI: the `ldflags` version, this
 CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
 
+## [v1.2.27]
+
+Patch release — make the published binaries actually carry seven-language check (2026-11-19).
+
+- **Fix the code/release timing gap**: the v1.2.26 seven-language wiring source
+  and docs were committed at 02:18, but the release binaries were built at 01:13
+  and uploaded at 01:14, so the 5 downloadable binaries were still the old
+  Go-only build (`check` help read "Run the built-in Go rule set"). This version
+  rebuilds all 5 targets from current source; `abate check` is verified to
+  dispatch 7 languages by extension (`.go/.py/.js/.c/.cs/.rs/.kt`), with
+  `--languages` filtering, JSON/SARIF output and mixed-directory checks all
+  passing.
+- **Version bump**: `abate version` emits `abate 1.2.27`, `MetaVersion` synced
+  to `1.2.27`; user docs (quickstart / cli-reference / multilang-check-guide,
+  both zh and en) version examples updated. Frozen artifacts (watermark
+  `VersionLabel` / three SHA anchors / `SHA256SUMS`) left unchanged.
+- **Republished**: 5 binaries + `manifest.txt` + SPDX SBOM + 7 detached GPG
+  signatures, tagged and signed as `v1.2.27` and set as Latest; v1.2.26 /
+  v1.0.1 / v1.0.0 tags and releases kept unmodified.
+
 ## [v1.2.26]
 
 Release version bump with rebuilt binaries and public repository publication.

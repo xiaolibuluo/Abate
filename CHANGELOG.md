@@ -14,6 +14,21 @@ per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
 Version-number consistency is enforced by CI: the `ldflags` version, this
 CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
 
+## [v1.2.27]
+
+Patch release — 让已发布二进制真正包含七语言 check 能力（2026-11-19）。
+
+- **修复发布产物与代码时序错位**：v1.2.26 的七语言接线源码/文档于 02:18 提交，
+  但发布二进制早在 01:13 构建、01:14 上传，导致下载到的 5 个二进制仍是仅支持 Go
+  的旧版（`check` 帮助为 "Run the built-in Go rule set"）。本版本从当前源码重新
+  构建 5 目标二进制，`abate check` 实测按扩展名分派 7 语言（`.go/.py/.js/.c/.cs/.rs/.kt`），
+  `--languages` 筛选、JSON/SARIF 输出、混合目录一次检查均验证通过。
+- **版本升级**：`abate version` 输出 `abate 1.2.27`，`MetaVersion` 同步 `1.2.27`；
+  用户文档（quickstart / cli-reference / multilang-check-guide 中英双语）版本示例同步。
+  冻结件（水印 `VersionLabel` / 三份 SHA 锚点 / `SHA256SUMS`）保持不变。
+- **重新发布**：5 二进制 + `manifest.txt` + SPDX SBOM + 7 份 detached GPG 签名，
+  以独立签名 tag `v1.2.27` 发布为 Latest；v1.2.26 / v1.0.1 / v1.0.0 tag 与 Release 保留不改写。
+
 ## [v1.2.26]
 
 Release version bump with rebuilt binaries and public repository publication.

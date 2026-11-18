@@ -28,7 +28,7 @@ go build -o abate .
 `abate version` prints build provenance (version / schema / license / watermark):
 
 ```
-abate 1.2.26
+abate 1.2.27
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial
@@ -114,7 +114,7 @@ threat T10 in the security threat model).
 |---|---|
 | Dependencies | Zero external dependencies; offline `go build` with `GOPROXY=off` succeeds on the first try |
 | Build artifact | Single ~16 MB binary; no code generation or toolchain download needed |
-| Version | `./abate version` → `abate 1.2.26` |
+| Version | `./abate version` → `abate 1.2.27` |
 | Gates | header / style / hash / watermark / drift — all five PASS |
 | Tests | Full `go test ./...` passes (73 packages) |
 | Functional commands | `derive` works; `check` dispatches 7 languages by extension (`.go/.py/.js/.c/.cs/.rs/.kt`) and reports real rule violations; `run` executes a CES and emits a report + digest; invalid input yields precise parse errors carrying rule IDs |
@@ -124,7 +124,7 @@ threat T10 in the security threat model).
 1. **Prebuilt binaries in `dist/` are not in the repository.** That directory is
    excluded by `.gitignore` and can be rebuilt with `release.sh --dry-run`;
    ready-made 5-platform binaries (linux / darwin / windows × amd64 / arm64) are
-   available from the [GitHub Release v1.2.26](https://github.com/xiaolibuluo/Abate/releases/tag/v1.2.26).
+   available from the [GitHub Release v1.2.27](https://github.com/xiaolibuluo/Abate/releases/tag/v1.2.27).
    Building from source with `go build` is unaffected.
 
 2. **Advanced verification needs extra tooling — it is not clone-and-run**:

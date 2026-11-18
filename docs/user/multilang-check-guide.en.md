@@ -58,7 +58,7 @@ go build -o abate .
 Expected first line:
 
 ```
-abate 1.2.26
+abate 1.2.27
 ```
 
 Confirm `check` help lists the seven languages:

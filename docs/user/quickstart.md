@@ -24,7 +24,7 @@ go build -o abate .
 `abate version` 输出构建溯源（版本 / 规范 / 许可证 / 水印）：
 
 ```
-abate 1.2.26
+abate 1.2.27
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial
@@ -106,7 +106,7 @@ spec:
 |---|---|
 | 依赖 | 零外部依赖，`GOPROXY=off` 离线 `go build` 一次成功 |
 | 构建产物 | 单个约 16 MB 二进制，无需生成代码或下载工具链 |
-| 版本 | `./abate version` → `abate 1.2.26` |
+| 版本 | `./abate version` → `abate 1.2.27` |
 | 门禁 | header / style / hash / watermark / drift 五项全 PASS |
 | 测试 | `go test ./...` 全量通过（73 包） |
 | 功能命令 | `derive` 正常；`check` 按扩展名分派 7 语言（`.go/.py/.js/.c/.cs/.rs/.kt`）并检出规则违背；`run` 真实执行 CES 并产出报告 + 摘要；错误输入给出带规则号的精确解析错误 |
@@ -115,7 +115,7 @@ spec:
 
 1. **`dist/` 预编译二进制不在仓库**。该目录被 `.gitignore` 排除，由 `release.sh --dry-run` 可重建；
    现成 5 平台二进制（linux / darwin / windows × amd64 / arm64）请从
-   [GitHub Release v1.2.26](https://github.com/xiaolibuluo/Abate/releases/tag/v1.2.26) 下载。
+   [GitHub Release v1.2.27](https://github.com/xiaolibuluo/Abate/releases/tag/v1.2.27) 下载。
    从源码 `go build` 不受影响。
 
 2. **高级验证需额外环境，非 clone 即可全跑**：

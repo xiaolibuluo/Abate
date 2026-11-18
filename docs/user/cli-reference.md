@@ -77,7 +77,7 @@ Flags:
 ## abate version
 
 ```
-abate 1.2.26
+abate 1.2.27
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial
