@@ -18,6 +18,11 @@
 **Go、Python、JavaScript、C、C#、Rust、Kotlin** 七种语言，经统一 AIR 中间表示
 运行各语言自研规则集，输出逐字节可复现的 console / JSON / SARIF 报告，可直接入 CI。
 
+> **能力边界（先说清楚，避免误读）**：`abate check` 是**结构化静态 linter**——自研 lexer +
+> Pratt 解析器把源码真正解析成 AIR 语法树，再做结构模式匹配；**不是**编译器级语义分析，
+> 不做类型检查 / 控制流数据流分析，也不等同 go vet / eslint / clippy 的深度。容错解析，
+> **不用于语法错误守门**。详见[《能做什么、不能做什么》](docs/user/capabilities-and-limits.md)（含可复现实测）。
+
 同时也是一个确定性实验控制平面：以 CES（`ces.tencent.com/v1`）描述混沌实验与变异测试，
 经由 AIR 前端、确定性内核与 SIM-REC 档案，产出可逐字节复现（固定种子下）的运行报告与证据链。
 
@@ -33,7 +38,7 @@ Abate 采用 **AGPLv3（开源）+ 商业授权（闭源）双许可**：
 
 ## 2 环境要求 / Requirements
 
-- Go **1.26.11**（真实构建版本；历史文档中的 `go1.27`、`Go 1.24+` 均为旧值）
+- Go **1.26.11**（唯一权威构建版本，以 `go.mod` 的 `go` 指令与本机 `go version` 为准）
 - 项目**零外部依赖**（`go.sum` 为空、无 `vendor/`），离线构建直接 `GOPROXY=off` 即可
 - 可选：`golangci-lint`（版本以本机安装为准，本文档不写未核实的版本号）
 

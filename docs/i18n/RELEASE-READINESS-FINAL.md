@@ -324,3 +324,46 @@ console 指纹 `1e5ee8…`、json 指纹 `79b1fc…` 各自完全一致；两种
 4. 令牌仅在进程内用于 gh 认证，未回显、未写入文件、未入库。
 
 **执行状态**：**v1.2.28 补丁发布完成——下载件已带 check 专用退出码文案，七语言 check 与确定性均验证通过**。
+
+---
+
+## 十七、可信度质疑核查与诚信修复（2026-11-19）
+
+外部提出两点质疑，均以**实测证据**核查，不靠话术。结论：一点不成立、一点成立；分别处置。
+
+### 质疑一："七语言零依赖 = 大概率正则匹配，不是真语义解析" —— 半对半错
+
+**核查方法**：读 `lang/` 核心实现 + 设计鉴别性实测用例（正则无法处理的结构）。
+
+| 核查项 | 证据 | 结论 |
+|--------|------|------|
+| 解析架构 | `lang/frontkit/parser.go` 是 Pratt 算子优先级爬升解析器（整数绑定幂、无浮点/时钟/随机）；`lang/<lang>front/` 各有 lexspec/parser/map；产出 `air.Node` 结构化 AST | **真解析**，非纯正则 |
+| 规则匹配 | `lang/rule/matcher.go` 在 AST 节点上做结构化匹配（kind / SemKey / 属性约束 / 子节点序列 / 元变量捕获 / `$..` 跨层 / `!P` 否定）；规则如 `ClassDecl~_`、`Ident/[A-Z]/` 的 kind 是 AST 节点类型，正则仅约束节点属性文本 | **结构匹配**，非文本扫描 |
+| 鉴别实测 | 四层嵌套 Python（`if→for→assign→return`）产出 `total=28`、命中 5 类 `PY-AIR-*` 结构规则 | 建立嵌套结构、树上匹配坐实 |
+
+**但质疑者有一半对**：前端是**容错解析**——`lang/frontkit/frontend.go` 明确 "Syntax failures are
+surfaced as diagnostics and a partial AIR root"；实测破损输入 `def f(:` / `x =` 仍产出 12 条 warning、
+不报语法错误。因此准确定位是"**结构化静态 linter**"，**不是**编译器级语义分析、不做类型检查 /
+控制流数据流分析、不等同 go vet / eslint / clippy 深度。此前文档只说 "static analysis" 未讲清边界，
+外界按 go vet 级期待 → 可信度缺口。
+
+**处置**：新增 `docs/user/capabilities-and-limits.md` / `.en.md`，用可复现命令把"真解析的证据"与
+"明确的边界"逐条写清；README 中英首屏加"能力边界"引用块；GitHub description 从 "static analysis CLI"
+改为 "structural linter CLI ... Error-tolerant, not a compiler-grade analyzer"。**不改运行时**——解析与规则是真能力，无需伪造；改的是准确定位。
+
+### 质疑二："Go 版本口径自相矛盾（go1.27 / Go 1.24+ vs 1.26.11）" —— 成立
+
+**核查**：`go.mod` 的 `go` 指令与本机 `go version` 均为 `1.26.11`（唯一权威）；但 README/T01 原话
+"历史文档中的 `go1.27`、`Go 1.24+` 均为旧值"**主动列举并自认矛盾**，观感差；`docs/plan/07` 另有
+`Go 1.22+` 历史 ADR 数字未标注。（`system_design.md` 的 `go 1.5%` 经核实是**降级率**，非版本，不动。）
+
+**处置**：README 中英、T01 教程中英改为中性单一口径"以 `go.mod` 的 `go` 指令与本机 `go version`
+为准的 1.26.11"，不再自曝式对比；`docs/plan/07` 中英对 `Go 1.22+` 加"历史 ADR 背景、非当前构建版本"标注。
+
+**边界声明**：
+1. 本次为文档 + 仓库元信息诚信修复，**不改运行时源码、不动二进制、不动 tag/Release**；v1.2.28 二进制功能不受影响。
+2. 能力描述以实测为准，既不夸大（不宣称 go vet 级）也不贬低（明确真 AST 解析）；复现命令随文档给出。
+3. README 变更使哈希门禁如期失配，按既有实践重生成 `SHA256SUMS` 并同步 `WATERMARK.sha256`，全门禁 PASS。
+4. 冻结件（水印版本标签、三份 SHA 锚点）未动。
+
+**执行状态**：**两项质疑核查完成——"正则匹配"质疑证伪、"版本口径"质疑证实并修复；诚信文档与准确定位已落地**。

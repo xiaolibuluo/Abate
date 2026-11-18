@@ -19,6 +19,15 @@ dispatches by file extension across **Go, Python, JavaScript, C, C#, Rust and
 Kotlin**, runs each language's in-house rule set over a unified AIR intermediate
 representation, and emits byte-reproducible console / JSON / SARIF reports for CI.
 
+> **Capability boundary (stated up front, to avoid misreading)**: `abate check` is
+> a **structural linter** — an in-house lexer + Pratt parser really parses source
+> into an AIR tree, then applies structural pattern matching. It is **not**
+> compiler-grade semantic analysis: no type checking, no control-flow/data-flow
+> analysis, and not equivalent in depth to go vet / eslint / clippy. Parsing is
+> error-tolerant and **not a syntax-error gate**. See
+> [What It Can and Cannot Do](docs/user/capabilities-and-limits.en.md) (with
+> reproducible evidence).
+
 It is also a deterministic experiment control plane: chaos experiments and
 mutation testing are described in CES (`ces.tencent.com/v1`), then driven through
 the AIR frontend, a deterministic kernel and SIM-REC archives, producing run
@@ -37,8 +46,8 @@ Abate is dual-licensed under **AGPLv3 (open source) and a commercial license**:
 
 ## 2 Requirements
 
-- Go **1.26.11** (the real build version; the older `go1.27` / `Go 1.24+`
-  values in historical documents are outdated)
+- Go **1.26.11** (the single authoritative build version, per the `go`
+  directive in `go.mod` and the local `go version`)
 - **Zero external dependencies** (empty `go.sum`, no `vendor/`), so offline
   builds work directly with `GOPROXY=off`
 - Optional: `golangci-lint` (use whatever version is installed locally; this

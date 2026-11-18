@@ -30,6 +30,12 @@ Patch release — 把 v1.2.27 之后源码侧的易用性修订随二进制一�
 - **重新发布**：5 二进制 + `manifest.txt` + SPDX SBOM + 7 份 detached GPG 签名，
   以独立签名 tag `v1.2.28` 发布为 Latest；v1.2.27 / v1.2.26 / v1.0.1 / v1.0.0 tag 与 Release 保留不改写。
   细节见发布就绪文档 §十六。
+- **可信度质疑核查与诚信修复（发布后文档补充，不动二进制）**：对"七语言是正则匹配"与"Go 版本口径矛盾"
+  两项外部质疑做实测核查。前者证伪——`lang/frontkit/parser.go` 为 Pratt 真解析器、规则在 AST 上做结构化
+  匹配，实测嵌套结构产出多类规则命中；但承认**容错解析、非编译器级语义分析**的边界。后者成立——
+  `go.mod`/本机均为 `1.26.11`，README/T01 原"历史值均为旧值"表述自曝矛盾，已改中性单一口径。
+  新增 `docs/user/capabilities-and-limits.md` / `.en.md` 写清能力边界与复现实测；README 首屏加边界说明；
+  GitHub description 改为 "structural linter ... not a compiler-grade analyzer"。细节见 §十七。
 
 ## [v1.2.27]
 

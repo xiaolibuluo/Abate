@@ -186,7 +186,7 @@ ctl/rest/
 
 ### 6. Dependencies and constraints
 
-- Depends on: L0–L6 port interfaces, standard library `net/http` (Go 1.22+ routing enhancements, no third-party routing framework — recorded in an ADR).
+- Depends on: L0–L6 port interfaces, standard library `net/http` (no third-party routing framework — historical ADR decision; the Go 1.22+ mention refers to routing capabilities at that time, not the current build version, which is `go 1.26.11` per `go.mod`).
 - Forbidden: embedded business logic; remote listening without authentication (startup refused); plaintext tokens in logs (masking).
 
 ### 7. Test requirements

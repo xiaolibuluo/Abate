@@ -40,6 +40,17 @@ Patch release — ship the post-v1.2.27 usability fixes in the binaries (2026-11
   signatures, tagged and signed as `v1.2.28` and set as Latest; v1.2.27 /
   v1.2.26 / v1.0.1 / v1.0.0 tags and releases kept unmodified. Details in
   release readiness doc §十六.
+- **Credibility review & honesty fixes (post-release docs, binary untouched)**:
+  two external claims were checked empirically. "Seven languages are just regex"
+  was disproven — `lang/frontkit/parser.go` is a real Pratt parser and rules match
+  structurally on the AST (nested-structure probe hit multiple rule classes) —
+  while the **error-tolerant, non-compiler-grade** boundary was explicitly
+  acknowledged. "Go version contradiction" was confirmed — `go.mod`/local are
+  both `1.26.11`, README/T01's self-contradicting "old values" phrasing was
+  replaced with a neutral single source of truth. Added
+  `docs/user/capabilities-and-limits.md` / `.en.md` with reproducible evidence,
+  a README boundary note, and changed the GitHub description to "structural
+  linter ... not a compiler-grade analyzer". Details in §十七.
 
 ## [v1.2.27]
 

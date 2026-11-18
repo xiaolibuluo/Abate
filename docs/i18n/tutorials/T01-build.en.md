@@ -16,8 +16,9 @@ confirm the build provenance.
 
 ## 2 Prerequisites
 
-- **Go 1.26.11** installed (the real build version of this repository; the
-  older `go1.27` and `Go 1.24+` values in legacy documents are outdated);
+- **Go 1.26.11** installed (the single authoritative build version, per the
+  `go` directive in `go.mod`; all version outputs in this tutorial are verified
+  against the local `go version`);
 - The repository source (**zero external dependencies**: empty `go.sum`, no
   `vendor/`; no module downloads needed);
 - All commands in this tutorial are run from the repository root.
