@@ -88,6 +88,30 @@ consistent.
   `libclang-min/build/` were removed from version control and added to
   `.gitignore` (workspace files retained); `docs/dev/pending-work.md` was
   rewritten to an as-is completion archive.
+- **All-language degradation wrap-up (2026-11-18)**: all 20520 self-researched
+  corpus entries re-parsed individually; py 3.36% / js 3.51% / c 4.80% /
+  cs 4.65% / rs 4.91% / kt 4.48%, with go remaining `NOT_MEASURED` (no embedded
+  grammar mappings). All six languages are below 5%. Every exact mapping is
+  backed by a genuine dedicated-kind frontend emission (dual minimal-sample and
+  real-corpus guards); residual degraded entries are shared-kind carry-overs or
+  zero-production frozen-corpus constructs and stay degraded honestly — no
+  labels were rewritten.
+- **Quality-dimension consolidation (2026-11-18)**:
+  - The P8 `frontend parse throughput` budget is owned by `LNG-*`, but only the
+    go/py frontends had parse benchmarks. Added parse benchmarks for the js/c/
+    cs/rs/kt frontends (`*_bench_test.go`) with deterministic source generation,
+    real `Parse`, a `NodeCount` non-zero guard, and reported MB/s and nodes/op —
+    no performance hard assertions. Measured: js 1.23 / c 1.19 / cs 0.73 /
+    rs 2.85 / kt 0.80 MB/s.
+  - Added Go-native fuzzing for cfront (`cfront_fuzz_test.go`), covering the
+    input space beyond the fixed chaos corpus. **Fuzzing found and fixed a real
+    panic**: an unclosed `template <` made `cAngleRange` return an inverted
+    interval and `cLeafNodes` call `make` with a negative cap; added inverted-
+    range guards to cfront's `cLeafNodes`/`cExprReducer.reduce` and csfront/
+    ktfront's `leafNodes`, with a `TestCFuzzUnclosedTemplateRegression` lock.
+    20s / 200k fuzz executions, zero crashes.
+  - Full `go test ./...` (73 packages) passed, `golangci-lint` 0 issues,
+    lint-gate ten sections all green.
 
 ## [M6] GA wrap-up (before v1.0.0)
 

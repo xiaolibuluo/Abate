@@ -174,6 +174,9 @@ func cLeafNodes(tokens []frontkit.Token, lo, hi int) []air.Node {
 	if hi > len(tokens) {
 		hi = len(tokens)
 	}
+	if hi <= lo {
+		return nil
+	}
 	out := make([]air.Node, 0, hi-lo)
 	for j := lo; j < hi; j++ {
 		switch tokens[j].Kind {

@@ -64,6 +64,9 @@ func (r *cExprReducer) reduce(tokens []frontkit.Token, lo, hi int) []air.Node {
 	if hi > len(tokens) {
 		hi = len(tokens)
 	}
+	if hi <= lo {
+		return nil
+	}
 	out := make([]air.Node, 0, hi-lo)
 	start := lo
 	for i := lo; i < hi; i++ {

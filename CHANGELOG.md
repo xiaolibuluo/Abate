@@ -66,6 +66,23 @@ GA release. Closes the M1–M6 program.
 - **仓库治理**：1013 个 `libclang-min/build/` CMake/Ninja 构建产物移出版本控制
   并纳入 `.gitignore`（工作区文件保留）；`docs/dev/pending-work.md` 按实况重写
   为完工状态归档。
+- **全语言降级率收官（2026-11-18）**：自研语料全语料 20520 条逐条真实 parse，
+  py 3.36% / js 3.51% / c 4.80% / cs 4.65% / rs 4.91% / kt 4.48%，
+  go 无嵌入语法映射保持 `NOT_MEASURED`；六语言全部降到 5% 以下。
+  每个 exact 映射均由前端真实专用 kind 产出（最小样例 + 真实语料双重守护），
+  剩余 degraded 为共享 kind 连带或冻结语料零产出构造，如实保留，不改标签。
+- **质量维度巩固（2026-11-18）**：
+  - P8 `frontend parse throughput` 预算 owner 为 `LNG-*`，此前仅 go/py 前端有
+    基准；为 js/c/cs/rs/kt 五个前端补齐 parse 性能基准（`*_bench_test.go`），
+    确定性源生成 + 真实 `Parse` + `NodeCount` 非零护栏，报告 MB/s 与 nodes/op，
+    无性能硬断言。实测 js 1.23 / c 1.19 / cs 0.73 / rs 2.85 / kt 0.80 MB/s。
+  - cfront 补齐 Go 原生 fuzz（`cfront_fuzz_test.go`），补足固定 chaos 语料覆盖
+    不到的输入空间。**fuzz 发现并修复一例真实 panic**：未闭合 `template <` 使
+    `cAngleRange` 返回倒置区间，`cLeafNodes` 以负 cap 调用 `make` 崩溃；在
+    cfront 的 `cLeafNodes`/`cExprReducer.reduce` 与 csfront/ktfront 的
+    `leafNodes` 统一加区间倒置防御，并留 `TestCFuzzUnclosedTemplateRegression`
+    回归锁。20s / 20 万次变异零崩溃。
+  - 全量 `go test ./...`（73 包）通过、`golangci-lint` 0 issues、lint-gate 十段全绿。
 
 ## [M6] GA 收尾（v1.0.0 之前）
 

@@ -267,6 +267,15 @@ func (e *ktExpr) infixRule() func(*frontkit.PrattParser, air.Node,
 
 // leafNodes 把区间内每个非 trivia token 映射为词法叶子。
 func (e *ktExpr) leafNodes(tokens []frontkit.Token, lo, hi int) []air.Node {
+	if lo < 0 {
+		lo = 0
+	}
+	if hi > len(tokens) {
+		hi = len(tokens)
+	}
+	if hi <= lo {
+		return nil
+	}
 	out := make([]air.Node, 0, hi-lo)
 	for j := lo; j < hi; j++ {
 		switch tokens[j].Kind {
