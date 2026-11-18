@@ -36,19 +36,24 @@ does not constitute legal advice.
 | 4 | `jsfront/jsmap.go` split | P1 | ✅ done | all 3 files ≤300 lines |
 | 5 | Final nine-section gate + `-race` + govulncheck | P0 | ✅ done | `CI GATE: PASSED`, auxiliary gates all green |
 | 6 | Documentation consolidation | P2 | ✅ done this round | this document + `CHANGELOG.md` |
-| 7 | SBOM + Release pipeline real run | P2 | ⬜ not executed (not a gate item) | scripts ready; no artifacts from this round |
-| 8 | Final completion-review report filed | P0 | ⬜ not filed (verdict in §V) | standalone report file missing |
+| 7 | SBOM + Release pipeline real run | P2 | ✅ done (2026-11-19) | `docs/i18n/RELEASE-READINESS-FINAL.md` §VIII: SPDX 2.3 SBOM + 5-target dry-run + manifest 5/5 OK + reproducible dual build; artifacts in `dist/` (gitignored) |
+| 8 | Final completion-review report filed | P0 | ✅ filed (re-reviewed 2026-11-19) | `docs/i18n/RELEASE-READINESS-FINAL.md` (stale full-corpus caliber corrected + §VIII real-run evidence added) |
 
 **Conclusion**: engineering implementation and the frozen-gate caliber
 (including the degrade-rate single-file caliber) are fully met (items 1–6,
 where item 1's functional-level verification is a known boundary);
 the iron-rule caliber (functional-level verification) and the full-corpus
-caliber are stated separately — see §V of this document and dimension 7 of
-`docs/i18n/QA-ANTI-FRAUD-AUDIT.md`: the degrade rate "meets threshold" only
-under the frozen single-file caliber, and under the same formula all six
-languages exceed the threshold on the full corpus; items 7 and 8 are
-procedural wrap-ups that enter no CI gate and are honestly listed as
-remaining items.
+caliber are stated separately — see §V of this document and
+`docs/refactor/fullcorpus-degrade/`: the degrade rate "meets threshold" only
+under the frozen single-file (first unit) caliber. The full-corpus caliber of
+the self-researched corpus has been remeasured by
+`scripts/fullcorpus-degrade.sh` over all 20,520 entries (each genuinely parsed):
+all six languages now fall below 5% (py 3.36% / js 3.51% / c 4.80% / cs 4.65% /
+rs 4.91% / kt 4.48%, with go still `NOT_MEASURED` as it has no embedded grammar
+mappings), yet under the same formula they still do not reach the stricter
+frozen single-file threshold, so this is disclosed as fact only and must not be
+extrapolated into a "high fidelity / threshold met" claim; items 7 and 8 are
+procedural wrap-ups that enter no CI gate.
 
 ---
 
@@ -213,17 +218,25 @@ Remaining (non-gate items): [7 SBOM / Release real run] · [8 standalone final-r
 **Remaining boundaries (fabrication forbidden)**
 1. `libclang-18.so.18` was really compiled, but CXCursor traversal / CGO
    bridging / report updates are not filed.
-2. The `SBOM` + `Release` pipelines were not really run this round (scripts
-   ready, no artifacts).
-3. The standalone final-review report is not filed (§V of this document is
-   the immediate verdict).
-4. `.artifacts/libclang-min/build/` was removed from the index, but history
+2. `.artifacts/libclang-min/build/` was removed from the index, but history
    commits still contain these artifacts; fully slimming history requires a
    separate `git filter-repo` operation (rewriting all history hashes), not
    executed this time.
+3. Formal signed release (GPG signature + annotated tag + push) still requires
+   the rights holder's authorization; only the local `--dry-run` rehearsal was
+   completed on 2026-11-19 (artifacts not committed, no signature, no tag).
 
-**To complete the iron-rule caliber 100%**, the suggested order is:
+**Completed (2026-11-19)**
+- ② Offline real runs of `sbom.sh` / `release.sh`: `scripts/sbom.sh` was fixed
+  for the crash on the missing `third_party/LICENSE-MANIFEST.md` (the project is
+  now zero-dependency self-researched, so it degrades gracefully to an empty
+  array and honestly emits a main-module-only SPDX); `release.sh --dry-run
+  v1.0.0` passed 5-target cross-compilation + manifest 5/5 OK + reproducible
+  dual-build SHA256. Evidence in `docs/i18n/RELEASE-READINESS-FINAL.md` §VIII.
+- ③ The standalone final-review report `docs/i18n/RELEASE-READINESS-FINAL.md`
+  is filed and re-reviewed (stale full-corpus caliber corrected + SBOM/Release
+  real-run evidence added).
+
+**To complete the iron-rule caliber 100%**, only this remains:
 ① libclang C API minimal functional-level verification + rewrite
-`build-report.txt`;
-② real runs of `sbom.sh` / `release.sh` with artifacts retained;
-③ file the standalone final-review report.
+`build-report.txt` (the known functional-level boundary).

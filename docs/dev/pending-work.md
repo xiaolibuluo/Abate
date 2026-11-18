@@ -17,12 +17,15 @@
 | 4 | `jsfront/jsmap.go` 拆分 | P1 | ✅ 已完成 | 3 个文件均 ≤300 行 |
 | 5 | 终版九段门禁 + `-race` + govulncheck | P0 | ✅ 已完成 | `CI GATE: PASSED`，辅助门禁全绿 |
 | 6 | 文档统一收口 | P2 | ✅ 本次完成 | 本文 + `CHANGELOG.md` |
-| 7 | SBOM + Release 流水线实跑 | P2 | ⬜ 未执行（非门禁项） | 脚本就绪，无本轮工件 |
-| 8 | 完工度终审报告落盘 | P0 | ⬜ 未落盘（判定见 §五） | 独立报告文件缺失 |
+| 7 | SBOM + Release 流水线实跑 | P2 | ✅ 已完成（2026-11-19） | `docs/i18n/RELEASE-READINESS-FINAL.md` §八：SBOM SPDX 2.3 + 5 目标 dry-run + 清单 5/5 OK + 双构建可复现；产物在 `dist/`（gitignore） |
+| 8 | 完工度终审报告落盘 | P0 | ✅ 已落盘（2026-11-19 复核） | `docs/i18n/RELEASE-READINESS-FINAL.md`（已修正过时全语料口径 + 补 §八实跑证据） |
 
 **结论**：工程实现与冻结门禁口径（含降级率单文件口径）已全部达成（1–6 项，其中第 1 项的功能级验证为已知边界）；
-铁律口径（功能级验证）与全语料口径另行说明，见本文 §五及 `docs/i18n/QA-ANTI-FRAUD-AUDIT.md` 第 7 维度——
-降级率达标仅限冻结单文件口径，全语料同公式六语全部超阈；7、8 属流程性收尾，未进入任何 CI 门禁，如实列为剩余项。
+铁律口径（功能级验证）与全语料口径另行说明，见本文 §五及 `docs/refactor/fullcorpus-degrade/`——
+降级率「达标」仅限冻结的单文件（首 unit）口径；自研语料的全语料口径已由 `scripts/fullcorpus-degrade.sh`
+对全部 20520 条逐条真实 parse 重测，六语已降至 5% 以下（py 3.36% / js 3.51% / c 4.80% /
+cs 4.65% / rs 4.91% / kt 4.48%，go 无嵌入语法映射仍为 `NOT_MEASURED`），但按同一公式仍未达
+更严格的单文件冻结阈值，故只作事实披露、不外推为「高保真 / 达标」结论；7、8 属流程性收尾，未进入任何 CI 门禁。
 
 ---
 
@@ -153,12 +156,18 @@
 
 **遗留边界（禁止伪造）**
 1. `libclang-18.so.18` 已真实编译，但 CXCursor 遍历 / CGO 桥接 / 报告更新未落盘。
-2. `SBOM` + `Release` 流水线本轮未实跑（脚本就绪，无工件）。
-3. 独立终审报告未落盘（本文 §五 为即时判定）。
-4. `.artifacts/libclang-min/build/` 已从索引移除，但历史 commit 中仍含这些产物；
+2. `.artifacts/libclang-min/build/` 已从索引移除，但历史 commit 中仍含这些产物；
    如需彻底瘦身历史，需独立的 `git filter-repo` 操作（改写全部历史 hash），本次未执行。
+3. 正式签名发布（GPG 签名 + 注解 tag + push）仍须权利人授权；2026-11-19 仅完成
+   `--dry-run` 本地演练（产物不入库、不签名、不建 tag）。
 
-**若要补齐铁律口径 100%**，建议顺序：
-① libclang C API 最小功能级验证 + 重写 `build-report.txt`；
-② `sbom.sh` / `release.sh` 实跑并留存工件；
-③ 落盘独立终审报告。
+**已补齐（2026-11-19）**
+- ② `sbom.sh` / `release.sh` 离线实跑成功：`scripts/sbom.sh` 修复了对缺失
+  `third_party/LICENSE-MANIFEST.md` 的崩溃（项目已零依赖自研，改为优雅降级为空数组，
+  如实产出仅含主模块的 SPDX）；`release.sh --dry-run v1.0.0` 五目标交叉编译 +
+  校验和清单 5/5 OK + 双构建 SHA256 一致。证据见 `docs/i18n/RELEASE-READINESS-FINAL.md` §八。
+- ③ 独立终审报告 `docs/i18n/RELEASE-READINESS-FINAL.md` 已落盘并复核（修正过时
+  全语料口径 + 补 SBOM/Release 实跑证据）。
+
+**若要补齐铁律口径 100%**，仅剩：
+① libclang C API 最小功能级验证 + 重写 `build-report.txt`（功能级已知边界）。

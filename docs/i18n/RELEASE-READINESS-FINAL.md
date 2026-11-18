@@ -1,12 +1,12 @@
 # Abate 完工度终审报告 / Release Readiness Final Report
 
-> 生成时间：2026-11-16
+> 生成时间：2026-11-16；最近复核：2026-11-19（全语料降级口径更新 + SBOM/Release 实跑）
 > 性质：发布前必检项（对应 `docs/dev/pending-work.md` §8）
 > 原则：实事求是，所有结论均来自本轮独立实跑，不采信任何自报，禁止伪绿/夸大。
 
 ## 一、结论摘要
 
-工程与门禁口径层面**已完工，具备发布工程条件**。对外发布前仍有两项须如实标注的边界（见 §四）：全语料降级率超阈（口径已披露）、libclang-min 功能级为已知边界。版本化与 GPG 签名、GitHub 合并保护已完成配置。
+工程与门禁口径层面**已完工，具备发布工程条件**。对外发布前仍有一项须如实标注的边界（见 §四）：libclang-min 功能级为已知边界。全语料降级率已由历史超阈降至六语均 <5%（口径与阈值边界见 §四.1 更新）。版本化与 GPG 签名、GitHub 合并保护已完成配置；SBOM 与 Release 流水线已于 2026-11-19 离线实跑成功（见 §八）。
 
 ## 二、本轮独立实测门禁结果
 
@@ -38,7 +38,7 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 
 ## 四、诚实边界（对外发布文案须遵守，禁止外推）
 
-1. **降级率口径**：冻结门禁的 `degrade*Pct` 按每语言首个真实 unit（单文件）计算——cs 3.26% / kt 4.48% / py 0% / rs 0.61%（对应冻结阈值达标）；用同一 Degradation 公式跑**全语料**则为 js 49.12% / c 28.00% / py 26.89% / rs 42.33% / kt 8.21% / cs 6.98%（六语超阈），go=NOT_MEASURED。**达标结论仅限冻结单文件口径，不得宣称语料级/全语料达标**。详见 `docs/i18n/QA-ANTI-FRAUD-AUDIT.md` 第 7 维度与各 coverage 文档的口径披露段。
+1. **降级率口径（2026-11-19 更新）**：冻结门禁的 `degrade*Pct` 按每语言首个真实 unit（单文件）计算，对应冻结阈值达标。用同一 Degradation 公式跑**全语料**（`scripts/fullcorpus-degrade.sh`，20520 条逐条真实 parse）：历史第三方语料数值为 js 49.12% / c 28.00% / py 26.89% / rs 42.33% / kt 8.21% / cs 6.98%（六语超阈，见 `docs/i18n/QA-ANTI-FRAUD-AUDIT.md` 第 7 维度，属语料自研化之前的**历史证据**，不代表当前状态）；**当前自研语料全语料**经两轮真实专用 kind 产出重测，已降至 py 3.36% / js 3.51% / c 4.80% / cs 4.65% / rs 4.91% / kt 4.48%，go=NOT_MEASURED（原始数据与 SHA-256 见 `docs/refactor/fullcorpus-degrade/`）。**关键边界**：六语全语料数值虽均 <5%，但按同一公式仍未达更严格的冻结单文件阈值，故只作事实披露，**不得据此宣称语料级/全语料「达标」或「高保真」**；冻结口径与全语料口径不得混用外推。每个 exact 升级均有前端真实产出（最小样例 + 真实语料双重守护测试）支撑，绝不靠改标签造假。
 2. **libclang-min**：产物 `.so` 存在，功能级验证为已知边界，铁律口径未满足（见 `docs/dev/pending-work.md`）。对外如需声明，须标注为已知边界。
 3. 反造假闭环已完成：九维审计中 capture/变异/混沌/语料/门禁判灯五维无造假；标签造假、贴标签伪 Kind、零产出 exact、临时探针均已清零；口径已透明披露。
 
@@ -59,6 +59,22 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 
 ## 七、对外发布文案红线（发布时须遵守）
 
-1. 仅用冻结口径数据 + 全语料数据如实并列，零夸大；libclang-min 标注为已知边界。
+1. 仅用冻结口径数据 + 全语料数据如实并列，零夸大；libclang-min 标注为已知边界；全语料 <5% 不等于冻结口径达标（见 §四.1）。
 2. 仓库尚未 push（本地版本化完成）。push 为对外发布行为，须由权利人明确授权后执行。
 3. GitHub 规则集在首个 push 后于仓库设置页显示为 active（API 已回读确认生效）。
+
+## 八、SBOM 与 Release 流水线实跑证据（2026-11-19）
+
+对应 `docs/dev/pending-work.md` §7（此前标注「脚本就绪、无工件」）。本轮离线实跑并留存可复现证据（产物在 `dist/`，已纳入 `.gitignore`，不入库）。
+
+| 项 | 命令 | 实测结果 |
+|----|------|---------|
+| SBOM 生成 | `bash scripts/sbom.sh v1.0.0 dist/` | PASS（rc=0），SPDX 2.3，1 个包（主模块 abate v1.0.0） |
+| SBOM 可复现 | 双跑比对（剔除 `creationInfo.created`） | 逐字节一致 |
+| Release 演练 | `bash scripts/release.sh --dry-run v1.0.0` | PASS（rc=0），5 目标交叉编译 + 校验和清单 + SBOM；跳过签名与 tag |
+| 清单校验 | `sha256sum -c manifest.txt` | 5/5 OK |
+| 二进制可复现 | linux/amd64 双构建 SHA256 | 一致：`763d7fd1…` |
+
+**修复记录**：`scripts/sbom.sh` 原硬读 `third_party/LICENSE-MANIFEST.md` 而崩溃（rc=2）。项目已彻底自研化——`go.mod` 仅 `module abate`+`go 1.26.11`，零第三方依赖、无 `vendor/`、无 `third_party/` 目录—故 SBOM 的两类来源均允许为空。已修脚本对缺失清单优雅降级为空数组，如实产出「仅含主模块」的 SBOM，不改依赖事实、不造假。
+
+**产物边界**：`--dry-run` 仅做前置校验 + 构建 + 清单 + SBOM，**未签名、未建 tag**；正式签名发布仍须权利人授权后按脚本非 dry-run 路径执行。交叉编译二进制与平台绑定，属构建产物，按 `.gitignore` 不入库。

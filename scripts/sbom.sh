@@ -3,9 +3,11 @@
 # Abate SBOM 生成（XCU-REL）
 #
 # 产出 SPDX 2.3 JSON：合并两部分事实来源（SSOT）：
-#   1) go list -m all 的全部 Go 模块依赖（离线，GOPROXY=off）。
-#   2) third_party/LICENSE-MANIFEST.md 登记的开源并入项（含许可证审查结论）。
+#   1) go.mod 中声明的全部 Go 模块依赖（离线，GOPROXY=off）。
+#   2) third_party/LICENSE-MANIFEST.md 登记的开源并入项（若文件存在）。
 #
+# 项目已彻底自研化（go.mod 零第三方依赖、无 vendor、无 third_party 目录），
+# 故两部分来源都允许为空：此时 SBOM 只含主模块自身，如实反映零依赖现状。
 # 全程离线，不访问网络。输出 ${OUT}/sbom.spdx.json。
 # =============================================================================
 set -euo pipefail
@@ -38,13 +40,19 @@ done | jq -s '.')"
 root_json="$(jq -n --arg ver "$VERSION" '{SPDXID:"SPDXRef-Go-abate", name:"abate", versionInfo:$ver, downloadLocation:"https://github.com/xiaolibuluo/Abate", licenseConcluded:"NOASSERTION", supplier:"Organization: 小黎的部落"}')"
 
 # 收集 third_party 登记项（从 LICENSE-MANIFEST.md 表格行提取组件 + 许可证）。
-tp_json="$(awk -F'|' '/^\| /{
-  gsub(/[ \t]+/,"",$2); comp=$2;
-  if (comp=="组件"||comp==""||comp=="---") next;
-  lic=$5; gsub(/[ \t]+/,"",lic);
-  sid="SPDXRef-TP-"comp; gsub(/[^A-Za-z0-9]/,"-",sid);
-  printf "{\"SPDXID\":\"%s\",\"name\":\"%s\",\"versionInfo\":\"\",\"downloadLocation\":\"NOASSERTION\",\"licenseConcluded\":\"%s\",\"supplier\":\"NOASSERTION\"}\n", sid, comp, (lic==""?"NOASSERTION":lic);
-}' third_party/LICENSE-MANIFEST.md | jq -s '.')"
+# 该清单并非总是存在：彻底自研阶段无并入项，此时为空数组（不是错误）。
+TP_MANIFEST="third_party/LICENSE-MANIFEST.md"
+if [ -f "$TP_MANIFEST" ]; then
+  tp_json="$(awk -F'|' '/^\| /{
+    gsub(/[ \t]+/,"",$2); comp=$2;
+    if (comp=="组件"||comp==""||comp=="---") next;
+    lic=$5; gsub(/[ \t]+/,"",lic);
+    sid="SPDXRef-TP-"comp; gsub(/[^A-Za-z0-9]/,"-",sid);
+    printf "{\"SPDXID\":\"%s\",\"name\":\"%s\",\"versionInfo\":\"\",\"downloadLocation\":\"NOASSERTION\",\"licenseConcluded\":\"%s\",\"supplier\":\"NOASSERTION\"}\n", sid, comp, (lic==""?"NOASSERTION":lic);
+  }' "$TP_MANIFEST" | jq -s '.')"
+else
+  tp_json='[]'
+fi
 
 # 合并并写出 SPDX 2.3 文档。
 jq -n \

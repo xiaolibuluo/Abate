@@ -20,3 +20,7 @@ bench.test
 
 # 所有运行时产物目录（报告/证据/构建缓存，均可由脚本复现，禁止入库）
 .artifacts/
+
+# Release 流水线产物（5 目标交叉编译二进制 + 校验和清单 + SPDX SBOM，
+# 由 scripts/release.sh --dry-run 可复现生成，禁止入库）
+dist/
