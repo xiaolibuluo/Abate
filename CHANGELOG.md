@@ -14,6 +14,23 @@ per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
 Version-number consistency is enforced by CI: the `ldflags` version, this
 CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
 
+## [v1.2.28]
+
+Patch release — 把 v1.2.27 之后源码侧的易用性修订随二进制一起带入（2026-11-19）。
+
+- **带入 check 帮助文案修订**：v1.2.27 发布后源码已把 `check --help` 的退出码说明从共用的
+  "稳态违反"四态语义改为 check 专用（0 干净 / 1 含 warning 的发现 / 2 内部错误 / 3 用法错误，
+  `--severity error` 可过滤）；上一版二进制未带此文案，本版本重新构建 5 目标后**下载即见新文案**。
+  报告输出、规则集、AIR 与确定性指纹均不受影响（帮助文本非报告产物）。
+- **带入易用性文档修订**：README 快速开始七语言 check 复制即用示例、`GOFLAGS=-mod=vendor`→
+  `GOPROXY=off` 纠正、T01 版本示例 `0.1.0`→`1.2.27` 等纯文档修订已在此前源码提交落地，本版本二进制与之配套发布。
+- **版本升级**：`abate version` 输出 `abate 1.2.28`，`MetaVersion` 同步 `1.2.28`；用户文档
+  （quickstart / cli-reference / multilang-check-guide / T01 双语）版本示例与 README 中英徽章同步。
+  水印 `VersionLabel` / 三份 SHA 锚点保持不变；`SHA256SUMS` / `WATERMARK.sha256` 因 README 徽章变更按既有实践重生成。
+- **重新发布**：5 二进制 + `manifest.txt` + SPDX SBOM + 7 份 detached GPG 签名，
+  以独立签名 tag `v1.2.28` 发布为 Latest；v1.2.27 / v1.2.26 / v1.0.1 / v1.0.0 tag 与 Release 保留不改写。
+  细节见发布就绪文档 §十六。
+
 ## [v1.2.27]
 
 Patch release — 让已发布二进制真正包含七语言 check 能力（2026-11-19）。

@@ -45,7 +45,7 @@ go version go1.26.11 linux/amd64
 `/tmp/abate_verify version` (6 lines, byte-for-byte stable):
 
 ```
-abate 1.2.27
+abate 1.2.28
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial

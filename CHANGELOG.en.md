@@ -16,6 +16,31 @@ per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
 Version-number consistency is enforced by CI: the `ldflags` version, this
 CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
 
+## [v1.2.28]
+
+Patch release — ship the post-v1.2.27 usability fixes in the binaries (2026-11-19).
+
+- **check help text now shipped**: after v1.2.27, source replaced the shared
+  "steady-state violated" exit-code help with a check-specific one (0 clean /
+  1 findings incl. warning / 2 internal error / 3 usage error, filterable via
+  `--severity error`). The previous binary lacked this text; after rebuilding
+  all 5 targets, the downloaded binary **shows the new help**. Report output,
+  rule sets, AIR and deterministic fingerprints are unaffected (help text is
+  not a report artifact).
+- **usability doc fixes shipped**: README quick-start copy-paste seven-language
+  check examples, `GOFLAGS=-mod=vendor`→`GOPROXY=off` correction and T01 version
+  sample `0.1.0`→`1.2.27` — documentation-only fixes already in source, now
+  paired with a matching binary release.
+- **Version bump**: `abate version` emits `abate 1.2.28`, `MetaVersion` synced
+  to `1.2.28`; user docs (quickstart / cli-reference / multilang-check-guide /
+  T01, both languages) version examples and README zh/en badges synced. Watermark
+  `VersionLabel` / three SHA anchors unchanged; `SHA256SUMS` / `WATERMARK.sha256`
+  regenerated per established practice due to the README badge change.
+- **Republished**: 5 binaries + `manifest.txt` + SPDX SBOM + 7 detached GPG
+  signatures, tagged and signed as `v1.2.28` and set as Latest; v1.2.27 /
+  v1.2.26 / v1.0.1 / v1.0.0 tags and releases kept unmodified. Details in
+  release readiness doc §十六.
+
 ## [v1.2.27]
 
 Patch release — make the published binaries actually carry seven-language check (2026-11-19).

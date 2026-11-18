@@ -9,7 +9,7 @@
 
 # Abate
 
-[![version](https://img.shields.io/badge/version-1.2.27-blue)](https://github.com/xiaolibuluo/Abate/releases/latest)
+[![version](https://img.shields.io/badge/version-1.2.28-blue)](https://github.com/xiaolibuluo/Abate/releases/latest)
 [![license](https://img.shields.io/badge/license-AGPLv3%20%7C%20commercial-green)](LICENSING.md)
 [![checks](https://img.shields.io/badge/checks-7%20languages-orange)](docs/user/multilang-check-guide.md)
 [![Go](https://img.shields.io/badge/Go-1.26.11-00ADD8?logo=go)](go.mod)

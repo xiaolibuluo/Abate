@@ -14,7 +14,7 @@ import (
 )
 
 // versionText is the fixed build provenance emitted by the version command.
-const versionText = `abate 1.2.27
+const versionText = `abate 1.2.28
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial
