@@ -96,6 +96,7 @@ threat T10 in the security threat model).
 
 ## 6. Next steps
 
+- Checking source in all 7 languages (step-by-step guide): see `docs/user/multilang-check-guide.en.md`
 - Writing more complex experiments: see `docs/user/ces-guide.md`
 - All commands and exit codes: see `docs/user/cli-reference.md`
 - The specification itself: see `docs/spec/ces-v1.md`
@@ -116,7 +117,7 @@ threat T10 in the security threat model).
 | Version | `./abate version` → `abate 1.2.26` |
 | Gates | header / style / hash / watermark / drift — all five PASS |
 | Tests | Full `go test ./...` passes (73 packages) |
-| Functional commands | `derive` works; `check` reports real rule violations with rule IDs; `run` executes a CES and emits a report + digest; invalid input yields precise parse errors carrying rule IDs |
+| Functional commands | `derive` works; `check` dispatches 7 languages by extension (`.go/.py/.js/.c/.cs/.rs/.kt`) and reports real rule violations; `run` executes a CES and emits a report + digest; invalid input yields precise parse errors carrying rule IDs |
 
 ### 7.2 Three boundaries that are NOT ready out of the box (must be aware)
 

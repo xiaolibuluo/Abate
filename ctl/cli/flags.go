@@ -67,7 +67,7 @@ func replayValueFlags() []string {
 
 // checkValueFlags lists the check flags that consume the following argument.
 func checkValueFlags() []string {
-	return []string{"format", "severity", "rules", "out"}
+	return []string{"format", "severity", "rules", "languages", "out"}
 }
 
 // deriveValueFlags lists the derive flags that consume the following argument.

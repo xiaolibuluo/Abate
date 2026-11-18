@@ -25,12 +25,41 @@
 | `run <ces-file>` | Parse/normalize/validate a CES document, execute a deterministic experiment, emit a report. `--record` also writes a SIM-REC archive. |
 | `verify <a> <b>` | Compare two run reports byte for byte. |
 | `replay <archive> [other]` | Verify an archive (frame hash chain + whole-archive SHA-256), optionally compare two. |
-| `check <paths...>` | Run the built-in Go rule set; emit console/JSON/SARIF. |
+| `check <paths...>` | Dispatch by file extension to 7 language frontends (`.go/.py/.js/.c/.cs/.rs/.kt`), run each language's rule set; emit console/JSON/SARIF. |
 | `derive` | Derive M-family operators from rules and run a mutation experiment (static AIR-level killing approximation). |
 | `plugin` | Verify, load, call, list and hot-swap signed plugins. |
 | `web` | Serve the control API with a self-contained browser console. |
 | `version` | Print build version and provenance. |
 | `help` / `--help` / `-h` | Print help. |
+
+## abate check
+
+Seven-language source checking, dispatched by file extension to the matching
+frontend and rule set:
+
+```
+Usage: abate check <paths...> [flags]
+  --format console|json|sarif  Report format (default console).
+  --severity error|warning|info  Minimum severity (default info).
+  --rules prefix[,prefix...]   Restrict to rule identifier prefixes.
+  --languages lang[,lang...]   Restrict to language tags (go,py,js,c,cs,rs,kt).
+  --out path                   Also write the report bytes to a file.
+```
+
+| Extension | Language | Rule prefix |
+|---|---|---|
+| `.go` | go | `GO-` |
+| `.py` | py | `PY-` |
+| `.js` `.jsx` `.mjs` `.cjs` | js | `JS-` |
+| `.c` `.h` | c | `C-` |
+| `.cs` | cs | `CS-` |
+| `.rs` | rs | `RS-` |
+| `.kt` `.kts` | kt | `KT-` |
+
+Four exit codes: `0` no violations; `1` violations found (business failure);
+`2` internal error; `3` usage error.
+
+For a step-by-step walkthrough see `docs/user/multilang-check-guide.en.md`.
 
 ## abate run
 
@@ -58,7 +87,7 @@ Exit codes (PLAN-07 §4):
 ## abate version
 
 ```
-abate 0.1.0
+abate 1.2.26
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial

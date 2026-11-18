@@ -34,6 +34,14 @@ Release version bump with rebuilt binaries and public repository publication.
   remains active.
 - Marked by a separate signed tag `v1.2.26`; prior v1.0.0 / v1.0.1 tags kept
   unmodified.
+- **Seven-language check wiring**: `abate check` now dispatches by file
+  extension to 7 language frontends (`.go/.py/.js/.c/.cs/.rs/.kt`, plus
+  `.jsx/.mjs/.cjs/.h/.kts`), runs each language's in-house rule set and emits a
+  unified console/JSON/SARIF report. Added `--languages` filtering and a generic
+  `check.MultiChecker` (language-neutral dispatch + aggregation reusing the
+  existing deterministic pipeline), with guard tests for 7-language dispatch,
+  mixed directories, determinism, filtering and extension routing. Step-by-step
+  guide: `docs/user/multilang-check-guide.en.md`. Frozen artifacts untouched.
 
 ## [v1.0.1]
 

@@ -90,6 +90,7 @@ spec:
 
 ## 6. 下一步
 
+- 用 7 语言检查源码（保姆式教程）：见 `docs/user/multilang-check-guide.md`
 - 编写更复杂的实验：见 `docs/user/ces-guide.md`
 - 全部命令与退出码：见 `docs/user/cli-reference.md`
 - 规范原文：见 `docs/spec/ces-v1.md`
@@ -108,7 +109,7 @@ spec:
 | 版本 | `./abate version` → `abate 1.2.26` |
 | 门禁 | header / style / hash / watermark / drift 五项全 PASS |
 | 测试 | `go test ./...` 全量通过（73 包） |
-| 功能命令 | `derive` 正常；`check` 真实检出规则违背并给出规则编号；`run` 真实执行 CES 并产出报告 + 摘要；错误输入给出带规则号的精确解析错误 |
+| 功能命令 | `derive` 正常；`check` 按扩展名分派 7 语言（`.go/.py/.js/.c/.cs/.rs/.kt`）并检出规则违背；`run` 真实执行 CES 并产出报告 + 摘要；错误输入给出带规则号的精确解析错误 |
 
 ### 7.2 三项非开箱即用边界（必须知悉）
 

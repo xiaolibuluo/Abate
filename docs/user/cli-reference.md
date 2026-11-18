@@ -17,12 +17,39 @@ Source: https://github.com/xiaolibuluo/Abate
 | `run <ces-file>` | 解析/归一化/校验 CES 并执行确定性实验，输出报告。`--record` 还可写出 SIM-REC 档案。 |
 | `verify <a> <b>` | 两份运行报告逐字节比对。 |
 | `replay <archive> [other]` | 校验档案（帧哈希链 + 全档 SHA-256），可选比对两份。 |
-| `check <paths...>` | 运行内置 Go 规则集；输出 console/JSON/SARIF。 |
+| `check <paths...>` | 按扩展名分派到 7 语言前端（`.go/.py/.js/.c/.cs/.rs/.kt`），运行对应语言规则集；输出 console/JSON/SARIF。 |
 | `derive` | 从规则派生 M 族算子并跑变异实验（静态 AIR 级 killing 近似）。 |
 | `plugin` | 校验/加载/调用/列举/热换签名的插件。 |
 | `web` | 启动控制 API 并内嵌浏览器控制台。 |
 | `version` | 打印构建版本与溯源。 |
 | `help` / `--help` / `-h` | 打印帮助。 |
+
+## abate check
+
+七语言源码检查，按文件扩展名自动分派到对应前端与规则集：
+
+```
+Usage: abate check <paths...> [flags]
+  --format console|json|sarif  报告格式（默认 console）。
+  --severity error|warning|info  最低严重级别（默认 info）。
+  --rules prefix[,prefix...]   只跑指定规则 ID 前缀。
+  --languages lang[,lang...]   只检查指定语言（go,py,js,c,cs,rs,kt）。
+  --out path                   同时把报告字节写入文件。
+```
+
+| 扩展名 | 语言 | 规则前缀 |
+|---|---|---|
+| `.go` | go | `GO-` |
+| `.py` | py | `PY-` |
+| `.js` `.jsx` `.mjs` `.cjs` | js | `JS-` |
+| `.c` `.h` | c | `C-` |
+| `.cs` | cs | `CS-` |
+| `.rs` | rs | `RS-` |
+| `.kt` `.kts` | kt | `KT-` |
+
+四种退出码：`0` 无违规；`1` 检出违规（业务失败）；`2` 内部错误；`3` 用法错误。
+
+完整保姆式教程见 `docs/user/multilang-check-guide.md`。
 
 ## abate run
 
@@ -50,7 +77,7 @@ Flags:
 ## abate version
 
 ```
-abate 0.1.0
+abate 1.2.26
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial

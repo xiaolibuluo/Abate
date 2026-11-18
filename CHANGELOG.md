@@ -28,6 +28,12 @@ Release version bump with rebuilt binaries and public repository publication.
 - **仓库公开**：仓库可见性由私有改为 public，同步完善描述 / topics /
   主页等仓库设置；合并保护规则集保持生效。
 - 本版本以独立签名 tag `v1.2.26` 标记；此前 v1.0.0 / v1.0.1 tag 保留不改写。
+- **七语言 check 接线**：`abate check` 由仅支持 Go 扩展为按文件扩展名自动分派到
+  7 个语言前端（`.go/.py/.js/.c/.cs/.rs/.kt`，含 `.jsx/.mjs/.cjs/.h/.kts`），
+  运行对应语言自研规则集，输出统一的 console/JSON/SARIF 报告。新增 `--languages`
+  筛选；新增通用 `check.MultiChecker`（语言无关的分派+聚合，复用既有确定性管线），
+  7 语言分派/混合目录/确定性/筛选/扩展名路由守护测试齐全。保姆式教程见
+  `docs/user/multilang-check-guide.md`。冻结件不动。
 
 ## [v1.0.1]
 

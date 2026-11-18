@@ -15,32 +15,48 @@ import (
 	"os"
 	"strings"
 
+	"abate/lang/air"
+	"abate/lang/cfront"
 	"abate/lang/check"
+	"abate/lang/csfront"
 	"abate/lang/gofront"
+	"abate/lang/jsfront"
+	"abate/lang/ktfront"
+	"abate/lang/pyfront"
+	"abate/lang/rsfront"
 	"abate/lang/rule"
-	gobuiltin "abate/lang/rule/builtin/go"
+	builtinc "abate/lang/rule/builtin/c"
+	builtincs "abate/lang/rule/builtin/cs"
+	builtingo "abate/lang/rule/builtin/go"
+	builtinjs "abate/lang/rule/builtin/js"
+	builtinkt "abate/lang/rule/builtin/kt"
+	builtinpy "abate/lang/rule/builtin/py"
+	builtinrs "abate/lang/rule/builtin/rs"
 )
 
 // checkOptions holds the parsed check flags and positional paths.
 type checkOptions struct {
-	format   string
-	severity string
-	rules    string
-	out      string
-	paths    []string
+	format    string
+	severity  string
+	rules     string
+	languages string
+	out       string
+	paths     []string
 }
 
 // checkHelp documents the check command and its copyable examples.
 const checkHelp = `Usage: abate check <paths...> [flags]
 
-Parse Go sources with the AIR frontend, run the built-in Go rule set and emit
-a deterministic console, JSON or SARIF 2.1.0 report. A path may be a file or
-a directory; vendor and third_party directories are skipped.
+Parse sources with the language-specific AIR frontend, run that language's
+built-in rule set and emit a deterministic console, JSON or SARIF 2.1.0 report.
+Seven languages are dispatched by file extension: .go .py .js .c .cs .rs .kt.
+A path may be a file or a directory; vendor, third_party and .git are skipped.
 
 Flags:
   --format console|json|sarif  Report format (default console).
   --severity error|warning|info  Minimum severity (default info).
   --rules prefix[,prefix...]  Restrict the run to rule identifier prefixes.
+  --languages lang[,lang...]  Restrict to language tags (go,py,js,c,cs,rs,kt).
   --out path                  Also write the report bytes to a file.
   --help, -h                  Print this help text.
 
@@ -50,7 +66,8 @@ never mutates sources.
 ` + exitCodeHelp + `
 Examples:
   abate check ./ctl/cli
-  abate check ./lang/rule --format sarif --out /tmp/check.sarif
+  abate check program.py report.js --format sarif --out /tmp/check.sarif
+  abate check ./src --languages py,js --rules PY-PEP8
   abate check ./lang/air --rules GO-EG --format json
   abate check ./ctl/cli --help
 `
@@ -60,8 +77,69 @@ func writeCheckHelp(w io.Writer) {
 	_, _ = fmt.Fprint(w, checkHelp)
 }
 
-// cmdCheck wires gofront.Parse, the rule registry, the AIR checker and the
-// SARIF/console renderer into one command, then maps the four CLI exit states.
+// languageBinding holds one language's frontend constructor and rule loader.
+type languageBinding struct {
+	tag        string
+	extensions []string
+	frontend   func() (air.Frontend, error)
+	loadRules  func(*rule.Registry) error
+}
+
+// languageBindings is the single dispatch table for the check command. Each
+// language owns an isolated registry so rule identifiers never collide across
+// languages (GO-*, PY-*, JS-*, C-*, CS-*, RS-*, KT-*).
+var languageBindings = []languageBinding{
+	{tag: "go", extensions: []string{".go"},
+		frontend: goFrontendFactory, loadRules: builtingo.LoadBuiltins},
+	{tag: "py", extensions: []string{".py"},
+		frontend: func() (air.Frontend, error) { return pyfront.NewPyFrontend() }, loadRules: builtinpy.LoadBuiltins},
+	{tag: "js", extensions: []string{".js", ".jsx", ".mjs", ".cjs"},
+		frontend: func() (air.Frontend, error) { return jsfront.NewJsFrontend() }, loadRules: builtinjs.LoadBuiltins},
+	{tag: "c", extensions: []string{".c", ".h"},
+		frontend: func() (air.Frontend, error) { return cfront.NewCFrontend() }, loadRules: builtinc.LoadBuiltins},
+	{tag: "cs", extensions: []string{".cs"},
+		frontend: func() (air.Frontend, error) { return csfront.NewCsFrontend() }, loadRules: builtincs.LoadBuiltins},
+	{tag: "rs", extensions: []string{".rs"},
+		frontend: func() (air.Frontend, error) { return rsfront.NewRsFrontend() }, loadRules: builtinrs.LoadBuiltins},
+	{tag: "kt", extensions: []string{".kt", ".kts"},
+		frontend: func() (air.Frontend, error) { return ktfront.NewKtFrontend() }, loadRules: builtinkt.LoadBuiltins},
+}
+
+// goFrontendFactory adapts the concrete GoFrontend to the air.Frontend factory
+// signature used by the other language bindings.
+func goFrontendFactory() (air.Frontend, error) {
+	return gofront.NewGoFrontend().WithTypeCheck(false), nil
+}
+
+// buildMultiChecker constructs a MultiChecker from the seven language
+// bindings. Any frontend or rule-set construction failure aborts the command
+// with an internal-error exit rather than silently checking fewer languages.
+func buildMultiChecker() (check.MultiChecker, error) {
+	specs := make([]check.LanguageSpec, 0, len(languageBindings))
+	for _, binding := range languageBindings {
+		frontend, err := binding.frontend()
+		if err != nil {
+			return check.MultiChecker{}, fmt.Errorf("init %s frontend: %w", binding.tag, err)
+		}
+		registry := rule.NewRegistry()
+		if err := binding.loadRules(registry); err != nil {
+			return check.MultiChecker{}, fmt.Errorf("load %s rules: %w", binding.tag, err)
+		}
+		rules := registry.For(binding.tag)
+		if len(rules) == 0 {
+			return check.MultiChecker{}, fmt.Errorf("load %s rules: empty rule set", binding.tag)
+		}
+		specs = append(specs, check.LanguageSpec{
+			Language: binding.tag, Frontend: frontend,
+			Rules: rules, Extensions: binding.extensions,
+		})
+	}
+	return check.NewMultiChecker(specs)
+}
+
+// cmdCheck wires the multi-language frontends, per-language rule sets, the AIR
+// checker and the SARIF/console renderer into one command, then maps the four
+// CLI exit states.
 func cmdCheck(args []string, stdout, stderr io.Writer) int {
 	if helpRequested(args) {
 		writeCheckHelp(stdout)
@@ -71,9 +149,9 @@ func cmdCheck(args []string, stdout, stderr io.Writer) int {
 	if code != exitOK {
 		return code
 	}
-	registry := rule.NewRegistry()
-	if err := gobuiltin.LoadBuiltins(registry); err != nil {
-		_, _ = fmt.Fprintf(stderr, "abate check: load rules: %v\n", err)
+	checker, err := buildMultiChecker()
+	if err != nil {
+		_, _ = fmt.Fprintf(stderr, "abate check: %v\n", err)
 		return exitInternalError
 	}
 	options := check.DefaultOptions()
@@ -82,8 +160,9 @@ func cmdCheck(args []string, stdout, stderr io.Writer) int {
 	if opts.rules != "" {
 		options.Rules = strings.Split(opts.rules, ",")
 	}
-	frontend := gofront.NewGoFrontend().WithTypeCheck(false)
-	checker := check.NewChecker(frontend, registry.For("go"))
+	if opts.languages != "" {
+		options.Languages = strings.Split(opts.languages, ",")
+	}
 	result, err := checker.Check(opts.paths, options)
 	if err != nil {
 		_, _ = fmt.Fprintf(stderr, "abate check: %v\n", err)
@@ -95,7 +174,6 @@ func cmdCheck(args []string, stdout, stderr io.Writer) int {
 	}
 	if opts.out != "" {
 		if writeErr := os.WriteFile(opts.out, report, 0o600); writeErr != nil {
-			_, _ = fmt.Fprintf(stderr, "abate check: write report: %v\n", writeErr)
 			return exitInternalError
 		}
 	}
@@ -112,6 +190,7 @@ func parseCheckOptions(args []string, stderr io.Writer) (checkOptions, int) {
 	format := flags.String("format", check.FormatConsole, "report format")
 	severity := flags.String("severity", string(rule.SeverityInfo), "minimum severity")
 	rules := flags.String("rules", "", "rule identifier prefixes")
+	languages := flags.String("languages", "", "language tags")
 	out := flags.String("out", "", "also write the report to a file")
 	if err := flags.Parse(reorderArgs(args, checkValueFlags())); err != nil {
 		return checkOptions{}, exitUsageError
@@ -130,7 +209,7 @@ func parseCheckOptions(args []string, stderr io.Writer) (checkOptions, int) {
 	}
 	return checkOptions{
 		format: *format, severity: *severity, rules: *rules,
-		out: *out, paths: flags.Args(),
+		languages: *languages, out: *out, paths: flags.Args(),
 	}, exitOK
 }
 
