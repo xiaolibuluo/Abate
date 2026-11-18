@@ -115,8 +115,18 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 | 远程回读 | `git ls-remote origin` | `refs/heads/main = 0ca21c37…`（与本地一致）；`refs/tags/v1.0.0^{} = a1b0796d…` |
 
 **边界说明**：
-1. `v1.0.0` 注解 tag 指向 `a1b0796d`（历史重写后重签的既定发布点），本轮 4 个收尾提交以 fast-forward 进入 `main`，**未移动/重写已发布 tag**——重写已发布 tag 属破坏性操作，超出"执行发布"授权范围；如需将收尾提交纳入新版本 tag，属独立版本决策，须另行授权。
+1. `v1.0.0` 注解 tag 指向 `a1b0796d`（历史重写后重签的既定发布点），本轮 4 个收尾提交以 fast-forward 进入 `main`，**未移动/重写已发布 tag**——重写已发布 tag 属破坏性操作。
 2. 发布资产及其 detached 签名位于 `dist/v1.0.0/`，受 `.gitignore` 排除，不入库；签名私钥不入库、不对外。
 3. 本记录仅陈述真实执行的本地 + 远程状态，不外推为"冻结口径语料达标"或"完整 clang 工具链"等未验证结论（见 §四）。
 
-**对外发布状态**：**授权边界已关闭，正式签名发布完成**。
+### 十.1 后续授权执行（2026-11-19，添附）
+
+权利人就"新建 v1.0.1 签名 tag / 创建 GitHub Release / git history 瘦身"三项再次授权后，现场核验与执行结果如下：
+
+| 事项 | 决定 | 依据 / 实测 |
+|------|------|-------------|
+| **v1.0.1 签名 tag** | ✅ 已执行 | CHANGELOG 中英文新增 `[v1.0.1]`；header/style/drift 门禁全过、`go build` + cli/rest 测试通过；签名提交 `26084cf3`（`G`）→ 注解签名 tag `v1.0.1`（`728be101`，Good signature）已推送；`refs/heads/main = 26084cf3`，`refs/tags/v1.0.1^{} = 26084cf3`。遵循既有实践：tag 名与源码版本常量（`MetaVersion=0.1.0` / `versionText=1.0.0`）解耦，不拖动运行时版本，不动冻结件 |
+| **GitHub Release + 资产上传** | ⬜ 未执行（凭据阻塞） | `gh` 未登录、无 `GH_TOKEN`/`GITHUB_TOKEN`、无 GitHub 连接器、`api.github.com` HTTP 403；SSH 仅能推 git 代码，建 Release/传资产必须 API token。需权利人本人完成 `gh auth login`（设备码/浏览器），Agent 不代登、不接受粘贴 token（凭据隔离） |
+| **git history 瘦身（filter-repo）** | ⬜ 未执行（目标已不存在） | 历史仅 9 提交，`a1b0796d` 为重写后 root；`git rev-list --objects --all` 全量扫描确认历史中**无任何** libclang `.so`/`.a`/build 产物 blob（仅 2 个脚本共 14KB），76MB 产物早于 `a1b0796d` 清除；最大 blob 为 `ci/corpus_manifest.json`（12MB，正常源文件）。`git-filter-repo` 未安装。再执行需强推重写全部 hash、撞仓库禁-force-push 保护规则，且会作废 `v1.0.0`/`v1.0.1` tag——纯破坏零收益，故不执行 |
+
+**对外发布状态**：**授权边界已关闭，正式签名发布完成，v1.0.1 patch tag 已发布**。剩余两项分别为凭据阻塞（Release，需权利人 OAuth）与目标已达成（history 瘦身，无需再做）；均非开发缺陷。
