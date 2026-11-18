@@ -91,6 +91,13 @@ func (p *rsParser) dedicatedMarkers(mapping rsMapping, i, segEnd, end,
 		if ltAt := rsGenericFnAt(tokens, leadIdx, segEnd); ltAt >= 0 {
 			push(air.KindRsGenericFunc, tokens[ltAt], "rs-generic-func")
 		}
+	case lead == "loop":
+		// Rust's `loop {}` is an unconditional infinite loop, distinct from
+		// `while`/`for`. Anchor a dedicated node on the real `loop` token.
+		push(air.KindRsLoop, tokens[leadIdx], "rs-loop")
+	case lead == "impl":
+		// An `impl` item is Rust's inherent/trait implementation block.
+		push(air.KindRsImpl, tokens[leadIdx], "rs-impl")
 	}
 	for _, blockKind := range rsBlockLeadKinds {
 		if lead == blockKind.text && bodyOpen == leadIdx+1 {

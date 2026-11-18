@@ -184,7 +184,7 @@ const (
 )
 
 // kindLast is the largest allocated node kind.
-const kindLast = KindJsFormalParams
+const kindLast = KindCFieldDecl
 
 // kindNames is a read-only lookup table indexed by NodeKind. It is never
 // mutated after initialization, so it cannot leak nondeterministic state.
@@ -237,6 +237,11 @@ var kindNames = [...]string{
 	"JsPair", "JsRestPattern", "JsTemplateSub", "JsStringPart", "JsRegex",
 	"JsPropertyIdent", "JsThisSuper", "JsJsx",
 	"JsClassHeritage", "JsIncDec", "JsArguments", "JsFormalParams",
+	"KtForIn", "RsLoop", "RsImpl",
+	"JsDebugger", "JsMetaProperty", "JsComputedName",
+	"JsPairPattern", "JsObjectAssignPat",
+	"CUnion", "CEnumMember", "CDefined", "CInitPair",
+	"CLabel", "CDeref", "CFieldDecl",
 }
 
 // String returns the stable wire name of the kind.

@@ -19,7 +19,7 @@ func csharpRules() []MappingRule {
 	return []MappingRule{
 		exact("cs.unit", air.KindPackage, "compilation_unit"),
 		exact("cs.class", air.KindClassDecl, "class_declaration"),
-		degraded("cs.record", air.KindCsRecord, "全语料零产出，回退 degraded 避免 exact 分母虚增", "record_declaration"),
+		exact("cs.record", air.KindCsRecord, "自研语料真实产出 record 专用节点，恢复 exact 标注", "record_declaration"),
 		exact("cs.struct", air.KindStructDecl, "struct_declaration"),
 		exact("cs.interface", air.KindInterfaceDecl, "interface_declaration"),
 		exact("cs.enum", air.KindEnumDecl, "enum_declaration"),

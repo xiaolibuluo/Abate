@@ -123,4 +123,19 @@ const (
 	KindJsIncDec          NodeKind = 220
 	KindJsArguments       NodeKind = 221
 	KindJsFormalParams    NodeKind = 222
+	KindKtForIn           NodeKind = 223
+	KindRsLoop            NodeKind = 224
+	KindRsImpl            NodeKind = 225
+	KindJsDebugger        NodeKind = 226
+	KindJsMetaProperty    NodeKind = 227
+	KindJsComputedName    NodeKind = 228
+	KindJsPairPattern     NodeKind = 229
+	KindJsObjectAssignPat NodeKind = 230
+	KindCUnion            NodeKind = 231
+	KindCEnumMember       NodeKind = 232
+	KindCDefined          NodeKind = 233
+	KindCInitPair         NodeKind = 234
+	KindCLabel            NodeKind = 235
+	KindCDeref            NodeKind = 236
+	KindCFieldDecl        NodeKind = 237
 )

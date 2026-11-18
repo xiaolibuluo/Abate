@@ -3,13 +3,13 @@
 - 上游语法事实：`https://github.com/tree-sitter/tree-sitter-javascript` 0.25.0
 - 上游具体构造总数：**114**
 - 映射完备率：**100.0%**（114/114，无未映射空洞）
-- 实测覆盖：**111**（**97.4%**）
-  - 精确映射覆盖：84
-  - 降级映射覆盖：27
+- 实测覆盖：**104**（**91.2%**）
+  - 精确映射覆盖：98
+  - 降级映射覆盖：6
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
-- 认可覆盖率（覆盖 + 能力域外）：**97.4%**
-- 真实解析命中的 AIR 类型数：62
+- 认可覆盖率（覆盖 + 能力域外）：**91.2%**
+- 真实解析命中的 AIR 类型数：74
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -19,7 +19,14 @@
 
 | 上游构造 | 映射 AIR 类型 | 映射状态 | 原因 |
 |---|---|---|---|
-| `class_static_block` | Block | degraded | 静态初始化块降级为块节点 |
+| `jsx_attribute` | JsJsx | exact | AIR 以独立节点建模该构造 |
+| `jsx_closing_element` | JsJsx | exact | AIR 以独立节点建模该构造 |
+| `jsx_element` | JsJsx | exact | AIR 以独立节点建模该构造 |
+| `jsx_expression` | JsJsx | exact | AIR 以独立节点建模该构造 |
+| `jsx_namespace_name` | JsJsx | exact | AIR 以独立节点建模该构造 |
+| `jsx_opening_element` | JsJsx | exact | AIR 以独立节点建模该构造 |
+| `jsx_self_closing_element` | JsJsx | exact | AIR 以独立节点建模该构造 |
+| `jsx_text` | JsJsx | exact | AIR 以独立节点建模该构造 |
 | `labeled_statement` | Label | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `statement_block` | Block | exact | AIR 以独立节点建模该构造 |
 
@@ -31,96 +38,96 @@
 
 | 上游构造 | AIR 类型 | 映射状态 | 真实命中次数 | 映射规则 |
 |---|---|---|---|---|
-| `arguments` | JsArguments | exact | 41 | `js.arguments` |
-| `array` | CompositeLit | exact | 79 | `js.array` |
-| `array_pattern` | Region | degraded | 401 | `js.array-pattern` |
-| `arrow_function` | Arrow | exact | 3 | `js.arrow` |
-| `assignment_expression` | Assign | exact | 97 | `js.assign` |
-| `assignment_pattern` | Assign | degraded | 97 | `js.assign-pattern` |
-| `augmented_assignment_expression` | Assign | degraded | 97 | `js.assign-augmented` |
+| `arguments` | JsArguments | exact | 45 | `js.arguments` |
+| `array` | CompositeLit | exact | 89 | `js.array` |
+| `array_pattern` | Region | degraded | 428 | `js.array-pattern` |
+| `arrow_function` | Arrow | exact | 4 | `js.arrow` |
+| `assignment_expression` | Assign | exact | 105 | `js.assign` |
+| `assignment_pattern` | Assign | degraded | 105 | `js.assign-pattern` |
+| `augmented_assignment_expression` | JsAugAssign | exact | 5 | `js.assign-augmented` |
 | `await_expression` | Await | exact | 8 | `js.await` |
 | `binary_expression` | Binary | exact | 59 | `js.binary` |
 | `break_statement` | Branch | exact | 10 | `js.branch` |
-| `call_expression` | Call | exact | 45 | `js.call` |
+| `call_expression` | Call | exact | 51 | `js.call` |
 | `catch_clause` | Catch | exact | 6 | `js.catch` |
-| `class` | ClassDecl | degraded | 12 | `js.class-expr` |
-| `class_body` | JsClassBody | exact | 6 | `js.class-body` |
-| `class_declaration` | ClassDecl | exact | 12 | `js.class` |
+| `class` | JsClassExpr | exact | 2 | `js.class-expr` |
+| `class_body` | JsClassBody | exact | 9 | `js.class-body` |
+| `class_declaration` | ClassDecl | exact | 18 | `js.class` |
 | `class_heritage` | JsClassHeritage | exact | 1 | `js.class-heritage` |
-| `class_static_block` | Block | degraded | 0 | `js.static-block` |
+| `class_static_block` | JsStaticBlock | exact | 1 | `js.static-block` |
 | `comment` | Comment | exact | 2 | `core.comment` |
-| `computed_property_name` | Region | degraded | 401 | `js.computed-name` |
+| `computed_property_name` | JsComputedName | exact | 1 | `js.computed-name` |
 | `continue_statement` | Branch | exact | 10 | `js.branch` |
-| `debugger_statement` | Region | degraded | 401 | `js.debugger` |
+| `debugger_statement` | JsDebugger | exact | 1 | `js.debugger` |
 | `decorator` | Decorator | exact | 6 | `js.decorator` |
 | `do_statement` | DoWhile | exact | 6 | `js.do` |
 | `else_clause` | If | exact | 8 | `js.else` |
-| `empty_statement` | Region | degraded | 401 | `js.empty-stmt` |
+| `empty_statement` | Region | degraded | 428 | `js.empty-stmt` |
 | `escape_sequence` | JsStringPart | exact | 14 | `js.string-part` |
 | `export_clause` | JsExport | exact | 9 | `js.export` |
 | `export_specifier` | JsExport | exact | 9 | `js.export` |
 | `export_statement` | JsExport | exact | 9 | `js.export` |
-| `expression_statement` | ExprStmt | exact | 17 | `js.expr-stmt` |
+| `expression_statement` | ExprStmt | exact | 18 | `js.expr-stmt` |
 | `false` | BoolLit | exact | 2 | `core.boolean` |
 | `field_definition` | Field | degraded | 9 | `js.field-def` |
 | `finally_clause` | Finally | exact | 6 | `js.finally` |
 | `for_in_statement` | RangeFor | exact | 4 | `js.for-in` |
 | `for_statement` | For | exact | 7 | `js.for` |
-| `formal_parameters` | JsFormalParams | exact | 8 | `js.formal-parameters` |
-| `function_declaration` | FuncDecl | exact | 20 | `js.func` |
+| `formal_parameters` | JsFormalParams | exact | 10 | `js.formal-parameters` |
+| `function_declaration` | FuncDecl | exact | 24 | `js.func` |
 | `function_expression` | FuncLit | exact | 4 | `js.func-lit` |
 | `generator_function` | JsGeneratorFn | exact | 2 | `js.generator-func` |
 | `generator_function_declaration` | JsGeneratorFnDecl | exact | 2 | `js.generator-func-decl` |
 | `hash_bang_line` | Directive | exact | 4 | `js.hash-bang` |
 | `html_character_reference` | JsStringPart | exact | 14 | `js.string-part` |
 | `html_comment` | Comment | exact | 2 | `js.html-comment` |
-| `identifier` | Ident | exact | 340 | `core.identifier` |
+| `identifier` | Ident | exact | 371 | `core.identifier` |
 | `if_statement` | If | exact | 8 | `js.if` |
-| `import` | Import | exact | 10 | `js.import` |
-| `import_attribute` | Import | exact | 10 | `js.import` |
-| `import_clause` | Import | exact | 10 | `js.import` |
-| `import_specifier` | Import | exact | 10 | `js.import` |
-| `import_statement` | Import | exact | 10 | `js.import` |
-| `jsx_attribute` | CompositeLit | degraded | 79 | `js.jsx` |
-| `jsx_closing_element` | CompositeLit | degraded | 79 | `js.jsx` |
-| `jsx_element` | CompositeLit | degraded | 79 | `js.jsx` |
-| `jsx_expression` | CompositeLit | degraded | 79 | `js.jsx` |
-| `jsx_namespace_name` | CompositeLit | degraded | 79 | `js.jsx` |
-| `jsx_opening_element` | CompositeLit | degraded | 79 | `js.jsx` |
-| `jsx_self_closing_element` | CompositeLit | degraded | 79 | `js.jsx` |
-| `jsx_text` | CompositeLit | degraded | 79 | `js.jsx` |
+| `import` | Import | exact | 11 | `js.import` |
+| `import_attribute` | Import | exact | 11 | `js.import` |
+| `import_clause` | Import | exact | 11 | `js.import` |
+| `import_specifier` | Import | exact | 11 | `js.import` |
+| `import_statement` | Import | exact | 11 | `js.import` |
+| `jsx_attribute` | JsJsx | exact | 0 | `js.jsx` |
+| `jsx_closing_element` | JsJsx | exact | 0 | `js.jsx` |
+| `jsx_element` | JsJsx | exact | 0 | `js.jsx` |
+| `jsx_expression` | JsJsx | exact | 0 | `js.jsx` |
+| `jsx_namespace_name` | JsJsx | exact | 0 | `js.jsx` |
+| `jsx_opening_element` | JsJsx | exact | 0 | `js.jsx` |
+| `jsx_self_closing_element` | JsJsx | exact | 0 | `js.jsx` |
+| `jsx_text` | JsJsx | exact | 0 | `js.jsx` |
 | `labeled_statement` | Label | degraded | 0 | `js.label` |
-| `lexical_declaration` | JsLexicalDecl | exact | 79 | `js.lexical-decl` |
+| `lexical_declaration` | JsLexicalDecl | exact | 85 | `js.lexical-decl` |
 | `member_expression` | Field | exact | 9 | `js.member` |
-| `meta_property` | Region | degraded | 401 | `js.meta-property` |
-| `method_definition` | MethodDecl | exact | 7 | `js.method` |
-| `named_imports` | Import | exact | 10 | `js.import` |
+| `meta_property` | JsMetaProperty | exact | 2 | `js.meta-property` |
+| `method_definition` | MethodDecl | exact | 9 | `js.method` |
+| `named_imports` | Import | exact | 11 | `js.import` |
 | `namespace_export` | JsExport | exact | 9 | `js.export` |
-| `namespace_import` | Import | exact | 10 | `js.import` |
-| `new_expression` | JsNew | exact | 2 | `js.new` |
+| `namespace_import` | Import | exact | 11 | `js.import` |
+| `new_expression` | JsNew | exact | 3 | `js.new` |
 | `null` | NilLit | exact | 5 | `core.nil` |
-| `number` | NumLit | exact | 80 | `js.number` |
-| `object` | CompositeLit | exact | 79 | `js.object` |
-| `object_assignment_pattern` | Assign | degraded | 97 | `js.object-assign-pattern` |
-| `object_pattern` | Region | degraded | 401 | `js.object-pattern` |
+| `number` | NumLit | exact | 82 | `js.number` |
+| `object` | CompositeLit | exact | 89 | `js.object` |
+| `object_assignment_pattern` | JsObjectAssignPat | exact | 1 | `js.object-assign-pattern` |
+| `object_pattern` | Region | degraded | 428 | `js.object-pattern` |
 | `optional_chain` | Field | degraded | 9 | `js.optional-chain` |
-| `pair` | Assign | degraded | 97 | `js.pair` |
-| `pair_pattern` | Assign | degraded | 97 | `js.pair-pattern` |
-| `parenthesized_expression` | JsParenExpr | exact | 27 | `js.paren-expr` |
-| `private_property_identifier` | JsPropertyIdent | exact | 10 | `js.ident-family` |
-| `program` | Package | exact | 37 | `js.program` |
-| `property_identifier` | JsPropertyIdent | exact | 10 | `js.ident-family` |
-| `regex` | StrLit | degraded | 22 | `js.regex` |
-| `regex_flags` | StrLit | degraded | 22 | `js.regex` |
-| `regex_pattern` | StrLit | degraded | 22 | `js.regex` |
-| `rest_pattern` | Spread | degraded | 10 | `js.rest-pattern` |
-| `return_statement` | Return | exact | 8 | `js.return` |
-| `sequence_expression` | JsSequence | exact | 26 | `js.sequence` |
-| `shorthand_property_identifier` | JsPropertyIdent | exact | 10 | `js.ident-family` |
-| `shorthand_property_identifier_pattern` | JsPropertyIdent | exact | 10 | `js.ident-family` |
-| `spread_element` | Spread | exact | 10 | `js.spread` |
+| `pair` | JsPair | exact | 8 | `js.pair` |
+| `pair_pattern` | JsPairPattern | exact | 3 | `js.pair-pattern` |
+| `parenthesized_expression` | JsParenExpr | exact | 28 | `js.paren-expr` |
+| `private_property_identifier` | JsPropertyIdent | exact | 13 | `js.ident-family` |
+| `program` | Package | exact | 41 | `js.program` |
+| `property_identifier` | JsPropertyIdent | exact | 13 | `js.ident-family` |
+| `regex` | JsRegex | exact | 9 | `js.regex` |
+| `regex_flags` | JsRegex | exact | 9 | `js.regex` |
+| `regex_pattern` | JsRegex | exact | 9 | `js.regex` |
+| `rest_pattern` | JsRestPattern | exact | 3 | `js.rest-pattern` |
+| `return_statement` | Return | exact | 10 | `js.return` |
+| `sequence_expression` | JsSequence | exact | 31 | `js.sequence` |
+| `shorthand_property_identifier` | JsPropertyIdent | exact | 13 | `js.ident-family` |
+| `shorthand_property_identifier_pattern` | JsPropertyIdent | exact | 13 | `js.ident-family` |
+| `spread_element` | Spread | exact | 18 | `js.spread` |
 | `statement_block` | Block | exact | 0 | `js.block` |
-| `statement_identifier` | JsPropertyIdent | exact | 10 | `js.ident-family` |
+| `statement_identifier` | JsPropertyIdent | exact | 13 | `js.ident-family` |
 | `string` | StrLit | exact | 22 | `js.string` |
 | `string_fragment` | JsStringPart | exact | 14 | `js.string-part` |
 | `subscript_expression` | Index | exact | 9 | `js.index` |
@@ -139,9 +146,9 @@
 | `unary_expression` | Unary | exact | 14 | `js.unary` |
 | `undefined` | NilLit | exact | 5 | `core.nil` |
 | `update_expression` | JsIncDec | exact | 8 | `js.incdec` |
-| `using_declaration` | VarDecl | degraded | 12 | `js.using-decl` |
+| `using_declaration` | JsUsingDecl | exact | 1 | `js.using-decl` |
 | `variable_declaration` | VarDecl | exact | 12 | `js.var` |
-| `variable_declarator` | JsDeclarator | exact | 81 | `js.declarator` |
+| `variable_declarator` | JsDeclarator | exact | 85 | `js.declarator` |
 | `while_statement` | While | exact | 10 | `js.while` |
 | `with_statement` | With | exact | 2 | `js.with` |
 | `yield_expression` | JsYield | exact | 1 | `js.yield` |

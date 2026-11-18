@@ -4,12 +4,12 @@
 - 上游具体构造总数：**163**
 - 映射完备率：**100.0%**（163/163，无未映射空洞）
 - 实测覆盖：**132**（**81.0%**）
-  - 精确映射覆盖：65
-  - 降级映射覆盖：67
+  - 精确映射覆盖：67
+  - 降级映射覆盖：65
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
 - 认可覆盖率（覆盖 + 能力域外）：**81.0%**
-- 真实解析命中的 AIR 类型数：55
+- 真实解析命中的 AIR 类型数：56
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -124,7 +124,7 @@
 | `higher_ranked_trait_bound` | Region | degraded | 1 | `rs.trait-bounds` |
 | `identifier` | Ident | exact | 341 | `core.identifier` |
 | `if_expression` | If | exact | 1 | `rs.if` |
-| `impl_item` | MethodDecl | degraded | 4 | `rs.impl` |
+| `impl_item` | RsImpl | exact | 2 | `rs.impl` |
 | `index_expression` | Index | exact | 3 | `rs.index` |
 | `inner_attribute_item` | Attribute | exact | 3 | `rs.attribute` |
 | `inner_doc_comment_marker` | Doc | exact | 3 | `rs.doc-marker` |
@@ -136,7 +136,7 @@
 | `lifetime` | Region | degraded | 1 | `rs.lifetime` |
 | `lifetime_parameter` | Region | degraded | 1 | `rs.lifetime` |
 | `line_comment` | Comment | exact | 0 | `rs.comment` |
-| `loop_expression` | While | degraded | 2 | `rs.loop` |
+| `loop_expression` | RsLoop | exact | 1 | `rs.loop` |
 | `macro_definition` | RsMacroDef | exact | 0 | `rs.macro-def` |
 | `macro_invocation` | RsMacroCall | exact | 6 | `rs.macro-call` |
 | `macro_rule` | Region | degraded | 1 | `rs.token-tree` |

@@ -45,6 +45,8 @@ var rsDedicatedCases = []struct {
 	{"crate-path", "extern crate serde;\n", air.KindRsCrate},
 	{"super-expr", "fn main() { let y = super.y; }\n", air.KindRsSuper},
 	{"empty-stmt", "fn main() { ; }\n", air.KindRsEmptyStmt},
+	{"loop", "fn main() { loop { break; } }\n", air.KindRsLoop},
+	{"impl", "struct S;\nimpl S { fn new() -> S { S } }\n", air.KindRsImpl},
 	{"string-part", "fn main() { let s = \"a\\nb\"; }\n", air.KindRsStringFrag},
 	{"extern-crate", "extern crate serde;\n", air.KindRsExternCrate},
 	{"scoped-use", "use std::collections::{HashMap as M, *};\n",

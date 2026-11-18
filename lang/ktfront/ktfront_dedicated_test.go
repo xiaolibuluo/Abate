@@ -43,6 +43,8 @@ var ktDedicatedCases = []struct {
 	{"callable-ref", "val r = String::length\n", air.KindKtCallableRef},
 	{"control-body", "fun f(x: Int) { if (x > 0) { return } }\n",
 		air.KindKtControlBody},
+	{"for-in", "fun f(xs: List<Int>) { for (x in xs) { println(x) } }\n",
+		air.KindKtForIn},
 }
 
 // TestKtDedicatedKindsAreReallyProduced parses each minimal source and asserts

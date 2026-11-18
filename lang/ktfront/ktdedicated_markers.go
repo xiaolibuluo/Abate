@@ -85,6 +85,13 @@ func (p *ktParser) dedicatedMarkers(mapping ktMapping, i, segEnd, end,
 		if bodyOpen >= i && bodyOpen < end {
 			push(air.KindKtControlBody, tokens[bodyOpen], "kt-control-body")
 		}
+		// A `for (x in ys)` unit is Kotlin's iterable for-in loop, which
+		// differs from a C-style counted range loop. Anchor a dedicated
+		// KindKtForIn node on the real `for` token so AIR can model it
+		// exactly instead of lowering it onto the shared RangeFor kind.
+		if mapping.kind == air.KindRangeFor && lead == "for" {
+			push(air.KindKtForIn, tokens[at], "kt-for-in")
+		}
 	}
 	// Accessors written with parenthesized form inside a property unit: the
 	// parser recognizes get(/set( adjacency while reducing the property.

@@ -69,6 +69,7 @@ type cBodyKind int
 const (
 	cBodyStatement cBodyKind = iota
 	cBodyRecord
+	cBodyEnum
 )
 
 // parseSeq 顺序归约一个 token 区间；top 区分翻译单元与函数体/命名空间体，
@@ -97,6 +98,7 @@ func (p *cParser) parseSeq(lo, hi int, top bool, record cBodyKind) []air.Node {
 		if token.Text == "#" {
 			node, next := p.preproc.parseLine(p.tokens, i, hi)
 			out = append(out, node)
+			out = append(out, p.definedMarkers(i, next)...)
 			if next <= i {
 				i++
 			} else {
@@ -205,6 +207,8 @@ func (p *cParser) parseUnit(i, end, bodyOpen, bodyClose int, top bool,
 			p.view.OrderChildren(bodyChildren)...)
 		children = append(children, block)
 	}
+	children = append(children,
+		p.cDedicatedMarkers(i, end, segEnd, record, children)...)
 	start, last := cSpan(p.tokens, i, end)
 	node := air.NewNodeAt(mapping.kind, start, last, mapping.name,
 		p.view.OrderChildren(children)...)

@@ -38,9 +38,8 @@ func kotlinRules() []MappingRule {
 			"属性委托无独立节点，降级为区域节点", "property_delegate"),
 
 		exact("kt.if", air.KindIf, "if_expression"),
-		degraded("kt.for", air.KindRangeFor,
-			"Kotlin for 循环遍历可迭代对象，没有 C 风格计数循环，降级为范围循环节点",
-			"for_statement"),
+		exact("kt.for", air.KindKtForIn,
+			"Kotlin for-in 循环由 ktfront 专用节点建模", "for_statement"),
 		exact("kt.while", air.KindWhile, "while_statement"),
 		exact("kt.do", air.KindDoWhile, "do_while_statement"),
 		exact("kt.when", air.KindMatch, "when_expression"),

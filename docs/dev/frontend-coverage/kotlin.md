@@ -4,12 +4,12 @@
 - 上游具体构造总数：**134**
 - 映射完备率：**100.0%**（134/134，无未映射空洞）
 - 实测覆盖：**69**（**51.5%**）
-  - 精确映射覆盖：58
-  - 降级映射覆盖：11
+  - 精确映射覆盖：59
+  - 降级映射覆盖：10
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
 - 认可覆盖率（覆盖 + 能力域外）：**51.5%**
-- 真实解析命中的 AIR 类型数：44
+- 真实解析命中的 AIR 类型数：45
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -132,7 +132,7 @@
 | `explicit_delegation` | Region | degraded | 0 | `kt.delegation` |
 | `file_annotation` | AnnotationDecl | exact | 1 | `kt.annotation` |
 | `finally_block` | Finally | exact | 1 | `kt.finally` |
-| `for_statement` | RangeFor | degraded | 2 | `kt.for` |
+| `for_statement` | KtForIn | exact | 2 | `kt.for` |
 | `function_body` | Block | exact | 36 | `kt.block` |
 | `function_declaration` | FuncDecl | exact | 15 | `kt.func` |
 | `function_modifier` | Attribute | degraded | 0 | `kt.modifiers` |

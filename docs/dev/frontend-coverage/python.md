@@ -4,8 +4,8 @@
 - 上游具体构造总数：**122**
 - 映射完备率：**100.0%**（122/122，无未映射空洞）
 - 实测覆盖：**110**（**90.2%**）
-  - 精确映射覆盖：75
-  - 降级映射覆盖：35
+  - 精确映射覆盖：77
+  - 降级映射覆盖：33
 - 能力域外（显式登记并给出理由）：3
 - 未映射：0
 - 认可覆盖率（覆盖 + 能力域外）：**92.6%**
@@ -48,13 +48,13 @@
 | `assignment` | Assign | exact | 44 | `py.assign` |
 | `attribute` | Field | exact | 5 | `py.attribute` |
 | `augmented_assignment` | PyAugAssign | exact | 0 | `py.assign-augmented` |
-| `await` | Await | degraded | 3 | `py.await` |
+| `await` | Await | exact | 3 | `py.await` |
 | `binary_operator` | Binary | exact | 27 | `py.binary` |
 | `block` | Block | exact | 54 | `py.block` |
 | `boolean_operator` | PyBoolOp | exact | 2 | `py.boolean-op` |
 | `break_statement` | Branch | exact | 4 | `py.branch` |
 | `call` | Call | exact | 31 | `py.call` |
-| `case_clause` | Case | degraded | 7 | `py.case` |
+| `case_clause` | Case | exact | 7 | `py.case` |
 | `case_pattern` | Region | degraded | 1 | `py.patterns` |
 | `chevron` | Invalid | out-of-scope | 0 | `py.chevron` |
 | `class_definition` | ClassDecl | exact | 2 | `py.class` |

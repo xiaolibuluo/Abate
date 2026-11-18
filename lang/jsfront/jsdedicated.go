@@ -114,9 +114,16 @@ func (p *jsParser) keywordMarker(out *[]air.Node, i int,
 	case "new":
 		*out = append(*out, p.mapper.dedicated(
 			air.KindJsNew, pos, tok.Text, "new_expression"))
+	case "debugger":
+		*out = append(*out, p.mapper.dedicated(
+			air.KindJsDebugger, pos, tok.Text, "debugger_statement"))
 	case "class":
 		*out = append(*out, p.mapper.dedicated(
 			air.KindJsClassBody, pos, tok.Text, "class_body"))
+		if jsIsClassExprContext(p.toks, i) {
+			*out = append(*out, p.mapper.dedicated(
+				air.KindJsClassExpr, pos, tok.Text, "class_expression"))
+		}
 	case "switch":
 		*out = append(*out, p.mapper.dedicated(
 			air.KindJsSwitchBody, pos, tok.Text, "switch_body"))
@@ -156,12 +163,7 @@ func (p *jsParser) symbolMarker(out *[]air.Node, i int,
 		*out = append(*out, p.mapper.dedicated(
 			air.KindJsAugAssign, pos, tok.Text, "augmented_assignment_expression"))
 	case tok.Text == "." || tok.Text == "?.":
-		if next := p.significant(i+1, 1); next != nil &&
-			jsIsLexicalToken(next.Kind) && next.Text != "" {
-			*out = append(*out, p.mapper.dedicated(
-				air.KindJsPropertyIdent, tokenPos(*next), next.Text,
-				"property_identifier"))
-		}
+		p.dotMarker(out, i, tok)
 	case tok.Kind == frontkit.TokenStr && jsIsTemplate(tok):
 		if strings.Contains(tok.Text, "${") {
 			*out = append(*out, p.mapper.dedicated(
@@ -186,42 +188,52 @@ func (p *jsParser) symbolMarker(out *[]air.Node, i int,
 		*out = append(*out, p.mapper.dedicated(
 			air.KindJsDeclarator, pos, tok.Text, "variable_declarator"))
 	}
+	p.constructMarker(out, i, tok)
 }
 
-// noteMarkers emits dedicated markers for constructs the parser tagged on the
-// reduced tree (JSX elements and parenthesized expressions).
-func (p *jsParser) noteMarkers(out *[]air.Node) {
-	for _, root := range p.nodes {
-		air.Walk(root, func(n air.Node) bool {
-			note, _ := air.SemanticsOf(n).Get(air.SemNote)
-			switch note {
-			case noteJSX:
-				*out = append(*out, p.mapper.dedicated(
-					air.KindJsJsx, n.Pos(), "", "jsx_element"))
-			case "grouping":
-				*out = append(*out, p.mapper.dedicated(
-					air.KindJsParenExpr, n.Pos(), "", "parenthesized_expression"))
-			}
-			return true
-		})
+// dotMarker emits the meta-property marker (new.target / import.meta) and the
+// property-identifier marker for one dot-family token.
+func (p *jsParser) dotMarker(out *[]air.Node, i int, tok frontkit.Token) {
+	if prev := p.significant(i-1, -1); prev != nil &&
+		(prev.Text == "new" || prev.Text == "import") {
+		if next := p.significant(i+1, 1); next != nil &&
+			(next.Text == "target" || next.Text == "meta") {
+			*out = append(*out, p.mapper.dedicated(
+				air.KindJsMetaProperty, tokenPos(tok), tok.Text, "meta_property"))
+		}
+	}
+	if next := p.significant(i+1, 1); next != nil &&
+		jsIsLexicalToken(next.Kind) && next.Text != "" {
+		*out = append(*out, p.mapper.dedicated(
+			air.KindJsPropertyIdent, tokenPos(*next), next.Text,
+			"property_identifier"))
 	}
 }
 
-// dedicatedMarkers walks the reduced tree and the token stream of one parse
-// and emits one zero-width marker per construct the frontend recognized. Each
-// marker is anchored on a real token of that construct, never synthesized from
-// a detached spelling, so the kind is produced by syntax-node semantics.
-func (p *jsParser) dedicatedMarkers() []air.Node {
-	out := make([]air.Node, 0, 48)
-	for i, tok := range p.toks {
-		if tok.Kind == frontkit.TokenNewline || tok.Kind == frontkit.TokenEOF ||
-			tok.Kind == frontkit.TokenComment {
-			continue
+// constructMarker emits the dedicated markers for the bracket, colon,
+// assignment and spread constructs whose recognition needs the token-interval
+// context predicates of jsdedicated_context.go. Its token texts never overlap
+// symbolMarker's cases, so the two dispatchers stay independent.
+func (p *jsParser) constructMarker(out *[]air.Node, i int,
+	tok frontkit.Token) {
+	pos := tokenPos(tok)
+	switch {
+	case tok.Text == "[" && jsIsComputedName(p.toks, i):
+		*out = append(*out, p.mapper.dedicated(
+			air.KindJsComputedName, pos, tok.Text, "computed_property_name"))
+	case tok.Text == ":" && jsIsPairColon(p.toks, i):
+		if jsInPatternBraces(p.toks, i) {
+			*out = append(*out, p.mapper.dedicated(
+				air.KindJsPairPattern, pos, tok.Text, "pair_pattern"))
+		} else {
+			*out = append(*out, p.mapper.dedicated(
+				air.KindJsPair, pos, tok.Text, "pair"))
 		}
-		if !p.keywordMarker(&out, i, tok) {
-			p.symbolMarker(&out, i, tok)
-		}
+	case tok.Text == "=" && jsIsObjectAssignDefault(p.toks, i):
+		*out = append(*out, p.mapper.dedicated(
+			air.KindJsObjectAssignPat, pos, tok.Text, "object_assignment_pattern"))
+	case tok.Text == "..." && jsIsRestInParams(p.toks, i):
+		*out = append(*out, p.mapper.dedicated(
+			air.KindJsRestPattern, pos, tok.Text, "rest_pattern"))
 	}
-	p.noteMarkers(&out)
-	return out
 }

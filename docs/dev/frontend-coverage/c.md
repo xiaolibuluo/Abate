@@ -3,13 +3,13 @@
 - 上游语法事实：`https://github.com/tree-sitter/tree-sitter-c` 0.24.1
 - 上游具体构造总数：**125**
 - 映射完备率：**100.0%**（125/125，无未映射空洞）
-- 实测覆盖：**86**（**68.8%**）
-  - 精确映射覆盖：51
-  - 降级映射覆盖：35
+- 实测覆盖：**85**（**68.0%**）
+  - 精确映射覆盖：57
+  - 降级映射覆盖：28
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
-- 认可覆盖率（覆盖 + 能力域外）：**68.8%**
-- 真实解析命中的 AIR 类型数：38
+- 认可覆盖率（覆盖 + 能力域外）：**68.0%**
+- 真实解析命中的 AIR 类型数：42
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -50,6 +50,7 @@
 | `parenthesized_expression` | Region | degraded | 括号表达式无独立节点，降级为区域节点 |
 | `pointer_declarator` | Pointer | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `preproc_arg` | Region | degraded | 宏参数无独立节点，降级为区域节点 |
+| `preproc_defined` | CDefined | exact | AIR 以独立节点建模该构造 |
 | `preproc_params` | Region | degraded | 宏参数无独立节点，降级为区域节点 |
 | `seh_except_clause` | Try | degraded | SEH 异常结构降级为 try 节点 |
 | `seh_finally_clause` | Try | degraded | SEH 异常结构降级为 try 节点 |
@@ -101,13 +102,13 @@
 | `do_statement` | DoWhile | exact | 1 | `c.do` |
 | `else_clause` | If | exact | 1 | `c.else` |
 | `enum_specifier` | EnumDecl | exact | 3 | `c.enum` |
-| `enumerator` | EnumDecl | degraded | 3 | `c.enumerator` |
+| `enumerator` | CEnumMember | exact | 3 | `c.enumerator` |
 | `enumerator_list` | Region | degraded | 0 | `c.enumerator-list` |
 | `escape_sequence` | StrLit | degraded | 3 | `c.string-body` |
 | `expression_statement` | ExprStmt | exact | 13 | `c.expr-stmt` |
 | `extension_expression` | Cast | degraded | 3 | `c.extension-expr` |
 | `false` | BoolLit | exact | 2 | `core.boolean` |
-| `field_declaration` | Field | degraded | 9 | `c.field-decl` |
+| `field_declaration` | CFieldDecl | exact | 12 | `c.field-decl` |
 | `field_declaration_list` | Region | degraded | 0 | `c.field-decl-list` |
 | `field_designator` | Region | degraded | 0 | `c.designator` |
 | `field_expression` | Selector | exact | 1 | `c.field` |
@@ -129,7 +130,7 @@
 | `if_statement` | If | exact | 1 | `c.if` |
 | `init_declarator` | VarDecl | degraded | 27 | `c.init-declarator` |
 | `initializer_list` | CompositeLit | degraded | 0 | `c.initializer-list` |
-| `initializer_pair` | Assign | degraded | 33 | `c.initializer-pair` |
+| `initializer_pair` | CInitPair | exact | 2 | `c.initializer-pair` |
 | `labeled_statement` | Label | exact | 1 | `c.label` |
 | `linkage_specification` | ModuleDecl | degraded | 2 | `c.linkage` |
 | `macro_type_specifier` | TypeDecl | degraded | 2 | `c.macro-type` |
@@ -149,11 +150,11 @@
 | `parenthesized_declarator` | Region | degraded | 0 | `c.paren-declarator` |
 | `parenthesized_expression` | Region | degraded | 0 | `c.paren-expr` |
 | `pointer_declarator` | Pointer | degraded | 0 | `c.pointer-declarator` |
-| `pointer_expression` | Star | degraded | 5 | `c.deref` |
+| `pointer_expression` | CDeref | exact | 7 | `c.deref` |
 | `preproc_arg` | Region | degraded | 0 | `c.preproc-params` |
 | `preproc_call` | Directive | exact | 11 | `c.preproc` |
 | `preproc_def` | Directive | exact | 11 | `c.preproc` |
-| `preproc_defined` | Directive | degraded | 11 | `c.preproc-defined` |
+| `preproc_defined` | CDefined | exact | 0 | `c.preproc-defined` |
 | `preproc_directive` | Directive | exact | 11 | `c.preproc` |
 | `preproc_elif` | Directive | exact | 11 | `c.preproc` |
 | `preproc_elifdef` | Directive | exact | 11 | `c.preproc` |
@@ -171,7 +172,7 @@
 | `seh_try_statement` | Try | degraded | 0 | `c.seh` |
 | `sized_type_specifier` | Named | degraded | 120 | `c.sized-type` |
 | `sizeof_expression` | Call | degraded | 3 | `c.sizeof` |
-| `statement_identifier` | Ident | degraded | 342 | `c.statement-identifier` |
+| `statement_identifier` | CLabel | exact | 1 | `c.statement-identifier` |
 | `storage_class_specifier` | Attribute | degraded | 1 | `c.qualifier` |
 | `string_content` | StrLit | degraded | 3 | `c.string-body` |
 | `string_literal` | StrLit | exact | 3 | `c.string` |
@@ -188,7 +189,7 @@
 | `type_identifier` | Named | degraded | 120 | `c.type-identifier` |
 | `type_qualifier` | Attribute | degraded | 1 | `c.qualifier` |
 | `unary_expression` | Unary | exact | 3 | `c.unary` |
-| `union_specifier` | StructDecl | degraded | 7 | `c.union` |
+| `union_specifier` | CUnion | exact | 2 | `c.union` |
 | `update_expression` | IncDec | exact | 1 | `c.incdec` |
 | `variadic_parameter` | Region | degraded | 0 | `c.parameter-decl` |
 | `while_statement` | While | exact | 3 | `c.while` |

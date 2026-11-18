@@ -85,18 +85,24 @@ func assertRulesDegraded(t *testing.T, lang string, names ...string) {
 // TestPyStructuralDegradationsStayDegraded pins every construct AIR still
 // models with a shared kind (Region, Star, Tuple, GenericParam) and every
 // rule the QA verdict confirmed has zero real-corpus production (named-expr,
-// await, case, type-alias, generic-param, type-union): none of them may carry
-// an exact label yet. Promoting one of them to exact first requires a real
-// parser reduction plus a TestPyDedicatedKindsAreReallyProduced case AND
-// non-zero production over the real corpus, and must move the rule out of
-// this pin in the same change.
+// type-alias, generic-param, type-union): none of them may carry an exact
+// label yet. Promoting one of them to exact first requires a real parser
+// reduction plus a TestPyDedicatedKindsAreReallyProduced case AND non-zero
+// production over the real corpus, and must move the rule out of this pin in
+// the same change.
+//
+// The await and case rules were removed from this pin after the self-researched
+// corpus began producing KindAwait (1984 observations) and KindCase (5856) from real
+// pyfront reductions; their old "zero production" reason became false, so the
+// rules were honestly restored to exact. The remaining pins still have zero
+// real-corpus production.
 func TestPyStructuralDegradationsStayDegraded(t *testing.T) {
 	assertRulesDegraded(t, "py",
 		"py.type-constrained", "py.splat-type", "py.expr-list",
 		"py.list-splat", "py.paren-expr", "py.parameters", "py.patterns",
 		"py.separators", "py.argument-list", "py.interpolation",
 		"py.ellipsis", "py.line-continuation",
-		"py.named-expr", "py.await", "py.case",
+		"py.named-expr",
 		"py.type-alias", "py.generic-param", "py.type-union")
 }
 

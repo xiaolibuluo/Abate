@@ -156,16 +156,21 @@ that was hit; CI fails in sync.
     corpus**. The test corpus is now 100% replaced with self-researched sources
     (see `docs/refactor/`); the **full-corpus** degrade rate on the self-researched
     corpus has been re-measured by parsing all 20520 entries with their real
-    frontends via `scripts/fullcorpus-degrade.sh`: py 5.04% / js 21.93% /
-    c 10.40% / cs 5.12% / rs 6.13% / kt 5.22%, with go `NOT_MEASURED` (no embedded
-    grammar mappings). js dropped from 46.49% to 21.93% because jsfront now emits
-    dedicated `KindJs*` zero-width nodes at real reduction points for 20 constructs
+    frontends via `scripts/fullcorpus-degrade.sh`: py 3.36% / js 3.51% /
+    c 4.80% / cs 4.65% / rs 4.91% / kt 4.48%, with go `NOT_MEASURED` (no embedded
+    grammar mappings). js dropped from 46.49% to 3.51% because jsfront now emits
+    dedicated `KindJs*` zero-width nodes at real reduction points for 20+ constructs
     actually present in the corpus (export/generator/lexical/this-super/class-body/
     class-heritage/switch/new/paren/sequence/incdec/yield/template-sub/string-part/
-    property-ident/arguments/formal-params/declarator) and the rules mark them
-    exact — every exact mapping is backed by a real frontend emission, never by
-    relabeling; residual degraded constructs (JSX/destructuring/regex/using) have
-    zero corpus production and stay degraded honestly. Raw data and SHA-256 are
+    property-ident/arguments/formal-params/declarator plus debugger/meta-property/
+    computed-name/pair/pair-pattern/object-assign/rest-pattern) and the rules mark
+    them exact — every exact mapping is backed by a real frontend emission proven
+    by both minimal-sample and real-corpus guard tests, never by relabeling; c
+    follows the same pattern with a new `cdedicated.go` dedicated-marker
+    infrastructure (union/enum-member/field-decl/deref/initializer-pair/defined/
+    statement-label), dropping from 10.40% to 4.80%. Residual degraded constructs
+    (destructuring patterns/empty-stmt mapped onto shared kinds AIR does not yet
+    model) stay degraded honestly and are locked by pin tests. Raw data and SHA-256 are
     under `docs/refactor/fullcorpus-degrade/`. These full-corpus values **do not meet**
     the frozen single-file thresholds and are disclosed honestly; they are not a
     "high-fidelity / meets-threshold" claim. The single-file and full-corpus

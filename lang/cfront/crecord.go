@@ -74,6 +74,8 @@ func cRecordKind(kind air.NodeKind) cBodyKind {
 	switch kind {
 	case air.KindStructDecl, air.KindClassDecl:
 		return cBodyRecord
+	case air.KindEnumDecl:
+		return cBodyEnum
 	default:
 		return cBodyStatement
 	}

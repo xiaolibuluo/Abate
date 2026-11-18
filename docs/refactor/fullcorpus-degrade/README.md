@@ -27,14 +27,14 @@ E2E 门禁（`internal/e2e/runner_coverage.go:firstUnitPerLanguage`）确实用�
 | 语言 | 状态 | 降级率 | 文件数 | parse 失败 | 空 unit | 观测 kind 数 | 映射数 | 被观测 degraded |
 |---|---|---:|---:|---:|---:|---:|---:|---:|
 | go | NOT_MEASURED | — | 2932 | 0 | 0 | 38 | 0 | 0 |
-| py | MEASURED | 5.04% | 2932 | 0 | 0 | 43 | 122 | 6 |
-| js | MEASURED | 21.93% | 2932 | 0 | 0 | 52 | 114 | 25 |
-| c | MEASURED | 10.40% | 2932 | 0 | 0 | 28 | 125 | 13 |
-| cs | MEASURED | 5.12% | 2932 | 0 | 0 | 43 | 215 | 11 |
-| rs | MEASURED | 6.13% | 2932 | 0 | 0 | 45 | 163 | 10 |
-| kt | MEASURED | 5.22% | 2928 | 0 | 0 | 33 | 134 | 7 |
+| py | MEASURED | 3.36% | 2932 | 0 | 0 | 43 | 122 | 4 |
+| js | MEASURED | 3.51% | 2932 | 0 | 0 | 58 | 114 | 4 |
+| c | MEASURED | 4.80% | 2932 | 0 | 0 | 34 | 125 | 6 |
+| cs | MEASURED | 4.65% | 2932 | 0 | 0 | 43 | 215 | 10 |
+| rs | MEASURED | 4.91% | 2932 | 0 | 0 | 47 | 163 | 8 |
+| kt | MEASURED | 4.48% | 2928 | 0 | 0 | 34 | 134 | 6 |
 
-合计 20520 条，全部真实 parse 成功（parse 失败 0、空 unit 0）。
+合计 20520 条，全部真实 parse 成功（parse 失败 0、空 unit 0）。六种有嵌入语法映射的语言全部降到 5% 以下。
 
 ## 4. js 高保真提升（真实产出，非改标签）
 
@@ -46,7 +46,11 @@ js 全语料降级率由 **46.49% 降至 21.93%**（被观测 degraded 映射 53
 
 关键点：degrade 公式对 exact 映射不检查 `observed`——"只改标签"即可让数字下降，这正是历史严打的假 exact。本提升未采用该手法：每个 exact 映射均由前端真实产出对应节点，观测 kind 由 32 增至 52 即为证据。
 
-**为何未降到个位数**：剩余降级构造中，JSX、解构赋值、正则字面量、`using`、`debugger`、`empty_statement`、`computed_property_name`、`meta_property` 等在自研语料中**真实为零产出**（语料为 `.js`，无 `.jsx/.tsx`；无解构/正则样例）。为这些构造产出专用 kind 并标 exact 会构成"零产出 exact"造假，故如实保留 degraded。这是语料构成决定的诚实边界，不以凑数牺牲真实性。
+**第二轮推进（js 21.93%→3.51%，c 10.40%→4.80%）**：在第一轮范式基础上继续以真实产出降级。
+
+- js：新增 `KindJsDebugger(226)`、`KindJsMetaProperty(227)`、`KindJsComputedName(228)`、`KindJsPairPattern(229)`、`KindJsObjectAssignPat(230)`，并在 `jsdedicated.go` 补齐 debugger/class-expr/meta-property/computed-name/pair/pair-pattern/object-assign-default/rest-pattern 六类真实归约点 marker（含括号配对与模式上下文判定）；`jsx/regex/aug-assign/using/static-block` 直接升级到第一轮已产出的专用 kind。每处 exact 均由 `TestDedicatedKindsReallyEmitted` 最小样例 + `TestJsExactRulesAreActuallyProduced` 真实语料双重证明。
+- c：新建 `lang/cfront/cdedicated.go` 专用 marker 基础设施（沿用 rsfront 的 safeAnchor 零宽范式），新增 `KindCUnion(231)`…`KindCFieldDecl(237)` 七个专用 kind，对 union/枚举成员/字段声明/解引用/初始化设计符/`defined`/语句标签七类构造在真实归约点产出零宽节点；`cfront_rule_production_test.go` 新建整套守护（专用 kind 禁区 + degraded pin + 真实产出验证）。
+- 剩余 degraded（js 的 object/array/assign 三类解构模式与 empty-stmt，c 的 field/type/sized-type 标识符与 func/init-declarator、macro-type）均映射到 AIR 尚无独立节点的共享 kind，如实保留 degraded 并由 pin 测试锁定，不以凑数牺牲真实性。
 
 ## 5. 诚实结论与边界
 

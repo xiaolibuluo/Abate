@@ -4,8 +4,8 @@
 - 上游具体构造总数：**215**
 - 映射完备率：**100.0%**（215/215，无未映射空洞）
 - 实测覆盖：**109**（**50.7%**）
-  - 精确映射覆盖：91
-  - 降级映射覆盖：18
+  - 精确映射覆盖：92
+  - 降级映射覆盖：17
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
 - 认可覆盖率（覆盖 + 能力域外）：**50.7%**
@@ -296,7 +296,7 @@
 | `raw_string_literal` | StrLit | exact | 4 | `cs.string` |
 | `raw_string_start` | Region | degraded | 0 | `cs.string-bound` |
 | `real_literal` | NumLit | exact | 34 | `cs.number` |
-| `record_declaration` | CsRecord | degraded | 2 | `cs.record` |
+| `record_declaration` | CsRecord | exact | 2 | `cs.record` |
 | `recursive_pattern` | Region | degraded | 0 | `cs.patterns` |
 | `ref_expression` | Ref | degraded | 0 | `cs.ref` |
 | `ref_type` | Ref | degraded | 0 | `cs.ref-family` |
