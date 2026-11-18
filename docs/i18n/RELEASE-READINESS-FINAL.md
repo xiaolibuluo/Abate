@@ -130,3 +130,32 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 | **git history 瘦身（filter-repo）** | ⬜ 未执行（目标已不存在） | 历史仅 9 提交，`a1b0796d` 为重写后 root；`git rev-list --objects --all` 全量扫描确认历史中**无任何** libclang `.so`/`.a`/build 产物 blob（仅 2 个脚本共 14KB），76MB 产物早于 `a1b0796d` 清除；最大 blob 为 `ci/corpus_manifest.json`（12MB，正常源文件）。`git-filter-repo` 未安装。再执行需强推重写全部 hash、撞仓库禁-force-push 保护规则，且会作废 `v1.0.0`/`v1.0.1` tag——纯破坏零收益，故不执行 |
 
 **对外发布状态**：**授权边界已关闭，正式签名发布完成，v1.0.1 patch tag 已发布**。剩余两项分别为凭据阻塞（Release，需权利人 OAuth）与目标已达成（history 瘦身，无需再做）；均非开发缺陷。
+
+> **后续更新（2026-11-19，见 §十一）**：权利人随后提供了 GitHub classic PAT，凭据阻塞已解除——`v1.2.26` Release 已真实创建并上传 14 个资产（含 7 份签名），仓库已转 public 并完成设置。history 瘦身项维持"目标已达成、不执行"结论不变。
+
+---
+
+## 十一、版本升级 v1.2.26 / Release 上传 / 仓库公开执行记录（2026-11-19）
+
+权利人提供 GitHub classic PAT（`ghp_`，权限含 `repo`/`admin:repo_hook`/`workflow`）并授权"整理 + 版本升级 1.2.26 + 重新上传二进制 + 仓库公开 + 设置好所有设置"。全部经真实命令回读确认：
+
+| 步骤 | 命令 / 断言 | 实测结果 |
+|------|-------------|----------|
+| 凭据登录 | `gh auth login --with-token`（进程内读取，令牌不回显/不入库） | 登录为 `xiaolibuluo`，scopes 含 `repo`/`admin:repo_hook`/`workflow` 等 |
+| 版本升级 | `versionText`→`abate 1.2.26`、`MetaVersion`→`1.2.26`、CHANGELOG 双语 `[v1.2.26]` | `abate version` 实测输出 `abate 1.2.26`；冻结件（watermark `VersionLabel=0.1.0` + 三份 SHA 锚点）不动 |
+| 哈希清单整理 | 既有遗留：README 在历史提交 50fc8196/783dc7ea/3185ba6b 中已合法变更，`SHA256SUMS`/`WATERMARK.sha256` 仍是旧快照 | `hash-check.sh generate` 重生成两份清单；`hash-check verify` + `watermark-verify` 均 PASS，未改任何源文件 |
+| 门禁 | header / style / drift / `go test ./...` | 全 PASS；73 包测试通过 |
+| 签名提交+tag | `git commit -S` + `git tag -s v1.2.26` | 提交 `75d582bd`（`G`）；tag `v1.2.26`（`b76a05f6`，Good signature）已推送；`refs/heads/main = 75d582bd` |
+| 二进制重构建 | `release.sh --dry-run v1.2.26` | 5 目标交叉编译 + `manifest.txt` + SPDX SBOM；二进制 `version` 输出 `abate 1.2.26`；`sha256sum -c` 5/5 OK |
+| 资产签名 | 7 份 `.asc`（5 二进制 + manifest + SBOM） | `gpg --verify` 7/7 OK |
+| **GitHub Release** | `gh release create v1.2.26 --verify-tag` + 14 资产 | 已创建，非 draft/prerelease，标记 **Latest**；14 资产全部上传；URL `github.com/xiaolibuluo/Abate/releases/tag/v1.2.26` |
+| **仓库转公开** | `gh api ... -X PATCH -f private=false` | `visibility=public`；匿名 `curl` 仓库页 HTTP 200 |
+| 仓库设置 | `gh api` 回读 | description / homepage(`qingdujian.com`) / issues / discussions / projects / 10 topics 齐备；wiki 关闭（文档在仓库内）；三个合并方式开启 + `delete_branch_on_merge=true`；`SECURITY`/`CODE_OF_CONDUCT`/`CONTRIBUTING`/`LICENSE` 齐全 |
+| 分支保护 | `gh api .../rulesets` | `Owner-only merge protection` ruleset **active**：`required_signatures` + `pull_request`（1 审批 + 最近推送者审批 + 过期驳回 + 会话解决）+ `non_fast_forward`；公开后规则集 API 恢复可读 |
+
+**边界声明**：
+1. 本次为版本升级 + 对外发布，冻结件（水印版本标签、三份 SHA 锚点）与 E2E/降级率口径均未改动，不外推为"冻结口径语料达标"或"完整 clang 工具链"（见 §四）。
+2. `v1.0.0` / `v1.0.1` tag 与 `v1.0.0` Release 保留不改写；`v1.2.26` 为 Latest。
+3. 令牌仅在进程内用于 gh 认证，未回显、未写入任何文件、未入库；公开前已扫描确认无 GPG 私钥/凭据文件入库。
+
+**执行状态**：**v1.2.26 版本升级、二进制重构建上传、Release 发布、仓库公开与设置全部完成**。history 瘦身目标已达成无需执行。
