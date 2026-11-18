@@ -12,6 +12,10 @@
 > 本文件是仓库根目录的贡献入口；`docs/dev/contributing.md` 是开发流程文档，二者路径不同、均保留。
 > **本文件不构成法律意见 / This document does not constitute legal advice；需权利人或法务确认。**
 
+## 0. 更新方式（不接受 PR）
+
+> **本项目不接受外部 Pull Request。** 仓库变更由**权利人直接 GPG 签名提交并推送**至 `main`；分支规则集仅强制签名与禁 force push，不含 PR 审批要求（2026-11-19 治理口径）。下方的 DCO / 许可条款仍为提交时的既有约定。
+
 ## 1. 双许可与贡献
 
 Abate 采用「AGPLv3（开源侧）+ 商业授权（闭源侧）」双许可，见 `LICENSING.md`。贡献前请阅读 `LICENSING.md`、`DCO.md`、`CLA.md`。所有法律判断**需权利人或法务确认**。

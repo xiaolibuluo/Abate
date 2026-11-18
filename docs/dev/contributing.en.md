@@ -67,9 +67,17 @@ by the gate scripts above.
 
 ## 5. Submission flow
 
-1. Branch off `main`; all gates green.
-2. `git commit -s` (DCO).
-3. PR description links the milestone and acceptance items; gate failures
-   print the rule that was hit.
+> **Governance update (2026-11-19)**: this project **does not accept external
+> Pull Requests**. Changes are made by the **rights holder directly committing
+> and pushing to `main`** (the ruleset keeps only required GPG signatures and
+> no-force-push, with no PR-approval requirement). The historical flow below is
+> kept for background only and no longer applies.
+
+1. ~~Branch off `main`; all gates green.~~
+2. ~~`git commit -s` (DCO).~~
+3. ~~PR description links the milestone and acceptance items; gate failures
+   print the rule that was hit.~~ → Now: the rights holder runs all gates
+   green locally, then `git commit -S` (GPG) + `-s` (DCO) and pushes directly
+   with `git push origin main`.
 4. After merge, the CI full archive re-checks (nightly: fuzz + parity +
    scale).

@@ -50,7 +50,9 @@ Source: https://github.com/xiaolibuluo/Abate
 
 ## 5. 提交流程
 
-1. 分支基于 `main`；门禁全绿。
-2. `git commit -s`（DCO）。
-3. PR 描述关联里程碑与验收项；门禁失败打印条例。
+> **治理口径（2026-11-19 更新）**：本项目**不接受外部 Pull Request**；仓库变更由**权利人直接签名提交并推送**至 `main`（规则集仅保留强制 GPG 签名 + 禁 force push，不含 PR 审批要求）。本节下方为历史流程描述，仅作背景，不再适用。
+
+1. ~~分支基于 `main`；门禁全绿。~~
+2. ~~`git commit -s`（DCO）。~~
+3. ~~PR 描述关联里程碑与验收项；门禁失败打印条例。~~ → 现为：权利人在本地跑全部门禁全绿后，`git commit -S`（GPG 签名）+ `-s`（DCO），直接 `git push origin main`。
 4. 合入后 CI 全量档（夜间：模糊 + 对拍 + 规模）复核。

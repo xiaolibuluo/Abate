@@ -48,20 +48,20 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 - **哈希校验**：`scripts/hash-check.sh`（generate/verify）+ `SHA256SUMS`（11 个关键文件）。
 - **双语文档**：全仓 76 份 `.en.md`、T1–T10 保姆教程 20 份、双许可治理 22 份；命名方案 A、6 行版权头、顶部互链（译本→中文 76/76 完整；中文原文按 DESIGN B/C 类"不改"约束保持单向）。
 - **GPG 签名**：RSA 4096，Key ID `5CF28F616D9888DB`，指纹 `2324 1C08 57FD 46BD 7D12 5CF2 8F61 6D98 88DB`；本地已启用 commit/tag 签名；私钥单独留存于交付区、不公开、不入库；公钥已上传 GitHub 供 Verified 验证。
-- **GitHub 合并保护**：`Owner-only merge protection` Ruleset（active，默认分支）——强制 GPG 签名、1 审批 + 最近推送者审批 + 过期驳回 + 会话解决、禁 force push；仓库无外部协作者。
+- **GitHub 分支保护**：`Owner-only merge protection` Ruleset（active，默认分支）——**仅**强制 GPG 签名 + 禁 force push；**不接受 PR**（无审批要求）。2026-11-19 治理调整：移除 PR 审批规则与 bypass，由权利人直接签名提交推送 `main`（见 §十二）。仓库无外部协作者。
 
 ## 六、版本化状态（已完成）
 
 - GPG 签名提交：`16f97d9b642f167154077bbd42d77473eb1f6d86`（签名状态 `G` / Good signature）。
 - 首个签名 tag：`v1.0.0`（`git tag -v` 验证 Good signature）。
 - 工作树干净（改动=0）。私钥不入库，单独留存于交付区。
-- GitHub 合并保护 Ruleset 已 API 回读确认 active（强制签名 + 1 审批 + 最近推送者审批 + 过期驳回 + 会话解决 + 禁 force push）。
+- GitHub 分支保护 Ruleset 已 API 回读确认 active（仅强制签名 + 禁 force push；不接受 PR、无审批要求，见 §十二）。
 
 ## 七、对外发布文案红线（发布时须遵守）
 
 1. 仅用冻结口径数据 + 全语料数据如实并列，零夸大；libclang-min 可如实声明「解析 + AST 访问功能级已验证」，不得外推为含 driver/CodeGen 的完整 clang；全语料 <5% 不等于冻结口径达标（见 §四.1）。
 2. 仓库已于 2026-11-19 在权利人明确授权后完成 push（`origin/main` `783dc7ea..0ca21c37`，签名 tag `v1.0.0` 同步，见 §十）；此前"尚未 push / 须授权"边界已关闭。
-3. GitHub 规则集在首个 push 后于仓库设置页显示为 active（API 已回读确认生效）。
+3. GitHub 规则集在首个 push 后于仓库设置页显示为 active（API 已回读确认生效）；当前条款为强制签名 + 禁 force push，不接受 PR（见 §十二）。
 
 ## 八、SBOM 与 Release 流水线实跑证据（2026-11-19）
 
@@ -151,7 +151,7 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 | **GitHub Release** | `gh release create v1.2.26 --verify-tag` + 14 资产 | 已创建，非 draft/prerelease，标记 **Latest**；14 资产全部上传；URL `github.com/xiaolibuluo/Abate/releases/tag/v1.2.26` |
 | **仓库转公开** | `gh api ... -X PATCH -f private=false` | `visibility=public`；匿名 `curl` 仓库页 HTTP 200 |
 | 仓库设置 | `gh api` 回读 | description / homepage(`qingdujian.com`) / issues / discussions / projects / 10 topics 齐备；wiki 关闭（文档在仓库内）；三个合并方式开启 + `delete_branch_on_merge=true`；`SECURITY`/`CODE_OF_CONDUCT`/`CONTRIBUTING`/`LICENSE` 齐全 |
-| 分支保护 | `gh api .../rulesets` | `Owner-only merge protection` ruleset **active**：`required_signatures` + `pull_request`（1 审批 + 最近推送者审批 + 过期驳回 + 会话解决）+ `non_fast_forward`；公开后规则集 API 恢复可读 |
+| 分支保护 | `gh api .../rulesets` | `Owner-only merge protection` ruleset **active**：`required_signatures` + `non_fast_forward`（§十二 已移除 `pull_request` 与 bypass，改为不接受 PR、权利人直接签名提交）；公开后规则集 API 恢复可读 |
 
 **边界声明**：
 1. 本次为版本升级 + 对外发布，冻结件（水印版本标签、三份 SHA 锚点）与 E2E/降级率口径均未改动，不外推为"冻结口径语料达标"或"完整 clang 工具链"（见 §四）。
@@ -159,3 +159,27 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 3. 令牌仅在进程内用于 gh 认证，未回显、未写入任何文件、未入库；公开前已扫描确认无 GPG 私钥/凭据文件入库。
 
 **执行状态**：**v1.2.26 版本升级、二进制重构建上传、Release 发布、仓库公开与设置全部完成**。history 瘦身目标已达成无需执行。
+
+## 十二、不接受 PR 治理调整（2026-11-19）
+
+权利人明确最新口径：**本项目不接受 PR，仓库变更只由权利人自己直接更新**。据此调整仓库规则集与相关文档声明，全部经真实命令回读确认：
+
+| 步骤 | 命令 / 断言 | 实测结果 |
+|------|-------------|----------|
+| 备份现状 | `gh api .../rulesets/27377536 > /tmp/ruleset-before-nopr.json` | 原规则：`required_signatures` + `pull_request`（1 审批 + 最近推送者审批）+ `non_fast_forward`，bypass=RepositoryRole/Admin `always` |
+| 规则集更新 | `PUT .../rulesets/27377536`，`rules` 去掉 `pull_request`、`bypass_actors=[]` | 新规则：`required_signatures` + `non_fast_forward`；bypass 清空 |
+| 回读验证 | `gh api .../rulesets/27377536 --jq '{rules,bypass_actors,current_user_can_bypass}'` | `rules=[required_signatures,non_fast_forward]`、`bypass_actors=[]`、`current_user_can_bypass=never`、`enforcement=active` |
+| **效果** | 权利人可直接 `git commit -S` + `git push origin main`，**无需 PR** | 强制 GPG 签名 + 禁 force push 保护**完整保留**、对所有人（含 owner）生效 |
+
+**文档声明同步**（中英文，均不在哈希冻结清单）：
+- `docs/dev/contributing.md` / `.en.md` §5 提交流程：标注"不接受 PR、权利人直接签名提交"，历史 PR 流程保留作背景并划线标注不再适用。
+- `CONTRIBUTING.md` / `.en.md` 新增 §0「更新方式（不接受 PR）」。
+- `docs/plan/08-crosscutting.md` / `.en.md` §4 关键流程：PR 流程 → 权利人本地门禁全绿后直接签名推送。
+- 本文件 §五 / §六 / §七 / §十一 中旧 ruleset 条款描述更新为新口径，并指向本节。
+
+**边界声明**：
+1. 冻结件（水印版本标签、三份 SHA 锚点、E2E/降级率口径）均未改动。
+2. 本次仅调整仓库治理规则与文档声明，不改任何源码、不动 tag/Release，不重写已发布历史。
+3. 令牌仅在进程内用于 gh 认证，未回显、未写入文件、未入库。
+
+**执行状态**：**不接受 PR 治理调整完成；仓库现处于"权利人直接签名更新"模式**。

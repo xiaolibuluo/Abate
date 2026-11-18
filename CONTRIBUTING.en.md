@@ -12,6 +12,10 @@
 > This file is the repository-root contribution entry point; `docs/dev/contributing.md` is the developer-workflow document. The two paths differ and both are retained.
 > **This document does not constitute legal advice / 本文件不构成法律意见; subject to confirmation by the rights holder or legal counsel.**
 
+## 0. Update policy (no Pull Requests)
+
+> **This project does not accept external Pull Requests.** Changes are made by the **rights holder directly committing with a GPG signature and pushing** to `main`; the branch ruleset enforces only required signatures and no-force-push, with no PR-approval requirement (governance update 2026-11-19). The DCO / licensing terms below remain the standing conventions for commits.
+
 ## 1. Dual Licensing and Contributions
 
 Abate is dual-licensed under **AGPLv3 (open-source side) + a commercial license (closed-source side)**; see `LICENSING.md`. Before contributing, read `LICENSING.md`, `DCO.md`, and `CLA.md`. All legal determinations are **subject to confirmation by the rights holder or legal counsel**.

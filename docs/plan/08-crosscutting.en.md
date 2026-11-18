@@ -188,8 +188,8 @@ scripts/
 
 ### 4. Key processes
 
-1. PR flow: all gates must pass before merge (branch protection); gate failures print the violated rule (aligned with the requirement to print the rule explicitly on trigger).
-2. Gate tiers: quick profile (PR, ≤10 minutes: five sections + copyright header + quick determinism) and full profile (nightly); baseline regression runs on a dedicated runner (performance jitter isolation).
+1. Merge flow: this project does not accept PRs; the rights holder runs all gates green locally, then directly commits with a GPG signature and pushes to `main` (branch protection enforces only required signatures and no-force-push); gate failures print the violated rule (aligned with the requirement to print the rule explicitly on trigger).
+2. Gate tiers: quick profile (pre-commit locally, ≤10 minutes: five sections + copyright header + quick determinism) and full profile (nightly); baseline regression runs on a dedicated runner (performance jitter isolation).
 3. Gate self-testing: gate scripts have unit tests (injected violation samples asserting FAIL — the verified godox/unused interception is to be extended to all gate sections).
 
 ### 5. Test requirements and acceptance criteria
