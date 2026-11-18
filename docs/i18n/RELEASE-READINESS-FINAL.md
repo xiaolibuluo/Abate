@@ -183,3 +183,38 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 3. 令牌仅在进程内用于 gh 认证，未回显、未写入文件、未入库。
 
 **执行状态**：**不接受 PR 治理调整完成；仓库现处于"权利人直接签名更新"模式**。
+
+---
+
+## 十三、v1.2.27 修复发布——发布二进制补齐七语言 check（2026-11-19）
+
+**问题根因**：v1.2.26 的七语言接线源码/文档于当日 02:18 以提交 `8dbacd07` 落地，
+但 v1.2.26 的 5 个发布二进制早在 01:13 构建、01:14 上传 Release，**早于代码提交约 1 小时**。
+结果 GitHub Release 上可下载的二进制仍是仅支持 Go 的旧版（`--help` 为
+"Run the built-in Go rule set"，`check` 一个 `.py` 文件报 `no source paths` / rc=3），
+与已更新的源码/文档不一致。外部反馈"七语言文档和文件没有更新"——源码与文档实则已更新并推送
+（本地 = `origin/main` = `8dbacd07`），真正的缺口在**发布产物未重构建**。
+
+**处置**：按"不改写已发布 tag / Release"的边界，升补丁版本 `v1.2.27` 重新发布
+（不覆盖 v1.2.26）。全部经真实命令回读确认：
+
+| 步骤 | 命令 / 断言 | 实测结果 |
+|------|-------------|----------|
+| 版本升级 | `versionText`→`abate 1.2.27`、`MetaVersion`→`1.2.27`、CHANGELOG 双语新增 `[v1.2.27]`、6 份用户文档版本示例同步 | `abate version` 输出 `abate 1.2.27`；冻结件（水印 `VersionLabel` / 三份 SHA 锚点 / `SHA256SUMS`）不动 |
+| 顶层 help 更正 | `execute.go` rootHelp 的 check 描述：Go 单语言 → 七语言 | `--help` 显示 "Run 7-language built-in rule sets by file extension (.go/.py/.js/.c/.cs/.rs/.kt)" |
+| 签名提交 | `git commit -S` ×2 | `8355fbad`（版本升级）、`04ec3039`（help 更正），均 `G` 签名；已推送 main |
+| 二进制重构建 | `release.sh --dry-run v1.2.27` | 5 目标交叉编译 + `manifest.txt` + SPDX SBOM；`sha256sum -c` 5/5 OK；`version`=1.2.27 |
+| 资产签名 | 7 份 `.asc`（5 二进制 + manifest + SBOM），沿用原密钥 `5CF28F616D9888DB` | `gpg --verify` 7/7 OK |
+| 签名 tag | `git tag -s v1.2.27` | Good signature；`v1.2.27` 指向 `04ec3039`；已推送 |
+| **GitHub Release** | `gh release create v1.2.27 --verify-tag` + 14 资产 | 非 draft/prerelease，标记 **Latest**；14 资产全部上传；v1.2.26 及更早 Release 保留 |
+
+**端到端验证（下载即用）**：从 GitHub Release 真实下载 `abate-v1.2.27-linux-amd64` 实跑——
+`version` 输出 `abate 1.2.27`；顶层 `--help` 为七语言描述；`check` 一个含 7 种语言文件的混合目录
+得到 `files=7`、规则前缀 `[C, CS, GO, JS, KT, PY, RS]` 全部出现（此前 v1.2.26 二进制仅 GO）。
+
+**边界声明**：
+1. 冻结件（水印版本标签、三份 SHA 锚点、`SHA256SUMS`）与 E2E/降级率口径均未改动；本次仅修发布产物与可见文案。
+2. `v1.0.0` / `v1.0.1` / `v1.2.26` tag 与 Release 保留不改写；`v1.2.27` 为 Latest。
+3. 令牌仅在进程内用于 gh 认证，未回显、未写入文件、未入库。
+
+**执行状态**：**v1.2.27 修复发布完成——下载到的二进制已真正支持七语言 check**。
