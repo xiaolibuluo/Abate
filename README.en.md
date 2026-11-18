@@ -39,17 +39,32 @@ Abate is dual-licensed under **AGPLv3 (open source) and a commercial license**:
 
 - Go **1.26.11** (the real build version; the older `go1.27` / `Go 1.24+`
   values in historical documents are outdated)
-- Offline build: `GOFLAGS=-mod=vendor` (dependencies are vendored; no git remote)
+- **Zero external dependencies** (empty `go.sum`, no `vendor/`), so offline
+  builds work directly with `GOPROXY=off`
 - Optional: `golangci-lint` (use whatever version is installed locally; this
   document does not assert any unverified version number)
 
 ## 3 Quick start
 
 ```bash
-export GOFLAGS=-mod=vendor
+export GOPROXY=off
 go build -o abate .
 ./abate version
 ```
+
+**First example — seven-language source check** (dispatch is automatic by file
+extension; no language flag needed):
+
+```bash
+./abate check ./path/to/your/code        # one pass over .go/.py/.js/.c/.cs/.rs/.kt
+./abate check app.py --format json       # machine-readable report
+./abate check ./src --languages py,rust  # restrict to selected languages
+```
+
+> Note: `check` exits with code **1** on any finding (including warnings).
+> To fail only on errors, add `--severity error`. See the
+> [CLI reference](docs/user/cli-reference.en.md) and the
+> [seven-language guide](docs/user/multilang-check-guide.en.md).
 
 Step-by-step tutorials:
 

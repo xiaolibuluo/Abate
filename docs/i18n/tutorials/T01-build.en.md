@@ -18,8 +18,8 @@ confirm the build provenance.
 
 - **Go 1.26.11** installed (the real build version of this repository; the
   older `go1.27` and `Go 1.24+` values in legacy documents are outdated);
-- The repository source, including the `vendor/` directory (all dependencies
-  are vendored; no module downloads needed);
+- The repository source (**zero external dependencies**: empty `go.sum`, no
+  `vendor/`; no module downloads needed);
 - All commands in this tutorial are run from the repository root.
 
 ## 3 Commands
@@ -27,7 +27,7 @@ confirm the build provenance.
 ```bash
 go version
 cd /path/to/abate
-export GOFLAGS=-mod=vendor
+export GOPROXY=off
 go build -o /tmp/abate_verify .
 /tmp/abate_verify version
 ```
@@ -45,7 +45,7 @@ go version go1.26.11 linux/amd64
 `/tmp/abate_verify version` (6 lines, byte-for-byte stable):
 
 ```
-abate 0.1.0
+abate 1.2.27
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial
@@ -60,7 +60,7 @@ watermark: 小黎的部落
 
 | Symptom | Cause | Action |
 |---|---|---|
-| `go: downloading ...` hangs or network error | `GOFLAGS=-mod=vendor` not set, so Go tries to fetch modules | Run `export GOFLAGS=-mod=vendor` and retry (dependencies are in `vendor/`) |
+| `go: downloading ...` hangs or network error | `GOPROXY=off` not set, so Go tries the network | Run `export GOPROXY=off` and retry (this repo has zero external dependencies) |
 | `go: go.mod requires go >= 1.26.11` style error | Local Go is older than 1.26.11 | Upgrade to Go 1.26.11 |
 | Built binary reports `permission denied` | Target directory not writable or missing the execute bit | Output to a writable directory, or `chmod +x` |
 | `abate version` line count differs | You ran a stale binary | Delete the old artifact and rebuild per section 3 |

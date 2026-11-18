@@ -63,7 +63,13 @@ Flags:
 Rule-to-operator derivation is the separate abate derive command; check
 never mutates sources.
 
-` + exitCodeHelp + `
+Exit codes:
+  0  no findings (clean).
+  1  one or more findings — including warnings (business failure). Use
+     --severity error to fail only on errors; --rules to narrow the set.
+  2  internal error (frontend or report output failure).
+  3  usage error (invalid arguments, missing paths, or no rules matched).
+
 Examples:
   abate check ./ctl/cli
   abate check program.py report.js --format sarif --out /tmp/check.sarif

@@ -33,6 +33,12 @@ Patch release — 让已发布二进制真正包含七语言 check 能力（2026
   （覆盖 python/javascript/golang/rust/kotlin/c-sharp/c 七语言 + static-analysis/code-analysis/
   linter/code-quality/ast/sarif/cli/developer-tools + 混沌工程/变异测试长尾词，按 API 实测仓库数选词）；
   README 中英首屏增版本/许可/七语言/Go 徽章与价值主张。细节见发布就绪文档 §十四。
+- **发布后易用性修订（源码/文档，未随 v1.2.27 二进制）**：README 快速开始补七语言 check
+  复制即用示例并前置退出码提示；README/T01 构建命令由 `GOFLAGS=-mod=vendor` 统一为与
+  零依赖事实一致的 `GOPROXY=off`，T01 版本示例 `0.1.0`→`1.2.27`；`check --help` 退出码
+  说明由共用的稳态语义改为 check 专用（明确 warning 也返回 1、`--severity error` 过滤）。
+  这些为纯展示/文档改动，报告输出与确定性不变；`SHA256SUMS`/`WATERMARK.sha256` 同步重生成。
+  注：已发布 v1.2.27 二进制的 `check --help` 仍为旧四态文案，将于下个版本带入。见 §十五。
 
 ## [v1.2.26]
 

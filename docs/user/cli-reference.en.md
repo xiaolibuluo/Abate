@@ -10,7 +10,7 @@
 # CLI Reference
 
 > Compiled from the real output of `abate --help` and `abate <cmd> --help`
-> (rebuilt from source with `GOFLAGS=-mod=vendor`; commands and flags below
+> (rebuilt from source with `GOPROXY=off`; commands and flags below
 > match the actual binary). The command tree is stateless: identical
 > arguments produce identical bytes on every run (deterministic).
 >

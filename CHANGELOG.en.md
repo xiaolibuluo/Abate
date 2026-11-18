@@ -45,6 +45,16 @@ Patch release — make the published binaries actually carry seven-language chec
   repository counts via GitHub API); README zh/en heroes gained version /
   license / seven-language / Go badges and a value proposition. See release
   readiness doc §十四.
+- **Post-release usability fixes (source/docs, not in the v1.2.27 binary)**:
+  README quick start now includes a copy-paste seven-language check example
+  with an upfront exit-code note; README/T01 build command changed from
+  `GOFLAGS=-mod=vendor` to `GOPROXY=off` to match the zero-dependency reality,
+  and T01 version sample `0.1.0`→`1.2.27`; `check --help` exit codes switched
+  from the shared steady-state wording to check-specific text (warnings also
+  return 1; `--severity error` filters them). These are presentation/doc-only
+  changes — report output and determinism are unchanged; `SHA256SUMS` /
+  `WATERMARK.sha256` regenerated. Note: the released v1.2.27 binary still has
+  the old generic exit-code help, carried into the next version. See §十五.
 
 ## [v1.2.26]
 

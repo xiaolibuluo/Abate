@@ -17,7 +17,7 @@
 
 - 已安装 **Go 1.26.11**（本仓库的真实构建版本；旧文档中的 `go1.27`、
   `Go 1.24+` 均为过期值）；
-- 已获得仓库源码（含 `vendor/` 目录，依赖已全部 vendor，无需联网下载模块）；
+- 已获得仓库源码（项目**零外部依赖**：`go.sum` 为空、无 `vendor/`，无需联网下载模块）；
 - 本教程全部命令在仓库根目录执行。
 
 ## 3 可复制命令
@@ -25,7 +25,7 @@
 ```bash
 go version
 cd /path/to/abate
-export GOFLAGS=-mod=vendor
+export GOPROXY=off
 go build -o /tmp/abate_verify .
 /tmp/abate_verify version
 ```
@@ -43,7 +43,7 @@ go version go1.26.11 linux/amd64
 `/tmp/abate_verify version`（6 行，逐字节稳定）：
 
 ```
-abate 0.1.0
+abate 1.2.27
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial
@@ -58,7 +58,7 @@ watermark: 小黎的部落
 
 | 现象 | 原因 | 动作 |
 |---|---|---|
-| `go: downloading ...` 卡住或报网络错误 | 未设置 `GOFLAGS=-mod=vendor`，Go 试图联网拉模块 | 执行 `export GOFLAGS=-mod=vendor` 后重试（本仓库依赖已在 `vendor/`） |
+| `go: downloading ...` 卡住或报网络错误 | 未设置 `GOPROXY=off`，Go 试图联网 | 执行 `export GOPROXY=off` 后重试（本仓库零外部依赖，无需联网） |
 | `go: go.mod requires go >= 1.26.11` 之类版本错误 | 本机 Go 版本低于 1.26.11 | 升级到 Go 1.26.11 |
 | 构建产物运行报 `permission denied` | 目标目录不可写或无执行位 | 换可写目录输出，或 `chmod +x` |
 | `abate version` 输出行数不符 | 运行了旧二进制 | 删除旧产物后按第 3 节重新构建 |

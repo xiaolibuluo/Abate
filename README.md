@@ -34,16 +34,28 @@ Abate 采用 **AGPLv3（开源）+ 商业授权（闭源）双许可**：
 ## 2 环境要求 / Requirements
 
 - Go **1.26.11**（真实构建版本；历史文档中的 `go1.27`、`Go 1.24+` 均为旧值）
-- 离线构建：`GOFLAGS=-mod=vendor`（依赖已 vendor，无 git remote）
+- 项目**零外部依赖**（`go.sum` 为空、无 `vendor/`），离线构建直接 `GOPROXY=off` 即可
 - 可选：`golangci-lint`（版本以本机安装为准，本文档不写未核实的版本号）
 
 ## 3 快速开始 / Quick start
 
 ```bash
-export GOFLAGS=-mod=vendor
+export GOPROXY=off
 go build -o abate .
 ./abate version
 ```
+
+**第一个例子——七语言源码检查**（按扩展名自动分派，无需指定语言）：
+
+```bash
+./abate check ./path/to/your/code        # 混合目录一次检查 .go/.py/.js/.c/.cs/.rs/.kt
+./abate check app.py --format json       # 机器可读报告
+./abate check ./src --languages py,rust  # 只看指定语言
+```
+
+> 注意：只要检出任意 finding（含 warning），`check` 即返回退出码 **1**；
+> 只想让 error 触发失败，加 `--severity error`。详见
+> [CLI 参考](docs/user/cli-reference.md) 与[七语言保姆教程](docs/user/multilang-check-guide.md)。
 
 保姆级教程：
 
