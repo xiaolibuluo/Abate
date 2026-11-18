@@ -16,6 +16,34 @@ per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
 Version-number consistency is enforced by CI: the `ldflags` version, this
 CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
 
+## [v1.0.1]
+
+Patch release — post-GA real quality consolidation and formal signed release
+wrap-up (2026-11-19).
+
+- **Full-corpus degradation closed out**: 20520 self-authored corpus entries
+  parsed one by one; all six languages below 5% (py 3.36% / js 3.51% / c 4.80%
+  / cs 4.65% / rs 4.91% / kt 4.48%, go `NOT_MEASURED`). Every exact promotion
+  is backed by real frontend dedicated-kind production (minimal sample + real
+  corpus double guard tests); remaining degraded entries are kept honestly.
+  The frozen single-unit caliber is unchanged.
+- **Quality consolidation**: parse benchmarks for the js/c/cs/rs/kt frontends
+  (deterministic source generation + real `Parse` + non-zero `NodeCount` guard);
+  cfront Go-native fuzz added and a real fuzz-discovered panic fixed (negative
+  cap on unterminated `template <`), with a regression lock. Full
+  `go test ./...` (73 packages) passed, `golangci-lint` 0 issues.
+- **libclang C API functional-level verification closed**: `scripts/libclang-api-verify.sh`
+  really calls the self-built `libclang-18.so.18` (ldd asserts self-built
+  linkage), diagnostics=0, CXCursor walk recovers 30 cursors / struct Point 1 /
+  functions add+main 2, rc=0. Iron-rule caliber 100% closed.
+- **SBOM / Release pipeline real runs**: fixed `sbom.sh` crash on missing
+  manifest, SPDX 2.3 emitted honestly; `release.sh --dry-run v1.0.0` 5-target
+  cross-compilation + manifest 5/5 OK + reproducible dual-build SHA256.
+- **Formal signed release**: after rights-holder authorization, 7 GPG-signed
+  commits pushed to `origin/main`, signed tag `v1.0.0` synced, 7 release
+  artifacts detached-signed with 7/7 verification passed; this `v1.0.1` marks
+  the wrap-up with a separate signed tag. See `docs/i18n/RELEASE-READINESS-FINAL.md` §X.
+
 ## [v1.0.0]
 
 GA release. Closes the M1–M6 program.

@@ -14,6 +14,29 @@ per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
 Version-number consistency is enforced by CI: the `ldflags` version, this
 CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
 
+## [v1.0.1]
+
+Patch release — GA 后真实质量巩固与正式签名发布收官（2026-11-19）。
+
+- **全语言降级率收官**：自研语料全语料 20520 条逐条真实 parse，六语均降到
+  5% 以下（py 3.36% / js 3.51% / c 4.80% / cs 4.65% / rs 4.91% / kt 4.48%，
+  go `NOT_MEASURED`）。每个 exact 升级均有前端真实专用 kind 产出（最小样例 +
+  真实语料双重守护），剩余 degraded 如实保留，不改标签。冻结单文件口径不变。
+- **质量维度巩固**：为 js/c/cs/rs/kt 五前端补齐 parse 基准（确定性源生成 +
+  真实 `Parse` + `NodeCount` 非零护栏）；cfront 补 Go 原生 fuzz 并修复一例
+  经 fuzz 发现的真实 panic（未闭合 `template <` 负 cap 崩溃），统一加区间倒置
+  防御并留回归锁。全量 `go test ./...`（73 包）通过、`golangci-lint` 0 issues。
+- **libclang C API 功能级验证闭环**：`scripts/libclang-api-verify.sh` 真实调用
+  自研 `libclang-18.so.18`（ldd 断言链接自研库），diagnostics=0、CXCursor 遍历
+  回收 30 cursor / struct Point 1 / 函数 add+main 2，rc=0。铁律口径 100% 闭环。
+- **SBOM / Release 流水线实跑**：修复 `sbom.sh` 对缺失清单的崩溃，SPDX 2.3
+  如实产出；`release.sh --dry-run v1.0.0` 五目标交叉编译 + 清单 5/5 OK +
+  双构建 SHA256 一致。
+- **正式签名发布**：权利人授权后，7 个 GPG 签名提交推送至 `origin/main`，
+  签名 tag `v1.0.0` 同步，7 份发布资产 detached 签名 7/7 验证通过；
+  本版本 `v1.0.1` 以独立签名 tag 标记上述收官。详见
+  `docs/i18n/RELEASE-READINESS-FINAL.md` §十。
+
 ## [v1.0.0]
 
 GA release. Closes the M1–M6 program.
