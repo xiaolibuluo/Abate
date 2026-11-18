@@ -1,12 +1,12 @@
 # Abate 完工度终审报告 / Release Readiness Final Report
 
-> 生成时间：2026-11-16；最近复核：2026-11-19（全语料降级口径更新 + SBOM/Release 实跑 + libclang C API 功能级验证）
+> 生成时间：2026-11-16；最近复核：2026-11-19（全语料降级口径更新 + SBOM/Release 实跑 + libclang C API 功能级验证 + 正式签名发布已执行）
 > 性质：发布前必检项（对应 `docs/dev/pending-work.md` §8）
 > 原则：实事求是，所有结论均来自本轮独立实跑，不采信任何自报，禁止伪绿/夸大。
 
 ## 一、结论摘要
 
-工程与门禁口径层面**已完工，具备发布工程条件**；铁律口径（真实产物 + 功能级验证）已于 2026-11-19 100% 闭环。全语料降级率已由历史超阈降至六语均 <5%（口径与阈值边界见 §四.1 更新）。版本化与 GPG 签名、GitHub 合并保护已完成配置；SBOM 与 Release 流水线已于 2026-11-19 离线实跑成功（见 §八）；libclang C API 功能级验证已真实通过（见 §九）。对外发布仅余授权项：正式 GPG 签名 + 注解 tag + push。
+工程与门禁口径层面**已完工，具备发布工程条件**；铁律口径（真实产物 + 功能级验证）已于 2026-11-19 100% 闭环。全语料降级率已由历史超阈降至六语均 <5%（口径与阈值边界见 §四.1 更新）。版本化与 GPG 签名、GitHub 合并保护已完成配置；SBOM 与 Release 流水线已于 2026-11-19 离线实跑成功（见 §八）；libclang C API 功能级验证已真实通过（见 §九）。**正式签名发布已于 2026-11-19 在权利人明确授权后执行完成**（见 §十）：本地 4 个收尾提交已 GPG 签名推送至 `origin/main`（`783dc7ea..0ca21c37`），`v1.0.0` 签名 tag 已同步，发布资产 detached 签名 7/7 验证通过。对外发布授权边界已关闭。
 
 ## 二、本轮独立实测门禁结果
 
@@ -60,7 +60,7 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 ## 七、对外发布文案红线（发布时须遵守）
 
 1. 仅用冻结口径数据 + 全语料数据如实并列，零夸大；libclang-min 可如实声明「解析 + AST 访问功能级已验证」，不得外推为含 driver/CodeGen 的完整 clang；全语料 <5% 不等于冻结口径达标（见 §四.1）。
-2. 仓库尚未 push（本地版本化完成）。push 为对外发布行为，须由权利人明确授权后执行。
+2. 仓库已于 2026-11-19 在权利人明确授权后完成 push（`origin/main` `783dc7ea..0ca21c37`，签名 tag `v1.0.0` 同步，见 §十）；此前"尚未 push / 须授权"边界已关闭。
 3. GitHub 规则集在首个 push 后于仓库设置页显示为 active（API 已回读确认生效）。
 
 ## 八、SBOM 与 Release 流水线实跑证据（2026-11-19）
@@ -77,7 +77,7 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 
 **修复记录**：`scripts/sbom.sh` 原硬读 `third_party/LICENSE-MANIFEST.md` 而崩溃（rc=2）。项目已彻底自研化——`go.mod` 仅 `module abate`+`go 1.26.11`，零第三方依赖、无 `vendor/`、无 `third_party/` 目录—故 SBOM 的两类来源均允许为空。已修脚本对缺失清单优雅降级为空数组，如实产出「仅含主模块」的 SBOM，不改依赖事实、不造假。
 
-**产物边界**：`--dry-run` 仅做前置校验 + 构建 + 清单 + SBOM，**未签名、未建 tag**；正式签名发布仍须权利人授权后按脚本非 dry-run 路径执行。交叉编译二进制与平台绑定，属构建产物，按 `.gitignore` 不入库。
+**产物边界**：`--dry-run` 仅做前置校验 + 构建 + 清单 + SBOM，**未签名、未建 tag**；正式签名发布已于 2026-11-19 在权利人授权后执行完成（独立 detached 签名，见 §十；未走脚本内 `git tag -s` 路径以避免重写已发布 tag）。交叉编译二进制与平台绑定，属构建产物，按 `.gitignore` 不入库。
 
 ## 九、libclang C API 功能级验证证据（2026-11-19）
 
@@ -96,3 +96,27 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 **报告更新**：`.artifacts/libclang-min/build-report.txt` 已据实重写——旧文件是 2026-11-11 编译 TableGen OOM 的失败快照，与 2026-11-13 18:55 成功构建的 `.so` 矛盾；新报告如实记录产物级 + 功能级双达成与遗留边界（不含 driver/CodeGen、平台绑定、正式签名需授权）。
 
 **铁律口径判定**：**100% 闭环**。对外仅可声明「解析 + AST 访问」能力已验证，不得外推为完整 clang 工具链。
+
+---
+
+## 十、正式签名发布执行记录（2026-11-19）
+
+权利人明确授权"全权执行"后，按最小不可逆原则完成对外发布，全部经真实命令回读确认：
+
+| 步骤 | 命令 / 断言 | 实测结果 |
+|------|-------------|----------|
+| 前置核验 | `git log --format='%G?' v1.0.0..HEAD` | 7/7 提交签名有效（`G`）；工作树干净；SSH `git@github.com` 认证成功 |
+| 推送分支 | `git push origin main` | `783dc7ea..0ca21c37  main -> main`（fast-forward，4 个收尾提交） |
+| 同步标签 | `git push origin refs/tags/v1.0.0` | `Everything up-to-date`（本地与远程一致，未移动/未重写已发布 tag） |
+| 跟踪上游 | `git branch --set-upstream-to=origin/main main` | `branch 'main' set up to track 'origin/main'` |
+| 资产签名 | `gpg --detach-sign --armor`（密钥 `5CF28F616D9888DB`） | 5 个交叉二进制 + `manifest.txt` + `sbom.spdx.json` 共 7 份 `.asc` |
+| 签名验证 | `gpg --verify` 逐份 | 7/7 `OK` |
+| 清单校验 | `sha256sum -c manifest.txt` | 5/5 `OK` |
+| 远程回读 | `git ls-remote origin` | `refs/heads/main = 0ca21c37…`（与本地一致）；`refs/tags/v1.0.0^{} = a1b0796d…` |
+
+**边界说明**：
+1. `v1.0.0` 注解 tag 指向 `a1b0796d`（历史重写后重签的既定发布点），本轮 4 个收尾提交以 fast-forward 进入 `main`，**未移动/重写已发布 tag**——重写已发布 tag 属破坏性操作，超出"执行发布"授权范围；如需将收尾提交纳入新版本 tag，属独立版本决策，须另行授权。
+2. 发布资产及其 detached 签名位于 `dist/v1.0.0/`，受 `.gitignore` 排除，不入库；签名私钥不入库、不对外。
+3. 本记录仅陈述真实执行的本地 + 远程状态，不外推为"冻结口径语料达标"或"完整 clang 工具链"等未验证结论（见 §四）。
+
+**对外发布状态**：**授权边界已关闭，正式签名发布完成**。

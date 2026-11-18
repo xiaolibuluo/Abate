@@ -144,7 +144,7 @@ C 源码脚本内联、自包含可复现。`build-report.txt` 已据实重写�
 | 六语言前端覆盖清单（`docs/dev/frontend-coverage/`） | ✅ 已产出 |
 | `lang/pyfront` pyAsPower 前置符号 | ✅ 已修复（`pytokens.go:26`） |
 | 代码库 TODO/FIXME 残留 | ✅ 0 处 |
-| GitHub 全量上传（xiaolibuluo/Abate） | ✅ 11-11 快照已上传；本地后续提交未推送（无 remote） |
+| GitHub 全量上传（xiaolibuluo/Abate） | ✅ 2026-11-19 正式签名发布已推送：`origin/main` `783dc7ea..0ca21c37`，签名 tag `v1.0.0` 同步（见 `docs/i18n/RELEASE-READINESS-FINAL.md` §十） |
 | **wazero v1.12.0 vendoring + `plugin/wasm/` 真 WASM 运行时（32 .go）** | ✅ 已交付 |
 | **`kernel/abi/` gVisor 裁剪移植 + 上游逐项对拍** | ✅ amd64 352 / arm64 295 / errno 137 |
 | **`lang/jsfront/jsmap.go` 拆分（≤300 行）** | ✅ 3 文件全达标 |
@@ -165,8 +165,10 @@ C 源码脚本内联、自包含可复现。`build-report.txt` 已据实重写�
 **遗留边界（禁止伪造）**
 1. `.artifacts/libclang-min/build/` 已从索引移除，但历史 commit 中仍含这些产物；
    如需彻底瘦身历史，需独立的 `git filter-repo` 操作（改写全部历史 hash），本次未执行。
-2. 正式签名发布（GPG 签名 + 注解 tag + push）仍须权利人授权；2026-11-19 仅完成
-   `--dry-run` 本地演练（产物不入库、不签名、不建 tag）。
+2. 正式签名发布（GPG 签名 + 注解 tag + push）已于 2026-11-19 在权利人明确授权后
+   执行完成：`origin/main` `783dc7ea..0ca21c37`（7 提交全 GPG 签名）、签名 tag `v1.0.0`
+   同步、7 份发布资产 detached 签名 7/7 验证通过；详见 `docs/i18n/RELEASE-READINESS-FINAL.md` §十。
+   （历史快照：此前仅完成 `--dry-run` 本地演练，现已关闭。）
 
 **已补齐（2026-11-19）**
 - ① libclang C API 功能级验证：`scripts/libclang-api-verify.sh` 真实调用自研
@@ -181,4 +183,4 @@ C 源码脚本内联、自包含可复现。`build-report.txt` 已据实重写�
 - ③ 独立终审报告 `docs/i18n/RELEASE-READINESS-FINAL.md` 已落盘并复核（修正过时
   全语料口径 + 补 SBOM/Release 实跑证据）。
 
-**铁律口径已 100% 闭环**；对外发布仅余授权项：正式 GPG 签名 + 注解 tag + push。
+**铁律口径已 100% 闭环**；对外发布授权边界已关闭，正式签名发布已于 2026-11-19 执行完成（详见 `docs/i18n/RELEASE-READINESS-FINAL.md` §十）。

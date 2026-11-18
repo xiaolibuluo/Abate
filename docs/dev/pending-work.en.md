@@ -209,7 +209,7 @@ Completed (non-gate items): [7 SBOM / Release real run ✅] · [8 standalone fin
 | Six-language frontend coverage lists (`docs/dev/frontend-coverage/`) | ✅ produced |
 | `lang/pyfront` pyAsPower prefix symbol | ✅ fixed (`pytokens.go:26`) |
 | Codebase TODO/FIXME residue | ✅ 0 occurrences |
-| GitHub full upload (xiaolibuluo/Abate) | ✅ 11-11 snapshot uploaded; later local commits not pushed (no remote) |
+| GitHub full upload (xiaolibuluo/Abate) | ✅ 2026-11-19 formal signed release pushed: `origin/main` `783dc7ea..0ca21c37`, signed tag `v1.0.0` synced (see `docs/i18n/RELEASE-READINESS-FINAL.md` §X) |
 | **wazero v1.12.0 vendoring + `plugin/wasm/` true WASM runtime (32 .go)** | ✅ delivered |
 | **`kernel/abi/` gVisor trimmed port + upstream item-by-item parity** | ✅ amd64 352 / arm64 295 / errno 137 |
 | **`lang/jsfront/jsmap.go` split (≤300 lines)** | ✅ all 3 files meet the limit |
@@ -232,9 +232,12 @@ Completed (non-gate items): [7 SBOM / Release real run ✅] · [8 standalone fin
    commits still contain these artifacts; fully slimming history requires a
    separate `git filter-repo` operation (rewriting all history hashes), not
    executed this time.
-2. Formal signed release (GPG signature + annotated tag + push) still requires
-   the rights holder's authorization; only the local `--dry-run` rehearsal was
-   completed on 2026-11-19 (artifacts not committed, no signature, no tag).
+2. Formal signed release (GPG signature + annotated tag + push) was executed on
+   2026-11-19 after explicit authorization from the rights holder: `origin/main`
+   `783dc7ea..0ca21c37` (7 commits all GPG-signed), signed tag `v1.0.0` synced,
+   7 release artifacts detached-signed with 7/7 verification passed; see
+   `docs/i18n/RELEASE-READINESS-FINAL.md` §X. (Historical snapshot: only the
+   local `--dry-run` rehearsal had been done; that boundary is now closed.)
 
 **Completed (2026-11-19)**
 - ① libclang C API functional-level verification: `scripts/libclang-api-verify.sh`
@@ -255,5 +258,6 @@ Completed (non-gate items): [7 SBOM / Release real run ✅] · [8 standalone fin
   is filed and re-reviewed (stale full-corpus caliber corrected + SBOM/Release
   real-run evidence added).
 
-**The iron-rule caliber is now 100% closed**; the only remaining item before
-external release is authorization: formal GPG signature + annotated tag + push.
+**The iron-rule caliber is now 100% closed**; the external-release authorization
+boundary is closed — the formal signed release was executed on 2026-11-19 (see
+`docs/i18n/RELEASE-READINESS-FINAL.md` §X).
