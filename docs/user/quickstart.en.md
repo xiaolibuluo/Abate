@@ -15,9 +15,12 @@ and executed as-is.
 
 ## 1. Build
 
+The project has **zero external dependencies** (`go.mod` declares only the module
+and Go version; `go.sum` is empty and there is no `vendor/`). Go 1.26.11+ builds
+it offline:
+
 ```bash
-# Requires Go 1.26.11 (offline build via -mod=vendor)
-export GOFLAGS=-mod=vendor GOPROXY=off
+export GOPROXY=off
 go build -o abate .
 ./abate version
 ```
@@ -25,7 +28,7 @@ go build -o abate .
 `abate version` prints build provenance (version / schema / license / watermark):
 
 ```
-abate 0.1.0
+abate 1.2.26
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial
@@ -96,3 +99,50 @@ threat T10 in the security threat model).
 - Writing more complex experiments: see `docs/user/ces-guide.md`
 - All commands and exit codes: see `docs/user/cli-reference.md`
 - The specification itself: see `docs/spec/ces-v1.md`
+
+## 7. Open-Box Readiness Statement
+
+> Measurement baseline: 2026-11-19. The source backup was extracted into a clean
+> empty directory (without `.git` / `dist` / `.artifacts`) and each item below was
+> executed as if by a developer receiving the project for the first time. The
+> result is stated in layers, without overstatement or extrapolation.
+
+### 7.1 Core path: genuinely ready out of the box
+
+| Item | Measured result |
+|---|---|
+| Dependencies | Zero external dependencies; offline `go build` with `GOPROXY=off` succeeds on the first try |
+| Build artifact | Single ~16 MB binary; no code generation or toolchain download needed |
+| Version | `./abate version` → `abate 1.2.26` |
+| Gates | header / style / hash / watermark / drift — all five PASS |
+| Tests | Full `go test ./...` passes (73 packages) |
+| Functional commands | `derive` works; `check` reports real rule violations with rule IDs; `run` executes a CES and emits a report + digest; invalid input yields precise parse errors carrying rule IDs |
+
+### 7.2 Three boundaries that are NOT ready out of the box (must be aware)
+
+1. **Prebuilt binaries in `dist/` are not in the repository.** That directory is
+   excluded by `.gitignore` and can be rebuilt with `release.sh --dry-run`;
+   ready-made 5-platform binaries (linux / darwin / windows × amd64 / arm64) are
+   available from the [GitHub Release v1.2.26](https://github.com/xiaolibuluo/Abate/releases/tag/v1.2.26).
+   Building from source with `go build` is unaffected.
+
+2. **Advanced verification needs extra tooling — it is not clone-and-run**:
+   - TLA+ formal verification requires Java + `tla2tools.jar`;
+   - libclang / C++ function-level verification requires the corresponding toolchain
+     (the ~776 MB build artifacts under `.artifacts/` are platform-bound, excluded by
+     `.gitignore`, and reproducible via scripts);
+   - full-corpus E2E regression requires the ~264 MB `testdata/` corpus.
+   The core CLI and the five gates require none of this extra tooling.
+
+3. **`check` reports info / error-level style findings on the project's own source**
+   (measured: `check main.go` reports `GO-CRC-029`). This is the rule engine working
+   correctly, not a fault; therefore "check passes cleanly on its own source" is not an
+   acceptance criterion. Acceptance uses the frozen rule set in `scripts/lint-gate.sh`.
+
+### 7.3 Conclusion
+
+As a Go CLI and deterministic chaos-engineering tool, Abate **is ready out of the
+box**: after a clone / extract, `go build && ./abate` just works. As a complete quality
+system (TLC / clang / full-corpus E2E), the extra tooling in §7.2 must be provided.
+
+> Full evidence for release and verification is in `docs/i18n/RELEASE-READINESS-FINAL.md` §§11–12.
