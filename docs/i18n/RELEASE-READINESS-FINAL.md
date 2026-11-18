@@ -291,3 +291,36 @@ console 指纹 `1e5ee8…`、json 指纹 `79b1fc…` 各自完全一致；两种
 3. 水印版本标签与三份 SHA 锚点未动；两份哈希清单因 README 合法变更同步。
 
 **执行状态**：**易用性"第一公里"4 处摩擦点已修订并验证；源码/文档已提交，二进制 help 文案待下版本发布**。
+
+---
+
+## 十六、v1.2.28 补丁发布——带入 check 帮助文案与易用性修订（2026-11-19）
+
+**背景**：v1.2.27 发布后，源码侧已完成易用性修订（`check --help` 退出码说明从共用的
+"稳态违反"四态语义改为 check 专用语义、README/T01 构建命令与版本示例纠正），但这些为
+二进制内嵌的帮助文本与文档，未在 v1.2.27 二进制中体现（§十五边界声明第 2 条明确"随下个版本带入"）。
+本版本兑现该承诺——按"不改写已发布 tag / Release"边界升补丁版本 `v1.2.28` 重新构建发布。
+
+| 步骤 | 命令 / 断言 | 实测结果 |
+|------|-------------|----------|
+| 版本升级 | `versionText`→`abate 1.2.28`、`MetaVersion`→`1.2.28`；CHANGELOG 双语新增 `[v1.2.28]`；6 份用户文档 + T01 双语版本示例、README 中英徽章同步 | `abate version` 输出 `abate 1.2.28`；冻结件（水印 `VersionLabel` / 三份 SHA 锚点）不动 |
+| 哈希清单 | README 徽章变更 → `hash-check.sh generate` 重生成 `SHA256SUMS` 并同步 `WATERMARK.sha256` | `hash-check verify` / `watermark-verify` / `header-check` 全 PASS |
+| 签名提交 | `git commit -S` | `aaf99a44`（16 文件），`G` 签名，已推送 main |
+| 二进制重构建 | `release.sh --dry-run v1.2.28` | 5 目标交叉编译 + `manifest.txt` + SPDX SBOM；`sha256sum -c` 5/5 OK；`version`=1.2.28 |
+| **新帮助文案带入** | 下载件 `check --help` 的 Exit codes 段 | 显示 check 专用语义：0 干净 / 1 含 warning 的发现 + `--severity error` 过滤 / 2 内部错误 / 3 用法错误（旧版为"稳态违反"四态，词不达意） |
+| 资产签名 | 7 份 `.asc`（5 二进制 + manifest + SBOM），沿用原密钥 `5CF28F616D9888DB` | `gpg --verify` 7/7 OK |
+| 签名 tag | `git tag -s v1.2.28` | Good signature；指向 `aaf99a44`；已推送 |
+| **GitHub Release** | `gh release create v1.2.28 --verify-tag` + 14 资产 | 非 draft/prerelease，标记 **Latest**；14 资产全部上传；v1.2.27 / v1.2.26 / v1.0.0 保留 |
+
+**端到端验证（下载即用）**：从 GitHub Release 真实下载 `abate-v1.2.28-linux-amd64` 实跑——
+`version`=1.2.28；顶层 `--help` 为七语言描述；`check --help` **退出码已为 check 专用新文案**
+（§十五承诺兑现）；`check` 含 7 种语言文件的混合目录得到 `files=7`、规则前缀
+`[C, CS, GO, JS, KT, PY, RS]` 全部出现；同一文件两次 json 输出逐字节一致（确定性未回归）。
+
+**边界声明**：
+1. 冻结件（水印版本标签、三份 SHA 锚点）与 E2E/降级率口径均未改动；两份哈希清单因 README 徽章合法变更按既有流程同步。
+2. `v1.0.0` / `v1.2.26` / `v1.2.27` tag 与 Release 保留不改写；`v1.2.28` 为 Latest。
+3. 本次核心是带入帮助文本与文档修订；报告输出、规则集、AIR 与确定性指纹不变（帮助文本非报告产物）。
+4. 令牌仅在进程内用于 gh 认证，未回显、未写入文件、未入库。
+
+**执行状态**：**v1.2.28 补丁发布完成——下载件已带 check 专用退出码文案，七语言 check 与确定性均验证通过**。
