@@ -14,6 +14,21 @@ per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
 Version-number consistency is enforced by CI: the `ldflags` version, this
 CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
 
+## [v1.2.26]
+
+Release version bump with rebuilt binaries and public repository publication.
+
+- **版本升级**：面向用户的运行时版本常量统一升级为 `1.2.26`——
+  `abate version` 输出 `abate 1.2.26`，健康与 OpenAPI 元数据 `MetaVersion`
+  同步为 `1.2.26`。冻结件（水印 `VersionLabel` / 三份 SHA 锚点）保持不变，
+  遵循既有冻结口径，不因版本号变动破坏哈希门禁。
+- **二进制重新构建与发布**：5 目标交叉编译二进制（linux/darwin/windows ×
+  amd64/arm64）+ `manifest.txt` + SPDX SBOM 重新构建，7 份 detached GPG
+  签名 7/7 验证通过，`sha256sum -c` 清单校验通过，经 GitHub Release 上传。
+- **仓库公开**：仓库可见性由私有改为 public，同步完善描述 / topics /
+  主页等仓库设置；合并保护规则集保持生效。
+- 本版本以独立签名 tag `v1.2.26` 标记；此前 v1.0.0 / v1.0.1 tag 保留不改写。
+
 ## [v1.0.1]
 
 Patch release — GA 后真实质量巩固与正式签名发布收官（2026-11-19）。

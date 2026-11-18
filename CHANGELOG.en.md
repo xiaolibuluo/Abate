@@ -16,6 +16,25 @@ per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
 Version-number consistency is enforced by CI: the `ldflags` version, this
 CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
 
+## [v1.2.26]
+
+Release version bump with rebuilt binaries and public repository publication.
+
+- **Version bump**: user-facing runtime version constants unified to `1.2.26` —
+  `abate version` now emits `abate 1.2.26`, and the health/OpenAPI metadata
+  `MetaVersion` is synced to `1.2.26`. Frozen artifacts (watermark
+  `VersionLabel` / three SHA anchors) are left unchanged per the established
+  freeze policy, so hash gates stay intact.
+- **Rebuilt binaries and release**: 5-target cross-compiled binaries
+  (linux/darwin/windows × amd64/arm64) + `manifest.txt` + SPDX SBOM rebuilt,
+  7 detached GPG signatures verified 7/7, `sha256sum -c` manifest check
+  passed, uploaded via GitHub Release.
+- **Public repository**: visibility changed from private to public, with
+  description / topics / homepage settings aligned; merge-protection ruleset
+  remains active.
+- Marked by a separate signed tag `v1.2.26`; prior v1.0.0 / v1.0.1 tags kept
+  unmodified.
+
 ## [v1.0.1]
 
 Patch release — post-GA real quality consolidation and formal signed release
