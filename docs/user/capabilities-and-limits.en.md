@@ -99,6 +99,15 @@ Honest limits earn more trust than inflated claims:
 
 ## Reproduce
 
+**首选：one command reproduces all 7 claims** (builds from source + asserts):
+
+```bash
+bash scripts/evidence-check.sh     # exits 0 only if all PASS; parsing/tolerance/determinism/7-lang/help
+bash scripts/language-coverage.sh  # prints the quantified per-language rule/hit table
+```
+
+Manual step-by-step breakdown (what the scripts do internally):
+
 ```bash
 # 1. real parsing: nested structure yields multiple structural rule hits
 printf 'def outer(x):\n    if x:\n        for i in range(3):\n            y = i\n            return y\n    return x\n' > /tmp/nested.py
@@ -124,3 +133,30 @@ The single authoritative build version is **`go 1.26.11`** from `go.mod`, matchi
 the local `go version` output. Other go version numbers that appeared in the repo
 (e.g. old values in design drafts) are historical records, not the current build
 version.
+
+## Community validation status (stated honestly)
+
+As of this update the repository has **0 stars / 0 forks / 0 watchers and a
+single maintainer**. That is an objective fact — not hidden and not sugar-coated.
+Three points:
+
+1. **What it means**: no external endorsement means the "community validation"
+   dimension is currently empty — nobody has run it at scale on real projects,
+   no third-party reproduction, no issue-driven defect discovery. Star count is
+   not itself proof of capability, but it does reflect "how many people have
+   checked it". **Current answer: few. Do not assume battle-tested.**
+2. **What we will not do**: no star padding, no bought forks, no fabricated users
+   or benchmarks. Any claimed "community recognition" that is not real would
+   damage this project's credibility — the very thing this document exists to
+   repair.
+3. **How we lower the trial cost (without faking)**:
+   - every capability claim is reproducible via `scripts/evidence-check.sh` —
+     anyone can build their own evidence instead of trusting the docs;
+   - `scripts/language-coverage.sh` publishes real per-language rule counts, no
+     hiding;
+   - determinism is byte-verifiable with `abate verify` — claims are machine-falsifiable;
+   - run it on a real repo and open an issue — **a concrete failing case is worth
+     more than a star**.
+
+In short: an early-stage project whose **capabilities are self-verifiable but
+community validation is pending**. Please evaluate it with early-stage standards.

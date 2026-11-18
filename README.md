@@ -21,7 +21,11 @@
 > **能力边界（先说清楚，避免误读）**：`abate check` 是**结构化静态 linter**——自研 lexer +
 > Pratt 解析器把源码真正解析成 AIR 语法树，再做结构模式匹配；**不是**编译器级语义分析，
 > 不做类型检查 / 控制流数据流分析，也不等同 go vet / eslint / clippy 的深度。容错解析，
-> **不用于语法错误守门**。详见[《能做什么、不能做什么》](docs/user/capabilities-and-limits.md)（含可复现实测）。
+> **不用于语法错误守门**。
+>
+> 一切声明都可自证，不必信文档：[《能做什么、不能做什么》](docs/user/capabilities-and-limits.md) ·
+> [《七语言覆盖量化（实测）》](docs/user/language-coverage.md) ·
+> `bash scripts/evidence-check.sh`（一键复现实测，7 项断言）。社区验证状态亦在能力文档中如实说明。
 
 同时也是一个确定性实验控制平面：以 CES（`ces.tencent.com/v1`）描述混沌实验与变异测试，
 经由 AIR 前端、确定性内核与 SIM-REC 档案，产出可逐字节复现（固定种子下）的运行报告与证据链。

@@ -367,3 +367,34 @@ surfaced as diagnostics and a partial AIR root"；实测破损输入 `def f(:` /
 4. 冻结件（水印版本标签、三份 SHA 锚点）未动。
 
 **执行状态**：**两项质疑核查完成——"正则匹配"质疑证伪、"版本口径"质疑证实并修复；诚信文档与准确定位已落地**。
+
+---
+
+## 十八、第二轮质疑处置——证据链/量化/复现保障补强（2026-11-19）
+
+外部第二轮质疑 4 项。诚实分类：**3 项可用工程真修、1 项不可造假**，分别处置。
+
+| 质疑 | 判断 | 处置 |
+|------|------|------|
+| 证据链临时性（实测跑过但没进仓库） | 成立 | 新增 `scripts/evidence-check.sh`：现场构建 + 7 项带断言复现（零依赖/七语言分派/真AST/容错/确定性/筛选/帮助文案），全部 PASS 才退出 0。实测 7/7 PASS。 |
+| 七语言覆盖深度未量化（Go 最实、其余待测） | 成立 | 新增 `scripts/language-coverage.sh` + `docs/user/language-coverage.md`/`.en.md`，实测产出量化表。**诚实发现**：Go 专属规则最多(116)但简单样例仅命中 2 条（vet 需特定语义上下文），其余六语言共享 72 条 AIR 模板命中 11–16 类——两种深度，不强行等同。 |
+| 复现保障缺回归用例 | 成立且**已暴露真回归** | 全量 `go test ./...` 发现 `TestCheckHelpContent` 因上轮改 check 帮助文案而挂（断言旧 "Exit codes (PLAN-07"）——之前只跑 build 门禁漏掉。修该断言；新增 `TestCheckToleratesBrokenSyntax`（容错边界）+ `TestCheckNestedStructureMatchesAST`（真 AST 多类命中）。修复后 `go test ./...` 0 失败。 |
+| 社区验证 0 star/0 fork/个人维护 | 成立但**不可造假修复** | 核实 stars=0/forks=0/watchers=0，如实写入能力文档"社区验证状态"章节：明确这是早期项目客观事实、不刷 star/fork、不伪造 benchmark；靠一键复现 + 公开量化 + 机器可证伪的确定性降低试用门槛，欢迎真实失败用例。**拒绝以造假方式"修复"此维度。** |
+
+**新增/修改工程资产**：
+- `scripts/evidence-check.sh`（可执行，7 项断言，退出码 0）
+- `scripts/language-coverage.sh`（可执行，实测量化表）
+- `docs/user/capabilities-and-limits.md` / `.en.md`（新增社区状态章节 + 一键复现引用）
+- `docs/user/language-coverage.md` / `.en.md`（新增量化报告）
+- `ctl/cli/check_test.go`（修复回归断言）
+- `ctl/cli/check_multilang_test.go`（新增 2 个能力边界回归测试）
+
+**门禁**：`go test ./...` 全绿（0 FAIL）；hash / watermark / header / style / build 全 PASS；
+README 变更触发的哈希失配按既有实践重生成 `SHA256SUMS` 并同步 `WATERMARK.sha256`。
+
+**边界声明**：
+1. 本轮不改运行时能力（解析/规则是真能力）、不动二进制/tag/Release；新增的是证据脚本、量化报告、回归测试与文档。
+2. 社区背书维度**如实保留为"零外部验证"**，不通过任何造假手段伪装；这是本轮唯一"不可修复"项，如实呈现即是最诚实的处置。
+3. 冻结件（水印版本标签、三份 SHA 锚点）未动。
+
+**执行状态**：**4 项质疑全部处置——3 项以可复现工程产物补强（证据脚本/量化/回归），1 项（社区背书）如实说明且拒绝造假；回归测试曾暴露并修复一处真实测试失配**。

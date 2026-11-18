@@ -36,6 +36,12 @@ Patch release — 把 v1.2.27 之后源码侧的易用性修订随二进制一�
   `go.mod`/本机均为 `1.26.11`，README/T01 原"历史值均为旧值"表述自曝矛盾，已改中性单一口径。
   新增 `docs/user/capabilities-and-limits.md` / `.en.md` 写清能力边界与复现实测；README 首屏加边界说明；
   GitHub description 改为 "structural linter ... not a compiler-grade analyzer"。细节见 §十七。
+- **第二轮质疑处置（证据链/量化/复现，文档与测试，不动二进制）**：新增 `scripts/evidence-check.sh`
+  （现场构建 + 7 项带断言复现，全 PASS 才退出 0）与 `scripts/language-coverage.sh`（实测七语言规则
+  数与命中量化表 + `docs/user/language-coverage.md`/.en.md）；能力文档新增"社区验证状态"章节，
+  如实说明 0 star/0 fork 且拒绝造假。全量 `go test ./...` 修复一处上轮引入的真实回归
+  （`TestCheckHelpContent` 旧文案断言），并新增容错解析与真 AST 多类命中两个回归测试，最终 0 FAIL。
+  细节见 §十八。
 
 ## [v1.2.27]
 

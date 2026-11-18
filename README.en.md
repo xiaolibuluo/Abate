@@ -24,9 +24,13 @@ representation, and emits byte-reproducible console / JSON / SARIF reports for C
 > into an AIR tree, then applies structural pattern matching. It is **not**
 > compiler-grade semantic analysis: no type checking, no control-flow/data-flow
 > analysis, and not equivalent in depth to go vet / eslint / clippy. Parsing is
-> error-tolerant and **not a syntax-error gate**. See
-> [What It Can and Cannot Do](docs/user/capabilities-and-limits.en.md) (with
-> reproducible evidence).
+> error-tolerant and **not a syntax-error gate**.
+>
+> Every claim is self-verifiable — no need to trust the docs:
+> [What It Can and Cannot Do](docs/user/capabilities-and-limits.en.md) ·
+> [Seven-Language Coverage, Quantified](docs/user/language-coverage.en.md) ·
+> `bash scripts/evidence-check.sh` (one-command reproduction, 7 assertions).
+> Community validation status is stated honestly in the capabilities doc.
 
 It is also a deterministic experiment control plane: chaos experiments and
 mutation testing are described in CES (`ces.tencent.com/v1`), then driven through

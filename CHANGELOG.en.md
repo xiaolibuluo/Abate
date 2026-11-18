@@ -51,6 +51,15 @@ Patch release — ship the post-v1.2.27 usability fixes in the binaries (2026-11
   `docs/user/capabilities-and-limits.md` / `.en.md` with reproducible evidence,
   a README boundary note, and changed the GitHub description to "structural
   linter ... not a compiler-grade analyzer". Details in §十七.
+- **Second-round credibility fixes (evidence/quantification/repro; docs & tests,
+  binary untouched)**: added `scripts/evidence-check.sh` (live build + 7 asserted
+  reproductions, exit 0 only if all pass) and `scripts/language-coverage.sh`
+  (measured per-language rule/hit table + `docs/user/language-coverage.md`/.en.md).
+  Capabilities doc gained a "community validation status" section stating 0 stars /
+  0 forks honestly and refusing to fake it. Full `go test ./...` fixed a real
+  regression introduced earlier (`TestCheckHelpContent` stale help assertion) and
+  added two regression tests for error-tolerant parsing and multi-class AST hits;
+  final run 0 FAIL. Details in §十八.
 
 ## [v1.2.27]
 

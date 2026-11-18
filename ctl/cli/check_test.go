@@ -58,7 +58,9 @@ func TestCheckCommandCases(t *testing.T) {
 	}
 }
 
-// TestCheckHelpContent proves the check help documents the shared exit codes.
+// TestCheckHelpContent proves the check help documents the check-specific exit
+// codes (0 clean / 1 findings incl. warning / 2 internal / 3 usage), not the
+// shared run-command "steady state" wording.
 func TestCheckHelpContent(t *testing.T) {
 	t.Parallel()
 	code, out, errs := invoke("check", "--help")
@@ -66,8 +68,8 @@ func TestCheckHelpContent(t *testing.T) {
 		t.Fatalf("check help exit = %d (stderr=%s)", code, errs)
 	}
 	for _, want := range []string{
-		"abate check", "--format", "--severity", "--rules", "--out",
-		"Exit codes (PLAN-07", "abate check ./ctl/cli",
+		"abate check", "--format", "--severity", "--rules", "--out", "--languages",
+		"Exit codes:", "including warnings", "--severity error", "abate check ./ctl/cli",
 	} {
 		if !strings.Contains(out, want) {
 			t.Fatalf("check help missing %q", want)
