@@ -80,7 +80,8 @@ Commands:
                      --record <path> also writes a SIM-REC archive.
   verify <a> <b>     Compare two run reports byte for byte.
   replay <archive> [other]  Verify an archive, optionally compare two.
-  check <paths...>   Run the built-in Go rule set; emit console/JSON/SARIF.
+  check <paths...>   Run 7-language built-in rule sets by file extension
+                     (.go/.py/.js/.c/.cs/.rs/.kt); emit console/JSON/SARIF.
   derive             Derive M-family operators from rules; run a mutation
                      experiment (static AIR-level killing approximation).
   plugin             Verify, load, call, list and hot-swap signed plugins.
