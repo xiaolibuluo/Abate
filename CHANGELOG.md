@@ -25,9 +25,14 @@ Patch release — 让已发布二进制真正包含七语言 check 能力（2026
   `--languages` 筛选、JSON/SARIF 输出、混合目录一次检查均验证通过。
 - **版本升级**：`abate version` 输出 `abate 1.2.27`，`MetaVersion` 同步 `1.2.27`；
   用户文档（quickstart / cli-reference / multilang-check-guide 中英双语）版本示例同步。
-  冻结件（水印 `VersionLabel` / 三份 SHA 锚点 / `SHA256SUMS`）保持不变。
+  水印 `VersionLabel` / 三份 SHA 锚点保持不变；`SHA256SUMS` / `WATERMARK.sha256`
+  因 README 首屏增强按既有实践重生成并同步，门禁全过。
 - **重新发布**：5 二进制 + `manifest.txt` + SPDX SBOM + 7 份 detached GPG 签名，
   以独立签名 tag `v1.2.27` 发布为 Latest；v1.2.26 / v1.0.1 / v1.0.0 tag 与 Release 保留不改写。
+- **仓库曝光度优化**：description 前置"七语言静态分析 / CLI"搜索意图；topics 由 10 个扩至 20 个
+  （覆盖 python/javascript/golang/rust/kotlin/c-sharp/c 七语言 + static-analysis/code-analysis/
+  linter/code-quality/ast/sarif/cli/developer-tools + 混沌工程/变异测试长尾词，按 API 实测仓库数选词）；
+  README 中英首屏增版本/许可/七语言/Go 徽章与价值主张。细节见发布就绪文档 §十四。
 
 ## [v1.2.26]
 

@@ -218,3 +218,44 @@ E2E 关键指标：`languages=7 records=10003 processed=1540 registered=1540 ver
 3. 令牌仅在进程内用于 gh 认证，未回显、未写入文件、未入库。
 
 **执行状态**：**v1.2.27 修复发布完成——下载到的二进制已真正支持七语言 check**。
+
+---
+
+## 十四、仓库曝光度优化——元信息全量更新（2026-11-19）
+
+目标：提升 GitHub 站内与 Google 搜索可见度。依据 GitHub SEO 通行实践
+（仓库 description / topics / README 首屏为搜索索引与转化核心字段），全部经真实 API 回读确认。
+
+**Description**（前置最高频搜索意图"七语言静态分析 / CLI"，长尾保留混沌工程/变异测试）：
+```
+Deterministic multi-language static analysis CLI: check Go, Python, JavaScript,
+C, C#, Rust & Kotlin via unified AIR with byte-reproducible console/JSON/SARIF
+reports. Also a chaos engineering & mutation testing engine. AGPLv3 / commercial.
+```
+
+**Topics**：从 10 个扩至 GitHub 上限 20 个。选词用 GitHub 搜索 API 实测各候选 topic 的仓库数
+（volume），按"高曝光大词 + 精准利基词"混合，而非凭感觉：
+
+| 类别 | topics（volume：仓库数） |
+|------|--------------------------|
+| 七语言覆盖 | python(1,042,780) · javascript(722,892) · golang(152,309) · rust(159,347) · kotlin(82,533) · c-sharp(12,055) · c(92,085) |
+| 静态分析核心 | static-analysis(12,501) · code-analysis(2,812) · linter(6,485) · code-quality(5,388) · ast(4,231) · sarif(2,326) · developer-tools(94,228) · cli(166,210) |
+| 差异化长尾 | chaos-engineering(1,335) · mutation-testing(1,225) · deterministic-simulation(330) · multi-language(737) · intermediate-representation(289) |
+
+淘汰的低曝光词：`source-fidelity`(3) / `dual-license`(45) / `gnu-agpl`(4)（几乎无仓库使用该标签，属曝光黑洞）。
+回读确认恰好 20 个，`c-sharp` 采用 GitHub 标准 topic 名。
+
+**README 首屏**：中英双语在 `# Abate` 下新增 4 枚徽章（version 1.2.27 / license AGPLv3|commercial /
+checks 7 languages / Go 1.26.11）与价值主张段——将"确定性多语言静态分析 / linter + 七语言"
+从原先埋没的混沌工程叙事中前置，与 description/topics 形成一致 SEO 主题。
+
+**哈希门禁同步**：`README.md` 属 `SHA256SUMS` 冻结清单，首屏变更后该门禁如期 FAILED；
+按 §十一既有实践用 `hash-check.sh generate` 重生成 `SHA256SUMS` 并同步 `WATERMARK.sha256`，
+`hash-check verify` + `watermark-verify` 恢复全 PASS。水印 `VersionLabel` 与三份 SHA 锚点不动。
+
+**边界声明**：
+1. 本次仅调整仓库元信息与 README 首屏展示，不改任何运行时源码、不动 tag/Release、不重写历史。
+2. 冻结件中水印版本标签与三份 SHA 锚点未动；两份哈希清单因 README 合法变更按既有流程同步。
+3. 选词基于 GitHub API 实测 volume 数据，未编造搜索量；令牌仅在进程内用于 gh 认证。
+
+**执行状态**：**仓库 description / 20 topics / README 首屏全量更新完成，可访问性与哈希门禁均验证通过**。

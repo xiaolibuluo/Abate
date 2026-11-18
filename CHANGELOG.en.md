@@ -30,11 +30,21 @@ Patch release — make the published binaries actually carry seven-language chec
   passing.
 - **Version bump**: `abate version` emits `abate 1.2.27`, `MetaVersion` synced
   to `1.2.27`; user docs (quickstart / cli-reference / multilang-check-guide,
-  both zh and en) version examples updated. Frozen artifacts (watermark
-  `VersionLabel` / three SHA anchors / `SHA256SUMS`) left unchanged.
+  both zh and en) version examples updated. Watermark `VersionLabel` / three
+  SHA anchors left unchanged; `SHA256SUMS` / `WATERMARK.sha256` were regenerated
+  and synced per established practice after the README hero enhancement, with
+  all hash gates passing.
 - **Republished**: 5 binaries + `manifest.txt` + SPDX SBOM + 7 detached GPG
   signatures, tagged and signed as `v1.2.27` and set as Latest; v1.2.26 /
   v1.0.1 / v1.0.0 tags and releases kept unmodified.
+- **Repository discoverability**: description leads with the "seven-language
+  static analysis / CLI" search intent; topics expanded from 10 to 20 (all 7
+  languages — python/javascript/golang/rust/kotlin/c-sharp/c — plus
+  static-analysis/code-analysis/linter/code-quality/ast/sarif/cli/developer-tools
+  and chaos-engineering/mutation-testing long-tail terms, selected by measured
+  repository counts via GitHub API); README zh/en heroes gained version /
+  license / seven-language / Go badges and a value proposition. See release
+  readiness doc §十四.
 
 ## [v1.2.26]
 

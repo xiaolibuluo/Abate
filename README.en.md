@@ -9,10 +9,20 @@
 
 # Abate
 
-Abate is a deterministic experiment control plane: chaos experiments are
-described in CES (`ces.tencent.com/v1`), then driven through the AIR frontend,
-a deterministic kernel and SIM-REC archives, producing run reports and evidence
-chains that are byte-for-byte reproducible under a fixed seed.
+[![version](https://img.shields.io/badge/version-1.2.27-blue)](https://github.com/xiaolibuluo/Abate/releases/latest)
+[![license](https://img.shields.io/badge/license-AGPLv3%20%7C%20commercial-green)](LICENSING.md)
+[![checks](https://img.shields.io/badge/checks-7%20languages-orange)](docs/user/multilang-check-guide.en.md)
+[![Go](https://img.shields.io/badge/Go-1.26.11-00ADD8?logo=go)](go.mod)
+
+**Deterministic multi-language static analysis / linter** — `abate check`
+dispatches by file extension across **Go, Python, JavaScript, C, C#, Rust and
+Kotlin**, runs each language's in-house rule set over a unified AIR intermediate
+representation, and emits byte-reproducible console / JSON / SARIF reports for CI.
+
+It is also a deterministic experiment control plane: chaos experiments and
+mutation testing are described in CES (`ces.tencent.com/v1`), then driven through
+the AIR frontend, a deterministic kernel and SIM-REC archives, producing run
+reports and evidence chains that are byte-for-byte reproducible under a fixed seed.
 
 ## 1 License
 

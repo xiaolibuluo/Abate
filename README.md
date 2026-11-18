@@ -9,9 +9,17 @@
 
 # Abate
 
-Abate 是一个确定性实验控制平面：以 CES（`ces.tencent.com/v1`）描述混沌实验，
-经由 AIR 前端、确定性内核与 SIM-REC 档案，产出可逐字节复现（固定种子下）的
-运行报告与证据链。
+[![version](https://img.shields.io/badge/version-1.2.27-blue)](https://github.com/xiaolibuluo/Abate/releases/latest)
+[![license](https://img.shields.io/badge/license-AGPLv3%20%7C%20commercial-green)](LICENSING.md)
+[![checks](https://img.shields.io/badge/checks-7%20languages-orange)](docs/user/multilang-check-guide.md)
+[![Go](https://img.shields.io/badge/Go-1.26.11-00ADD8?logo=go)](go.mod)
+
+**确定性多语言静态分析 / linter** —— `abate check` 按文件扩展名自动分派
+**Go、Python、JavaScript、C、C#、Rust、Kotlin** 七种语言，经统一 AIR 中间表示
+运行各语言自研规则集，输出逐字节可复现的 console / JSON / SARIF 报告，可直接入 CI。
+
+同时也是一个确定性实验控制平面：以 CES（`ces.tencent.com/v1`）描述混沌实验与变异测试，
+经由 AIR 前端、确定性内核与 SIM-REC 档案，产出可逐字节复现（固定种子下）的运行报告与证据链。
 
 ## 1 许可 / License
 
