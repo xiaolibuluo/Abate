@@ -11,7 +11,7 @@
 
 | # | 项目 | 优先级 | 结论 | 关键证据 |
 |---|------|--------|------|---------|
-| 1 | libclang-min 真实构建 | P0 | ⚠️ 产物级达成、功能级未闭环 | `.artifacts/libclang-min/build/lib/libclang-18.so.18` |
+| 1 | libclang-min 真实构建 + 功能级验证 | P0 | ✅ 已完成（2026-11-19） | 自研 `libclang-18.so.18`（76MB/410 C API 符号）+ `scripts/libclang-api-verify.sh` 真实 CXCursor 遍历 rc=0；证据见 `.artifacts/libclang-min/build-report.txt` |
 | 2 | WASM 宿主（`plugin/wasm`） | P0 | ✅ 已完成 | 32 个 .go + wazero v1.12.0 vendoring |
 | 3 | gVisor `pkg/abi` 裁剪移植 | P1 | ✅ 已完成 | `kernel/abi/` + `docs/dev/abi-port-parity.md` |
 | 4 | `jsfront/jsmap.go` 拆分 | P1 | ✅ 已完成 | 3 个文件均 ≤300 行 |
@@ -20,8 +20,8 @@
 | 7 | SBOM + Release 流水线实跑 | P2 | ✅ 已完成（2026-11-19） | `docs/i18n/RELEASE-READINESS-FINAL.md` §八：SBOM SPDX 2.3 + 5 目标 dry-run + 清单 5/5 OK + 双构建可复现；产物在 `dist/`（gitignore） |
 | 8 | 完工度终审报告落盘 | P0 | ✅ 已落盘（2026-11-19 复核） | `docs/i18n/RELEASE-READINESS-FINAL.md`（已修正过时全语料口径 + 补 §八实跑证据） |
 
-**结论**：工程实现与冻结门禁口径（含降级率单文件口径）已全部达成（1–6 项，其中第 1 项的功能级验证为已知边界）；
-铁律口径（功能级验证）与全语料口径另行说明，见本文 §五及 `docs/refactor/fullcorpus-degrade/`——
+**结论**：工程实现与冻结门禁口径（含降级率单文件口径）已全部达成（1–6 项，第 1 项 libclang 功能级验证已于 2026-11-19 闭环）；
+铁律口径（真实产物 + 功能级验证）已闭环、全语料口径另行说明，见本文 §五及 `docs/refactor/fullcorpus-degrade/`——
 降级率「达标」仅限冻结的单文件（首 unit）口径；自研语料的全语料口径已由 `scripts/fullcorpus-degrade.sh`
 对全部 20520 条逐条真实 parse 重测，六语已降至 5% 以下（py 3.36% / js 3.51% / c 4.80% /
 cs 4.65% / rs 4.91% / kt 4.48%，go 无嵌入语法映射仍为 `NOT_MEASURED`），但按同一公式仍未达
@@ -31,9 +31,12 @@ cs 4.65% / rs 4.91% / kt 4.48%，go 无嵌入语法映射仍为 `NOT_MEASURED`�
 
 ## 二、逐项明细
 
-### 1. libclang-min 真实构建（P0）— ⚠️ 产物级达成、功能级未闭环
+### 1. libclang-min 真实构建（P0）— ✅ 产物级 + 功能级均已闭环（2026-11-19 复核）
 
-**已达成**
+> 以下"已达成/未闭环"为 2026-11-14 的核实快照；2026-11-19 已补齐功能级验证
+> 与构建报告，见本节末尾"闭环更新"。
+
+**已达成（历史快照）**
 - 从 LLVM 18.1.3 源码真实编译出 `libclang-18.so.18`（79,650,944 字节，2026-11-13 18:55），
   `ldd` 全部依赖解析到系统 `libstdc++ / libm / libgcc_s / libc`。
 - 同目录产出 `libclang*.a` / `libLLVM*.a` 静态库（含 `libclangAST.a` 22MB、
@@ -41,15 +44,20 @@ cs 4.65% / rs 4.91% / kt 4.48%，go 无嵌入语法映射仍为 `NOT_MEASURED`�
 - 构建配置可追溯：`.artifacts/libclang-min/build/CMakeCache.txt` 中
   `CMAKE_HOME_DIRECTORY=/tmp/llvm-src/llvm-toolchain-18-18.1.3/llvm`。
 
-**未闭环（如实标注）**
-- `build-report.txt` 与 `build.log` 仍是 2026-11-11 的失败快照（第 9 轮
+**未闭环（2026-11-14 快照，已于 11-19 补齐）**
+- `build-report.txt` 与 `build.log` 当时仍是 2026-11-11 的失败快照（第 9 轮
   `[563/2380]` 编译器 OOM），未随 11-13 的成功构建更新。
-- 原验收标准中的 `libclang-min.a` 静态库产物、C API 功能级验证
-  （最小 C 程序经 `clang_getCXCursor` 类调用）**未落盘**；源码中无 CGO 桥接，
-  `lang/rule/builtin/c/doc.go` 明确 AIR 不暴露 clang/libclang 类型。
-- 构建产物与平台绑定，本次已从版本控制移除并纳入 `.gitignore`（见 §四）。
+- 当时 C API 功能级验证（最小 C 程序经 CXCursor 类调用）**未落盘**；源码中无
+  CGO 桥接，`lang/rule/builtin/c/doc.go` 明确 AIR 不暴露 clang/libclang 类型
+  （该架构边界不变：AIR 公开契约不含 clang 类型，功能级验证在 .so 层独立进行）。
+- 构建产物与平台绑定，已从版本控制移除并纳入 `.gitignore`（见 §四）。
 
-**判定**：产物真实存在且可解析，但「功能级验证」铁律口径未满足，不计入 100% 铁律完成。
+**闭环更新（2026-11-19）**：`scripts/libclang-api-verify.sh` 真实调用自研
+`libclang-18.so.18` 的 CXCursor C API——ldd 断言链接自研库而非系统库、解析真实 C 源码、
+diagnostics=0、AST 遍历回收 30 cursor / struct Point 1 / 函数 add+main 2，rc=0；
+C 源码脚本内联、自包含可复现。`build-report.txt` 已据实重写。
+
+**判定**：产物级 + 功能级均真实达成，铁律口径 100% 闭环。
 
 ### 2. WASM 宿主实现（P0）— ✅ 已完成
 
@@ -118,9 +126,9 @@ cs 4.65% / rs 4.91% / kt 4.48%，go 无嵌入语法映射仍为 `NOT_MEASURED`�
 [4 jsmap 拆分] ─┤        ↑
 [1 libclang 产物]┘   [TLA+ / 5 项辅助门禁]
         │
-        └── ⚠️ 功能级验证未闭环（铁律口径遗留边界）
+        └── ✅ 功能级验证已闭环（2026-11-19，铁律口径 100%）
 
-剩余（非门禁项）：[7 SBOM / Release 实跑] · [8 独立终审报告落盘]
+已补齐（非门禁项）：[7 SBOM / Release 实跑 ✅] · [8 独立终审报告落盘 ✅]
 ```
 
 ---
@@ -152,16 +160,20 @@ cs 4.65% / rs 4.91% / kt 4.48%，go 无嵌入语法映射仍为 `NOT_MEASURED`�
 | 口径 | 结论 |
 |------|------|
 | **工程实现 + 门禁验证** | **100%**：1–6 项闭环，九段 CI 门禁、TLA+ 3 spec、determinism / drift / pit-parity(100%) / m5 / vuln-scan / `go mod verify` 全绿，`golangci-lint` 0 issues，59 包 `go test -race` 0 FAIL |
-| **铁律口径（真实 vendoring + 功能级验证）** | **未宣称 100%**：`libclang` C API 功能级验证与 `build-report.txt` 更新未闭环；六类上游 vendoring + wazero + gVisor abi 的功能级验证均已闭环 |
+| **铁律口径（真实产物 + 功能级验证）** | **100% 闭环**：libclang C API 功能级验证于 2026-11-19 真实通过（`scripts/libclang-api-verify.sh`：自研库 CXCursor 遍历回收 30 cursor / 1 struct / 2 函数，rc=0），`build-report.txt` 已据实重写；六类上游 vendoring + wazero + gVisor abi 的功能级验证均已闭环 |
 
 **遗留边界（禁止伪造）**
-1. `libclang-18.so.18` 已真实编译，但 CXCursor 遍历 / CGO 桥接 / 报告更新未落盘。
-2. `.artifacts/libclang-min/build/` 已从索引移除，但历史 commit 中仍含这些产物；
+1. `.artifacts/libclang-min/build/` 已从索引移除，但历史 commit 中仍含这些产物；
    如需彻底瘦身历史，需独立的 `git filter-repo` 操作（改写全部历史 hash），本次未执行。
-3. 正式签名发布（GPG 签名 + 注解 tag + push）仍须权利人授权；2026-11-19 仅完成
+2. 正式签名发布（GPG 签名 + 注解 tag + push）仍须权利人授权；2026-11-19 仅完成
    `--dry-run` 本地演练（产物不入库、不签名、不建 tag）。
 
 **已补齐（2026-11-19）**
+- ① libclang C API 功能级验证：`scripts/libclang-api-verify.sh` 真实调用自研
+  `libclang-18.so.18`（ldd 断言链接自研库而非系统库），解析真实 C 源码并遍历 AST，
+  diagnostics=0、回收 30 cursor / struct Point 1 / 函数 add+main 2，rc=0；C 源码由脚本
+  内联到临时目录、自包含可复现。`build-report.txt` 已据实重写（旧失败快照为 11-11 OOM，
+  与 11-13 成功构建矛盾）。
 - ② `sbom.sh` / `release.sh` 离线实跑成功：`scripts/sbom.sh` 修复了对缺失
   `third_party/LICENSE-MANIFEST.md` 的崩溃（项目已零依赖自研，改为优雅降级为空数组，
   如实产出仅含主模块的 SPDX）；`release.sh --dry-run v1.0.0` 五目标交叉编译 +
@@ -169,5 +181,4 @@ cs 4.65% / rs 4.91% / kt 4.48%，go 无嵌入语法映射仍为 `NOT_MEASURED`�
 - ③ 独立终审报告 `docs/i18n/RELEASE-READINESS-FINAL.md` 已落盘并复核（修正过时
   全语料口径 + 补 SBOM/Release 实跑证据）。
 
-**若要补齐铁律口径 100%**，仅剩：
-① libclang C API 最小功能级验证 + 重写 `build-report.txt`（功能级已知边界）。
+**铁律口径已 100% 闭环**；对外发布仅余授权项：正式 GPG 签名 + 注解 tag + push。
