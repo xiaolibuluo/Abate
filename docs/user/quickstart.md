@@ -95,44 +95,14 @@ spec:
 - 全部命令与退出码：见 `docs/user/cli-reference.md`
 - 规范原文：见 `docs/spec/ces-v1.md`
 
-## 7. 开箱即用能力边界声明（Open-Box Readiness）
+## 7. 已知边界（如实知悉）
 
-> 实测基准：2026-11-19，将源码备份解压至全新空目录（不含 `.git` / `dist` / `.artifacts`），
-> 以"刚拿到项目的开发者"身份逐项执行。结论如实分层，不夸大、不外推。
-
-### 7.1 核心链路：真正开箱即用
-
-| 项 | 实测结果 |
+| 事项 | 当前事实 |
 |---|---|
-| 依赖 | 零外部依赖，`GOPROXY=off` 离线 `go build` 一次成功 |
-| 构建产物 | 单个约 16 MB 二进制，无需生成代码或下载工具链 |
-| 版本 | `./abate version` → `abate 1.2.28` |
-| 门禁 | header / style / hash / watermark / drift 五项全 PASS |
-| 测试 | `go test ./...` 全量通过（73 包） |
-| 功能命令 | `derive` 正常；`check` 按扩展名分派 7 语言（`.go/.py/.js/.c/.cs/.rs/.kt`）并检出规则违背；`run` 真实执行 CES 并产出报告 + 摘要；错误输入给出带规则号的精确解析错误 |
+| 依赖与构建 | 零外部依赖，`GOPROXY=off` 离线 `go build` 成功；产物为单个静态二进制 |
+| 预编译二进制 | 不在仓库（`.gitignore`），从 [Release v1.2.28](https://github.com/xiaolibuluo/Abate/releases/tag/v1.2.28) 下载 5 平台版本 |
+| `check` 自身源码 | 会对本项目源码报 info/error 级风格提示（规则引擎正常工作的证据），验收以 `scripts/lint-gate.sh` 为准 |
+| 高级验证环境 | TLA+ 需 Java + `tla2tools.jar`；libclang C API 验证需对应工具链；全语料 E2E 需 `testdata/` 语料。核心 CLI 与常规门禁不需要这些 |
+| 能力边界 | 见[能力与边界](capabilities-and-limits.md)：容错解析非语法守门、不做类型/CFG/数据流分析、竞品与全语料保真度有未测量项 |
 
-### 7.2 三项非开箱即用边界（必须知悉）
-
-1. **`dist/` 预编译二进制不在仓库**。该目录被 `.gitignore` 排除，由 `release.sh --dry-run` 可重建；
-   现成 5 平台二进制（linux / darwin / windows × amd64 / arm64）请从
-   [GitHub Release v1.2.28](https://github.com/xiaolibuluo/Abate/releases/tag/v1.2.28) 下载。
-   从源码 `go build` 不受影响。
-
-2. **高级验证需额外环境，非 clone 即可全跑**：
-   - TLA+ 形式化验证需 Java + `tla2tools.jar`；
-   - libclang / C++ 功能级验证需对应工具链（`.artifacts/` 下约 776 MB 构建产物平台绑定、按
-     `.gitignore` 不入库，可由脚本重建）；
-   - E2E 全语料回归需约 264 MB `testdata/` 语料。
-   核心 CLI 与五项门禁均不需要这些额外环境。
-
-3. **`check` 对本项目自身源码会报 info / error 级风格提示**（实测 `check main.go` 检出 `GO-CRC-029`）。
-   这是规则引擎正常工作的证据，不是故障；因此"check 自身源码全绿"不作为验收标准，
-   验收以 `scripts/lint-gate.sh` 冻结的那套规则为准。
-
-### 7.3 结论
-
-作为 Go 命令行工具与确定性混沌实验引擎，Abate **开箱即用**：clone / 解压后
-`go build && ./abate` 即可使用。作为包含 TLC / clang / 全语料 E2E 的完整质量体系，
-需按 §7.2 准备额外工具链。
-
-> 发布与验证的完整实证见 `docs/i18n/RELEASE-READINESS-FINAL.md` §十一、§十二。
+更多命令见 [CLI 参考](cli-reference.md)，七语言逐个手把手见[七语言教程](multilang-check-guide.md)。

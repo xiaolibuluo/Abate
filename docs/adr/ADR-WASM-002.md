@@ -63,7 +63,7 @@
 
 - `SandboxFuel.tla`：抽象状态机不变；注释中的「WASM guest」改为「guest plugin」后重跑。
 - `m5-reference-scan.sh` ① 段禁用 import 列表新增 `wazero` 关键词（零依赖断言）。
-- `docs/plan/02-wasm-runtime.md`：改写为「原生插件宿主机（WAS-HOST 决策实录）」。
+- WASM 宿主的当前实现与边界见 `docs/ARCHITECTURE.md` 与 `docs/dev/sandbox.md`。
 - 价值支柱：「快」改「确定性调度 + 轻量原生调用」；「劲」改「Go 插件 registry 热替换」。
 
 ## 6. 诚实边界（必须写进对外文档）

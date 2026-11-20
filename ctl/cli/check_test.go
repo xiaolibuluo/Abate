@@ -58,9 +58,7 @@ func TestCheckCommandCases(t *testing.T) {
 	}
 }
 
-// TestCheckHelpContent proves the check help documents the check-specific exit
-// codes (0 clean / 1 findings incl. warning / 2 internal / 3 usage), not the
-// shared run-command "steady state" wording.
+// TestCheckHelpContent proves the check help documents check-specific exit codes. The check command describes zero for clean, one for findings, two for internal errors and three for usage errors. It must not reuse the run command steady-state wording.
 func TestCheckHelpContent(t *testing.T) {
 	t.Parallel()
 	code, out, errs := invoke("check", "--help")

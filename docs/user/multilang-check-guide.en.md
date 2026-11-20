@@ -344,4 +344,4 @@ No. It is strictly read-only (`--out` writes only the report file).
 
 > More commands: `docs/user/cli-reference.en.md`; the specification:
 > `docs/spec/ces-v1.md`; language frontends and fidelity:
-> `docs/ARCHITECTURE.md` §3.1 and `docs/i18n/RELEASE-READINESS-FINAL.md`.
+> `docs/ARCHITECTURE.en.md` and `docs/user/language-coverage.en.md`.

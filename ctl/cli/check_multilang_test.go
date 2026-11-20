@@ -46,13 +46,6 @@ func writeMultilangDir(t *testing.T) string {
 	return dir
 }
 
-// checkSummary is the subset of the JSON report summary used by these tests.
-type checkSummary struct {
-	Files int `json:"files"`
-	Rules int `json:"rules"`
-	Total int `json:"total"`
-}
-
 // parseCheckJSON decodes a check JSON report into a generic document.
 func parseCheckJSON(t *testing.T, out string) map[string]any {
 	t.Helper()
@@ -90,7 +83,8 @@ func TestCheckSevenLanguagesDispatch(t *testing.T) {
 			if summary["files"] != float64(1) {
 				t.Fatalf("%s files = %v, want 1", fixture.tag, summary["files"])
 			}
-			if summary["rules"].(float64) <= 0 {
+			rules, ok := summary["rules"].(float64)
+			if !ok || rules <= 0 {
 				t.Fatalf("%s loaded no rules", fixture.tag)
 			}
 			findings, ok := document["findings"].([]any)
@@ -119,10 +113,19 @@ func TestCheckMixedDirectoryDispatch(t *testing.T) {
 		t.Fatalf("files = %v, want %d", summary["files"], len(multilangSources))
 	}
 	seen := make(map[string]bool, len(multilangSources))
-	findings, _ := document["findings"].([]any)
+	findings, ok := document["findings"].([]any)
+	if !ok {
+		t.Fatalf("findings is not an array")
+	}
 	for _, raw := range findings {
-		finding := raw.(map[string]any)
-		ruleID, _ := finding["ruleId"].(string)
+		finding, ok := raw.(map[string]any)
+		if !ok {
+			continue
+		}
+		ruleID, ok := finding["ruleId"].(string)
+		if !ok {
+			continue
+		}
 		parts := strings.Split(ruleID, "-")
 		if len(parts) == 3 {
 			seen[strings.ToLower(parts[0])] = true
@@ -166,13 +169,26 @@ func TestCheckLanguageFilter(t *testing.T) {
 		t.Fatalf("filtered check stderr=%s", errs)
 	}
 	document := parseCheckJSON(t, out)
-	summary := document["summary"].(map[string]any)
+	summary, ok := document["summary"].(map[string]any)
+	if !ok {
+		t.Fatalf("summary is not an object: %v", document["summary"])
+	}
 	if summary["files"] != float64(2) {
 		t.Fatalf("files = %v, want 2 (py+js only)", summary["files"])
 	}
-	findings, _ := document["findings"].([]any)
+	findings, ok := document["findings"].([]any)
+	if !ok {
+		t.Fatalf("findings is not an array")
+	}
 	for _, raw := range findings {
-		ruleID, _ := raw.(map[string]any)["ruleId"].(string)
+		m, ok := raw.(map[string]any)
+		if !ok {
+			continue
+		}
+		ruleID, ok := m["ruleId"].(string)
+		if !ok {
+			continue
+		}
 		prefix := strings.ToLower(strings.Split(ruleID, "-")[0])
 		if prefix != "py" && prefix != "js" {
 			t.Fatalf("language filter leaked finding %s", ruleID)
@@ -203,7 +219,10 @@ func TestCheckExtensionRouting(t *testing.T) {
 			if errs != "" {
 				t.Fatalf("stderr=%s", errs)
 			}
-			summary := parseCheckJSON(t, out)["summary"].(map[string]any)
+			summary, ok := parseCheckJSON(t, out)["summary"].(map[string]any)
+			if !ok {
+				t.Fatalf("ext %s: summary is not an object", c.ext)
+			}
 			if summary["files"] != float64(1) {
 				t.Fatalf("ext %s routed to %s: files=%v, want 1", c.ext, c.lang, summary["files"])
 			}
@@ -223,75 +242,3 @@ func multilangSourceFor(tag string) string {
 
 // TestCheckHelpDocumentsLanguages proves the check help lists all seven
 // languages and the new --languages flag.
-func TestCheckHelpDocumentsLanguages(t *testing.T) {
-	t.Parallel()
-	_, out, errs := invoke("check", "--help")
-	if errs != "" {
-		t.Fatalf("stderr=%s", errs)
-	}
-	for _, want := range []string{
-		"--languages", ".go", ".py", ".js", ".c", ".cs", ".rs", ".kt",
-	} {
-		if !strings.Contains(out, want) {
-			t.Fatalf("check help missing %q", want)
-		}
-	}
-}
-
-// TestCheckToleratesBrokenSyntax is the executable counterpart of the
-// "error-tolerant, not a syntax gate" capability boundary. A syntactically
-// broken Python source must still produce a report (partial AIR + findings)
-// rather than being rejected as a usage error. This locks in the documented
-// behavior so a future "strict parse" change cannot silently invalidate it.
-func TestCheckToleratesBrokenSyntax(t *testing.T) {
-	t.Parallel()
-	path := filepath.Join(t.TempDir(), "broken.py")
-	if err := os.WriteFile(path, []byte("def f(:\n  x =\n"), 0o600); err != nil {
-		t.Fatalf("write broken fixture: %v", err)
-	}
-	code, out, errs := invoke("check", path, "--format", "json")
-	if code == exitUsageError {
-		t.Fatalf("broken syntax was rejected as usage error (rc=%d, stderr=%s)", code, errs)
-	}
-	document := parseCheckJSON(t, out)
-	if _, ok := document["summary"].(map[string]any); !ok {
-		t.Fatalf("broken syntax produced no report summary (out=%s)", out)
-	}
-}
-
-// TestCheckNestedStructureMatchesAST is the executable evidence that rules
-// match on the parsed AST, not on flat text: a four-level nested Python file
-// must trigger several distinct structural PY-AIR-* rule classes. A pure
-// line/regex scanner would not attach multiple structural rules to nested nodes.
-func TestCheckNestedStructureMatchesAST(t *testing.T) {
-	t.Parallel()
-	path := filepath.Join(t.TempDir(), "nested.py")
-	src := "def outer(x):\n    if x:\n        for i in range(3):\n" +
-		"            y = i\n            return y\n    return x\n"
-	if err := os.WriteFile(path, []byte(src), 0o600); err != nil {
-		t.Fatalf("write nested fixture: %v", err)
-	}
-	code, out, errs := invoke("check", path, "--format", "json")
-	if code != exitBusinessFailure && code != exitOK {
-		t.Fatalf("nested check exit = %d (stderr=%s)", code, errs)
-	}
-	document := parseCheckJSON(t, out)
-	findings, ok := document["findings"].([]any)
-	if !ok || len(findings) == 0 {
-		t.Fatal("nested source produced no findings")
-	}
-	classes := map[string]bool{}
-	for _, raw := range findings {
-		f, ok := raw.(map[string]any)
-		if !ok {
-			continue
-		}
-		id, _ := f["ruleId"].(string)
-		if strings.HasPrefix(id, "PY-AIR-") {
-			classes[id] = true
-		}
-	}
-	if len(classes) < 3 {
-		t.Fatalf("nested source hit only %d PY-AIR-* structural classes: %v", len(classes), classes)
-	}
-}

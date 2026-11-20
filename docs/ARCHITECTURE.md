@@ -1,257 +1,111 @@
-# Abate 超级架构 — 混沌测试与变异测试一体化引擎
-## 完整闭环完善体系 · 极致细节化
+<!--
+Copyright (c) 2026 小黎的部落 (www.qingdujian.com). All rights reserved.
+Abate is dual-licensed under AGPLv3 and a commercial license.
+For commercial licensing, contact xiaolibuluo@163.com.
+Source: https://github.com/xiaolibuluo/Abate
+-->
 
-- 项目：Abate（https://github.com/xiaolibuluo/Abate）
-- 官网：www.qingdujian.com　邮箱：xiaolibuluo@163.com
-- 授权：AGPLv3 + 商业双授权（LICENSE 与 DUAL-LICENSE.md）
-- 代码水印：小黎的部落（版权头 + 构建元数据 + 发布签名清单三重水印）
+# Abate 架构总览
 
----
+> 本文描述当前代码的实际结构。所有组件都能在仓库对应目录找到源码，能力声明可用
+> `scripts/evidence-check.sh` 一键复现。
 
-## 0. 总纲
+## 1 定位与形态
 
-### 0.1 四大价值支柱
+Abate 是一个**单静态二进制**，包含两个协同子系统：
 
-| 支柱 | 内涵 | 代差 |
+1. **确定性实验控制平面**：以 CES（`ces.tencent.com/v1`）描述实验，经校验、确定性调度、
+   异常注入、SIM 模拟，产出可逐字节复现的报告与 SIM-REC 档案。
+2. **七语言结构化静态分析器**：把源码解析为统一 AIR 语法树，做结构模式匹配，
+   输出 console / JSON / SARIF 报告。
+
+技术基座：**纯 Go 标准库自研，零外部依赖**（`go.mod` 无 `require`、无 `vendor/`、无 `third_party/`），
+构建产物为单二进制，五平台交叉编译。
+
+## 2 分层结构
+
+代码按职责分层，依赖方向为单向（上层调用下层，下层不反向依赖）：
+
+| 层 | 目录 | 职责 |
 |---|---|---|
-| 双内核统一 | 变异与混沌统一在 HPOV 扰动代数上：一个引擎，两种形态 | 需同时精通两门学科并深度统一——认知代差 |
-| WASM 插件生态 | 算子、注入器、语言前端、适配器、报告器全部 WASM：任意语言、沙箱隔离、热加载 | 竞品按季度发核心版；社区 WASM 插件按小时发布 |
-| 开放规范 CES | 混沌实验规范开放中立，任何实现均可合规 | 竞品绑定私有平台；Abate 绑定开放规范 |
-| 确定性模拟器 | 纯软件数字孪生，不触碰真实平台 API | 竞品依赖真实集群做认证，成本高且会过时；Abate 永不过时 |
+| 入口 / 控制 | `main.go`、`cmd/`、`ctl/cli/`、`ctl/rest/`、`ctl/web/` | CLI 命令、REST API、浏览器控制台 |
+| CES 前端 | `ces/schema/`、`ces/parse/`、`ces/validate/`、`ces/tck/` | CES 文档解析、规范化、校验（CES-VALID / CES-PARSE 规则）、一致性测试套件 |
+| 语言前端 | `lang/air/`、`lang/frontkit/`、`lang/{go,py,js,c,cs,rs,kt}front/`、`lang/rule/` | 七语言 lexer/parser → AIR AST → 结构规则匹配；`check` / `derive` 逻辑在 `lang/check/`、`lang/derive/` |
+| 内核 | `kernel/algebra/`、`kernel/scheduler/`、`kernel/injection/`、`kernel/mutation/`、`kernel/observe/`、`kernel/verify/`、`kernel/abi/` | 扰动代数、确定性调度、注入算子、变异算子、观测、稳态判定、ABI 数据 |
+| 模拟器 | `sim/clock/`、`sim/fs/`、`sim/net/`、`sim/rand/`、`sim/record/`、`sim/vsched/` | 虚拟时钟/文件系统/网络（延迟·分区·丢包·限带宽）/确定性随机/档案/调度 |
+| 安全 | `security/policy/`、`security/redact/`、`security/audit/`、`security/tests/` | 能力策略、敏感信息脱敏、安全扫描 |
+| 插件 | `plugin/host/`、`plugin/signature/`、`plugin/capability/`、`plugin/sandbox/`、`plugin/{adapter,reporter,sample,wasm,hotswap}/` | Ed25519 签名校验、能力模型、沙箱配置、适配器/报告器/示例、自研 WASM 宿主、热插拔 |
+| 支撑 | `internal/determinism/`、`internal/e2e/`、`internal/corpus/`、`internal/watermark/`、`internal/yamlmini/`、`ctl/rest/` | 确定性工具、E2E 框架、语料、水印、自研最小 YAML 解析、REST |
 
-### 0.2 九字质量定义
+## 3 核心链路
 
-| 字 | 定义 | 落点 |
-|---|---|---|
-| 稳 | 确定性可复现 | 种子 + 虚拟时钟 + 录制回放 |
-| 快 | 近原生执行 | WASM AOT + 并行调度 |
-| 精 | 扰动精确 | AST 节点级 / 系统调用级 |
-| 准 | 观测零漏报 | 统一观测管道 + 存活分数 |
-| 固 | 门禁全量严格 | 110+ linter 五段门禁 |
-| 全 | 全语言全故障域 | 7 语言 + M/C 全算子族 |
-| 优 | 持续基准回归 | 基准套件入 CI 门禁 |
-| 劲 | 生态小时级扩展 | WASM 插件热加载 |
-| 强 | 安全纵深 | 能力沙箱 + 签名链 |
+### 3.1 `check`：源码 → AIR → findings
 
-### 0.3 三条设计总则
+```
+<paths> → 扩展名分派 → <lang>front (lexer → Pratt parser) → air.Node AST
+        → rule matcher (结构模式) → findings → console/json/sarif
+```
 
-1. 源码级接入铁律：接入任何第三方开源一律源码接入（vendor → 二次更改 → 优化 → 深度集成 → 封装），禁止任何 API 接入。
-2. 十年内核：内核必须足够强大——一次建对，十年不大更新，每年仅简单维护。
-3. 一切结构性演进发生在生态层：内核年轮，生态小时级。
+- **AIR**（`lang/air/`）：统一 AST 节点类型（kind / SemKey / 属性 / 子节点），带 schema 版本。
+- **规则**（`lang/rule/builtin/`）：共享 AIR 模板 72 条 + 每语言专属规则（Go 116，其余 12–14），
+  用编译式结构模式（`$x` 捕获、`$..` 跨层、`!P` 否定、属性约束）匹配 AST 节点，不是文本正则。
+- **确定性**：同输入输出逐字节一致，`summary.fingerprint` 可用于 `verify` 比对。
+- **容错**：语法错误产出 partial AIR + warnings，不做语法守门。
 
-## 1. 双内核统一：HPOV 扰动代数
+### 3.2 `run`：CES → 实验 → 报告
 
-### 1.1 HPOV 闭环
+```
+CES YAML → parse → normalize → validate (CES-VALID/PARSE)
+        → kernel scheduler (固定种子) + injection + sim → observe → verify (稳态)
+        → report + 可选 SIM-REC archive
+```
 
-H（Hypothesis 稳态假设）→ P（Perturbation 扰动）→ O（Observation 观测）→ V（Verification 验证）→ 回到 H。任何实验都是 HPOV 环的实例。
+- **扰动代数**（`kernel/algebra/`）：结合律、单位元、对偶补偿等代数律。
+- **确定性**：固定种子 + 虚拟时钟 + 全序事件，报告与档案逐字节可复现。
+- **SIM-REC 档案**（`sim/record/`）：hash 链 + 全序序列 + 虚拟时间单调，`replay` 可校验。
 
-### 1.2 扰动代数定义
+### 3.3 `derive`：规则 → 变异算子
 
-设扰动算子全集 P，其上定义：
+从内置 Go 规则派生 M 族变异算子，注册到 `kernel/mutation/`，跑一次确定性变异实验。
+killing 为**静态 AIR 级近似**，不是真实 go test 执行。
 
-| 运算 | 记号 | 语义 |
-|---|---|---|
-| 复合 | p1 ∘ p2 | 先施加 p2 再施加 p1（时序） |
-| 并发积 | p1 ⊗ p2 | 同时施加（并发域） |
-| 对偶（回滚） | p⁻¹ | 撤销扰动，恢复稳态 |
-| 恒等 | ε | 空扰动（no-op） |
+## 4 插件与安全
 
-代数性质：复合满足结合律；ε 为单位元；回滚满足 p ∘ p⁻¹ ≈ ε（最终一致补偿）。
+- **签名**：`plugin/signature/` 用 Ed25519 校验 manifest 公钥，未签名/篡改的插件拒绝加载。
+- **能力沙箱**：`plugin/capability/` + `plugin/sandbox/` 建模 runsc 配置语义（能力开关、
+  rootfs 只读、时钟虚拟化），默认全拒、纯声明式；真实隔离由宿主负责。
+- **WASM 宿主**：`plugin/wasm/` 为**自研** WAT lexer/parser/encoder 与运行时，零第三方依赖。
+- **热插拔**：`plugin/hotswap/` 原子替换实例，不中断在途调用。
 
-### 1.3 算子族
+## 5 确定性体系
 
-- M 族（变异形态）：作用于代码空间。算符替换、边界值扰动、常量扰动、控制流扰动、返回值扰动、否定条件、删除调用。由语言规则集自动派生（见 3.4）。
-- C 族（混沌形态）：作用于系统空间。网络延迟/分区/丢包、CPU/内存/IO/磁盘压力、时钟偏移、依赖故障、进程/协程终止。
-- M ⊗ C（混合形态）：对代码孪生施加变异的同时对系统孪生注入故障，验证测试套件在双重扰动下的存活判定（等价变异体识别与竞态暴露）。
+确定性是贯穿全仓的核心约束，配套可复现门禁：
 
-### 1.4 统一引擎三件套
-
-一个引擎 = 同一调度器（确定性虚拟时钟驱动）+ 同一观测管道（探针/指标/追踪）+ 同一验证器（稳态断言 + 存活分数 + 等价性分析）。变异与混沌只是算子族不同，执行路径完全同构。
-
-## 2. 引擎源码接入：PIT + chaosblade 五步并入法
-
-### 2.1 五步并入法
-
-源码 vendor → 二次更改 → 优化 → 深度集成 → 封装为内核原语。禁止任何 API 接入：不进程外调用、不 gRPC、不网络依赖、不运行时动态加载外部引擎。
-
-### 2.2 PITest（PIT）并入——变异核
-
-- vendor：JVM 变异测试引擎源码进内核树。
-- 二次更改：确定性化改造（种子驱动、虚拟时钟对齐）。
-- 优化：裁剪非核心路径、去除外部依赖。
-- 深度集成：变异算子族直连 HPOV 代数（M 族）、覆盖率引导调度并入确定性调度器。
-- 封装：内核 M 族变异原语。
-
-### 2.3 chaosblade 并入——注入核
-
-- vendor：Go 实现的故障注入引擎源码进内核树（与内核同为 Go，天然亲和）。
-- 二次更改：确定性调度改造、观测事件统一。
-- 优化：裁剪 CLI 外壳、收敛为库形态。
-- 深度集成：注入动作直译 C 族算子、回滚并入代数对偶运算。
-- 封装：内核 C 族注入原语。
-
-### 2.4 接入铁律
-
-- 概念归一：外部概念全部翻译为 HPOV 代数与 CES 规范词汇，内核不出现 PIT/chaosblade 专有类型。
-- 上游回移：上游安全补丁与关键修复经评审择优回移，内核版本自主可控。
-
-## 3. 语言前端矩阵与规则自研体系
-
-### 3.1 七语言底层库矩阵（全部源码级接入）
-
-| 语言 | 底层库 | 许可证 | 用途 | 接入策略 |
-|---|---|---|---|---|
-| Go | go/ast（标准库） | BSD | 语法树解析 | 标准库原生，零外部依赖、最安全，完全不用引入第三方库 |
-| Python | ruff 解析前端（rustpython-parser 系）、tree-sitter-python | MIT / Apache-2.0 | AST 解析 | 只拿解析器生成语法树；不引入 ruff 的 lint 规则源码，规则自研 |
-| JS/TS | swc | Apache-2.0 | AST 解析、源码转换 | 高性能 Rust 库，只复用解析部分，规则逻辑自研 |
-| C/C++ | libclang（LLVM） | Apache-2.0 + LLVM Exception | AST、编译语义获取 | 仅利用 libclang 拿语法树和类型信息；不接入 clang-tidy 完整源码 |
-| Rust | syn + quote | MIT / Apache-2.0 双许可 | Rust 源码 AST 解析 | syn 只是解析库、不含 clippy 检查逻辑，基于官方规范自研规则 |
-| C# | Roslyn | MIT | C# 语法树、语义分析 | 只借用 Roslyn 编译器能力，不引入第三方分析器规则 |
-| Kotlin | kotlin-compiler | Apache-2.0 | Kotlin 语法树 | JetBrains 官方，拿 AST，规则自研 |
-
-### 3.2 统一 IR：AIR（Abate Intermediate Representation）
-
-- 七语言前端统一产出 AIR：节点模型（声明/语句/表达式/类型/位置/注释）+ 语义注记（类型信息、作用域、控制流图）。
-- 规则引擎与变异算子都只作用在 AIR 上——语言无关的核心一次实现，七语言全部受益。
-- AIR 序列化稳定（版本化 schema），支持缓存与增量解析。
-
-### 3.3 规则自研体系：官方规范规则集
-
-| 语言 | 官方规范来源 |
+| 机制 | 实现 / 脚本 |
 |---|---|
-| Go | Effective Go + CodeReviewComments + go vet 全量 |
-| Python | PEP 8 + PEP 484 + 官方风格指南 |
-| JS/TS | ECMAScript 规范 + TS Handbook |
-| C/C++ | CERT C/C++ + 官方编码标准 |
-| Rust | Rust API Guidelines |
-| C# | .NET 设计规范 |
-| Kotlin | Kotlin 编码规范 |
+| 固定种子 / 虚拟时钟 | `kernel/scheduler/`、`sim/clock/`、`sim/rand/`（SplitMix64） |
+| 逐字节报告 | `abate verify`、`summary.fingerprint`、run digest / stream digest |
+| 档案完整性 | `sim/record/` hash 链、`abate replay` |
+| 确定性门禁 | `scripts/determinism-check.sh`（核心包同种子双跑比对） |
+| 规格一致性 | `scripts/drift-check.sh` |
+| 形式化验证 | `scripts/tla/`（TLA+：PitParity / SandboxFuel / StreamDeterminism） |
+| 完整性水印 | `internal/watermark/`、`scripts/hash-check.sh`、`scripts/watermark-verify.sh` |
 
-### 3.4 规则双用途：检查器 × 变异算子
+## 6 质量门禁
 
-每条规则同时服务两个引擎：
+`scripts/lint-gate.sh` 串联：版权头 → 风格 → 许可证 → gofmt → go vet → golangci-lint →
+魔法常量 → `go test -race` → 覆盖率 → 构建。零容忍项包括 TODO/FIXME（godox）、
+未格式化、忽略错误、硬编码密钥、复杂度超标等。配套：`coverage-gate.sh`、`vuln-scan.sh`、
+`m5-reference-scan.sh`、`audit-zero-third-party.sh`、`fullcorpus-degrade.sh`。
 
-- 检查器用途：AIR 模式匹配 → 违规报告（SARIF），构成语言代码检查器（自研 lint 引擎）。
-- 变异算子用途：规则即变异点——命名/边界/类型/并发规则自动派生 M 族算子（如边界值规则 → 边界扰动算子）。
+## 7 边界与诚实口径
 
-### 3.5 自研语言代码检查器
+- `check` 是结构化 linter，非编译器级语义分析（详见 [能力与边界](user/capabilities-and-limits.md)）。
+- 全语料保真度六语 3%–5%，Go `NOT_MEASURED`；E2E"达标"仅限冻结单文件口径，不构成"高保真"结论。
+- 竞品绝对分数 `NOT_MEASURED`；derive killing 为静态近似；社区验证尚为空白。
 
-- 规则 DSL：YAML 声明式（模式 + 谓词 + 严重级 + 修复建议）+ 代码谓词扩展。
-- 检查管线：AIR → 规则匹配 → 违规聚合 → SARIF/HTML 报告。
-- 与 Abate 自身门禁同构：Abate 仓库自身用 Go 规则集自检（吃自己的狗粮）。
+## 8 导览
 
-## 4. 分层架构 L0-L7
-
-```
-L7 控制面：CLI（abate）/ REST API / Web 控制台
-L6 报告器：WASM reporter 插件（JSON/HTML/SARIF/JUnit/OTel）
-L5 适配器：WASM adapter 插件（CI 平台、issue 跟踪、消息通道）
-L4 语言前端：WASM frontend 插件 + 内置 7 语言官方规范规则集（源码级并入）
-L3 确定性模拟器：虚拟时钟/虚拟网络/虚拟 FS/虚拟调度 + 录制回放
-L2 CES 规范层：实验描述/稳态/探针/回滚（开放中立，含 TCK）
-L1 WASM 运行时：WASI Preview2、能力沙箱、热加载、签名验证
-L0 HPOV 内核：扰动代数、确定性调度器、观测管道、验证器 + 源码级并入的变异核（PIT 二次开发）与注入核（chaosblade 二次开发）
-```
-
-依赖方向自上而下单向引用；L0-L3 为内核（年轮更新），L4-L7 为生态（小时级更新）。
-
-## 5. WASM 插件生态
-
-### 5.1 五类插件（统一 WIT 接口）
-
-| 类型 | 职责 | 示例 |
-|---|---|---|
-| operator | 声明扰动算子（M 或 C 族） | network-delay、arith-replace |
-| injector | 将算子落到目标（孪生或真实环境） | tc-injector、syscall-injector |
-| frontend | 语言前端：解析源码为 AIR | rust-frontend、python-frontend |
-| adapter | 外部系统集成 | github-actions、gitlab-ci |
-| reporter | 结果输出 | sarif-reporter、html-reporter |
-
-### 5.2 安全模型
-
-- 能力制：fs/net/clock/env 显式授予，默认全拒。
-- 签名强制：插件必须签名（GPG/cosign），未签名拒绝加载。
-- 热加载：原子替换（旧实例排空后卸载），升级无感。
-- 版本协商：semver + 兼容性矩阵，CI 自动验证。
-
-## 6. CES 开放规范
-
-Chaos Experiment Specification：YAML/JSON 描述一次 HPOV 实验：
-
-- apiVersion / kind / metadata
-- steadyState：稳态假设（探针 + 容差 + 持续时间）
-- method：扰动序列（算子复合/并发表达式）
-- probes：观测探针（HTTP/shell/metric/prom）
-- rollback：回滚策略（自动/手动/超时）
-- schedule：一次性/cron/持续
-
-开放中立：规范仓库独立演进（语义化版本）；提供 TCK，任何第三方实现通过 TCK 即可声明 CES 合规。
-
-## 7. 确定性模拟器
-
-纯软件数字孪生，不触碰真实平台 API：
-
-- 虚拟时钟：可快进/慢放/冻结/偏移（混沌时钟扰动的基础）。
-- 确定性 PRNG：种子驱动，同种子同结果（稳）。
-- 虚拟网络栈：延迟/分区/丢包/带宽全软件模拟。
-- 虚拟文件系统与虚拟调度：进程/协程级故障注入。
-- 录制回放：观测管道全量录制，可逐帧回放验证。
-
-## 8. 完整闭环体系（极致细节）
-
-### 8.1 数据流闭环：九段流水线
-
-源码/系统 → ①前端解析（AIR）→ ②规则检查（lint 门禁）→ ③算子生成（M/C 族派生）→ ④实验编排（CES）→ ⑤确定性调度（虚拟时钟）→ ⑥执行（模拟器 + 变异核 + 注入核）→ ⑦观测（探针/指标/追踪）→ ⑧验证（稳态断言 + 存活分数 + 等价性分析）→ ⑨报告（SARIF/HTML/OTel）→ 反馈回 ③（算子库与规则库进化）。
-
-### 8.2 实验执行闭环：HPOV 状态机
-
-IDLE → HYPOTHESIZED（稳态假设登记）→ BASELINE（基线观测）→ PERTURBED（施加扰动）→ OBSERVED（扰动观测）→ VERIFIED（验证判定：稳态保持/破坏 + 变异体存活/击杀）→ ROLLED_BACK（对偶回滚）→ REPORTED（报告归档）→ 终态。
-
-每个状态转移都有确定性记录（种子 + 时钟 + 事件序），任意实验可逐帧回放。
-
-### 8.3 生态闭环：插件生命周期
-
-开发（WIT 接口 + 脚手架模板）→ 本地测试（插件 TCK）→ 签名（GPG/cosign）→ 发布（插件仓库）→ 兼容性矩阵验证（CI 自动）→ 分发（小时级）→ 热加载（原子替换）→ 遥测（使用统计）→ 反馈（issue/评分）→ 版本迭代。
-
-### 8.4 质量闭环：提交到发布
-
-提交 → 版权头检查（强制水印）→ 五段门禁（gofmt → go vet 全量 → golangci-lint 全量 → test -race → build）→ CI（GitHub Actions）→ 基准回归（性能不回退）→ 内核 TCK（API 兼容）→ GPG 签名发布（tag + 资产 + 校验和 + SBOM）。
-
-### 8.5 反馈闭环：持续进化
-
-报告（存活分数/等价变异体/逃逸故障）→ 薄弱点定位（测试盲区/规则缺口/算子缺口）→ 规则库扩展（新 lint 规则）→ 算子库扩展（新 M/C 算子）→ 下一轮实验（闭环自增强）。
-
-## 9. 十年内核与干净架构
-
-内核设计目标：不是极小，而是足够强大——一次建对，十年不大更新，每年仅简单维护。
-
-内核四条铁律：
-
-1. 内核强大：L0 内置全部核心能力——扰动代数、确定性调度器、观测管道、验证器四大原语，加上源码级深度并入的变异核（PIT 二次开发）与注入核（chaosblade 二次开发）。内核自成完备，不依赖任何外部运行时与外部引擎。
-2. API 冻结：内核 API 语义化版本，major 间隔至少 3 年（十年至多 2~3 个 major）；废弃走 2 个版本窗口；内核 API 配独立 TCK。
-3. 源码自持：第三方开源一律源码接入（五步并入法），并入后即为内核自有代码，无外部依赖漂移、无供应链劫持面；上游安全补丁经评审择优回移。
-4. 年维护节奏：内核每年只做简单维护（安全补丁、编译器/平台适配、性能微调），不做结构性大改；一切结构性演进都发生在生态层。
-
-干净架构（十年大量扩展迭代的上限保障）：
-
-- 分层：entities（HPOV 代数/CES 实体/AIR）← use-cases（实验编排）← adapters（WASM 插件/CLI/REST）。
-- 依赖规则：源码依赖只指向内层；外层可任意替换，内层对框架无感知。
-- 端口-适配器（六边形）：每个外部能力都是一个端口；适配器数量无上限，内核不感知适配器存在。
-- 用例层无框架：业务规则不依赖 Web/CLI/存储框架，十年内框架更替不影响用例层。
-- 变更隔离：年轮内核（L0-L3）与小时级生态（L4-L7）物理分仓、独立版本、兼容性矩阵门禁——生态爆炸式迭代永不污染内核。
-
-## 10. 治理与合规
-
-- 授权：AGPLv3 + 商业双授权（DUAL-LICENSE.md）。
-- 强制版权头：所有源文件必须携带统一版权头（scripts/header-check.sh + goheader 双重门禁，缺失即 FAIL）。
-- 数字代码水印：小黎的部落——版权头水印 + 构建元数据（-ldflags 注入）+ 发布清单 SHA256 三重水印。
-- GPG 签名：tag、发布资产、校验和清单、SBOM 全部 GPG 签名（scripts/release.sh）。
-
-## 11. 更新节奏
-
-- 内核年轮：每年一个大版本（年轮），LTS 3 年；内核 API 语义化版本。
-- 生态小时级：插件仓库 CI 按小时发布，兼容性矩阵自动验证，热加载无感升级。
-
-## 12. 对标
-
-混沌侧对标 Gremlin / Chaos Mesh / Litmus / ChaosBlade；变异侧对标 Stryker / mull / PIT。Abate 以双内核统一 + WASM 生态 + 开放规范 + 确定性模拟器形成代差：竞品按季度发核心版，Abate 生态按小时发布；竞品绑定私有平台，Abate 绑定开放 CES；竞品依赖真实集群，Abate 纯软件孪生永不过时。
+- CLI 与退出码：[CLI 参考](user/cli-reference.md)
+- CES 规范：[CES v1 规范](spec/ces-v1.md)
+- 开发约定：[贡献指南](dev/contributing.md) · [模块开发](dev/module-dev-guide.md) · [插件开发](dev/plugin-dev-guide.md) · [沙箱](dev/sandbox.md)

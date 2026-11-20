@@ -33,8 +33,8 @@ Source: https://github.com/xiaolibuluo/Abate
 
 ## 3. 红线（不可触碰）
 
-- **开源源码深度自研集成**：第三方依赖一律源码级并入（vendoring / 模块源码），
-  **禁止 API / 网络接入**（除工具链下载）。
+- **零外部依赖**：产品代码只用 Go 标准库与自研实现（`go.mod` 无 `require`、无 `vendor/`、
+  无 `third_party/`）；**禁止引入第三方模块**（API / 网络接入同样禁止，除工具链下载）。
 - **确定性铁律**：禁止 `time.Now`（真实时钟）、全局 `math/rand`、map 迭代序依赖、
   `os.Environ` 输出进行为；内核 L0 对外部网络零依赖。
 - **版权头**：逐字节复用（见 `governance/HEADERS.md`），新文件必带。
@@ -50,9 +50,9 @@ Source: https://github.com/xiaolibuluo/Abate
 
 ## 5. 提交流程
 
-> **治理口径（2026-11-19 更新）**：本项目**不接受外部 Pull Request**；仓库变更由**权利人直接签名提交并推送**至 `main`（规则集仅保留强制 GPG 签名 + 禁 force push，不含 PR 审批要求）。本节下方为历史流程描述，仅作背景，不再适用。
+本项目**不接受外部 Pull Request**；仓库变更由**权利人直接签名提交并推送**至 `main`
+（规则集仅保留强制 GPG 签名 + 禁 force push，不含 PR 审批要求）。
 
-1. ~~分支基于 `main`；门禁全绿。~~
-2. ~~`git commit -s`（DCO）。~~
-3. ~~PR 描述关联里程碑与验收项；门禁失败打印条例。~~ → 现为：权利人在本地跑全部门禁全绿后，`git commit -S`（GPG 签名）+ `-s`（DCO），直接 `git push origin main`。
-4. 合入后 CI 全量档（夜间：模糊 + 对拍 + 规模）复核。
+1. 在本地跑全部门禁全绿（`bash scripts/lint-gate.sh`）。
+2. `git commit -S -s`（GPG 签名 + DCO `Signed-off-by`）。
+3. `git push origin main` 直接推送；CI 对推送做全量复核（夜间另跑模糊 + 对拍 + 规模档）。

@@ -45,9 +45,9 @@ by the gate scripts above.
 
 ## 3. Red lines (untouchable)
 
-- **Deep in-house integration of open-source code**: third-party dependencies
-  are always included at source level (vendoring / module source); API or
-  network access is **forbidden** (except toolchain downloads).
+- **Zero external dependencies**: product code uses only the Go standard library
+  and in-house implementations (`go.mod` has no `require`, no `vendor/`, no `third_party/`);
+  **no third-party modules** (API or network access is likewise forbidden, except toolchain downloads).
 - **Determinism iron rules**: no `time.Now` (real clock), no global
   `math/rand`, no reliance on map iteration order, no behavior driven by
   `os.Environ` output; kernel L0 has zero dependence on external networks.
@@ -67,17 +67,11 @@ by the gate scripts above.
 
 ## 5. Submission flow
 
-> **Governance update (2026-11-19)**: this project **does not accept external
-> Pull Requests**. Changes are made by the **rights holder directly committing
-> and pushing to `main`** (the ruleset keeps only required GPG signatures and
-> no-force-push, with no PR-approval requirement). The historical flow below is
-> kept for background only and no longer applies.
+This project **does not accept external Pull Requests**. Changes are made by the
+**rights holder directly committing and pushing to `main`** (the ruleset keeps only
+required GPG signatures and no-force-push, with no PR-approval requirement).
 
-1. ~~Branch off `main`; all gates green.~~
-2. ~~`git commit -s` (DCO).~~
-3. ~~PR description links the milestone and acceptance items; gate failures
-   print the rule that was hit.~~ → Now: the rights holder runs all gates
-   green locally, then `git commit -S` (GPG) + `-s` (DCO) and pushes directly
-   with `git push origin main`.
-4. After merge, the CI full archive re-checks (nightly: fuzz + parity +
-   scale).
+1. Run all gates green locally (`bash scripts/lint-gate.sh`).
+2. `git commit -S -s` (GPG signature + DCO `Signed-off-by`).
+3. Push directly with `git push origin main`; CI re-checks the push (nightly adds
+   fuzz + parity + scale profiles).

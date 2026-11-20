@@ -7,7 +7,7 @@ Source: https://github.com/xiaolibuluo/Abate
 
 # 模块开发指南（Module Dev Guide）
 
-> 模块地图与依赖图见 `docs/plan/00-MASTER-PLAN.md`。本指南补充开发 DoD 与分层铁律。
+> 模块地图与依赖分层见 `docs/ARCHITECTURE.md`。本指南补充开发 DoD 与分层铁律。
 
 ## 1. 分层（L0–L7）
 

@@ -23,9 +23,9 @@ Source: https://github.com/xiaolibuluo/Abate
 | `MemoryLimitMB` | 沙箱内存上限 | `runsc/config/config.go`（`TotalMem` 等限额项的语义） |
 | `Capability`（`fs` / `net` / `clock` / `env`） | runsc 的能力开关族 | `runsc/config/config.go`（`EnableRaw`、`PauseExternalNetworking` 等开关族） |
 
-上游源码位于 `third_party/_sources/gvisor/`（`google/gvisor` 2026-11-11 快照，Apache-2.0），
-**只读参考，不 import、不编译、不进 `go.mod`**。Abate 侧为**纯 Go 标准库自研重写**，
-使用 Abate 自己的命名空间，不复制上游代码。
+本包建模的是 gVisor `runsc` 的**配置语义**（Apache-2.0 项目，历史上作只读参考）。
+仓库现已清除全部第三方源码，本包为**纯 Go 标准库自研重写**，使用 Abate 自己的命名空间，
+不 import、不复制任何上游代码（`go.mod` 零依赖）。
 
 ## 2. 裁剪边界（做了什么、没做什么）
 
@@ -40,8 +40,8 @@ Source: https://github.com/xiaolibuluo/Abate
 
 | 未实现项 | 原因 |
 |---|---|
-| 不调用 `runsc` 进程、不 fork 任何进程 | 项目铁律：禁 `os/exec`、禁进程调用、禁动态加载外部二进制（`third_party/_references/MANIFEST.md` 登记裁定） |
-| 不实现 runsc 的 checkpoint/restore、cgroup、metrics server | 超出「解析 + AST + 沙箱模型」范围，且属于 M5 前端蓝本范畴 |
+| 不调用 `runsc` 进程、不 fork 任何进程 | 项目铁律：禁 `os/exec`、禁进程调用、禁动态加载外部二进制 |
+| 不实现 runsc 的 checkpoint/restore、cgroup、metrics server | 超出本包「解析 + AST + 沙箱模型」范围 |
 | 不实现真实网络栈与真实文件系统挂载 | 本包只产出配置模型；真实隔离由宿主运行时负责 |
 | 不实现 gVisor 的 sentry 平台层（KVM/ptrace/systrap） | 平台层是宿主能力，本包只声明「选哪一层」 |
 
@@ -99,9 +99,8 @@ GOFLAGS=-mod=vendor golangci-lint run ./plugin/sandbox/...
 - `sandbox_chaos_test.go`：百次复跑同一份文档 + 并发构建/校验/序列化。
 - `sandbox_mutation_test.go`：策略矩阵逐行断言哨兵错误。
 
-## 7. 与后续里程碑的关系
+## 7. 与其他组件的关系
 
-- M4 `plugin/wasm`（wazero 宿主）与本包的关系：wasm 宿主把本包的 `Config`
-  作为**声明式契约**消费（宿主负责真实隔离），本包不感知 wasm 运行时。
-- M5 语言前端（libclang-min）复用同一「只建模、不执行」的边界：
-  `scripts/build-libclang-min.sh` 同样不产出假产物，缺失前置时如实报错。
+- `plugin/wasm`（自研 WASM 宿主）把本包的 `Config` 作为**声明式契约**消费
+  （宿主负责真实隔离），本包不感知 wasm 运行时。
+- 语言前端复用同一「只建模、不执行」的边界：本包只产出配置模型，真实隔离由宿主运行时负责。

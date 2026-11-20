@@ -110,8 +110,7 @@ Patch release — GA 后真实质量巩固与正式签名发布收官（2026-11-
   双构建 SHA256 一致。
 - **正式签名发布**：权利人授权后，7 个 GPG 签名提交推送至 `origin/main`，
   签名 tag `v1.0.0` 同步，7 份发布资产 detached 签名 7/7 验证通过；
-  本版本 `v1.0.1` 以独立签名 tag 标记上述收官。详见
-  `docs/i18n/RELEASE-READINESS-FINAL.md` §十。
+  本版本 `v1.0.1` 以独立签名 tag 标记上述收官（当时的终审报告已归档）。
 
 ## [v1.0.0]
 
@@ -149,8 +148,8 @@ GA release. Closes the M1–M6 program.
   （`go.mod` / `vendor/modules.txt` / `third_party/_sources/wazero/`）。
   修正此前「真 WASM 运行时未交付」的边界表述。
 - **gVisor ABI 裁剪移植**：`kernel/abi/` syscall 表（amd64 352 / arm64 295）、
-  errno、hostarch 原语，`syscall_test.go` 运行时直读上游逐项对拍；详见
-  `docs/dev/abi-port-parity.md`。修正此前「gVisor 平台级沙箱未交付」表述。
+  errno、hostarch 原语，`syscall_test.go` 运行时直读上游逐项对拍（对拍报告已归档）。
+  修正此前「gVisor 平台级沙箱未交付」表述。
 - **lint 全量清零**：7 个高复杂度生产函数 + 6 个超限测试函数拆为职责单一的
   助手函数，消除 8 个连带命中，按 ≤300 行拆出 9 个伴生源文件；
   `golangci-lint` **0 issues**（revive enable-all-rules 全开）。
@@ -163,8 +162,7 @@ GA release. Closes the M1–M6 program.
 - **门禁全绿**：九段 CI 门禁 `PASSED`；TLA+ 3 spec；determinism / drift /
   pit-parity(100%) / m5-reference-scan / `go mod verify` 全部通过。
 - **仓库治理**：1013 个 `libclang-min/build/` CMake/Ninja 构建产物移出版本控制
-  并纳入 `.gitignore`（工作区文件保留）；`docs/dev/pending-work.md` 按实况重写
-  为完工状态归档。
+  并纳入 `.gitignore`（工作区文件保留）；  完工状态文档按实况重写（历史过程文档已归档）。
 - **全语言降级率收官（2026-11-18）**：自研语料全语料 20520 条逐条真实 parse，
   py 3.36% / js 3.51% / c 4.80% / cs 4.65% / rs 4.91% / kt 4.48%，
   go 无嵌入语法映射保持 `NOT_MEASURED`；六语言全部降到 5% 以下。

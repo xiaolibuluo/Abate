@@ -10,209 +10,156 @@
 # Abate
 
 [![version](https://img.shields.io/badge/version-1.2.28-blue)](https://github.com/xiaolibuluo/Abate/releases/latest)
-[![license](https://img.shields.io/badge/license-AGPLv3%20%7C%20commercial-green)](LICENSING.md)
+[![license](https://img.shields.io/badge/license-AGPLv3%20%7C%20commercial-green)](LICENSING.en.md)
 [![checks](https://img.shields.io/badge/checks-7%20languages-orange)](docs/user/multilang-check-guide.en.md)
 [![Go](https://img.shields.io/badge/Go-1.26.11-00ADD8?logo=go)](go.mod)
 
-**Deterministic multi-language static analysis / linter** — `abate check`
-dispatches by file extension across **Go, Python, JavaScript, C, C#, Rust and
-Kotlin**, runs each language's in-house rule set over a unified AIR intermediate
-representation, and emits byte-reproducible console / JSON / SARIF reports for CI.
+**Deterministic multi-language static analyzer + experiment control plane.** A single static binary provides two capabilities:
 
-> **Capability boundary (stated up front, to avoid misreading)**: `abate check` is
-> a **structural linter** — an in-house lexer + Pratt parser really parses source
-> into an AIR tree, then applies structural pattern matching. It is **not**
-> compiler-grade semantic analysis: no type checking, no control-flow/data-flow
-> analysis, and not equivalent in depth to go vet / eslint / clippy. Parsing is
-> error-tolerant and **not a syntax-error gate**.
->
-> Every claim is self-verifiable — no need to trust the docs:
-> [What It Can and Cannot Do](docs/user/capabilities-and-limits.en.md) ·
-> [Seven-Language Coverage, Quantified](docs/user/language-coverage.en.md) ·
-> `bash scripts/evidence-check.sh` (one-command reproduction, 7 assertions).
-> Community validation status is stated honestly in the capabilities doc.
+- **`abate check`**: dispatches **Go / Python / JavaScript / C / C# / Rust / Kotlin** by file extension,
+  parses source with a self-written lexer + Pratt parser into a unified AIR syntax tree, matches
+  structural patterns on the tree, and emits byte-reproducible console / JSON / SARIF reports.
+- **`abate run`**: describes deterministic experiments in CES (`ces.tencent.com/v1`), drives a
+  fixed-seed kernel and SIM-REC archive, and emits runs that compare byte for byte via
+  `abate verify` / `abate replay`.
 
-It is also a deterministic experiment control plane: chaos experiments and
-mutation testing are described in CES (`ces.tencent.com/v1`), then driven through
-the AIR frontend, a deterministic kernel and SIM-REC archives, producing run
-reports and evidence chains that are byte-for-byte reproducible under a fixed seed.
+> **Capability boundary (stated up front):** `abate check` is a **structural linter**, not
+> compiler-grade semantic analysis. It does no type checking, control-flow/data-flow analysis,
+> and does not match the depth of go vet / eslint / clippy. It uses tolerant parsing, so syntax
+> errors do not fail the command — it is **not a syntax gate**. Every claim is self-provable in
+> one command — see [Evidence and boundaries](#7-evidence-and-boundaries).
 
-## 1 License
+## 1 Contents
 
-Abate is dual-licensed under **AGPLv3 (open source) and a commercial license**:
-
-- Open-source path: `LICENSE` (the verbatim official AGPLv3 text), SPDX
-  identifier `AGPL-3.0-or-later` (**subject to confirmation by the rights
-  holder; this document does not constitute legal advice**);
-- Commercial path: `COMMERCIAL-LICENSE.md` (contact `xiaolibuluo@163.com`);
-- Dual-license overview and the two-path comparison table: `LICENSING.md`;
-- Decision aid: `FAQ-licensing.md` (informational navigation only).
+| Section | Topic |
+|---|---|
+| [2 Requirements](#2-requirements) | Go version, zero dependencies, install |
+| [3 Quick start](#3-quick-start) | Build + two real examples |
+| [4 Commands](#4-commands) | 9 commands and exit codes |
+| [5 Capability boundaries](#5-capability-boundaries-and-honest-scope) | Real parsing / tolerance / rule depth / unmeasured items |
+| [6 Documentation map](#6-documentation-map) | User / dev / spec / legal index |
+| [7 Evidence and boundaries](#7-evidence-and-boundaries) | One-command reproduction scripts and gates |
+| [8 License and community](#8-license-and-community-status) | Dual license, contributing, community facts |
 
 ## 2 Requirements
 
-- Go **1.26.11** (the single authoritative build version, per the `go`
-  directive in `go.mod` and the local `go version`)
-- **Zero external dependencies** (empty `go.sum`, no `vendor/`), so offline
-  builds work directly with `GOPROXY=off`
-- Optional: `golangci-lint` (use whatever version is installed locally; this
-  document does not assert any unverified version number)
+- **Go 1.26.11** (the sole authoritative version, per the `go` directive in `go.mod`).
+- **Zero external dependencies**: no `require` in `go.mod`, empty `go.sum`, no `vendor/`, no `third_party/`;
+  offline builds work with `GOPROXY=off`.
+- Optional: `golangci-lint` (version as installed locally).
+
+Release binaries are static builds for five platforms: `linux/amd64` `linux/arm64` `darwin/amd64`
+`darwin/arm64` `windows/amd64`, each with a GPG detached signature (key `5CF28F616D9888DB`).
+See [Releases](https://github.com/xiaolibuluo/Abate/releases/latest).
 
 ## 3 Quick start
 
 ```bash
 export GOPROXY=off
 go build -o abate .
-./abate version
+./abate version          # abate 1.2.28 / schema ces.tencent.com/v1 / ...
 ```
 
-**First example — seven-language source check** (dispatch is automatic by file
-extension; no language flag needed):
+**Example 1: check seven-language source** (auto-dispatch by extension, no language flag needed):
 
 ```bash
-./abate check ./path/to/your/code        # one pass over .go/.py/.js/.c/.cs/.rs/.kt
+./abate check ./path/to/your/code        # mixed dir: .go/.py/.js/.c/.cs/.rs/.kt in one run
 ./abate check app.py --format json       # machine-readable report
-./abate check ./src --languages py,rust  # restrict to selected languages
+./abate check ./src --languages py,js --rules PY-PEP8
+./abate check ./src --format sarif --out report.sarif
 ```
 
-> Note: `check` exits with code **1** on any finding (including warnings).
-> To fail only on errors, add `--severity error`. See the
-> [CLI reference](docs/user/cli-reference.en.md) and the
-> [seven-language guide](docs/user/multilang-check-guide.en.md).
+> `check` returns exit code **1** on any finding (including a warning); add `--severity error`
+> to fail only on errors. See the [CLI reference](docs/user/cli-reference.en.md).
 
-Step-by-step tutorials:
-
-- T01 Offline install and build from scratch: `docs/i18n/tutorials/T01-build.en.md`
-- T02 Your first chaos experiment: `docs/i18n/tutorials/T02-first-run.en.md`
-
-## 4 Tutorials
-
-| Tutorial | English | 中文 |
-|---|---|---|
-| T01 Offline install and build from scratch | [T01-build.en.md](docs/i18n/tutorials/T01-build.en.md) | [T01-build.md](docs/i18n/tutorials/T01-build.md) |
-| T02 Your first chaos experiment | [T02-first-run.en.md](docs/i18n/tutorials/T02-first-run.en.md) | [T02-first-run.md](docs/i18n/tutorials/T02-first-run.md) |
-| T03 Dry-run validation of a CES | [T03-dry-run.en.md](docs/i18n/tutorials/T03-dry-run.en.md) | [T03-dry-run.md](docs/i18n/tutorials/T03-dry-run.md) |
-| T04 Fixed seed + JSON output | [T04-seed-json.en.md](docs/i18n/tutorials/T04-seed-json.en.md) | [T04-seed-json.md](docs/i18n/tutorials/T04-seed-json.md) |
-| T05 Every CLI command, hands on | [T05-cli-help.en.md](docs/i18n/tutorials/T05-cli-help.en.md) | [T05-cli-help.md](docs/i18n/tutorials/T05-cli-help.md) |
-| T06 Exit codes, verified one by one | [T06-exit-codes.en.md](docs/i18n/tutorials/T06-exit-codes.en.md) | [T06-exit-codes.md](docs/i18n/tutorials/T06-exit-codes.md) |
-| T07 Writing a CES file from scratch | [T07-write-ces.en.md](docs/i18n/tutorials/T07-write-ces.en.md) | [T07-write-ces.md](docs/i18n/tutorials/T07-write-ces.md) |
-| T08 How to contribute (DCO/CLA) | [T08-contribute.en.md](docs/i18n/tutorials/T08-contribute.en.md) | [T08-contribute.md](docs/i18n/tutorials/T08-contribute.md) |
-| T09 AGPLv3 or commercial license? | [T09-license-decision.en.md](docs/i18n/tutorials/T09-license-decision.en.md) | [T09-license-decision.md](docs/i18n/tutorials/T09-license-decision.md) |
-| T10 FAQ map + how to run the gates | [T10-faq-gates.en.md](docs/i18n/tutorials/T10-faq-gates.en.md) | [T10-faq-gates.md](docs/i18n/tutorials/T10-faq-gates.md) |
-
-## 5 Documentation
-
-- Licensing and compliance: `LICENSING.md` · `COMMERCIAL-LICENSE.md` · `FAQ-licensing.md` · `LICENSE-COMPATIBILITY.md`
-- Contributing and sign-off: `CONTRIBUTING.md` · `DCO.md` · `CLA.md` (draft) · `CODE_OF_CONDUCT.md`
-- Security and notices: `SECURITY.md` · `NOTICE` · `THIRD-PARTY-NOTICES.md` · `TRADEMARK.md`
-- Governance details: `governance/DUAL-LICENSE.md` · `governance/HEADERS.md` · `governance/THIRD-PARTY.md`
-- User documents: `docs/user/quickstart.md` · `docs/user/cli-reference.md` · `docs/user/ces-guide.md`
-
-## 6 Contributing
-
-- Every commit must carry `Signed-off-by` (`git commit -s`, DCO 1.1);
-- CLA is currently **optional**; note that the **DCO does not grant the project
-  a relicense right; under a dual license a CLA or explicit relicensing terms
-  are needed — subject to confirmation by the rights holder or legal counsel**;
-- Dependency whitelist: MIT / Apache-2.0 / BSD / ISC / CC0 / Unlicense /
-  Public Domain; GPL-family licenses are rejected (see
-  `LICENSE-COMPATIBILITY.md`).
-
-## 7 Gates
-
-| Stage | Tool | Rule source | Failure condition |
-|------|------|----------|----------|
-| 1 | gofmt | CodeReviewComments · Gofmt | Any unformatted file |
-| 2 | go vet | All 36 official analyzers (printf/copylocks/loopclosure/lostcancel etc.) | Any analyzer error |
-| 3 | golangci-lint | Full linter set from `.golangci.yml` (110+ rules) | Any linter hit (--issues-exit-code=1) |
-| 4 | go test -race -count=1 | All tests + race detector | Test failure or data race |
-| 5 | go build | Compilation check | Build failure |
-
-### Zero-tolerance items
-
-- **Stubs/placeholders**: `TODO` / `FIXME` / `BUG` / `HACK` comments → blocked by `godox`
-- **Fake examples**: Example without `// Output:` → blocked by `testableexamples`
-- **Ignored errors**: unchecked return values → `errcheck` (incl. blank/type assertions), `wrapcheck`, `err113`, `errorlint`
-- **Security risks**: hardcoded secrets, weak randomness, injection surface → `gosec`, `bidichk`
-- **Resource leaks**: unclosed HTTP body / sql.Rows → `bodyclose`, `rowserrcheck`, `sqlclosecheck`
-- **Complexity**: cyclomatic >15 (`gocyclo`/`cyclop`), cognitive >20 (`gocognit`), nesting >4 (`nestif`), functions >60 lines (`funlen`), duplication >100 tokens (`dupl`)
-- **Style gaps**: naming/comment/export rules → `revive` (all rules), `stylecheck`, `godot` (comments end with a period)
-- **Concurrency/test discipline**: missing `t.Parallel()` → `paralleltest`; helpers missing `t.Helper()` → `thelper`; races → `-race`
-- **Half-finished work**: non-compiling or unused code → `go build`, `unused`, dead-code rules
-
-### Usage
+**Example 2: run a CES experiment** (a valid sample shipped in the repo):
 
 ```bash
-# Run the full gate chain locally
-make gate
-# Or invoke the script directly
-bash scripts/lint-gate.sh
+./abate run ctl/cli/testdata/ok.yaml --seed 42 --format json --out report.json
+./abate verify report.json report.json     # byte-for-byte compare, diff=0 exits 0
+./abate run ctl/cli/testdata/ok.yaml --seed 42 --record /tmp/run.arch
+./abate replay /tmp/run.arch               # verify archive hash chain / total order / monotonicity
 ```
 
-Any failing stage exits non-zero immediately and prints the rule and location
-that was hit; CI fails in sync.
+## 4 Commands
 
-### Rule baselines
+| Command | Purpose |
+|---|---|
+| `run <ces-file>` | Parse/validate CES, run a deterministic experiment, emit a report; `--dry-run` validates only, `--record` writes a SIM-REC archive |
+| `verify <a> <b>` | Byte-compare two reports; print SHA-256, sizes, first differing offset |
+| `replay <archive> [other]` | Verify archive integrity, optionally compare two and print a structured Diff |
+| `check <paths...>` | Seven-language structural check; `--languages` filter, `--rules` prefix filter, `--format console\|json\|sarif` |
+| `derive` | Derive M-family mutation operators from built-in Go rules and run one deterministic mutation experiment (killing is a static approximation) |
+| `plugin` | Signed plugins: `load` / `list` / `call` / `hotswap` (Ed25519 signature verification) |
+| `web` | Local control API + embedded browser console (same-origin; `--token` required for non-loopback bind) |
+| `version` | Print version and provenance |
+| `--help` | Top-level help |
 
-- [CodeReviewComments](https://go.dev/wiki/CodeReviewComments)
-- [Effective Go](https://go.dev/doc/effective_go)
-- [go vet analyzer list](https://pkg.go.dev/cmd/vet) (all 36 enabled)
-- [Go language spec](https://go.dev/ref/spec) (Go 1.26.11)
-- golangci-lint: starts from `default: none`, enables all non-deprecated
-  linters; deprecated entries (exhaustruct/gomodguard/wsl) have been migrated
-  to v5/v2 replacements or removed per official guidance
+**Exit codes**: `0` success; `1` business failure (steady state VIOLATED / findings present);
+`2` internal error; `3` usage error. `check` and `replay` have their own dedicated semantics —
+see the [CLI reference](docs/user/cli-reference.en.md#exit-codes).
 
-### Exact boundary of the header and license scripts (do not misread)
+## 5 Capability boundaries and honest scope
 
-- `scripts/header-check.sh` **scans only `*.go`, never `.md`**: a newly added
-  bilingual `.md` without a copyright header will **not** trigger a FAIL from
-  this gate; uniformly carrying the 6-line HTML copyright header is a
-  **governance-consistency requirement** (see `governance/HEADERS.md`), not a
-  gate-enforced rule.
-- The GPL scan of `scripts/license-check.sh` targets the license texts of
-  `vendor/modules.txt` dependencies and `third_party/LICENSE-MANIFEST.md`; it
-  **does not scan the repository-root `LICENSE`**: placing the verbatim AGPLv3
-  text at the root will not cause a false FAIL.
-- Lines 41–135 of `scripts/lint-gate.sh` are the frozen nine sections and are
-  not modified.
+Abate documents only facts reproducible from current code and scripts. Boundaries stated honestly:
 
-## 8 Language & Status
+| Dimension | Current fact |
+|---|---|
+| Parsing | Self-written lexer + Pratt parser → `air.Node` AST → structural pattern matching (**not regex over text**) |
+| Syntax gate | Tolerant parsing: broken input yields partial AIR + warnings, **not a syntax-correctness gate** |
+| Semantic depth | No type checking / CFG / data flow / interprocedural analysis; not equivalent to dedicated tools |
+| Rule depth | 72 shared AIR templates + per-language rules (Go 116, others 12–14); Go hits need specific semantic context |
+| Full-corpus fidelity | Six languages 3%–5% (see [language coverage](docs/user/language-coverage.en.md)); Go has no embedded grammar mappings → `NOT_MEASURED`; not a "high fidelity" claim |
+| Competitor comparison | `competitorAbsolute = NOT_MEASURED` (never actually benchmarked; no absolute scores) |
+| derive killing | Static AIR-level approximation, **not a real go test execution** |
+| Community validation | 0 star / 0 fork / 0 watcher, individually maintained; no star buying, no fabricated benchmarks |
 
-- This file is the English section-by-section counterpart of the Chinese main
-  facade `README.md`;
-- This document does not constitute legal advice; `AGPL-3.0-or-later` is
-  subject to confirmation by the rights holder;
-- Honest-caliber statements (limit faithfully; do not extrapolate):
-  - Competitor absolute score: `competitorAbsolute = NOT_MEASURED` (no
-    absolute competitor scores are written before a real cross-check);
-  - The E2E degrade "meets threshold" statement holds **only under the frozen
-    single-file (first-unit) caliber**. On the early third-party corpus, the same
-    formula put all six languages above threshold (js 49.12% / c 28.00% /
-    py 26.89% / rs 42.33% / kt 8.21% / cs 6.98%), with go `NOT_MEASURED` — these
-    figures are a **historical measurement taken before the corpus was fully
-    self-researched**, preserved only in historical audit evidence such as
-    `docs/i18n/QA-ANTI-FRAUD-AUDIT.md`, and **do not represent the current
-    corpus**. The test corpus is now 100% replaced with self-researched sources
-    (see `docs/refactor/`); the **full-corpus** degrade rate on the self-researched
-    corpus has been re-measured by parsing all 20520 entries with their real
-    frontends via `scripts/fullcorpus-degrade.sh`: py 3.36% / js 3.51% /
-    c 4.80% / cs 4.65% / rs 4.91% / kt 4.48%, with go `NOT_MEASURED` (no embedded
-    grammar mappings). js dropped from 46.49% to 3.51% because jsfront now emits
-    dedicated `KindJs*` zero-width nodes at real reduction points for 20+ constructs
-    actually present in the corpus (export/generator/lexical/this-super/class-body/
-    class-heritage/switch/new/paren/sequence/incdec/yield/template-sub/string-part/
-    property-ident/arguments/formal-params/declarator plus debugger/meta-property/
-    computed-name/pair/pair-pattern/object-assign/rest-pattern) and the rules mark
-    them exact — every exact mapping is backed by a real frontend emission proven
-    by both minimal-sample and real-corpus guard tests, never by relabeling; c
-    follows the same pattern with a new `cdedicated.go` dedicated-marker
-    infrastructure (union/enum-member/field-decl/deref/initializer-pair/defined/
-    statement-label), dropping from 10.40% to 4.80%. Residual degraded constructs
-    (destructuring patterns/empty-stmt mapped onto shared kinds AIR does not yet
-    model) stay degraded honestly and are locked by pin tests. Raw data and SHA-256 are
-    under `docs/refactor/fullcorpus-degrade/`. These full-corpus values **do not meet**
-    the frozen single-file thresholds and are disclosed honestly; they are not a
-    "high-fidelity / meets-threshold" claim. The single-file and full-corpus
-    calibers must not be mixed or extrapolated, nor may the historical
-    third-party figures above be presented as current self-research measurements;
-  - `derive` killing is a **static AIR-level approximation, not a real go test
-    execution**.
+See [Capabilities and limits](docs/user/capabilities-and-limits.en.md).
+
+## 6 Documentation map
+
+**User docs** (bilingual)
+- [Quick start](docs/user/quickstart.en.md) · [CLI reference](docs/user/cli-reference.en.md) · [CES guide](docs/user/ces-guide.en.md)
+- [Seven-language check guide](docs/user/multilang-check-guide.en.md) · [Capabilities and limits](docs/user/capabilities-and-limits.en.md) · [Language coverage](docs/user/language-coverage.en.md)
+
+**Architecture and spec**
+- [Architecture](docs/ARCHITECTURE.en.md) · [CES v1 spec](docs/spec/ces-v1.en.md)
+
+**Development**
+- [Contributing guide](docs/dev/contributing.en.md) · [Plugin dev guide](docs/dev/plugin-dev-guide.en.md) · [Module dev guide](docs/dev/module-dev-guide.en.md) · [Sandbox](docs/dev/sandbox.en.md)
+
+**Legal and governance** (not legal advice)
+- [LICENSING.en.md](LICENSING.en.md) · [COMMERCIAL-LICENSE.en.md](COMMERCIAL-LICENSE.en.md) · [FAQ-licensing.en.md](FAQ-licensing.en.md) · [LICENSE-COMPATIBILITY.en.md](LICENSE-COMPATIBILITY.en.md)
+- [CONTRIBUTING.en.md](CONTRIBUTING.en.md) · [DCO.en.md](DCO.en.md) · [CLA.en.md](CLA.en.md) · [CODE_OF_CONDUCT.en.md](CODE_OF_CONDUCT.en.md)
+- [SECURITY.en.md](SECURITY.en.md) · [THIRD-PARTY-NOTICES.en.md](THIRD-PARTY-NOTICES.en.md) · [TRADEMARK.en.md](TRADEMARK.en.md)
+- Governance details: `governance/`
+
+## 7 Evidence and boundaries
+
+Every capability claim is reproducible from source on-site — no need to trust the docs:
+
+```bash
+bash scripts/evidence-check.sh     # on-site build + 7 capability assertions, all PASS to exit 0
+bash scripts/language-coverage.sh  # per-language rule counts and measured hit table
+bash scripts/fullcorpus-degrade.sh # full-corpus degradation rate (honest scope)
+bash scripts/lint-gate.sh          # gates: header/style/license/vet/golangci-lint/test-race/build
+```
+
+Also: `hash-check.sh` / `watermark-verify.sh` (integrity watermark), `determinism-check.sh`
+(determinism), `drift-check.sh` (spec consistency), `audit-zero-third-party.sh` (zero third-party
+source), `m5-reference-scan.sh`, `vuln-scan.sh`, `tla/` (TLA+ formal verification).
+
+## 8 License and community status
+
+Abate is **dual-licensed** under **AGPLv3 (open source) + commercial**: the open path is `LICENSE`
+(full AGPLv3 text), SPDX `AGPL-3.0-or-later` (**subject to confirmation by the rights holder; not
+legal advice**); the commercial path is `COMMERCIAL-LICENSE.md`.
+
+Contributing: commits require `Signed-off-by` (`git commit -s`, DCO 1.1); CLA is currently optional
+(note: **DCO does not grant relicensing rights; dual licensing needs a CLA or explicit relicensing
+terms, pending rights-holder/legal confirmation**).
+
+Community status: as of this update, the repo has **0 star / 0 fork / 0 watcher, individually
+maintained** — an objective early-project fact, stated plainly. The project lowers the trial
+barrier via one-command reproduction, public quantification, and machine-falsifiable determinism;
+real failing test cases are welcome.

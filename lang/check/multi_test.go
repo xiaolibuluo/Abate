@@ -22,9 +22,9 @@ import (
 func validSpec(t *testing.T, tag string, exts ...string) LanguageSpec {
 	t.Helper()
 	return LanguageSpec{
-		Language: tag,
-		Frontend: gofront.NewGoFrontend().WithTypeCheck(false),
-		Rules:    []rule.Rule{unitRule(t, "GO-EG-001", "Ident~foo", rule.SeverityWarning)},
+		Language:   tag,
+		Frontend:   gofront.NewGoFrontend().WithTypeCheck(false),
+		Rules:      []rule.Rule{unitRule(t, "GO-EG-001", "Ident~foo", rule.SeverityWarning)},
 		Extensions: exts,
 	}
 }
@@ -51,8 +51,7 @@ func TestNewMultiCheckerRejectsDuplicates(t *testing.T) {
 // classified with the existing sentinels.
 func TestNewMultiCheckerRejectsEmptySpecs(t *testing.T) {
 	t.Parallel()
-	if _, err := NewMultiChecker([]LanguageSpec{{Language: "go", Extensions: []string{".go"}}});
-		!errors.Is(err, ErrNoFrontend) {
+	if _, err := NewMultiChecker([]LanguageSpec{{Language: "go", Extensions: []string{".go"}}}); !errors.Is(err, ErrNoFrontend) {
 		t.Fatalf("nil frontend error = %v, want ErrNoFrontend", err)
 	}
 	if _, err := NewMultiChecker([]LanguageSpec{{

@@ -14,7 +14,7 @@ companion under the plan-A side-by-side naming scheme; section order and
 tables correspond one-to-one; no new conclusions are added; this document
 does not constitute legal advice.
 
-> The module map and dependency graph are in `docs/plan/00-MASTER-PLAN.md`.
+> The module map and dependency layers are in `docs/ARCHITECTURE.en.md`.
 > This guide supplements the development DoD and layering iron rules.
 
 ## 1. Layers (L0–L7)

@@ -162,6 +162,11 @@ func walkSourceDir(dir string, out *[]string) error {
 	err := filepath.WalkDir(dir, func(path string, entry fs.DirEntry,
 		walkErr error) error {
 		if walkErr != nil {
+			// A directory may be removed by a concurrent test while we scan the
+			// repository (e.g. a t.Cleanup temp dir). Ignore entries that vanished.
+			if os.IsNotExist(walkErr) {
+				return nil
+			}
 			return walkErr
 		}
 		if entry.IsDir() {

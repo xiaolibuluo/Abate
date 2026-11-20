@@ -154,7 +154,7 @@ wrap-up (2026-11-19).
 - **Formal signed release**: after rights-holder authorization, 7 GPG-signed
   commits pushed to `origin/main`, signed tag `v1.0.0` synced, 7 release
   artifacts detached-signed with 7/7 verification passed; this `v1.0.1` marks
-  the wrap-up with a separate signed tag. See `docs/i18n/RELEASE-READINESS-FINAL.md` §X.
+  the wrap-up with a separate signed tag (the contemporary final-readiness report is archived).
 
 ## [v1.0.0]
 
@@ -206,9 +206,8 @@ consistent.
   been delivered".
 - **gVisor ABI-trimmed port**: `kernel/abi/` syscall tables (amd64 352 / arm64
   295), errno, hostarch primitives; `syscall_test.go` reads upstream values at
-  runtime for an item-by-item cross-check; see
-  `docs/dev/abi-port-parity.md`. Corrects the earlier statement that "the
-  gVisor platform-level sandbox has not been delivered".
+  runtime for an item-by-item cross-check (the parity report is archived).
+  Corrects the earlier statement that "the gVisor platform-level sandbox has not been delivered".
 - **Lint fully cleared**: 7 high-complexity production functions and 6
   over-limit test functions were split into single-responsibility helpers,
   removing 8 knock-on findings; 9 companion source files were split out at
@@ -226,8 +225,8 @@ consistent.
   `go mod verify` all passed.
 - **Repository governance**: 1013 CMake/Ninja build artifacts under
   `libclang-min/build/` were removed from version control and added to
-  `.gitignore` (workspace files retained); `docs/dev/pending-work.md` was
-  rewritten to an as-is completion archive.
+  `.gitignore` (workspace files retained); the completion-status document was
+  rewritten to reflect the as-is state (historical process docs are archived).
 - **All-language degradation wrap-up (2026-11-18)**: all 20520 self-researched
   corpus entries re-parsed individually; py 3.36% / js 3.51% / c 4.80% /
   cs 4.65% / rs 4.91% / kt 4.48%, with go remaining `NOT_MEASURED` (no embedded

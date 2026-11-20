@@ -33,11 +33,11 @@ legal advice.
 | `MemoryLimitMB` | Sandbox memory cap | `runsc/config/config.go` (semantics of `TotalMem` and related limit entries) |
 | `Capability` (`fs` / `net` / `clock` / `env`) | runsc's capability-switch family | `runsc/config/config.go` (`EnableRaw`, `PauseExternalNetworking`, and related switch family) |
 
-The upstream sources live in `third_party/_sources/gvisor/`
-(`google/gvisor` snapshot of 2026-11-11, Apache-2.0), **read-only reference
-only — not imported, not compiled, not in `go.mod`**. The Abate side is a
-**pure Go standard-library in-house rewrite** using Abate's own namespace;
-no upstream code is copied.
+This package models the **configuration semantics** of gVisor `runsc` (an
+Apache-2.0 project, historically used as a read-only reference). The repository
+has since removed all third-party source; this package is a **pure Go
+standard-library in-house rewrite** using Abate's own namespace, importing or
+copying no upstream code (`go.mod` has zero dependencies).
 
 ## 2. Trim boundary (what was done, what was not)
 
@@ -56,8 +56,8 @@ no upstream code is copied.
 
 | Not implemented | Reason |
 |---|---|
-| No `runsc` process invocation, no forking of any process | Project iron rules: no `os/exec`, no process invocation, no dynamic loading of external binaries (per the ruling registered in `third_party/_references/MANIFEST.md`) |
-| No runsc checkpoint/restore, cgroups, metrics server | Beyond the "parsing + AST + sandbox model" scope; belongs to the M5 frontend blueprint |
+| No `runsc` process invocation, no forking of any process | Project iron rules: no `os/exec`, no process invocation, no dynamic loading of external binaries |
+| No runsc checkpoint/restore, cgroups, metrics server | Beyond this package's "parsing + AST + sandbox model" scope |
 | No real network stack or real filesystem mounts | This package only produces the configuration model; real isolation is the host runtime's job |
 | No implementation of gVisor's sentry platform layer (KVM/ptrace/systrap) | The platform layer is a host capability; this package only declares "which layer to select" |
 
@@ -126,12 +126,11 @@ GOFLAGS=-mod=vendor golangci-lint run ./plugin/sandbox/...
 - `sandbox_mutation_test.go`: per-row assertion of sentinel errors over the
   policy matrix.
 
-## 7. Relation to subsequent milestones
+## 7. Relation to other components
 
-- Relation of M4 `plugin/wasm` (wazero host) to this package: the wasm host
-  consumes this package's `Config` as a **declarative contract** (the host is
-  responsible for real isolation); this package is unaware of the wasm
-  runtime.
-- M5 language frontends (libclang-min) reuse the same "model only, never
-  execute" boundary: `scripts/build-libclang-min.sh` likewise produces no
-  fake artifacts and reports errors honestly when prerequisites are missing.
+- The `plugin/wasm` host (self-written WASM runtime) consumes this package's
+  `Config` as a **declarative contract** (the host is responsible for real
+  isolation); this package is unaware of the wasm runtime.
+- Language frontends reuse the same "model only, never execute" boundary:
+  this package only produces configuration models; real isolation is the host
+  runtime's responsibility.

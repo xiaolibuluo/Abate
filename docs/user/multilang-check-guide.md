@@ -330,4 +330,4 @@ cmp a.json b.json && echo "一致"   # 应输出"一致"
 | `.kt` `.kts` | `kt` | `KT-` |
 
 > 更多命令见 `docs/user/cli-reference.md`；规范原文见 `docs/spec/ces-v1.md`；
-> 语言前端与保真度口径见 `docs/ARCHITECTURE.md` §3.1 与 `docs/i18n/RELEASE-READINESS-FINAL.md`。
+> 语言前端与保真度口径见 `docs/ARCHITECTURE.md` 与 `docs/user/language-coverage.md`。
