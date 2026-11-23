@@ -3,13 +3,13 @@
 - 上游语法事实：`https://github.com/tree-sitter/tree-sitter-c` 0.24.1
 - 上游具体构造总数：**125**
 - 映射完备率：**100.0%**（125/125，无未映射空洞）
-- 实测覆盖：**85**（**68.0%**）
-  - 精确映射覆盖：57
-  - 降级映射覆盖：28
+- 实测覆盖：**83**（**66.4%**）
+  - 精确映射覆盖：61
+  - 降级映射覆盖：22
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
-- 认可覆盖率（覆盖 + 能力域外）：**68.0%**
-- 真实解析命中的 AIR 类型数：42
+- 认可覆盖率（覆盖 + 能力域外）：**66.4%**
+- 真实解析命中的 AIR 类型数：46
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -43,6 +43,7 @@
 | `gnu_asm_output_operand_list` | Region | degraded | GNU 内联汇编在 AIR 无独立节点，降级为区域节点 |
 | `gnu_asm_qualifier` | Region | degraded | GNU 内联汇编在 AIR 无独立节点，降级为区域节点 |
 | `initializer_list` | CompositeLit | degraded | 初始化列表降级为复合字面量节点 |
+| `macro_type_specifier` | CMacroType | exact | AIR 以独立节点建模该构造 |
 | `null` | NilLit | exact | AIR 以独立节点建模该构造 |
 | `parameter_declaration` | Region | degraded | 形参声明在 AIR 无独立节点，降级为区域节点 |
 | `parameter_list` | Region | degraded | 形参声明在 AIR 无独立节点，降级为区域节点 |
@@ -58,6 +59,7 @@
 | `seh_try_statement` | Try | degraded | SEH 异常结构降级为 try 节点 |
 | `subscript_designator` | Region | degraded | 初始化设计符无独立节点，降级为区域节点 |
 | `subscript_range_designator` | Slice | degraded | 范围下标设计符降级为切片节点 |
+| `type_identifier` | CTypeIdent | exact | AIR 以独立节点建模该构造 |
 | `variadic_parameter` | Region | degraded | 形参声明在 AIR 无独立节点，降级为区域节点 |
 
 ## 能力域外条目
@@ -112,9 +114,9 @@
 | `field_declaration_list` | Region | degraded | 0 | `c.field-decl-list` |
 | `field_designator` | Region | degraded | 0 | `c.designator` |
 | `field_expression` | Selector | exact | 1 | `c.field` |
-| `field_identifier` | Ident | degraded | 342 | `c.field-identifier` |
+| `field_identifier` | CFieldIdent | exact | 1 | `c.field-identifier` |
 | `for_statement` | For | exact | 2 | `c.for` |
-| `function_declarator` | FuncDecl | degraded | 14 | `c.func-declarator` |
+| `function_declarator` | CFuncDeclarator | exact | 14 | `c.func-declarator` |
 | `function_definition` | FuncDecl | exact | 14 | `c.func` |
 | `generic_expression` | Call | degraded | 3 | `c.generic-expr` |
 | `gnu_asm_clobber_list` | Region | degraded | 0 | `c.gnu-asm` |
@@ -128,12 +130,12 @@
 | `goto_statement` | Branch | degraded | 3 | `c.goto` |
 | `identifier` | Ident | exact | 342 | `core.identifier` |
 | `if_statement` | If | exact | 1 | `c.if` |
-| `init_declarator` | VarDecl | degraded | 27 | `c.init-declarator` |
+| `init_declarator` | CInitDeclarator | exact | 21 | `c.init-declarator` |
 | `initializer_list` | CompositeLit | degraded | 0 | `c.initializer-list` |
 | `initializer_pair` | CInitPair | exact | 2 | `c.initializer-pair` |
 | `labeled_statement` | Label | exact | 1 | `c.label` |
 | `linkage_specification` | ModuleDecl | degraded | 2 | `c.linkage` |
-| `macro_type_specifier` | TypeDecl | degraded | 2 | `c.macro-type` |
+| `macro_type_specifier` | CMacroType | exact | 0 | `c.macro-type` |
 | `ms_based_modifier` | Attribute | degraded | 1 | `c.qualifier` |
 | `ms_call_modifier` | Attribute | degraded | 1 | `c.qualifier` |
 | `ms_declspec_modifier` | Attribute | degraded | 1 | `c.qualifier` |
@@ -170,7 +172,7 @@
 | `seh_finally_clause` | Try | degraded | 0 | `c.seh` |
 | `seh_leave_statement` | Try | degraded | 0 | `c.seh` |
 | `seh_try_statement` | Try | degraded | 0 | `c.seh` |
-| `sized_type_specifier` | Named | degraded | 120 | `c.sized-type` |
+| `sized_type_specifier` | CSizedType | exact | 1 | `c.sized-type` |
 | `sizeof_expression` | Call | degraded | 3 | `c.sizeof` |
 | `statement_identifier` | CLabel | exact | 1 | `c.statement-identifier` |
 | `storage_class_specifier` | Attribute | degraded | 1 | `c.qualifier` |
@@ -186,7 +188,7 @@
 | `true` | BoolLit | exact | 2 | `core.boolean` |
 | `type_definition` | TypeDecl | exact | 2 | `c.typedef` |
 | `type_descriptor` | Named | exact | 120 | `c.type-descriptor` |
-| `type_identifier` | Named | degraded | 120 | `c.type-identifier` |
+| `type_identifier` | CTypeIdent | exact | 0 | `c.type-identifier` |
 | `type_qualifier` | Attribute | degraded | 1 | `c.qualifier` |
 | `unary_expression` | Unary | exact | 3 | `c.unary` |
 | `union_specifier` | CUnion | exact | 2 | `c.union` |

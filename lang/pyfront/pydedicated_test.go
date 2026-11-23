@@ -46,6 +46,9 @@ var pyDedicatedCases = []dedicatedCase{
 	{"with-item", "with open('f') as fh:\n    pass\n", air.KindPyWithItem},
 	{"dotted-name", "import a.b.c\n", air.KindPyQualifiedName},
 	{"member-type", "x: os.PathLike = None\n", air.KindPyQualifiedName},
+	{"star-list", "def f(*args):\n    pass\n", air.KindPyStarList},
+	{"keyword-star-list", "def f(**kwargs):\n    pass\n", air.KindSpread},
+	{"expr-list", "x, y = 1, 2\n", air.KindPyExprList},
 }
 
 // TestPyDedicatedKindsAreReallyProduced proves each dedicated construct kind

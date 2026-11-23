@@ -173,6 +173,42 @@ func (p *csParser) currentTypeName() string {
 	return p.typeNames[len(p.typeNames)-1]
 }
 
+// genericParamMarkers 扫描声明头 [lo, hi) 中首个配对的 <...> 泛型形参
+// 段，为其中每个形参标识符发放 KindGenericParam 标记节点。嵌套泛型的
+// >> / >>> 按字符长度回退深度；仅在 depth 归零的配对段内收集标识符。
+func (p *csParser) genericParamMarkers(lo, hi int) []air.Node {
+	depth := 0
+	start := -1
+	for j := lo; j < hi && j < len(p.tokens); j++ {
+		tok := p.tokens[j]
+		switch tok.Text {
+		case "<":
+			if depth == 0 {
+				start = j
+			}
+			depth++
+		case ">", ">>", ">>>":
+			depth -= len(tok.Text)
+			if depth <= 0 && start >= 0 {
+				var marks []air.Node
+				for k := start + 1; k < j; k++ {
+					t := p.tokens[k]
+					if t.Kind == frontkit.TokenIdent {
+						marks = append(marks,
+							p.mapper.dedicated(
+								air.KindGenericParam, t,
+								t.Text,
+								p.mapper.note(
+									"generic-param")))
+					}
+				}
+				return marks
+			}
+		}
+	}
+	return nil
+}
+
 // parseUnit 把一个构造区间归约成带语义标注的 AIR 节点。
 func (p *csParser) parseUnit(i, end, bodyOpen, bodyClose int, scope csScope) air.Node {
 	if end <= i {
@@ -205,6 +241,14 @@ func (p *csParser) parseUnit(i, end, bodyOpen, bodyClose int, scope csScope) air
 			p.typeNames = append(p.typeNames, name)
 			defer func() { p.typeNames = p.typeNames[:len(p.typeNames)-1] }()
 		}
+	}
+	// 泛型形参标记：在声明头 <...> 段内为每个形参标识符发放
+	// KindGenericParam 标记节点（type_parameter → cs.generic-param exact）。
+	switch mapping.kind {
+	case air.KindClassDecl, air.KindStructDecl, air.KindInterfaceDecl,
+		air.KindMethodDecl, air.KindFuncDecl:
+		children = append(children,
+			p.genericParamMarkers(i, segEnd)...)
 	}
 	bodyScope := csScopeBody
 	switch mapping.kind {

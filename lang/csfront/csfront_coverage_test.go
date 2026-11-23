@@ -65,6 +65,10 @@ func csCoverageCorpus() []string {
 		"class C { void M() { var c = x switch { 1 => 2, _ => 3 }; } }\n",
 		"class C { void M() { int? n = null; } }\n",
 		"#pragma warning disable\nclass C { }\n",
+		"extern alias X;\nclass C { }\n",
+		"class C { void M() { var x = (int)1.5; } }\n",
+		"class C { void M() { int[] a = [1, ..arr, 2]; } }\n",
+		"interface I<T, U> { }\n",
 	)
 }
 

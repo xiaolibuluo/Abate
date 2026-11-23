@@ -47,6 +47,9 @@ func (e *csExpr) keywordPrefix() func(*frontkit.PrattParser,
 		case "sizeof":
 			marks = append(marks, e.mapper.dedicated(air.KindCsSizeof,
 				tok, tok.Text, "cs-sizeof"))
+		case "ref":
+			marks = append(marks, e.mapper.dedicated(air.KindRef,
+				tok, tok.Text, "cs-ref"))
 		}
 		var node air.Node
 		if len(marks) > 0 {

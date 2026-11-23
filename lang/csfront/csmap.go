@@ -186,6 +186,36 @@ func (m *csMap) classify(tokens []frontkit.Token, lo, hi int,
 		result.kind, result.note = air.KindCall, "linq"
 	}
 	if result.kind == air.KindInvalid {
+		// 标签语句：首 token 是标识符，紧随的下一有效 token 是冒号。
+		if at < hi-1 && tokens[at].Kind == frontkit.TokenIdent &&
+			tokens[at+1].Text == ":" && scope == csScopeBody {
+			result.kind, result.note = air.KindLabel, "label"
+			return result
+		}
+		// 表达式语句：在函数体/块作用域中无体无括号时，首标记若非
+		// 声明关键字且其后不紧跟另一标识符（排除 "Type name;" 模式），
+		// 则为独立的表达式语句。
+		if scope == csScopeBody && !hasBody {
+			next := at + 1
+			for next < hi && next < len(tokens) {
+				tk2 := tokens[next]
+				if tk2.Kind != frontkit.TokenComment &&
+					tk2.Kind != frontkit.TokenNewline &&
+					tk2.Text != "" {
+					break
+				}
+				next++
+			}
+			isDecl := next < hi &&
+				tokens[next].Kind == frontkit.TokenIdent &&
+				tokens[next].Text != ";" &&
+				tokens[next].Text != "="
+			if !isDecl {
+				result.kind, result.note = air.KindExprStmt,
+					"expression-statement"
+				return result
+			}
+		}
 		hasParen := csHasText(tokens, lo, hi, "(")
 		switch {
 		case csHasText(tokens, lo, hi, "this") && csHasText(tokens, lo, hi, "["):

@@ -7,7 +7,7 @@
 
 # CLI Reference
 
-> This document describes all commands and exit codes of the current binary (`abate 1.2.28`).
+> This document describes all commands and exit codes of the current binary (`abate 1.2.29`).
 > Each command's help is available live via `abate <cmd> --help`.
 
 ## Command overview
@@ -19,6 +19,8 @@
 | `replay <archive> [other]` | Verify a SIM-REC archive, optionally compare two |
 | `check <paths...>` | Seven-language structural check |
 | `derive` | Derive mutation operators from Go rules and run one mutation experiment |
+| `mutate <path>` | Run a deterministic mutation experiment on a real Go workspace (judged by real go test) |
+| `targetgen` | Generate a deterministic mutation-testing target project in one of 7 languages |
 | `plugin <subcmd>` | Signed plugin management |
 | `web` | Local control API + browser console |
 | `version` | Version and provenance |
@@ -115,6 +117,70 @@ Flags: `--seed uint` (default 42), `--format console|json`, `--out path`,
 
 Example: `abate derive --seed 42 --format json`
 
+
+## mutate
+
+Run a deterministic mutation experiment against a real Go workspace: mutable tokens are rewritten in a private staging copy, and each mutant is judged KILLED / SURVIVED by real `go build` + `go test -run` execution, unlike the static approximation of `derive`.
+
+```
+abate mutate <path> [flags]
+```
+
+| Flag | Description |
+|---|---|
+| `--seed uint` | Deterministic seed (default 42) |
+| `--format console\|json` | Report format (default console) |
+| `--out path` | Also write report bytes to a file |
+| `--parallel n` | Parallelism; clamped to CPU count when >1, report byte-identical to sequential |
+| `--chaos` | Inject and roll back the 12 C-family chaos faults of the L6 injection kernel; the report gains a deterministic chaos summary block and stays byte-identical to a no-chaos run |
+| `--native` | Copy `vendor`/`node_modules`/`target` once and symlink into each mutant workspace |
+| `--help, -h` | Help |
+
+Examples:
+```bash
+abate targetgen --out /tmp/tgt --seed 42
+abate mutate /tmp/tgt --seed 42
+abate mutate /tmp/tgt --seed 42 --parallel 4
+abate mutate ./lang/gomutate --seed 42 --format json --out /tmp/mut.json
+```
+
+Common errors:
+- `path` is not a Go workspace (no go.mod / no tests) -> exit code 3; generate one with `targetgen` first to walk the flow.
+- `--parallel` larger than the CPU count is clamped automatically; no error is reported and the report content is unaffected.
+
+## targetgen
+
+Generate a deterministic mutation-testing target project: 7 languages (go/py/js/c/cs/rs/kt) available, byte-identical output for the same seed; every generated structure is guarded by real tests and self-checked by the real toolchain before delivery.
+
+```
+abate targetgen --out <dir> [flags]
+```
+
+| Flag | Description |
+|---|---|
+| `--out dir` | Output directory, **must not exist** (overwrite protection) |
+| `--lang` | Target language: go/py/js/c/cs/rs/kt (default go) |
+| `--seed uint` | Deterministic seed (default 42) |
+| `--module path` | Go module path (default example.com/target) |
+| `--package name` | Package name (default target) |
+| `--funcs n` | Number of generated functions, 1..64 (default 8) |
+| `--level` | Difficulty: easy/medium/hard (default medium) |
+| `--mixed f` | Mix ratio in [0,1] (default 0) |
+| `--complex` | Enable the slice/map/error/nested/method/iface structure families |
+| `--skip-check` | Skip the pre-delivery toolchain self-check (not recommended) |
+| `--help, -h` | Help |
+
+Examples:
+```bash
+abate targetgen --out /tmp/tgt --seed 42 --funcs 14 --level easy
+abate targetgen --out /tmp/tgt-py --lang py --seed 42
+abate targetgen --out /tmp/tgt2 --seed 42
+```
+
+Common errors:
+- --out directory already exists -> exit code 3; delete it or pick another path and retry.
+- --lang cs/rs without the matching toolchain installed -> the self-check stage fails; add --skip-check to generate sources only.
+
 ## plugin
 
 Signed plugin management in the native plugin host. Every load verifies the Ed25519 signature against
@@ -150,7 +216,7 @@ abate web [flags]
 
 ## version
 
-Prints version and provenance: `abate 1.2.28` / `schema: ces.tencent.com/v1` / `build: deterministic` /
+Prints version and provenance: `abate 1.2.29` / `schema: ces.tencent.com/v1` / `build: deterministic` /
 `license` / `source` / `watermark`.
 
 ---

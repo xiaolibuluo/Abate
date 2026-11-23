@@ -235,5 +235,16 @@ func (p *jsParser) constructMarker(out *[]air.Node, i int,
 	case tok.Text == "..." && jsIsRestInParams(p.toks, i):
 		*out = append(*out, p.mapper.dedicated(
 			air.KindJsRestPattern, pos, tok.Text, "rest_pattern"))
+	case tok.Text == "{" && jsIsPatternBrace(p.toks, i):
+		*out = append(*out, p.mapper.dedicated(
+			air.KindJsObjectPattern, pos, tok.Text, "object_pattern"))
+	case tok.Text == "[" && !jsIsComputedName(p.toks, i) &&
+		jsIsPatternBracket(p.toks, i):
+		*out = append(*out, p.mapper.dedicated(
+			air.KindJsArrayPattern, pos, tok.Text, "array_pattern"))
+	case tok.Text == "=" && !jsIsObjectAssignDefault(p.toks, i) &&
+		jsIsAssignPattern(p.toks, i):
+		*out = append(*out, p.mapper.dedicated(
+			air.KindJsAssignPattern, pos, tok.Text, "assignment_pattern"))
 	}
 }

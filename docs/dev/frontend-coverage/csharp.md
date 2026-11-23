@@ -3,13 +3,13 @@
 - 上游语法事实：`https://github.com/tree-sitter/tree-sitter-c-sharp` 0.23.5
 - 上游具体构造总数：**215**
 - 映射完备率：**100.0%**（215/215，无未映射空洞）
-- 实测覆盖：**109**（**50.7%**）
-  - 精确映射覆盖：92
-  - 降级映射覆盖：17
+- 实测覆盖：**113**（**52.6%**）
+  - 精确映射覆盖：100
+  - 降级映射覆盖：13
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
-- 认可覆盖率（覆盖 + 能力域外）：**50.7%**
-- 真实解析命中的 AIR 类型数：66
+- 认可覆盖率（覆盖 + 能力域外）：**52.6%**
+- 真实解析命中的 AIR 类型数：72
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -22,13 +22,13 @@
 | `accessor_list` | Region | degraded | 访问器列表无独立节点，降级为区域节点 |
 | `alias_qualified_name` | CsAliasName | exact | AIR 以独立节点建模该构造 |
 | `and_pattern` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
+| `anonymous_method_expression` | CsArrowClause | degraded | 匿名方法降级为独立箭头子句节点 |
 | `anonymous_object_creation_expression` | CompositeLit | degraded | 匿名对象降级为复合字面量节点 |
 | `argument` | Region | degraded | 实参列表在 AIR 无独立节点，降级为区域节点 |
 | `argument_list` | Region | degraded | 实参列表在 AIR 无独立节点，降级为区域节点 |
-| `array_creation_expression` | CompositeLit | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `array_rank_specifier` | Region | degraded | 数组秩说明符无独立节点，降级为区域节点 |
 | `array_type` | Array | degraded | 数组类型降级为数组节点 |
-| `as_expression` | Cast | degraded | as 表达式降级为类型断言节点 |
+| `arrow_expression_clause` | CsArrowClause | degraded | 表达式体成员降级为独立箭头子句节点 |
 | `attribute_argument` | Region | degraded | 属性实参与目标无独立节点，降级为区域节点 |
 | `attribute_argument_list` | Region | degraded | 属性实参与目标无独立节点，降级为区域节点 |
 | `attribute_target_specifier` | Region | degraded | 属性实参与目标无独立节点，降级为区域节点 |
@@ -36,7 +36,6 @@
 | `bracketed_argument_list` | Region | degraded | 实参列表在 AIR 无独立节点，降级为区域节点 |
 | `bracketed_parameter_list` | Region | degraded | 形参列表在 AIR 无独立节点，降级为区域节点 |
 | `calling_convention` | Region | degraded | 调用约定无独立节点，降级为区域节点 |
-| `cast_expression` | Cast | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `catch_declaration` | Region | degraded | 捕获声明与过滤子句无独立节点，降级为区域节点 |
 | `catch_filter_clause` | Region | degraded | 捕获声明与过滤子句无独立节点，降级为区域节点 |
 | `checked_expression` | Region | degraded | checked 语句与表达式无独立节点，降级为区域节点 |
@@ -46,29 +45,28 @@
 | `constant_pattern` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
 | `constructor_constraint` | Region | degraded | 构造函数约束无独立节点，降级为区域节点 |
 | `constructor_initializer` | Region | degraded | 构造函数初始化器无独立节点，降级为区域节点 |
+| `declaration_expression` | CsDeclarator | degraded | 声明表达式降级为独立声明符节点 |
 | `declaration_list` | Region | degraded | 声明列表无独立节点，降级为区域节点 |
 | `declaration_pattern` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
 | `default_expression` | Region | degraded | default 表达式无独立节点，降级为区域节点 |
 | `delegate_declaration` | TypeDecl | degraded | 委托声明降级为类型声明节点 |
 | `discard` | Region | degraded | 弃元无独立节点，降级为区域节点 |
 | `element_binding_expression` | Region | degraded | 成员绑定表达式无独立节点，降级为区域节点 |
-| `empty_statement` | ExprStmt | degraded | 空语句降级为表达式语句节点 |
 | `enum_member_declaration_list` | Region | degraded | 枚举成员列表无独立节点，降级为区域节点 |
 | `explicit_interface_specifier` | Region | degraded | 显式接口限定无独立节点，降级为区域节点 |
 | `expression_element` | Region | degraded | 集合元素无独立节点，降级为区域节点 |
-| `expression_statement` | ExprStmt | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
-| `extern_alias_directive` | CsExternAlias | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `fixed_statement` | Region | degraded | fixed 语句无独立节点，降级为区域节点 |
 | `from_clause` | Region | degraded | LINQ 查询子句无独立节点，降级为区域节点 |
 | `function_pointer_parameter` | Region | degraded | 形参列表在 AIR 无独立节点，降级为区域节点 |
 | `function_pointer_type` | FuncType | degraded | 函数指针类型降级为函数类型节点 |
+| `generic_name` | CsNamedType | degraded | 命名类型降级为独立命名类型节点 |
 | `global_statement` | Region | degraded | global 语句无独立节点，降级为区域节点 |
 | `group_clause` | Region | degraded | LINQ 查询子句无独立节点，降级为区域节点 |
 | `implicit_array_creation_expression` | CompositeLit | degraded | 隐式对象创建降级为复合字面量节点 |
 | `implicit_object_creation_expression` | CompositeLit | degraded | 隐式对象创建降级为复合字面量节点 |
 | `implicit_parameter` | Region | degraded | 形参列表在 AIR 无独立节点，降级为区域节点 |
 | `implicit_stackalloc_expression` | CompositeLit | degraded | 隐式 stackalloc 降级为复合字面量节点 |
-| `initializer_expression` | CompositeLit | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
+| `implicit_type` | CsNamedType | degraded | 隐式类型降级为独立命名类型节点 |
 | `interpolation` | Region | degraded | 插值片段无独立节点，降级为区域节点 |
 | `interpolation_alignment_clause` | Region | degraded | 插值片段无独立节点，降级为区域节点 |
 | `interpolation_brace` | Region | degraded | 插值片段无独立节点，降级为区域节点 |
@@ -77,7 +75,6 @@
 | `interpolation_start` | Region | degraded | 插值片段无独立节点，降级为区域节点 |
 | `join_clause` | Region | degraded | LINQ 查询子句无独立节点，降级为区域节点 |
 | `join_into_clause` | Region | degraded | LINQ 查询子句无独立节点，降级为区域节点 |
-| `labeled_statement` | Label | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `let_clause` | Region | degraded | LINQ 查询子句无独立节点，降级为区域节点 |
 | `list_pattern` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
 | `makeref_expression` | Region | degraded | makeref 表达式无独立节点，降级为区域节点 |
@@ -92,20 +89,18 @@
 | `parenthesized_variable_designation` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
 | `pointer_type` | Pointer | degraded | 指针类型降级为指针节点 |
 | `positional_pattern_clause` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
+| `predefined_type` | CsNamedType | degraded | 命名类型降级为独立命名类型节点 |
 | `preproc_arg` | Region | degraded | 宏实参无独立节点，降级为区域节点 |
 | `primary_constructor_base_type` | Region | degraded | 构造函数初始化器无独立节点，降级为区域节点 |
 | `property_pattern_clause` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
+| `qualified_name` | CsNamedType | degraded | 命名类型降级为独立命名类型节点 |
 | `range_expression` | Region | degraded | 区间表达式无独立节点，降级为区域节点 |
 | `raw_string_end` | Region | degraded | 字符串定界片段无独立节点，降级为区域节点 |
 | `raw_string_start` | Region | degraded | 字符串定界片段无独立节点，降级为区域节点 |
 | `recursive_pattern` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
-| `ref_expression` | Ref | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
-| `ref_type` | Ref | degraded | ref/ref readonly 表达式降级为引用节点 |
-| `reftype_expression` | Ref | degraded | ref/ref readonly 表达式降级为引用节点 |
-| `refvalue_expression` | Ref | degraded | ref/ref readonly 表达式降级为引用节点 |
 | `relational_pattern` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
+| `scoped_type` | CsNamedType | degraded | 命名类型降级为独立命名类型节点 |
 | `select_clause` | Region | degraded | LINQ 查询子句无独立节点，降级为区域节点 |
-| `spread_element` | Spread | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `stackalloc_expression` | CompositeLit | degraded | stackalloc 降级为复合字面量节点 |
 | `string_literal_encoding` | Region | degraded | 字符串定界片段无独立节点，降级为区域节点 |
 | `subpattern` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
@@ -113,14 +108,15 @@
 | `switch_expression` | Match | degraded | switch 表达式降级为 match 节点 |
 | `tuple_element` | Region | degraded | 元组元素无独立节点，降级为区域节点 |
 | `tuple_pattern` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
+| `tuple_type` | CsTupleType | degraded | 元组类型降级为独立元组类型节点 |
 | `type_argument_list` | GenericInst | degraded | 类型实参列表降级为泛型实例节点 |
-| `type_parameter` | GenericParam | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `type_parameter_constraint` | Region | degraded | 类型形参列表无独立节点，降级为区域节点 |
 | `type_parameter_constraints_clause` | Region | degraded | 类型形参列表无独立节点，降级为区域节点 |
 | `type_parameter_list` | Region | degraded | 类型形参列表无独立节点，降级为区域节点 |
 | `type_pattern` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
 | `unsafe_statement` | Region | degraded | unsafe 语句无独立节点，降级为区域节点 |
 | `var_pattern` | Region | degraded | 模式匹配在 AIR 无独立节点，降级为区域节点 |
+| `variable_declarator` | CsDeclarator | degraded | 变量声明符降级为独立声明符节点 |
 | `when_clause` | Region | degraded | LINQ 查询子句无独立节点，降级为区域节点 |
 | `where_clause` | Region | degraded | LINQ 查询子句无独立节点，降级为区域节点 |
 | `with_initializer` | Region | degraded | with 初始化器无独立节点，降级为区域节点 |
@@ -138,16 +134,16 @@
 | `accessor_list` | Region | degraded | 0 | `cs.accessor-list` |
 | `alias_qualified_name` | CsAliasName | exact | 0 | `cs.alias-qualified` |
 | `and_pattern` | Region | degraded | 0 | `cs.patterns` |
-| `anonymous_method_expression` | Lambda | degraded | 8 | `cs.anonymous-method` |
+| `anonymous_method_expression` | CsArrowClause | degraded | 0 | `cs.anonymous-method` |
 | `anonymous_object_creation_expression` | CompositeLit | degraded | 0 | `cs.anonymous-object` |
 | `argument` | Region | degraded | 0 | `cs.arguments` |
 | `argument_list` | Region | degraded | 0 | `cs.arguments` |
-| `array_creation_expression` | CompositeLit | degraded | 0 | `cs.array-creation` |
+| `array_creation_expression` | CsObjectCreation | exact | 2 | `cs.array-creation` |
 | `array_rank_specifier` | Region | degraded | 0 | `cs.array-rank` |
 | `array_type` | Array | degraded | 0 | `cs.array-type` |
-| `arrow_expression_clause` | Lambda | degraded | 8 | `cs.arrow-clause` |
-| `as_expression` | Cast | degraded | 0 | `cs.as` |
-| `assignment_expression` | Assign | exact | 30 | `cs.assign` |
+| `arrow_expression_clause` | CsArrowClause | degraded | 0 | `cs.arrow-clause` |
+| `as_expression` | Cast | degraded | 1 | `cs.as` |
+| `assignment_expression` | Assign | exact | 31 | `cs.assign` |
 | `attribute` | Attribute | exact | 2 | `cs.attribute` |
 | `attribute_argument` | Region | degraded | 0 | `cs.attribute-detail` |
 | `attribute_argument_list` | Region | degraded | 0 | `cs.attribute-detail` |
@@ -156,13 +152,13 @@
 | `await_expression` | Await | exact | 2 | `cs.await` |
 | `base_list` | Region | degraded | 0 | `cs.base-list` |
 | `binary_expression` | Binary | exact | 28 | `cs.binary` |
-| `block` | Block | exact | 113 | `cs.block` |
+| `block` | Block | exact | 119 | `cs.block` |
 | `boolean_literal` | BoolLit | exact | 3 | `cs.bool` |
 | `bracketed_argument_list` | Region | degraded | 0 | `cs.arguments` |
 | `bracketed_parameter_list` | Region | degraded | 0 | `cs.parameters` |
 | `break_statement` | Branch | exact | 3 | `cs.branch` |
 | `calling_convention` | Region | degraded | 0 | `cs.calling-convention` |
-| `cast_expression` | Cast | degraded | 0 | `cs.cast` |
+| `cast_expression` | Cast | exact | 1 | `cs.cast` |
 | `catch_clause` | Catch | exact | 1 | `cs.catch` |
 | `catch_declaration` | Region | degraded | 0 | `cs.catch-detail` |
 | `catch_filter_clause` | Region | degraded | 0 | `cs.catch-detail` |
@@ -170,11 +166,11 @@
 | `character_literal_content` | CsCharBody | exact | 1 | `cs.char-body` |
 | `checked_expression` | Region | degraded | 0 | `cs.checked` |
 | `checked_statement` | Region | degraded | 0 | `cs.checked` |
-| `class_declaration` | ClassDecl | exact | 44 | `cs.class` |
+| `class_declaration` | ClassDecl | exact | 47 | `cs.class` |
 | `collection_element` | Region | degraded | 0 | `cs.collection-element` |
 | `collection_expression` | CompositeLit | degraded | 0 | `cs.collection` |
 | `comment` | Comment | exact | 2 | `core.comment` |
-| `compilation_unit` | Package | exact | 52 | `cs.unit` |
+| `compilation_unit` | Package | exact | 56 | `cs.unit` |
 | `conditional_access_expression` | CsConditionalAccess | exact | 1 | `cs.conditional-access` |
 | `conditional_expression` | Ternary | exact | 4 | `cs.ternary` |
 | `constant_pattern` | Region | degraded | 0 | `cs.patterns` |
@@ -183,7 +179,7 @@
 | `constructor_initializer` | Region | degraded | 0 | `cs.ctor-init` |
 | `continue_statement` | Branch | exact | 3 | `cs.branch` |
 | `conversion_operator_declaration` | CsOperatorDecl | exact | 1 | `cs.operator` |
-| `declaration_expression` | VarDecl | degraded | 34 | `cs.declaration-expr` |
+| `declaration_expression` | CsDeclarator | degraded | 0 | `cs.declaration-expr` |
 | `declaration_list` | Region | degraded | 0 | `cs.declaration-list` |
 | `declaration_pattern` | Region | degraded | 0 | `cs.patterns` |
 | `default_expression` | Region | degraded | 0 | `cs.default-expr` |
@@ -191,9 +187,9 @@
 | `destructor_declaration` | CsDestructor | exact | 1 | `cs.destructor` |
 | `discard` | Region | degraded | 0 | `cs.discard` |
 | `do_statement` | DoWhile | exact | 1 | `cs.do` |
-| `element_access_expression` | Index | exact | 6 | `cs.index` |
+| `element_access_expression` | Index | exact | 7 | `cs.index` |
 | `element_binding_expression` | Region | degraded | 0 | `cs.member-binding` |
-| `empty_statement` | ExprStmt | degraded | 0 | `cs.empty-stmt` |
+| `empty_statement` | ExprStmt | degraded | 25 | `cs.empty-stmt` |
 | `enum_declaration` | EnumDecl | exact | 1 | `cs.enum` |
 | `enum_member_declaration` | EnumDecl | degraded | 1 | `cs.enum-member` |
 | `enum_member_declaration_list` | Region | degraded | 0 | `cs.enum-member-list` |
@@ -202,8 +198,8 @@
 | `event_field_declaration` | CsEventDecl | exact | 1 | `cs.event` |
 | `explicit_interface_specifier` | Region | degraded | 0 | `cs.explicit-interface` |
 | `expression_element` | Region | degraded | 0 | `cs.collection-element` |
-| `expression_statement` | ExprStmt | degraded | 0 | `cs.expr-stmt` |
-| `extern_alias_directive` | CsExternAlias | degraded | 0 | `cs.extern-alias` |
+| `expression_statement` | ExprStmt | exact | 25 | `cs.expr-stmt` |
+| `extern_alias_directive` | CsExternAlias | exact | 1 | `cs.extern-alias` |
 | `field_declaration` | Field | exact | 5 | `cs.field` |
 | `file_scoped_namespace_declaration` | ModuleDecl | exact | 2 | `cs.namespace` |
 | `finally_clause` | Finally | exact | 1 | `cs.finally` |
@@ -213,22 +209,22 @@
 | `from_clause` | Region | degraded | 0 | `cs.linq-clause` |
 | `function_pointer_parameter` | Region | degraded | 0 | `cs.parameters` |
 | `function_pointer_type` | FuncType | degraded | 0 | `cs.fn-pointer-type` |
-| `generic_name` | Named | degraded | 93 | `cs.named-type` |
+| `generic_name` | CsNamedType | degraded | 0 | `cs.named-type` |
 | `global_attribute` | Attribute | exact | 2 | `cs.attribute` |
 | `global_statement` | Region | degraded | 0 | `cs.global` |
 | `goto_statement` | Branch | degraded | 3 | `cs.goto` |
 | `group_clause` | Region | degraded | 0 | `cs.linq-clause` |
-| `identifier` | Ident | exact | 386 | `core.identifier` |
+| `identifier` | Ident | exact | 404 | `core.identifier` |
 | `if_statement` | If | exact | 3 | `cs.if` |
 | `implicit_array_creation_expression` | CompositeLit | degraded | 0 | `cs.implicit-creation` |
 | `implicit_object_creation_expression` | CompositeLit | degraded | 0 | `cs.implicit-creation` |
 | `implicit_parameter` | Region | degraded | 0 | `cs.parameters` |
 | `implicit_stackalloc_expression` | CompositeLit | degraded | 0 | `cs.implicit-stackalloc` |
-| `implicit_type` | Named | degraded | 93 | `cs.implicit-type` |
+| `implicit_type` | CsNamedType | degraded | 0 | `cs.implicit-type` |
 | `indexer_declaration` | CsIndexer | exact | 1 | `cs.indexer` |
-| `initializer_expression` | CompositeLit | degraded | 0 | `cs.initializer` |
-| `integer_literal` | NumLit | exact | 34 | `cs.number` |
-| `interface_declaration` | InterfaceDecl | exact | 1 | `cs.interface` |
+| `initializer_expression` | CsObjectCreation | exact | 2 | `cs.initializer` |
+| `integer_literal` | NumLit | exact | 37 | `cs.number` |
+| `interface_declaration` | InterfaceDecl | exact | 2 | `cs.interface` |
 | `interpolated_string_expression` | CsInterpString | exact | 2 | `cs.interpolated-string` |
 | `interpolation` | Region | degraded | 0 | `cs.interpolation` |
 | `interpolation_alignment_clause` | Region | degraded | 0 | `cs.interpolation` |
@@ -236,12 +232,12 @@
 | `interpolation_format_clause` | Region | degraded | 0 | `cs.interpolation` |
 | `interpolation_quote` | Region | degraded | 0 | `cs.interpolation` |
 | `interpolation_start` | Region | degraded | 0 | `cs.interpolation` |
-| `invocation_expression` | Call | exact | 96 | `cs.call` |
+| `invocation_expression` | Call | exact | 92 | `cs.call` |
 | `is_expression` | TypeAssert | exact | 3 | `cs.is` |
 | `is_pattern_expression` | CsPattern | exact | 1 | `cs.is-pattern` |
 | `join_clause` | Region | degraded | 0 | `cs.linq-clause` |
 | `join_into_clause` | Region | degraded | 0 | `cs.linq-clause` |
-| `labeled_statement` | Label | degraded | 0 | `cs.label` |
+| `labeled_statement` | Label | exact | 1 | `cs.label` |
 | `lambda_expression` | Lambda | exact | 8 | `cs.lambda` |
 | `let_clause` | Region | degraded | 0 | `cs.linq-clause` |
 | `list_pattern` | Region | degraded | 0 | `cs.patterns` |
@@ -251,8 +247,8 @@
 | `makeref_expression` | Region | degraded | 0 | `cs.makeref` |
 | `member_access_expression` | Field | exact | 5 | `cs.member` |
 | `member_binding_expression` | Region | degraded | 0 | `cs.member-binding` |
-| `method_declaration` | MethodDecl | exact | 33 | `cs.method` |
-| `modifier` | CsModifier | exact | 40 | `cs.modifier` |
+| `method_declaration` | MethodDecl | exact | 35 | `cs.method` |
+| `modifier` | CsModifier | exact | 41 | `cs.modifier` |
 | `namespace_declaration` | ModuleDecl | exact | 2 | `cs.namespace` |
 | `negated_pattern` | Region | degraded | 0 | `cs.patterns` |
 | `null_literal` | NilLit | exact | 4 | `cs.nil` |
@@ -268,9 +264,9 @@
 | `parenthesized_variable_designation` | Region | degraded | 0 | `cs.patterns` |
 | `pointer_type` | Pointer | degraded | 0 | `cs.pointer-type` |
 | `positional_pattern_clause` | Region | degraded | 0 | `cs.patterns` |
-| `postfix_unary_expression` | Unary | exact | 4 | `cs.unary` |
-| `predefined_type` | Named | degraded | 93 | `cs.named-type` |
-| `prefix_unary_expression` | Unary | exact | 4 | `cs.unary` |
+| `postfix_unary_expression` | Unary | exact | 7 | `cs.unary` |
+| `predefined_type` | CsNamedType | degraded | 0 | `cs.named-type` |
+| `prefix_unary_expression` | Unary | exact | 7 | `cs.unary` |
 | `preproc_arg` | Region | degraded | 0 | `cs.preproc-arg` |
 | `preproc_define` | Directive | exact | 3 | `cs.preproc` |
 | `preproc_elif` | Directive | exact | 3 | `cs.preproc` |
@@ -288,27 +284,27 @@
 | `primary_constructor_base_type` | Region | degraded | 0 | `cs.ctor-init` |
 | `property_declaration` | CsProperty | exact | 3 | `cs.property` |
 | `property_pattern_clause` | Region | degraded | 0 | `cs.patterns` |
-| `qualified_name` | Named | degraded | 93 | `cs.named-type` |
+| `qualified_name` | CsNamedType | degraded | 0 | `cs.named-type` |
 | `query_expression` | CsQuery | exact | 4 | `cs.query` |
 | `range_expression` | Region | degraded | 0 | `cs.range-expr` |
 | `raw_string_content` | CsStringFrag | exact | 9 | `cs.string-part` |
 | `raw_string_end` | Region | degraded | 0 | `cs.string-bound` |
 | `raw_string_literal` | StrLit | exact | 4 | `cs.string` |
 | `raw_string_start` | Region | degraded | 0 | `cs.string-bound` |
-| `real_literal` | NumLit | exact | 34 | `cs.number` |
+| `real_literal` | NumLit | exact | 37 | `cs.number` |
 | `record_declaration` | CsRecord | exact | 2 | `cs.record` |
 | `recursive_pattern` | Region | degraded | 0 | `cs.patterns` |
-| `ref_expression` | Ref | degraded | 0 | `cs.ref` |
-| `ref_type` | Ref | degraded | 0 | `cs.ref-family` |
-| `reftype_expression` | Ref | degraded | 0 | `cs.ref-family` |
-| `refvalue_expression` | Ref | degraded | 0 | `cs.ref-family` |
+| `ref_expression` | Ref | exact | 2 | `cs.ref` |
+| `ref_type` | Ref | degraded | 2 | `cs.ref-family` |
+| `reftype_expression` | Ref | degraded | 2 | `cs.ref-family` |
+| `refvalue_expression` | Ref | degraded | 2 | `cs.ref-family` |
 | `relational_pattern` | Region | degraded | 0 | `cs.patterns` |
 | `return_statement` | Return | exact | 2 | `cs.return` |
-| `scoped_type` | Named | degraded | 93 | `cs.named-type` |
+| `scoped_type` | CsNamedType | degraded | 0 | `cs.named-type` |
 | `select_clause` | Region | degraded | 0 | `cs.linq-clause` |
 | `shebang_directive` | Directive | exact | 3 | `cs.shebang` |
 | `sizeof_expression` | CsSizeof | degraded | 1 | `cs.sizeof` |
-| `spread_element` | Spread | degraded | 0 | `cs.spread` |
+| `spread_element` | Spread | exact | 1 | `cs.spread` |
 | `stackalloc_expression` | CompositeLit | degraded | 0 | `cs.stackalloc` |
 | `string_content` | CsStringFrag | exact | 9 | `cs.string-part` |
 | `string_literal` | StrLit | exact | 4 | `cs.string` |
@@ -327,21 +323,21 @@
 | `tuple_element` | Region | degraded | 0 | `cs.tuple-element` |
 | `tuple_expression` | Tuple | exact | 1 | `cs.tuple` |
 | `tuple_pattern` | Region | degraded | 0 | `cs.patterns` |
-| `tuple_type` | Tuple | degraded | 1 | `cs.tuple-type` |
+| `tuple_type` | CsTupleType | degraded | 0 | `cs.tuple-type` |
 | `type_argument_list` | GenericInst | degraded | 0 | `cs.type-args` |
-| `type_parameter` | GenericParam | degraded | 0 | `cs.generic-param` |
+| `type_parameter` | GenericParam | degraded | 2 | `cs.generic-param` |
 | `type_parameter_constraint` | Region | degraded | 0 | `cs.type-params` |
 | `type_parameter_constraints_clause` | Region | degraded | 0 | `cs.type-params` |
 | `type_parameter_list` | Region | degraded | 0 | `cs.type-params` |
 | `type_pattern` | Region | degraded | 0 | `cs.patterns` |
 | `typeof_expression` | CsTypeof | exact | 1 | `cs.typeof` |
-| `unary_expression` | Unary | exact | 4 | `cs.unary` |
+| `unary_expression` | Unary | exact | 7 | `cs.unary` |
 | `unsafe_statement` | Region | degraded | 0 | `cs.unsafe` |
 | `using_directive` | UsingDecl | exact | 1 | `cs.using-directive` |
 | `using_statement` | With | exact | 1 | `cs.using-stmt` |
 | `var_pattern` | Region | degraded | 0 | `cs.patterns` |
-| `variable_declaration` | VarDecl | exact | 34 | `cs.var` |
-| `variable_declarator` | VarDecl | degraded | 34 | `cs.declarator` |
+| `variable_declaration` | VarDecl | exact | 17 | `cs.var` |
+| `variable_declarator` | CsDeclarator | degraded | 0 | `cs.declarator` |
 | `verbatim_string_literal` | StrLit | exact | 4 | `cs.string` |
 | `when_clause` | Region | degraded | 0 | `cs.linq-clause` |
 | `where_clause` | Region | degraded | 0 | `cs.linq-clause` |

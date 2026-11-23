@@ -86,7 +86,7 @@ bash scripts/language-coverage.sh  # 七语言规则数与实测命中量化表
 
 ## 诚实口径（勿外推）
 
-- **全语料保真度**：六语实测 3%–5%（见 [七语言覆盖量化](language-coverage.md)），
+- **全语料构造覆盖率**：六语实测见 `docs/dev/frontend-coverage/` 各语言报告（C 66.4% / C# 52.6% / JS 89.5% / Kotlin 47.0% / Python 91.8% / Rust 77.9%，均为构造级精确+降级命中口径），
   Go 无嵌入语法映射为 `NOT_MEASURED`；E2E 门禁"达标"仅限冻结单文件（首 unit）口径，
   全语料口径未达该阈值，**不构成"高保真"结论**。
 - **竞品对比**：`competitorAbsolute = NOT_MEASURED`，从未真实对拍。

@@ -9,7 +9,7 @@
 
 # Abate
 
-[![version](https://img.shields.io/badge/version-1.2.28-blue)](https://github.com/xiaolibuluo/Abate/releases/latest)
+[![version](https://img.shields.io/badge/version-1.2.29-blue)](https://github.com/xiaolibuluo/Abate/releases/latest)
 [![license](https://img.shields.io/badge/license-AGPLv3%20%7C%20commercial-green)](LICENSING.md)
 [![checks](https://img.shields.io/badge/checks-7%20languages-orange)](docs/user/multilang-check-guide.md)
 [![Go](https://img.shields.io/badge/Go-1.26.11-00ADD8?logo=go)](go.mod)
@@ -54,7 +54,7 @@
 ```bash
 export GOPROXY=off
 go build -o abate .
-./abate version          # abate 1.2.28 / schema ces.tencent.com/v1 / ...
+./abate version          # abate 1.2.29 / schema ces.tencent.com/v1 / ...
 ```
 
 **例子一：七语言源码检查**（按扩展名自动分派，无需指定语言）：
@@ -105,7 +105,7 @@ Abate 只写能被当前代码与脚本复现的事实，以下边界如实声�
 | 语法守门 | 容错解析：破损输入产出 partial AIR + warnings，**不做语法正确性守门** |
 | 语义深度 | 不做类型检查 / CFG / 数据流 / 跨过程分析；不等同专用工具深度 |
 | 规则深度 | 共享 AIR 模板 72 条 + 每语言专属规则（Go 116，其余 12–14）；Go 命中需特定语义上下文 |
-| 全语料保真度 | 六语 3%–5%（见 [七语言覆盖](docs/user/language-coverage.md)）；Go 无嵌入语法映射为 `NOT_MEASURED`；不构成"高保真"结论 |
+| 全语料构造覆盖率 | 六语实测见 `docs/dev/frontend-coverage/` 各语言报告（C 66.4% / C# 52.6% / JS 89.5% / Kotlin 47.0% / Python 91.8% / Rust 77.9%）；Go 无嵌入语法映射为 `NOT_MEASURED`；不构成“高保真”结论 |
 | 竞品对比 | `competitorAbsolute = NOT_MEASURED`（从未真实对拍，不写绝对分数） |
 | derive killing | 静态 AIR 级近似，**非真实 go test 执行** |
 | 社区验证 | 0 star / 0 fork / 0 watcher、个人维护；不刷 star、不伪造 benchmark |

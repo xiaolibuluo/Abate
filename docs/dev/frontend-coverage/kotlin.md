@@ -3,13 +3,13 @@
 - 上游语法事实：`https://github.com/tree-sitter/tree-sitter-kotlin` 0.3.8
 - 上游具体构造总数：**134**
 - 映射完备率：**100.0%**（134/134，无未映射空洞）
-- 实测覆盖：**69**（**51.5%**）
+- 实测覆盖：**63**（**47.0%**）
   - 精确映射覆盖：59
-  - 降级映射覆盖：10
+  - 降级映射覆盖：4
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
-- 认可覆盖率（覆盖 + 能力域外）：**51.5%**
-- 真实解析命中的 AIR 类型数：45
+- 认可覆盖率（覆盖 + 能力域外）：**47.0%**
+- 真实解析命中的 AIR 类型数：44
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -19,6 +19,7 @@
 
 | 上游构造 | 映射 AIR 类型 | 映射状态 | 原因 |
 |---|---|---|---|
+| `annotated_lambda` | KtAnnotatedLambda | degraded | 带注解 lambda 降级为独立注解 lambda 节点 |
 | `anonymous_initializer` | CompositeLit | degraded | 匿名初始化块降级为复合字面量节点 |
 | `as_expression` | Cast | degraded | as 表达式降级为类型断言节点 |
 | `binding_pattern_kind` | Region | degraded | 绑定模式无独立节点，降级为区域节点 |
@@ -29,6 +30,7 @@
 | `class_parameter` | Region | degraded | 主构造函数形参无独立节点，降级为区域节点 |
 | `collection_literal` | CompositeLit | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `constructor_delegation_call` | KtCtorDelegation | exact | AIR 以独立节点建模该构造 |
+| `constructor_invocation` | KtInfixCtor | degraded | 构造调用降级为独立中缀/构造调用节点 |
 | `delegation_specifier` | Region | degraded | 委派规格无独立节点，降级为区域节点 |
 | `directly_assignable_expression` | Region | degraded | 可赋值表达式标记无独立节点，降级为区域节点 |
 | `elvis_expression` | Ternary | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
@@ -39,12 +41,14 @@
 | `function_type_parameters` | Region | degraded | 函数类型形参列表无独立节点，降级为区域节点 |
 | `function_value_parameters` | Region | degraded | 函数类型形参列表无独立节点，降级为区域节点 |
 | `indexing_suffix` | Region | degraded | 调用与导航后缀无独立节点，降级为区域节点 |
+| `infix_expression` | KtInfixCtor | degraded | 中缀调用降级为独立中缀/构造调用节点 |
 | `inheritance_modifier` | Attribute | degraded | 声明修饰符降级为属性节点 |
 | `interpolated_identifier` | Region | degraded | 模板标识符片段无独立节点，降级为区域节点 |
 | `label` | Label | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `lambda_parameters` | Region | degraded | lambda 形参无独立节点，降级为区域节点 |
 | `member_modifier` | Attribute | degraded | 声明修饰符降级为属性节点 |
 | `modifiers` | Attribute | degraded | 声明修饰符降级为属性节点 |
+| `multi_variable_declaration` | KtMultiVar | degraded | 多变量声明降级为独立多变量声明节点 |
 | `navigation_suffix` | Region | degraded | 调用与导航后缀无独立节点，降级为区域节点 |
 | `not_nullable_type` | Named | degraded | 非空类型降级为命名类型节点 |
 | `object_literal` | CompositeLit | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
@@ -59,9 +63,11 @@
 | `primary_constructor` | Region | degraded | 主构造函数无独立节点，降级为区域节点 |
 | `property_delegate` | Region | degraded | 属性委托无独立节点，降级为区域节点 |
 | `property_modifier` | Attribute | degraded | 声明修饰符降级为属性节点 |
+| `range_expression` | KtRange | degraded | 区间表达式降级为独立区间节点 |
 | `range_test` | Region | degraded | 区间判定无独立节点，降级为区域节点 |
 | `reification_modifier` | Attribute | degraded | 声明修饰符降级为属性节点 |
 | `shebang_line` | Directive | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
+| `simple_identifier` | KtSimpleIdent | degraded | 简单标识符降级为独立简单标识符节点 |
 | `spread_expression` | Spread | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `statements` | Region | degraded | 语句列表无独立节点，降级为区域节点 |
 | `super_expression` | KtSuper | exact | AIR 以独立节点建模该构造 |
@@ -94,7 +100,7 @@
 | 上游构造 | AIR 类型 | 映射状态 | 真实命中次数 | 映射规则 |
 |---|---|---|---|---|
 | `additive_expression` | Binary | exact | 25 | `kt.additive` |
-| `annotated_lambda` | Lambda | degraded | 10 | `kt.annotated-lambda` |
+| `annotated_lambda` | KtAnnotatedLambda | degraded | 0 | `kt.annotated-lambda` |
 | `annotation` | AnnotationDecl | exact | 1 | `kt.annotation` |
 | `anonymous_function` | Lambda | exact | 10 | `kt.anonymous-func` |
 | `anonymous_initializer` | CompositeLit | degraded | 0 | `kt.anonymous-init` |
@@ -119,7 +125,7 @@
 | `comparison_expression` | Binary | exact | 25 | `kt.comparison` |
 | `conjunction_expression` | Binary | exact | 25 | `kt.conjunction` |
 | `constructor_delegation_call` | KtCtorDelegation | exact | 0 | `kt.ctor-delegation` |
-| `constructor_invocation` | Call | degraded | 60 | `kt.ctor-call` |
+| `constructor_invocation` | KtInfixCtor | degraded | 0 | `kt.ctor-call` |
 | `control_structure_body` | KtControlBody | exact | 4 | `kt.control-body` |
 | `delegation_specifier` | Region | degraded | 0 | `kt.delegation` |
 | `directly_assignable_expression` | Region | degraded | 0 | `kt.assignable` |
@@ -148,7 +154,7 @@
 | `import_list` | KtImportList | exact | 2 | `kt.import-list` |
 | `indexing_expression` | Index | exact | 1 | `kt.index` |
 | `indexing_suffix` | Region | degraded | 0 | `kt.suffix` |
-| `infix_expression` | Call | degraded | 60 | `kt.infix-call` |
+| `infix_expression` | KtInfixCtor | degraded | 0 | `kt.infix-call` |
 | `inheritance_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
 | `integer_literal` | NumLit | exact | 34 | `kt.number` |
 | `interpolated_expression` | KtInterp | exact | 6 | `kt.interpolated` |
@@ -161,7 +167,7 @@
 | `long_literal` | NumLit | exact | 34 | `kt.number` |
 | `member_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
 | `modifiers` | Attribute | degraded | 0 | `kt.modifiers` |
-| `multi_variable_declaration` | VarDecl | degraded | 45 | `kt.multi-var` |
+| `multi_variable_declaration` | KtMultiVar | degraded | 0 | `kt.multi-var` |
 | `multiline_comment` | Comment | exact | 4 | `kt.comment` |
 | `multiplicative_expression` | Binary | exact | 25 | `kt.multiplicative` |
 | `navigation_expression` | Selector | exact | 1 | `kt.navigation` |
@@ -185,14 +191,14 @@
 | `property_declaration` | KtProperty | exact | 41 | `kt.property` |
 | `property_delegate` | Region | degraded | 0 | `kt.property-delegate` |
 | `property_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
-| `range_expression` | RangeFor | degraded | 2 | `kt.range` |
+| `range_expression` | KtRange | degraded | 0 | `kt.range` |
 | `range_test` | Region | degraded | 0 | `kt.range-test` |
 | `real_literal` | NumLit | exact | 34 | `kt.number` |
 | `reification_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
 | `secondary_constructor` | KtSecondaryCtor | exact | 1 | `kt.secondary-ctor` |
 | `setter` | KtAccessor | exact | 1 | `kt.accessor` |
 | `shebang_line` | Directive | degraded | 0 | `kt.shebang` |
-| `simple_identifier` | Ident | degraded | 361 | `kt.simple-identifier` |
+| `simple_identifier` | KtSimpleIdent | degraded | 0 | `kt.simple-identifier` |
 | `source_file` | Package | exact | 55 | `kt.file` |
 | `spread_expression` | Spread | degraded | 0 | `kt.spread` |
 | `statements` | Region | degraded | 0 | `kt.statements` |

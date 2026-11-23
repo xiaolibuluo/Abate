@@ -216,6 +216,7 @@ var pyNotes = []pyNote{
 	{"type-annotation", "type-annotation"},
 	{"docstring", "docstring"},
 	{"star-args", "star-args"},
+	{"star-list", "star-list"},
 	{"kwargs", "kwargs"},
 }
 

@@ -120,7 +120,7 @@ func (e *pyExpr) parseTargetList() []air.Node {
 }
 
 // pyTargetNode lowers a for-clause target list to one node: the single target
-// itself, or a tuple node that spans a comma-separated list.
+// itself, or an expression-list node that spans a comma-separated list.
 func (e *pyExpr) pyTargetNode(targets []air.Node) air.Node {
 	switch len(targets) {
 	case 0:
@@ -130,6 +130,6 @@ func (e *pyExpr) pyTargetNode(targets []air.Node) air.Node {
 	default:
 		first := spanToken(targets[0], frontkit.Token{})
 		last := spanToken(targets[len(targets)-1], first)
-		return e.mapper.tupleNode(first, last, targets...)
+		return e.mapper.exprListNode(first, last, targets...)
 	}
 }

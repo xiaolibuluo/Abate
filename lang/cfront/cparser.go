@@ -209,6 +209,8 @@ func (p *cParser) parseUnit(i, end, bodyOpen, bodyClose int, top bool,
 	}
 	children = append(children,
 		p.cDedicatedMarkers(i, end, segEnd, record, children)...)
+	children = append(children,
+		p.cDeclaratorMarkers(mapping, i, end, segEnd, children)...)
 	start, last := cSpan(p.tokens, i, end)
 	node := air.NewNodeAt(mapping.kind, start, last, mapping.name,
 		p.view.OrderChildren(children)...)

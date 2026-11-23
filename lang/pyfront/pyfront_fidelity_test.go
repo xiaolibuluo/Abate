@@ -170,7 +170,7 @@ var pyMappingCases = []pyMapCase{
 	{"fstring-content", "s = f\"hi {name}\"\n", air.KindPyStringFragment, "py-string-content"},
 	{"docstring", "\"\"\"doc\"\"\"\n", air.KindDoc, "docstring"},
 	{"directive", "# type: ignore\n", air.KindDirective, ""},
-	{"star-args", "f(*args, **kw)\n", air.KindStar, "star-args"},
+	{"star-args", "f(*args, **kw)\n", air.KindPyStarList, "star-list"},
 	{"kwargs", "f(*args, **kw)\n", air.KindSpread, "kwargs"},
 	{"ellipsis", "...\n", air.KindRegion, "ellipsis"},
 	{"assert", "assert x\n", air.KindCall, "assert"},

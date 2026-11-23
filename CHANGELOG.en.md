@@ -16,6 +16,32 @@ per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
 Version-number consistency is enforced by CI: the `ldflags` version, this
 CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
 
+## [v1.2.29]
+
+Patch release — fix nine zero-yield C# constructs, coverage 46.0% → 52.6% (2026-11-23).
+
+- **C# frontend zero-yield fixes (all nine flipped to exact)**: `extern_alias_directive`→`CsExternAlias`,
+  `labeled_statement`→`Label`, `ref_expression`→`Ref`, `expression_statement`→`ExprStmt`,
+  `array_creation_expression`/`initializer_expression`→`CsObjectCreation` (rule retargeting),
+  `cast_expression`→`Cast` (parenPrefix cast detection + `isCastOperandStart` helper),
+  `spread_element`→`Spread` (direct `..` handling in `reduce()`, `..` added to the operator
+  table with PrefixPower=4), `type_parameter`→`GenericParam` (`csparser.genericParamMarkers()`
+  scanning the declaration header `<...>` span). Changes land in `lang/csfront/`
+  (csparser/csexpr/csexpr_prefix/csmap/cstokens/csexpr_dedicated) and
+  `lang/frontkit/grammar/rules_csharp.go` (nine degraded→exact rules).
+- **Measured coverage gain (`docs/dev/frontend-coverage/csharp.md`)**: covered 99→113 of 215
+  constructs, exact mappings 92→100, distinct AIR kinds hit 65→72. The degraded count moving
+  12→13 is the expected side effect of newly added generic corpus samples activating existing
+  degraded rules; the six-language `degradedaudit` stays at zero, so no new degradation was
+  introduced.
+- **Regression checks**: all `lang/` frontend packages (air/cfront/csfront/frontkit/jsfront/
+  ktfront/pyfront/rsfront) and `frontkit/grammar` tests pass; `ci/gate_e2e.sh` passes all seven
+  stages (7 languages, 1540 corpus entries, zero failures, byte-identical double-run with the
+  same seed); `go build ./...` and `go vet ./lang/...` both exit 0.
+- **Version bump**: `abate version` emits `abate 1.2.29`, `MetaVersion` synced to `1.2.29`;
+  README zh/en badges and user docs (quickstart / cli-reference / multilang-check-guide, both
+  languages) version examples updated accordingly.
+
 ## [v1.2.28]
 
 Patch release — ship the post-v1.2.27 usability fixes in the binaries (2026-11-19).

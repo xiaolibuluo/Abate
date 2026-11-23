@@ -184,7 +184,7 @@ const (
 )
 
 // kindLast is the largest allocated node kind.
-const kindLast = KindCFieldDecl
+const kindLast = KindJsEmptyStmt
 
 // kindNames is a read-only lookup table indexed by NodeKind. It is never
 // mutated after initialization, so it cannot leak nondeterministic state.
@@ -242,6 +242,15 @@ var kindNames = [...]string{
 	"JsPairPattern", "JsObjectAssignPat",
 	"CUnion", "CEnumMember", "CDefined", "CInitPair",
 	"CLabel", "CDeref", "CFieldDecl",
+	"PyStarList", "PySplatType", "PyExprList",
+	"JsAssignPattern", "JsArrayPattern", "JsObjectPattern",
+	"CMacroType", "CInitDeclarator", "CFuncDeclarator",
+	"CFieldIdent", "CSizedType", "CTypeIdent",
+	"RsUnion", "RsEnumVariant", "RsArray", "RsTupleType",
+	"RsVisibility", "RsMutable", "RsExternMod", "RsFnModifiers",
+	"CsDeclarator", "CsArrowClause", "CsNamedType", "CsTupleType",
+	"KtMultiVar", "KtRange", "KtSimpleIdent", "KtInfixCtor", "KtAnnotatedLambda",
+	"JsEmptyStmt",
 }
 
 // String returns the stable wire name of the kind.

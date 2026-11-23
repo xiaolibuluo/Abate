@@ -28,7 +28,7 @@ go build -o abate .
 `abate version` prints build provenance (version / schema / license / watermark):
 
 ```
-abate 1.2.28
+abate 1.2.29
 schema: ces.tencent.com/v1
 build: deterministic
 license: AGPLv3 or commercial
@@ -106,7 +106,7 @@ threat T10 in the security threat model).
 | Item | Current fact |
 |---|---|
 | Dependencies & build | Zero external dependencies; offline `go build` with `GOPROXY=off` succeeds; a single static binary is produced |
-| Prebuilt binaries | Not in the repo (`.gitignore`); download 5-platform builds from [Release v1.2.28](https://github.com/xiaolibuluo/Abate/releases/tag/v1.2.28) |
+| Prebuilt binaries | Not in the repo (`.gitignore`); download 5-platform builds from [Release v1.2.29](https://github.com/xiaolibuluo/Abate/releases/tag/v1.2.29) |
 | `check` on own source | Reports info/error style findings on the project's own source (the rule engine working correctly); acceptance uses `scripts/lint-gate.sh` |
 | Advanced verification tooling | TLA+ needs Java + `tla2tools.jar`; libclang C API verification needs the toolchain; full-corpus E2E needs the `testdata/` corpus. Core CLI and regular gates need none of these |
 | Capability boundaries | See [Capabilities and limits](capabilities-and-limits.en.md): tolerant parsing is not a syntax gate, no type/CFG/data-flow analysis, and some unmeasured fidelity/competitor items |

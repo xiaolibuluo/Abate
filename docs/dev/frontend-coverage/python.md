@@ -3,13 +3,13 @@
 - 上游语法事实：`https://github.com/tree-sitter/tree-sitter-python` 0.25.0
 - 上游具体构造总数：**122**
 - 映射完备率：**100.0%**（122/122，无未映射空洞）
-- 实测覆盖：**110**（**90.2%**）
-  - 精确映射覆盖：77
-  - 降级映射覆盖：33
+- 实测覆盖：**109**（**89.3%**）
+  - 精确映射覆盖：80
+  - 降级映射覆盖：29
 - 能力域外（显式登记并给出理由）：3
 - 未映射：0
-- 认可覆盖率（覆盖 + 能力域外）：**92.6%**
-- 真实解析命中的 AIR 类型数：57
+- 认可覆盖率（覆盖 + 能力域外）：**91.8%**
+- 真实解析命中的 AIR 类型数：58
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -24,6 +24,7 @@
 | `dotted_name` | PyQualifiedName | exact | AIR 以独立节点建模该构造 |
 | `member_type` | PyQualifiedName | exact | AIR 以独立节点建模该构造 |
 | `not_operator` | PyNotOp | exact | AIR 以独立节点建模该构造 |
+| `splat_type` | PySplatType | degraded | 类型形参解包降级，语料零产出 |
 | `type_alias_statement` | TypeDecl | degraded | PEP695 type 别名语料零产出，锁定降级口径 |
 | `type_conversion` | PyTypeConversion | exact | AIR 以独立节点建模该构造 |
 | `type_parameter` | GenericParam | degraded | PEP695 type 形参语料零产出，锁定降级口径 |
@@ -83,7 +84,7 @@
 | `escape_sequence` | PyStringFragment | exact | 10 | `py.string-part` |
 | `except_clause` | Catch | exact | 4 | `py.catch` |
 | `exec_statement` | Invalid | out-of-scope | 0 | `py.legacy-exec` |
-| `expression_list` | Tuple | degraded | 4 | `py.expr-list` |
+| `expression_list` | PyExprList | exact | 3 | `py.expr-list` |
 | `expression_statement` | ExprStmt | exact | 26 | `py.expr-stmt` |
 | `false` | BoolLit | exact | 4 | `core.boolean` |
 | `finally_clause` | Finally | exact | 4 | `py.finally` |
@@ -114,7 +115,7 @@
 | `list` | CompositeLit | exact | 19 | `py.list` |
 | `list_comprehension` | CompositeLit | exact | 19 | `py.list-comp` |
 | `list_pattern` | Region | degraded | 1 | `py.patterns` |
-| `list_splat` | Star | degraded | 6 | `py.list-splat` |
+| `list_splat` | PyStarList | exact | 6 | `py.list-splat` |
 | `list_splat_pattern` | Region | degraded | 1 | `py.patterns` |
 | `match_statement` | Match | exact | 4 | `py.match` |
 | `member_type` | PyQualifiedName | exact | 0 | `py.type-member` |
@@ -126,7 +127,7 @@
 | `pair` | PyDictPair | exact | 5 | `py.pair` |
 | `parameters` | Region | degraded | 1 | `py.parameters` |
 | `parenthesized_expression` | Region | degraded | 1 | `py.paren-expr` |
-| `parenthesized_list_splat` | Star | degraded | 6 | `py.list-splat` |
+| `parenthesized_list_splat` | PyStarList | exact | 6 | `py.list-splat` |
 | `pass_statement` | PyPass | exact | 21 | `py.pass` |
 | `pattern_list` | Region | degraded | 1 | `py.patterns` |
 | `positional_separator` | Region | degraded | 1 | `py.separators` |
@@ -138,7 +139,7 @@
 | `set_comprehension` | CompositeLit | exact | 19 | `py.set-comp` |
 | `slice` | Slice | exact | 2 | `py.slice` |
 | `splat_pattern` | Region | degraded | 1 | `py.patterns` |
-| `splat_type` | Star | degraded | 6 | `py.splat-type` |
+| `splat_type` | PySplatType | degraded | 0 | `py.splat-type` |
 | `string` | StrLit | exact | 6 | `py.string` |
 | `string_content` | PyStringFragment | exact | 10 | `py.string-part` |
 | `string_end` | PyStringFragment | exact | 10 | `py.string-part` |
@@ -146,7 +147,7 @@
 | `subscript` | Index | exact | 4 | `py.subscript` |
 | `true` | BoolLit | exact | 4 | `core.boolean` |
 | `try_statement` | Try | exact | 4 | `py.try` |
-| `tuple` | Tuple | exact | 4 | `py.tuple` |
+| `tuple` | Tuple | exact | 2 | `py.tuple` |
 | `tuple_pattern` | Region | degraded | 1 | `py.patterns` |
 | `type` | Named | exact | 12 | `py.type` |
 | `type_alias_statement` | TypeDecl | degraded | 0 | `py.type-alias` |

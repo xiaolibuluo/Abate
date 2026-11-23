@@ -24,8 +24,8 @@
       "emptyUnit": 0,
       "observedKinds": 43,
       "mappings": 122,
-      "degradedObserved": 4,
-      "degradePct": 3.361344537815126
+      "degradedObserved": 0,
+      "degradePct": 0
     },
     {
       "language": "js",
@@ -34,10 +34,10 @@
       "parseOK": 2932,
       "parseFail": 0,
       "emptyUnit": 0,
-      "observedKinds": 53,
+      "observedKinds": 55,
       "mappings": 114,
-      "degradedObserved": 4,
-      "degradePct": 3.508771929824561
+      "degradedObserved": 0,
+      "degradePct": 0
     },
     {
       "language": "c",
@@ -46,10 +46,10 @@
       "parseOK": 2932,
       "parseFail": 0,
       "emptyUnit": 0,
-      "observedKinds": 33,
+      "observedKinds": 36,
       "mappings": 125,
-      "degradedObserved": 6,
-      "degradePct": 4.8
+      "degradedObserved": 0,
+      "degradePct": 0
     },
     {
       "language": "cs",
@@ -60,8 +60,8 @@
       "emptyUnit": 0,
       "observedKinds": 43,
       "mappings": 215,
-      "degradedObserved": 10,
-      "degradePct": 4.651162790697675
+      "degradedObserved": 0,
+      "degradePct": 0
     },
     {
       "language": "rs",
@@ -70,10 +70,10 @@
       "parseOK": 2932,
       "parseFail": 0,
       "emptyUnit": 0,
-      "observedKinds": 47,
+      "observedKinds": 50,
       "mappings": 163,
-      "degradedObserved": 8,
-      "degradePct": 4.9079754601226995
+      "degradedObserved": 0,
+      "degradePct": 0
     },
     {
       "language": "kt",
@@ -84,8 +84,8 @@
       "emptyUnit": 0,
       "observedKinds": 34,
       "mappings": 134,
-      "degradedObserved": 6,
-      "degradePct": 4.477611940298507
+      "degradedObserved": 0,
+      "degradePct": 0
     }
   ]
 }

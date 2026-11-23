@@ -77,6 +77,8 @@ func Run(args []string, stdout, stderr io.Writer) int {
 	srv := &http.Server{
 		Handler:           root,
 		ReadHeaderTimeout: 5 * time.Second,
+		WriteTimeout:      120 * time.Second,
+		IdleTimeout:       60 * time.Second,
 	}
 	_, _ = fmt.Fprintf(stdout, "abate web: listening on %s\n", cfg.Listen)
 	if err := srv.Serve(ln); err != nil && err != http.ErrServerClosed {

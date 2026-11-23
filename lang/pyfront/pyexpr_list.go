@@ -141,3 +141,30 @@ func (e *pyExpr) parseList(closeText string, mode pyListMode) ([]air.Node,
 		e.stream.Advance()
 	}
 }
+
+// parseExprList reduces a comma-separated expression list (expression_list
+// in the Python grammar) to a single node: a lone expression returns as-is;
+// two or more are wrapped in KindPyExprList anchored on real token spans.
+// Because comma carries binding power 0 in pyInfixBindings, the Pratt loop
+// discards it; this method fills the gap by reading successive expressions
+// separated by commas until a statement terminator, the end of stream, or a
+// token that cannot start an expression.
+func (e *pyExpr) parseExprList() air.Node {
+	first := e.parse(0)
+	items := []air.Node{first}
+	for {
+		e.skipTrivia()
+		tok, ok := e.stream.Peek()
+		if !ok || tok.Text != "," {
+			break
+		}
+		e.stream.Advance()
+		items = append(items, e.parse(0))
+	}
+	if len(items) == 1 {
+		return items[0]
+	}
+	start := spanToken(items[0], frontkit.Token{})
+	end := spanToken(items[len(items)-1], start)
+	return e.mapper.exprListNode(start, end, items...)
+}

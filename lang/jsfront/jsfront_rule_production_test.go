@@ -106,7 +106,6 @@ func assertRulesDegraded(t *testing.T, lang string, names ...string) {
 // remaining pins still lower onto shared kinds only.
 func TestJsStructuralDegradationsStayDegraded(t *testing.T) {
 	assertRulesDegraded(t, "js",
-		"js.object-pattern", "js.array-pattern", "js.assign-pattern",
 		"js.optional-chain", "js.field-def", "js.label", "js.empty-stmt")
 }
 

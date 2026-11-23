@@ -46,6 +46,7 @@ var csKeywords = []string{
 // "#" 与 "@" 不列入，井号指令与逐字标识符前缀交由归约期识别。
 var csOperators = []string{
 	"??=", "<<=", ">>=", ">>>=", "=>", "?.", "??", "++", "--", "->", "::",
+	"..",
 	"==", "!=", "<=", ">=", "&&", "||", "+=", "-=", "*=", "/=", "%=", "&=",
 	"|=", "^=", "<<", ">>", ">>>", "+", "-", "*", "/", "%", "&", "|", "^",
 	"!", "~", "=", "<", ">", "?",
@@ -186,6 +187,7 @@ var csNotes = []csNote{
 	{"yield", "yield"}, {"break", "break"}, {"continue", "continue"},
 	{"goto", "goto"}, {"lock", "lock"}, {"checked", "checked"},
 	{"unchecked", "unchecked"}, {"unsafe", "unsafe"}, {"fixed", "fixed"},
+	{"cast", "cast"}, {"generic-param", "generic-param"},
 	{"object-creation", "object-creation"}, {"typeof", "typeof"},
 	{"nameof", "nameof"},
 }

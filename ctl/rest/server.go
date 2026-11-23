@@ -113,6 +113,8 @@ func (s *Server) ListenAndServe() error {
 	s.http = &http.Server{
 		Handler:           s.handler,
 		ReadHeaderTimeout: time.Duration(s.cfg.RequestTimeoutSeconds) * time.Second,
+		WriteTimeout:      120 * time.Second,
+		IdleTimeout:       60 * time.Second,
 	}
 	return s.http.Serve(ln)
 }

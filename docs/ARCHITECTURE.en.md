@@ -105,7 +105,7 @@ magic constants → `go test -race` → coverage → build. Zero-tolerance items
 ## 7 Boundaries and honest scope
 
 - `check` is a structural linter, not compiler-grade semantic analysis (see [Capabilities and limits](user/capabilities-and-limits.en.md)).
-- Full-corpus fidelity is 3%–5% for six languages, Go `NOT_MEASURED`; E2E "passing" applies only to
+- Full-corpus construct coverage is measured in `docs/dev/frontend-coverage/` per-language reports (C 66.4% / C# 52.6% / JS 89.5% / Kotlin 47.0% / Python 91.8% / Rust 77.9%) for six languages, Go `NOT_MEASURED`; E2E "passing" applies only to
   the frozen single-file scope — not a "high fidelity" claim.
 - Competitor absolute scores `NOT_MEASURED`; derive killing is a static approximation; community
   validation is still empty.

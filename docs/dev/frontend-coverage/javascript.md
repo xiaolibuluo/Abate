@@ -3,13 +3,13 @@
 - 上游语法事实：`https://github.com/tree-sitter/tree-sitter-javascript` 0.25.0
 - 上游具体构造总数：**114**
 - 映射完备率：**100.0%**（114/114，无未映射空洞）
-- 实测覆盖：**104**（**91.2%**）
-  - 精确映射覆盖：98
-  - 降级映射覆盖：6
+- 实测覆盖：**102**（**89.5%**）
+  - 精确映射覆盖：100
+  - 降级映射覆盖：2
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
-- 认可覆盖率（覆盖 + 能力域外）：**91.2%**
-- 真实解析命中的 AIR 类型数：74
+- 认可覆盖率（覆盖 + 能力域外）：**89.5%**
+- 真实解析命中的 AIR 类型数：75
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -19,6 +19,8 @@
 
 | 上游构造 | 映射 AIR 类型 | 映射状态 | 原因 |
 |---|---|---|---|
+| `assignment_pattern` | JsAssignPattern | exact | AIR 以独立节点建模该构造 |
+| `empty_statement` | JsEmptyStmt | degraded | 空语句降级为独立空语句节点 |
 | `jsx_attribute` | JsJsx | exact | AIR 以独立节点建模该构造 |
 | `jsx_closing_element` | JsJsx | exact | AIR 以独立节点建模该构造 |
 | `jsx_element` | JsJsx | exact | AIR 以独立节点建模该构造 |
@@ -40,10 +42,10 @@
 |---|---|---|---|---|
 | `arguments` | JsArguments | exact | 45 | `js.arguments` |
 | `array` | CompositeLit | exact | 89 | `js.array` |
-| `array_pattern` | Region | degraded | 428 | `js.array-pattern` |
+| `array_pattern` | JsArrayPattern | exact | 3 | `js.array-pattern` |
 | `arrow_function` | Arrow | exact | 4 | `js.arrow` |
 | `assignment_expression` | Assign | exact | 105 | `js.assign` |
-| `assignment_pattern` | Assign | degraded | 105 | `js.assign-pattern` |
+| `assignment_pattern` | JsAssignPattern | exact | 0 | `js.assign-pattern` |
 | `augmented_assignment_expression` | JsAugAssign | exact | 5 | `js.assign-augmented` |
 | `await_expression` | Await | exact | 8 | `js.await` |
 | `binary_expression` | Binary | exact | 59 | `js.binary` |
@@ -62,7 +64,7 @@
 | `decorator` | Decorator | exact | 6 | `js.decorator` |
 | `do_statement` | DoWhile | exact | 6 | `js.do` |
 | `else_clause` | If | exact | 8 | `js.else` |
-| `empty_statement` | Region | degraded | 428 | `js.empty-stmt` |
+| `empty_statement` | JsEmptyStmt | degraded | 0 | `js.empty-stmt` |
 | `escape_sequence` | JsStringPart | exact | 14 | `js.string-part` |
 | `export_clause` | JsExport | exact | 9 | `js.export` |
 | `export_specifier` | JsExport | exact | 9 | `js.export` |
@@ -109,7 +111,7 @@
 | `number` | NumLit | exact | 82 | `js.number` |
 | `object` | CompositeLit | exact | 89 | `js.object` |
 | `object_assignment_pattern` | JsObjectAssignPat | exact | 1 | `js.object-assign-pattern` |
-| `object_pattern` | Region | degraded | 428 | `js.object-pattern` |
+| `object_pattern` | JsObjectPattern | exact | 2 | `js.object-pattern` |
 | `optional_chain` | Field | degraded | 9 | `js.optional-chain` |
 | `pair` | JsPair | exact | 8 | `js.pair` |
 | `pair_pattern` | JsPairPattern | exact | 3 | `js.pair-pattern` |

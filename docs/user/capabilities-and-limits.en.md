@@ -95,7 +95,7 @@ Manual breakdown (inside the scripts): `abate check /tmp/nested.py --format json
 
 ## Honest scope (do not over-extrapolate)
 
-- **Full-corpus fidelity**: six languages measured 3%–5% (see [Language coverage](language-coverage.en.md)),
+- **Full-corpus construct coverage**: six languages measured in `docs/dev/frontend-coverage/` per-language reports (C 66.4% / C# 52.6% / JS 89.5% / Kotlin 47.0% / Python 91.8% / Rust 77.9%, all in the construct-level exact+degraded hit metric),
   Go has no embedded grammar mappings → `NOT_MEASURED`; the E2E gate "passing" applies only to the
   frozen single-file (first-unit) scope; the full-corpus scope does not reach that threshold and is
   **not a "high fidelity" claim**.

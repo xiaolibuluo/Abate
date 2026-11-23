@@ -41,7 +41,7 @@ func (p *pyParser) parseSimpleKeyword(tok frontkit.Token, rule pyStmtRule) air.N
 	if cur, ok := p.stream.Peek(); ok && cur.Kind != frontkit.TokenNewline &&
 		cur.Kind != frontkit.TokenDedent && cur.Kind != frontkit.TokenEOF &&
 		cur.Text != ";" && cur.Text != ":" {
-		operand = p.expr.parse(0)
+		operand = p.expr.parseExprList()
 	}
 	if (rule.keyword == "import" || rule.keyword == "from") && operand != nil {
 		if qualified := p.mapper.qualifiedName(operand); qualified != nil {
@@ -100,12 +100,12 @@ func (p *pyParser) statementMarker(keyword string, start, end frontkit.Token,
 
 // parseSimple reduces an expression statement, an assignment or an annotation.
 func (p *pyParser) parseSimple(tok frontkit.Token) air.Node {
-	left := p.expr.parse(0)
+	left := p.expr.parseExprList()
 	p.expr.skipTrivia()
 	next, ok := p.stream.Peek()
 	if ok && pyContains(pyAssignOps, next.Text) {
 		p.stream.Advance()
-		right := p.expr.parse(0)
+		right := p.expr.parseExprList()
 		p.synchronize()
 		end := spanToken(right, tok)
 		// The parser has now reduced a concrete assignment form: emit the

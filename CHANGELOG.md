@@ -14,6 +14,27 @@ per the XCU-REL version policy (kernel year-ring + hourly ecosystem cadence).
 Version-number consistency is enforced by CI: the `ldflags` version, this
 CHANGELOG entry and the OpenAPI `info.version` must agree (drift → FAIL).
 
+## [v1.2.29]
+
+Patch release — C# 前端九项零产出构造修复，覆盖率 46.0% → 52.6%（2026-11-23）。
+
+- **C# 前端零产出构造修复（9 项全部翻 exact）**：`extern_alias_directive`→`CsExternAlias`、
+  `labeled_statement`→`Label`、`ref_expression`→`Ref`、`expression_statement`→`ExprStmt`、
+  `array_creation_expression`/`initializer_expression`→`CsObjectCreation`（规则重定向）、
+  `cast_expression`→`Cast`（`parenPrefix` 转型检测 + `isCastOperandStart` 辅助判定）、
+  `spread_element`→`Spread`（`reduce()` 展运算符直处理，`..` 加入运算符表并设 PrefixPower=4）、
+  `type_parameter`→`GenericParam`（`csparser.genericParamMarkers()` 扫描声明头 `<...>` 段）。
+  变更落在 `lang/csfront/`（csparser/csexpr/csexpr_prefix/csmap/cstokens/csexpr_dedicated）
+  与 `lang/frontkit/grammar/rules_csharp.go`（9 条 degraded→exact）。
+- **实测覆盖率提升（`docs/dev/frontend-coverage/csharp.md`）**：实测覆盖 99→113（215 构造），
+  精确映射 92→100，命中 AIR 类型 65→72。降级映射 12→13 为新增泛型语料激活既有降级规则的
+  正常副产品，`degradedaudit` 六语言审计保持归零，未引入新降级。
+- **回归验证**：`lang/` 下全部前端包（air/cfront/csfront/frontkit/jsfront/ktfront/pyfront/rsfront）
+  与 `frontkit/grammar` 测试全 PASS；`ci/gate_e2e.sh` 七阶段通过（7 语言、1540 语料、零失败、
+  同 seed 双跑逐字节一致）；`go build ./...` 与 `go vet ./lang/...` 退出码均为 0。
+- **版本升级**：`abate version` 输出 `abate 1.2.29`，`MetaVersion` 同步 `1.2.29`；README 中英徽章、
+  用户文档（quickstart / cli-reference / multilang-check-guide 双语）版本示例同步更新。
+
 ## [v1.2.28]
 
 Patch release — 把 v1.2.27 之后源码侧的易用性修订随二进制一起带入（2026-11-19）。

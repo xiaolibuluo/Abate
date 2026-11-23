@@ -22,6 +22,7 @@ type csPrefixOp struct {
 // csPrefixOps 列出 C# 的前缀运算符（unary_expression 的运算符集合）。
 var csPrefixOps = []csPrefixOp{
 	{"-"}, {"+"}, {"!"}, {"~"}, {"++"}, {"--"},
+	{".."},
 }
 
 // opPrefix 把刚消费的前缀运算符连同其操作数归约为 KindUnary 节点。
@@ -35,6 +36,10 @@ func (e *csExpr) opPrefix() func(*frontkit.PrattParser,
 		if operand == nil {
 			return nil, fmt.Errorf("%w: missing operand after %q",
 				frontkit.ErrUnknownToken, tok.Text)
+		}
+		if tok.Text == ".." {
+			mark := e.mapper.dedicated(air.KindSpread, tok, tok.Text, "cs-spread")
+			return e.mapper.unaryNodeMarked(air.KindUnary, tok, operand, mark), nil
 		}
 		return e.mapper.unaryNode(air.KindUnary, tok, operand), nil
 	}
@@ -76,6 +81,24 @@ func (e *csExpr) parenPrefix() func(*frontkit.PrattParser,
 			return e.mapper.emptyGroupNode(tok, closeTok), nil
 		}
 		if len(nodes) == 1 {
+			// 转型检测：若括号内容为单个类型节点（Named），且后续
+			// token 可作为表达式操作数（标识符/字面量/关键字/括号/前缀
+			// 运算符），则按 (Type)expr 归约为 KindCast。
+			k := nodes[0].Kind()
+			if k == air.KindNamed {
+				next, ok := stream.Peek()
+				if ok && isCastOperandStart(next) {
+					operand, err := parser.ParsePrefixOperand(next)
+					if err == nil && operand != nil {
+						cast := e.mapper.infixNode(
+							air.KindCast,
+							nodes[0], closeTok, operand)
+						e.mapper.annotate(cast, air.SemNote,
+							e.mapper.note("cast"))
+						return cast, nil
+					}
+				}
+			}
 			return nodes[0], nil
 		}
 		// 多元素：真实 KindTuple 归约（cs.tuple → tuple_expression exact）。
@@ -89,6 +112,30 @@ func csCloseOf(open string) string {
 		return ")"
 	}
 	return "]"
+}
+
+// isCastOperandStart 报告一个 token 是否可作为转型表达式右操作数的起点。
+func isCastOperandStart(tok frontkit.Token) bool {
+	if tok.Kind == frontkit.TokenEOF ||
+		tok.Kind == frontkit.TokenNewline ||
+		tok.Kind == frontkit.TokenComment ||
+		tok.Text == "" {
+		return false
+	}
+	// 排除语句定界符和后缀运算符
+	switch tok.Text {
+	case ")", "]", "}", ";", ",", ".", ":", "=>":
+		return false
+	}
+	// 排除中缀/赋值运算符
+	switch tok.Text {
+	case "=", "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=",
+		"<<=", ">>=", "??=", "??", "||", "&&", "==", "!=",
+		"<", ">", "<=", ">=", "|", "^", "&", "<<", ">>",
+		"+", "-", "*", "/", "%", "is", "as", "in":
+		return false
+	}
+	return true
 }
 
 // bracketPostfix 把跟在表达式之后的括号对归约为调用/索引节点：紧跟闭括号

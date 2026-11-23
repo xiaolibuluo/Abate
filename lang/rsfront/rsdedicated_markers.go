@@ -98,6 +98,26 @@ func (p *rsParser) dedicatedMarkers(mapping rsMapping, i, segEnd, end,
 	case lead == "impl":
 		// An `impl` item is Rust's inherent/trait implementation block.
 		push(air.KindRsImpl, tokens[leadIdx], "rs-impl")
+	case ctx == rsCtxEnum:
+		// An enum body member reduced as its own unit anchors its variant
+		// name; the lead may sit past a visibility modifier.
+		if tokens[leadIdx].Kind == frontkit.TokenIdent {
+			push(air.KindRsEnumVariant, tokens[leadIdx], "rs-enum-variant")
+		}
+	}
+	// Visibility and mutability specifiers anchor their own dedicated kinds
+	// on the real modifier tokens the parser just reduced.
+	for j := i; j < leadIdx && j < len(tokens); j++ {
+		if tokens[j].Text == "pub" {
+			push(air.KindRsVisibility, tokens[j], "rs-visibility-modifier")
+			break
+		}
+	}
+	for j := i; j < segEnd && j < len(tokens); j++ {
+		if tokens[j].Text == "mut" {
+			push(air.KindRsMutable, tokens[j], "rs-mutable-specifier")
+			break
+		}
 	}
 	for _, blockKind := range rsBlockLeadKinds {
 		if lead == blockKind.text && bodyOpen == leadIdx+1 {

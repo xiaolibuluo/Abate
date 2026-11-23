@@ -31,6 +31,12 @@ var cDedicatedCases = []struct {
 	{"deref", "int g(void) { int *p = 0; return *p; }", air.KindCDeref},
 	{"init-pair", "struct P p = {.x = 1, .y = 2};", air.KindCInitPair},
 	{"label", "void f(void) { goto end; end: ; }", air.KindCLabel},
+	{"func-declarator", "int add(int a, int b) { return a + b; }", air.KindCFuncDeclarator},
+	{"init-declarator", "int total = 42;", air.KindCInitDeclarator},
+	{"macro-type", "LIST(int) items;", air.KindCMacroType},
+	{"type-ident", "Slot8_1 make_slot(void) { Slot8_1 s; return s; }", air.KindCTypeIdent},
+	{"sized-type", "unsigned long width = 16;", air.KindCSizedType},
+	{"field-ident", "int g(void) { struct P p; return p.x; }", air.KindCFieldIdent},
 }
 
 // TestCDedicatedKindsReallyEmitted proves each dedicated kind is produced by
@@ -138,8 +144,7 @@ func assertRulesDegraded(t *testing.T, lang string, names ...string) {
 // kinds only.
 func TestCStructuralDegradationsStayDegraded(t *testing.T) {
 	assertRulesDegraded(t, "c",
-		"c.field-identifier", "c.type-identifier", "c.sized-type",
-		"c.func-declarator", "c.init-declarator", "c.macro-type")
+		"c.decl-list", "c.enumerator-list", "c.abstract-func-declarator")
 }
 
 // TestCExactRulesAreActuallyProduced parses the real C corpus and checks that

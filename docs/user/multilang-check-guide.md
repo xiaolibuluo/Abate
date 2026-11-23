@@ -53,7 +53,7 @@ go build -o abate .
 预期输出（第一行）：
 
 ```
-abate 1.2.28
+abate 1.2.29
 ```
 
 确认 `check` 帮助里有 7 语言说明：

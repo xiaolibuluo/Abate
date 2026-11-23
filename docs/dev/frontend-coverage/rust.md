@@ -3,13 +3,13 @@
 - 上游语法事实：`https://github.com/tree-sitter/tree-sitter-rust` 0.24.0
 - 上游具体构造总数：**163**
 - 映射完备率：**100.0%**（163/163，无未映射空洞）
-- 实测覆盖：**132**（**81.0%**）
-  - 精确映射覆盖：67
-  - 降级映射覆盖：65
+- 实测覆盖：**127**（**77.9%**）
+  - 精确映射覆盖：70
+  - 降级映射覆盖：57
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
-- 认可覆盖率（覆盖 + 能力域外）：**81.0%**
-- 真实解析命中的 AIR 类型数：56
+- 认可覆盖率（覆盖 + 能力域外）：**77.9%**
+- 真实解析命中的 AIR 类型数：59
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -19,6 +19,7 @@
 
 | 上游构造 | 映射 AIR 类型 | 映射状态 | 原因 |
 |---|---|---|---|
+| `array_expression` | RsArray | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `array_type` | Array | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `async_block` | RsAsyncBlock | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `base_field_initializer` | RsBaseField | exact | AIR 以独立节点建模该构造 |
@@ -28,7 +29,9 @@
 | `const_parameter` | ConstDecl | degraded | const 形参降级为常量声明节点 |
 | `empty_statement` | RsEmptyStmt | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `extern_crate_declaration` | RsExternCrate | exact | AIR 以独立节点建模该构造 |
+| `extern_modifier` | RsExternMod | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `foreign_mod_item` | ModuleDecl | degraded | 外部模块项降级为模块声明节点 |
+| `function_modifiers` | RsFnModifiers | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `function_type` | FuncType | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `gen_block` | RsGenBlock | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `generic_type_with_turbofish` | RsTurbofish | exact | AIR 以独立节点建模该构造 |
@@ -48,6 +51,8 @@
 | `super` | RsSuper | exact | AIR 以独立节点建模该构造 |
 | `try_block` | RsTryBlock | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `try_expression` | Try | exact | AIR 以独立节点建模该构造 |
+| `tuple_type` | RsTupleType | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
+| `union_item` | RsUnion | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `use_as_clause` | RsUseAs | exact | AIR 以独立节点建模该构造 |
 | `yield_expression` | RsYield | exact | AIR 以独立节点建模该构造 |
 
@@ -61,7 +66,7 @@
 |---|---|---|---|---|
 | `abstract_type` | Region | degraded | 1 | `rs.abstract-type` |
 | `arguments` | Region | degraded | 1 | `rs.arguments` |
-| `array_expression` | CompositeLit | degraded | 3 | `rs.array` |
+| `array_expression` | RsArray | degraded | 0 | `rs.array` |
 | `array_type` | Array | degraded | 0 | `rs.array-type` |
 | `assignment_expression` | Assign | exact | 34 | `rs.assign` |
 | `associated_type` | TypeDecl | degraded | 2 | `rs.associated-type` |
@@ -94,12 +99,12 @@
 | `else_clause` | If | exact | 1 | `rs.else` |
 | `empty_statement` | RsEmptyStmt | degraded | 0 | `rs.empty-stmt` |
 | `enum_item` | EnumDecl | exact | 2 | `rs.enum` |
-| `enum_variant` | EnumDecl | degraded | 2 | `rs.enum-variant` |
+| `enum_variant` | RsEnumVariant | exact | 5 | `rs.enum-variant` |
 | `enum_variant_list` | Region | degraded | 1 | `rs.enum-variant-list` |
 | `escape_sequence` | RsStringFrag | exact | 12 | `rs.string-part` |
 | `expression_statement` | ExprStmt | exact | 35 | `rs.expr-stmt` |
 | `extern_crate_declaration` | RsExternCrate | exact | 0 | `rs.extern-crate` |
-| `extern_modifier` | Attribute | degraded | 3 | `rs.modifier` |
+| `extern_modifier` | RsExternMod | degraded | 0 | `rs.extern-modifier` |
 | `field_declaration` | Field | exact | 13 | `rs.field` |
 | `field_declaration_list` | Region | degraded | 1 | `rs.field-list` |
 | `field_expression` | Field | exact | 13 | `rs.field-expr` |
@@ -113,7 +118,7 @@
 | `foreign_mod_item` | ModuleDecl | degraded | 0 | `rs.foreign-mod` |
 | `fragment_specifier` | Region | degraded | 1 | `rs.misc` |
 | `function_item` | FuncDecl | exact | 23 | `rs.func` |
-| `function_modifiers` | Attribute | degraded | 3 | `rs.modifier` |
+| `function_modifiers` | RsFnModifiers | degraded | 0 | `rs.function-modifiers` |
 | `function_signature_item` | RsFuncSig | exact | 2 | `rs.func-signature` |
 | `function_type` | FuncType | degraded | 0 | `rs.fn-type` |
 | `gen_block` | RsGenBlock | degraded | 0 | `rs.gen-block` |
@@ -147,7 +152,7 @@
 | `metavariable` | RsMetavar | exact | 0 | `rs.literals-metavar` |
 | `mod_item` | ModuleDecl | exact | 0 | `rs.mod` |
 | `mut_pattern` | Region | degraded | 1 | `rs.patterns` |
-| `mutable_specifier` | Attribute | degraded | 3 | `rs.modifier` |
+| `mutable_specifier` | RsMutable | exact | 3 | `rs.mutable-specifier` |
 | `negative_literal` | RsNegativeLit | exact | 0 | `rs.negative-literal` |
 | `never_type` | Named | degraded | 1 | `rs.never-type` |
 | `or_pattern` | Region | degraded | 1 | `rs.patterns` |
@@ -198,7 +203,7 @@
 | `tuple_expression` | Tuple | exact | 1 | `rs.tuple` |
 | `tuple_pattern` | Region | degraded | 1 | `rs.patterns` |
 | `tuple_struct_pattern` | Region | degraded | 1 | `rs.patterns` |
-| `tuple_type` | Tuple | degraded | 1 | `rs.tuple-type` |
+| `tuple_type` | RsTupleType | degraded | 0 | `rs.tuple-type` |
 | `type_arguments` | RsTypeArgs | exact | 9 | `rs.type-args` |
 | `type_binding` | TypeDecl | degraded | 2 | `rs.type-binding` |
 | `type_cast_expression` | Cast | exact | 2 | `rs.cast` |
@@ -207,7 +212,7 @@
 | `type_parameter` | GenericParam | exact | 2 | `rs.generic-param` |
 | `type_parameters` | Region | degraded | 1 | `rs.type-params` |
 | `unary_expression` | Unary | exact | 2 | `rs.unary` |
-| `union_item` | StructDecl | degraded | 5 | `rs.union` |
+| `union_item` | RsUnion | degraded | 0 | `rs.union` |
 | `unit_expression` | Region | degraded | 1 | `rs.unit-expr` |
 | `unit_type` | Named | degraded | 1 | `rs.unit-type` |
 | `unsafe_block` | RsUnsafeBlock | exact | 2 | `rs.unsafe-block` |
@@ -217,7 +222,7 @@
 | `use_list` | RsUseList | exact | 1 | `rs.use-list` |
 | `use_wildcard` | RsUseWildcard | exact | 1 | `rs.use-wildcard` |
 | `variadic_parameter` | Region | degraded | 1 | `rs.parameters` |
-| `visibility_modifier` | Attribute | degraded | 3 | `rs.modifier` |
+| `visibility_modifier` | RsVisibility | exact | 6 | `rs.visibility-modifier` |
 | `where_clause` | Region | degraded | 1 | `rs.where-clause` |
 | `where_predicate` | Region | degraded | 1 | `rs.where-clause` |
 | `while_expression` | While | exact | 2 | `rs.while` |

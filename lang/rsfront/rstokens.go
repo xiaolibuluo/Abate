@@ -36,6 +36,7 @@ const (
 	rsCtxTrait
 	rsCtxMatchArm
 	rsCtxStructLit
+	rsCtxEnum
 )
 
 // rsBinding is one deterministic infix binding-power entry.

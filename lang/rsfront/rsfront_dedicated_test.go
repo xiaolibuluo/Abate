@@ -66,6 +66,11 @@ var rsDedicatedCases = []struct {
 		air.KindRsTurbofish},
 	{"type-args", "fn main() { let f = Vec::<i32>::new(); }\n",
 		air.KindRsTypeArgs},
+	{"enum-variant", "enum E { A, B(u32), C { x: i32 } }\n",
+		air.KindRsEnumVariant},
+	{"visibility-modifier", "pub fn open() {}\n", air.KindRsVisibility},
+	{"mutable-specifier", "fn main() { let mut n = 0; n += 1; }\n",
+		air.KindRsMutable},
 }
 
 // TestRsDedicatedKindsAreReallyProduced parses each minimal source and asserts

@@ -232,6 +232,85 @@ func jsIsArrowParamsOpen(toks []frontkit.Token, i int) bool {
 	return next != nil && next.Text == "=>"
 }
 
+// jsIsPatternBrace reports whether the '{' at i opens a destructuring object
+// pattern: its closing '}' is directly followed by '=' (declaration or
+// assignment destructuring) or the brace is nested inside a formal-parameter
+// list.
+func jsIsPatternBrace(toks []frontkit.Token, i int) bool {
+	if i < 0 || i >= len(toks) || toks[i].Text != "{" {
+		return false
+	}
+	end := jsMatchForward(toks, i, "{", "}")
+	if end < 0 {
+		return false
+	}
+	if after, _ := jsSig(toks, end+1, 1); after != nil && after.Text == "=" {
+		return true
+	}
+	paren := jsMatchBackward(toks, i-1, "(", ")")
+	if paren < 0 {
+		return false
+	}
+	closeParen := jsMatchForward(toks, paren, "(", ")")
+	return closeParen > i && jsIsFormalParamsOpen(toks, paren)
+}
+
+// jsIsPatternBracket reports whether the '[' at i opens a destructuring array
+// pattern: its closing ']' is directly followed by '=', ',' or '}' (nested
+// inside another pattern), or the bracket is nested inside a formal-parameter
+// list.
+func jsIsPatternBracket(toks []frontkit.Token, i int) bool {
+	if i < 0 || i >= len(toks) || toks[i].Text != "[" {
+		return false
+	}
+	end := jsMatchForward(toks, i, "[", "]")
+	if end < 0 || end <= i+1 {
+		return false
+	}
+	if after, _ := jsSig(toks, end+1, 1); after != nil &&
+		(after.Text == "=" || after.Text == "," || after.Text == "}") {
+		return true
+	}
+	paren := jsMatchBackward(toks, i-1, "(", ")")
+	if paren < 0 {
+		return false
+	}
+	closeParen := jsMatchForward(toks, paren, "(", ")")
+	return closeParen > i && jsIsFormalParamsOpen(toks, paren)
+}
+
+// jsIsAssignPattern reports whether the '=' at i carries a destructuring
+// assignment pattern (assignment_pattern in the grammar): its left operand
+// is a destructuring brace or bracket whose closing delimiter was just
+// consumed, and the '=' is not an object-property default value (which is
+// handled by jsIsObjectAssignDefault).
+func jsIsAssignPattern(toks []frontkit.Token, i int) bool {
+	if i <= 0 || toks[i].Text != "=" {
+		return false
+	}
+	prev, prevIdx := jsSig(toks, i-1, -1)
+	if prev == nil || (prev.Text != "}" && prev.Text != "]") {
+		return false
+	}
+	// Exclude object-property defaults already covered by jsIsObjectAssignDefault.
+	if prev.Text == "}" && jsIsObjectAssignDefault(toks, i) {
+		return false
+	}
+	// The closing brace/bracket must belong to a destructuring pattern.
+	open := "{"
+	if prev.Text == "]" {
+		open = "["
+	}
+	braceIdx := jsMatchBackward(toks, prevIdx, open, prev.Text)
+	if braceIdx < 0 {
+		return false
+	}
+	if open == "{" {
+		return jsInPatternBraces(toks, i)
+	}
+	return jsIsPatternBracket(toks, braceIdx)
+}
+
 // noteMarkers emits dedicated markers for constructs the parser tagged on the
 // reduced tree (JSX elements and parenthesized expressions).
 func (p *jsParser) noteMarkers(out *[]air.Node) {

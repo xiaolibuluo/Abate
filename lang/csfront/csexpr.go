@@ -49,6 +49,55 @@ func (e *csExpr) reduce(tokens []frontkit.Token, lo, hi int) []air.Node {
 	start := lo
 	for i := lo; i < hi; i++ {
 		tok := tokens[i]
+		// 展运算符 .. 在 Pratt 解析器中因逗号中缀归约优先级问题
+		// 常在错误恢复中被跳过；在此直处理：卸掉 .. token，取后随
+		// 表达式作为操作数，发放 KindSpread 标记并包装为 KindUnary。
+		if tok.Kind == frontkit.TokenOp && tok.Text == ".." {
+			if start < i {
+				out = append(out,
+					e.reduceSegment(tokens, start, i)...)
+			}
+			off := i
+			_ = off
+			// 定位操作数区间：跳过 .. 后紧接的空白/注释
+			for i++; i < hi; i++ {
+				if tokens[i].Kind != frontkit.TokenNewline &&
+					tokens[i].Kind != frontkit.TokenComment {
+					break
+				}
+			}
+			opStart := i
+			// 消费操作数 token 直到分隔符
+			for i < hi {
+				t := tokens[i]
+				if t.Text == "," || t.Text == ";" ||
+					t.Text == "{" || t.Text == "}" ||
+					t.Text == ")" || t.Text == "]" ||
+					t.Kind == frontkit.TokenEOF ||
+					t.Kind == frontkit.TokenNewline ||
+					t.Kind == frontkit.TokenDedent {
+					break
+				}
+				i++
+			}
+			if opStart < i {
+				children := e.reduceSegment(
+					tokens, opStart, i)
+				if len(children) == 1 {
+					mark := e.mapper.dedicated(
+						air.KindSpread, tok,
+						tok.Text,
+						e.mapper.note(
+						"cs-spread"))
+					node := e.mapper.unaryNodeMarked(
+						air.KindUnary, tok,
+						children[0], mark)
+					out = append(out, node)
+				}
+			}
+			start = i
+			continue
+		}
 		switch tok.Kind {
 		case frontkit.TokenNewline, frontkit.TokenEOF,
 			frontkit.TokenIndent, frontkit.TokenDedent:
@@ -115,6 +164,22 @@ func (e *csExpr) reduceSegment(tokens []frontkit.Token, lo, hi int) []air.Node {
 		peek, ok := stream.Peek()
 		if !ok || peek.Kind == frontkit.TokenEOF {
 			break
+		}
+		// 展运算符 .. 在逗号分隔的表达式中因 PrefixPower 过低
+		// 而无法参与 Pratt 中缀归约，在此直处理，发放 KindSpread
+		// 标记并包装为 KindUnary 节点。
+		if peek.Kind == frontkit.TokenOp && peek.Text == ".." {
+			stream.Advance()
+			operand, operr := parser.ParseExpression(4)
+			if operr == nil && operand != nil {
+				mark := e.mapper.dedicated(
+					air.KindSpread, peek, "..",
+					e.mapper.note("cs-spread"))
+				node := e.mapper.unaryNodeMarked(
+					air.KindUnary, peek, operand, mark)
+				out = append(out, node)
+			}
+			continue
 		}
 		before := stream.Remaining()
 		node, parseErr := parser.ParseExpression(0)
@@ -212,7 +277,7 @@ func (e *csExpr) register(parser *frontkit.PrattParser) {
 	}
 	keywordPrefix := e.keywordPrefix()
 	for _, keyword := range []string{"await", "new", "typeof", "sizeof",
-		"nameof"} {
+		"nameof", "ref"} {
 		rule := frontkit.ParseRule{PrefixPower: 70, Prefix: keywordPrefix}
 		_ = parser.RegisterText(frontkit.TokenKeyword, keyword, rule)
 	}
@@ -222,6 +287,12 @@ func (e *csExpr) register(parser *frontkit.PrattParser) {
 	opPrefix := e.opPrefix()
 	for _, op := range csPrefixOps {
 		rule := frontkit.ParseRule{Prefix: opPrefix}
+		// .. 展运算符的前缀绑定力需高于逗号（power=3），
+		// 否则 ParsePrefixOperand 内的 ParseExpression 会
+		// 把后续的逗号分隔元素也吞为操作数。
+		if op.text == ".." {
+			rule.PrefixPower = 4
+		}
 		for _, binding := range e.bindings {
 			if binding.text == op.text {
 				rule.InfixPower = binding.power

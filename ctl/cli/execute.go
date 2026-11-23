@@ -40,6 +40,10 @@ func dispatch(args []string, stdout, stderr io.Writer) int {
 		return cmdCheck(args[1:], stdout, stderr)
 	case "derive":
 		return cmdDerive(args[1:], stdout, stderr)
+	case "mutate":
+		return cmdMutate(args[1:], stdout, stderr)
+	case "targetgen":
+		return cmdTargetgen(args[1:], stdout, stderr)
 	case "plugin":
 		return cmdPlugin(args[1:], stdout, stderr)
 	case "web":
@@ -84,6 +88,11 @@ Commands:
                      (.go/.py/.js/.c/.cs/.rs/.kt); emit console/JSON/SARIF.
   derive             Derive M-family operators from rules; run a mutation
                      experiment (static AIR-level killing approximation).
+  mutate <path>      Run a mutation experiment against a real Go workspace
+                     with real go test execution as the killing judge.
+  targetgen          Generate a deterministic mutation-testing target
+                     project for one of 7 languages (go/py/js/c/cs/rs/kt)
+                     with real tests guarding every structure.
   plugin             Verify, load, call, list and hot-swap signed plugins.
   web                Serve the control API with a self-contained browser console.
   version            Print build version and provenance.
@@ -101,6 +110,8 @@ Examples:
   abate check ./ctl/cli
   abate check ./lang/rule --format sarif --out /tmp/check.sarif
   abate derive --seed 42 --format json
+  abate mutate ./lang/gomutate --seed 42 --format json
+  abate targetgen --out /tmp/tgt --seed 42 --funcs 14 --level easy
   abate plugin load --manifest plugin-manifest.json --type operator
   abate plugin call --id abate/operator --entry apply --args ZWJhdGU=
   abate plugin --help

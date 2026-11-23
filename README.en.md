@@ -9,7 +9,7 @@
 
 # Abate
 
-[![version](https://img.shields.io/badge/version-1.2.28-blue)](https://github.com/xiaolibuluo/Abate/releases/latest)
+[![version](https://img.shields.io/badge/version-1.2.29-blue)](https://github.com/xiaolibuluo/Abate/releases/latest)
 [![license](https://img.shields.io/badge/license-AGPLv3%20%7C%20commercial-green)](LICENSING.en.md)
 [![checks](https://img.shields.io/badge/checks-7%20languages-orange)](docs/user/multilang-check-guide.en.md)
 [![Go](https://img.shields.io/badge/Go-1.26.11-00ADD8?logo=go)](go.mod)
@@ -57,7 +57,7 @@ See [Releases](https://github.com/xiaolibuluo/Abate/releases/latest).
 ```bash
 export GOPROXY=off
 go build -o abate .
-./abate version          # abate 1.2.28 / schema ces.tencent.com/v1 / ...
+./abate version          # abate 1.2.29 / schema ces.tencent.com/v1 / ...
 ```
 
 **Example 1: check seven-language source** (auto-dispatch by extension, no language flag needed):
@@ -109,7 +109,7 @@ Abate documents only facts reproducible from current code and scripts. Boundarie
 | Syntax gate | Tolerant parsing: broken input yields partial AIR + warnings, **not a syntax-correctness gate** |
 | Semantic depth | No type checking / CFG / data flow / interprocedural analysis; not equivalent to dedicated tools |
 | Rule depth | 72 shared AIR templates + per-language rules (Go 116, others 12–14); Go hits need specific semantic context |
-| Full-corpus fidelity | Six languages 3%–5% (see [language coverage](docs/user/language-coverage.en.md)); Go has no embedded grammar mappings → `NOT_MEASURED`; not a "high fidelity" claim |
+| Full-corpus construct coverage | Six languages measured in `docs/dev/frontend-coverage/` per-language reports (C 66.4% / C# 52.6% / JS 89.5% / Kotlin 47.0% / Python 91.8% / Rust 77.9%); Go has no embedded grammar mappings -> `NOT_MEASURED`; not a "high fidelity" claim |
 | Competitor comparison | `competitorAbsolute = NOT_MEASURED` (never actually benchmarked; no absolute scores) |
 | derive killing | Static AIR-level approximation, **not a real go test execution** |
 | Community validation | 0 star / 0 fork / 0 watcher, individually maintained; no star buying, no fabricated benchmarks |

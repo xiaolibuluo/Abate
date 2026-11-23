@@ -138,10 +138,15 @@ func (m *pyMap) tupleNode(open, endTok frontkit.Token, items ...air.Node) air.No
 	return m.build(air.KindTuple, open, endTok, "", items...)
 }
 
-// spread lowers *args and **kwargs to KindSpread or KindStar.
+// exprListNode lowers a comma-separated expression list to KindPyExprList.
+func (m *pyMap) exprListNode(open, endTok frontkit.Token, items ...air.Node) air.Node {
+	return m.build(air.KindPyExprList, open, endTok, "", items...)
+}
+
+// spread lowers *args and **kwargs to KindSpread or KindPyStarList.
 func (m *pyMap) spread(op frontkit.Token, operand air.Node) air.Node {
-	kind := air.KindStar
-	note := "star-args"
+	kind := air.KindPyStarList
+	note := "star-list"
 	if op.Text == "**" {
 		kind = air.KindSpread
 		note = "kwargs"

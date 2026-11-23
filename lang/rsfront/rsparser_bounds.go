@@ -157,6 +157,8 @@ func (*rsParser) bodyContext(mapping rsMapping) rsContext {
 	switch mapping.kind {
 	case air.KindMatch:
 		return rsCtxMatchArm
+	case air.KindEnumDecl:
+		return rsCtxEnum
 	case air.KindTraitDecl:
 		return rsCtxTrait
 	case air.KindCompositeLit:

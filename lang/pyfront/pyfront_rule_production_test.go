@@ -98,8 +98,8 @@ func assertRulesDegraded(t *testing.T, lang string, names ...string) {
 // real-corpus production.
 func TestPyStructuralDegradationsStayDegraded(t *testing.T) {
 	assertRulesDegraded(t, "py",
-		"py.type-constrained", "py.splat-type", "py.expr-list",
-		"py.list-splat", "py.paren-expr", "py.parameters", "py.patterns",
+		"py.type-constrained", "py.splat-type",
+		"py.paren-expr", "py.parameters", "py.patterns",
 		"py.separators", "py.argument-list", "py.interpolation",
 		"py.ellipsis", "py.line-continuation",
 		"py.named-expr",

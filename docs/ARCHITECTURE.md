@@ -101,7 +101,7 @@ killing 为**静态 AIR 级近似**，不是真实 go test 执行。
 ## 7 边界与诚实口径
 
 - `check` 是结构化 linter，非编译器级语义分析（详见 [能力与边界](user/capabilities-and-limits.md)）。
-- 全语料保真度六语 3%–5%，Go `NOT_MEASURED`；E2E"达标"仅限冻结单文件口径，不构成"高保真"结论。
+- 全语料构造覆盖率六语实测见 `docs/dev/frontend-coverage/` 各语言报告（C 66.4% / C# 52.6% / JS 89.5% / Kotlin 47.0% / Python 91.8% / Rust 77.9%），Go `NOT_MEASURED`；E2E“达标”仅限冻结单文件口径，不构成“高保真”结论。
 - 竞品绝对分数 `NOT_MEASURED`；derive killing 为静态近似；社区验证尚为空白。
 
 ## 8 导览

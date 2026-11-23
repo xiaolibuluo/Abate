@@ -11,7 +11,7 @@ package rest
 // deterministic and offline (no network, no build-time injection dependency).
 const (
 	// MetaVersion is the Abate release label.
-	MetaVersion = "1.2.28"
+	MetaVersion = "1.2.29"
 	// MetaSchema is the CES schema identifier this build speaks.
 	MetaSchema = "ces.tencent.com/v1"
 	// MetaBuild marks the build provenance.
