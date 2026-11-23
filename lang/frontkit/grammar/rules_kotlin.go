@@ -78,7 +78,7 @@ func kotlinRules() []MappingRule {
 		exact("kt.this-expr", air.KindKtThis, "this_expression"),
 		exact("kt.super-expr", air.KindKtSuper, "super_expression"),
 		exact("kt.callable-ref", air.KindKtCallableRef, "callable_reference"),
-		degraded("kt.ternary", air.KindTernary, "全语料零产出，回退 degraded 避免 exact 分母虚增", "elvis_expression"),
+		exact("kt.elvis", air.KindBinary, "elvis_expression"),
 		exact("kt.lambda", air.KindLambda, "lambda_literal"),
 		degraded("kt.annotated-lambda", air.KindKtAnnotatedLambda,
 			"带注解 lambda 降级为独立注解 lambda 节点", "annotated_lambda"),

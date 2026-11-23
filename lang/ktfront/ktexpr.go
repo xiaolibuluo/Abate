@@ -12,12 +12,7 @@ import (
 	"abate/lang/frontkit"
 )
 
-// ktExpr 用 frontkit.PrattParser 归约 Kotlin 表达式区间。
-//
-// 前缀规则覆盖 when 表达式与字符串模板入口；中缀规则覆盖空安全 ?. 、
-// Elvis ?: 、lambda -> 、成员调用与区间 .. 等，绑定力全部是有序整数表。
-// 后缀 !! 与可空类型 ? 由词法叶子的可注入空安全映射表投影。任何片段归约
-// 失败都降级为词法叶子序列，绝不向上抛出错误。
+// ktExpr 用 frontkit.PrattParser 归约 Kotlin 表达式区间；失败降级为词法叶子。
 type ktExpr struct {
 	bindings []ktBinding
 	mapper   *ktMap
@@ -31,8 +26,7 @@ func newKtExpr(bindings []ktBinding, mapper *ktMap) *ktExpr {
 	return &ktExpr{bindings: bindings, mapper: mapper}
 }
 
-// reduce 把 [lo,hi) 切成互不重叠的片段并逐段归约，保证每个词法 token 都
-// 落在某个 AIR 叶子中，从而满足 token 级保真与位置区间覆盖。
+// reduce 把 [lo,hi) 逐段归约，保证每个词法 token 都落在某个 AIR 叶子中。
 func (e *ktExpr) reduce(tokens []frontkit.Token, lo, hi int) []air.Node {
 	if lo < 0 {
 		lo = 0
@@ -133,8 +127,7 @@ func (e *ktExpr) reduceSegment(tokens []frontkit.Token, lo, hi int) []air.Node {
 	return out
 }
 
-// coverLeaves 为每个起始偏移尚未落在任何已产出节点区间内的 token 补一个
-// 词法叶子，保证以操作符结尾的片段仍满足 token 级保真且不重叠。
+// coverLeaves 为尚未落在任何已产出节点区间内的 token 补词法叶子。
 func (e *ktExpr) coverLeaves(sub []frontkit.Token, out []air.Node) []air.Node {
 	limit := len(sub) - 1
 	for k := 0; k < limit; k++ {
@@ -167,11 +160,13 @@ func (e *ktExpr) register(parser *frontkit.PrattParser) {
 	}
 	infix := e.infixRule()
 	for _, binding := range e.bindings {
-		// 每条中缀规则同时保留前缀投影，使被注册为操作符文本的定界符
-		// 作为片段首 token 时仍能归约成叶子而不报错。
+		// 前缀投影默认归约为叶子；绑定表 prefix 列声明的算符（如 * 的 spread）归约为对应 AIR 节点。
 		rule := frontkit.ParseRule{
 			Prefix: literalPrefix, InfixPower: binding.power,
 			RightAssoc: binding.right, Infix: infix,
+		}
+		if binding.prefix != 0 {
+			rule.Prefix = e.spreadPrefixRule(binding.prefix, binding.power)
 		}
 		for _, kind := range []frontkit.TokenKind{
 			frontkit.TokenOp, frontkit.TokenKeyword,
@@ -207,6 +202,22 @@ func (e *ktExpr) register(parser *frontkit.PrattParser) {
 	}
 }
 
+// spreadPrefixRule 生成绑定表声明的前缀投影规则（如 *arr → KindSpread）。
+func (e *ktExpr) spreadPrefixRule(kind air.NodeKind, power int) func(*frontkit.PrattParser,
+	frontkit.Token) (air.Node, error) {
+	return func(parser *frontkit.PrattParser, tok frontkit.Token) (air.Node, error) {
+		operand, err := parser.ParseExpression(power)
+		if err != nil || operand == nil {
+			node := e.mapper.leafKind(tok, kind)
+			return e.mapper.annotate(node, air.SemNote,
+				e.mapper.note("kt-spread")), nil
+		}
+		node := e.mapper.unaryNode(kind, tok, operand)
+		return e.mapper.annotate(node, air.SemNote,
+			e.mapper.note("kt-spread")), nil
+	}
+}
+
 // whenPrefixRule 把 when 表达式归约为 KindMatchExpr 带 when-expr 标注。
 func (e *ktExpr) whenPrefixRule() func(*frontkit.PrattParser,
 	frontkit.Token) (air.Node, error) {
@@ -223,8 +234,7 @@ func (e *ktExpr) whenPrefixRule() func(*frontkit.PrattParser,
 	}
 }
 
-// infixRule 生成二元/赋值/成员/调用/lambda/空安全节点并写入语义标注；
-// 空安全相关标注来自可注入映射表，删去表项后行为随之改变。
+// infixRule 生成二元/赋值/成员/调用/lambda/空安全节点并写入语义标注。
 func (e *ktExpr) infixRule() func(*frontkit.PrattParser, air.Node,
 	frontkit.Token, air.Node) (air.Node, error) {
 	return func(_ *frontkit.PrattParser, left air.Node, tok frontkit.Token,

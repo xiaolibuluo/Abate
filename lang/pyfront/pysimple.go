@@ -43,11 +43,19 @@ func (p *pyParser) parseSimpleKeyword(tok frontkit.Token, rule pyStmtRule) air.N
 		cur.Text != ";" && cur.Text != ":" {
 		operand = p.expr.parseExprList()
 	}
+	var starMarker air.Node
 	if (rule.keyword == "import" || rule.keyword == "from") && operand != nil {
 		if qualified := p.mapper.qualifiedName(operand); qualified != nil {
 			operand = qualified
 		}
 		p.view.AddImport(air.AttributeOf(operand))
+		// from-import 的通配 * 被表达式归约为 PyStarList，与 *args 同形；
+		// 在 import 上下文中补发 KindStar 节点，让 PY-PEP8-007 能在真前端
+		// 产物上命中通配导入。
+		if star := pyFindStarList(operand); star != nil {
+			starMarker = p.mapper.dedicated(air.KindStar, tok, spanToken(star, tok),
+				"*", "py-star-import", star)
+		}
 	}
 	p.synchronize()
 	end := tok
@@ -58,6 +66,9 @@ func (p *pyParser) parseSimpleKeyword(tok frontkit.Token, rule pyStmtRule) air.N
 	if operand != nil {
 		children = append(children, operand)
 		end = spanToken(operand, tok)
+	}
+	if starMarker != nil {
+		children = append(children, starMarker)
 	}
 	if marker := p.statementMarker(rule.keyword, tok, end, operand); marker != nil {
 		children = append(children, marker)
@@ -152,4 +163,21 @@ func (p *pyParser) parseSimple(tok frontkit.Token) air.Node {
 	}
 	p.synchronize()
 	return p.finish(air.KindExprStmt, tok, spanToken(left, tok), "", left)
+}
+
+// pyFindStarList 在 import/from 操作数子树中定位第一个 PyStarList 通配节点；
+// 用于为通配导入补发 KindStar 标记，不影响 *args 在普通调用中的归约。
+func pyFindStarList(node air.Node) air.Node {
+	if node == nil {
+		return nil
+	}
+	if node.Kind() == air.KindPyStarList {
+		return node
+	}
+	for _, child := range node.Children() {
+		if found := pyFindStarList(child); found != nil {
+			return found
+		}
+	}
+	return nil
 }

@@ -3,13 +3,13 @@
 - 上游语法事实：`https://github.com/tree-sitter/tree-sitter-kotlin` 0.3.8
 - 上游具体构造总数：**134**
 - 映射完备率：**100.0%**（134/134，无未映射空洞）
-- 实测覆盖：**63**（**47.0%**）
-  - 精确映射覆盖：59
-  - 降级映射覆盖：4
+- 实测覆盖：**69**（**51.5%**）
+  - 精确映射覆盖：64
+  - 降级映射覆盖：5
 - 能力域外（显式登记并给出理由）：0
 - 未映射：0
-- 认可覆盖率（覆盖 + 能力域外）：**47.0%**
-- 真实解析命中的 AIR 类型数：44
+- 认可覆盖率（覆盖 + 能力域外）：**51.5%**
+- 真实解析命中的 AIR 类型数：49
 
 统计口径：覆盖率来自对该语言样例语料的**真实解析**，上游构造的 AIR 类型在解析产物中出现过才计为已覆盖。AIR 是中性中间表示，多个上游构造可能共用同一 AIR 类型，因此覆盖以 AIR 类型为粒度；每个上游构造在清单中单列一行，并标注其映射是精确映射还是降级映射。
 
@@ -29,11 +29,9 @@
 | `class_modifier` | Attribute | degraded | 声明修饰符降级为属性节点 |
 | `class_parameter` | Region | degraded | 主构造函数形参无独立节点，降级为区域节点 |
 | `collection_literal` | CompositeLit | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
-| `constructor_delegation_call` | KtCtorDelegation | exact | AIR 以独立节点建模该构造 |
 | `constructor_invocation` | KtInfixCtor | degraded | 构造调用降级为独立中缀/构造调用节点 |
 | `delegation_specifier` | Region | degraded | 委派规格无独立节点，降级为区域节点 |
 | `directly_assignable_expression` | Region | degraded | 可赋值表达式标记无独立节点，降级为区域节点 |
-| `elvis_expression` | Ternary | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `enum_class_body` | Region | degraded | 枚举体无独立节点，降级为区域节点 |
 | `explicit_delegation` | Region | degraded | 委派规格无独立节点，降级为区域节点 |
 | `function_modifier` | Attribute | degraded | 声明修饰符降级为属性节点 |
@@ -68,9 +66,7 @@
 | `reification_modifier` | Attribute | degraded | 声明修饰符降级为属性节点 |
 | `shebang_line` | Directive | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `simple_identifier` | KtSimpleIdent | degraded | 简单标识符降级为独立简单标识符节点 |
-| `spread_expression` | Spread | degraded | 全语料零产出，回退 degraded 避免 exact 分母虚增 |
 | `statements` | Region | degraded | 语句列表无独立节点，降级为区域节点 |
-| `super_expression` | KtSuper | exact | AIR 以独立节点建模该构造 |
 | `type_arguments` | GenericInst | degraded | 类型实参列表降级为泛型实例节点 |
 | `type_constraint` | Region | degraded | 类型形参列表无独立节点，降级为区域节点 |
 | `type_constraints` | Region | degraded | 类型形参列表无独立节点，降级为区域节点 |
@@ -88,8 +84,6 @@
 | `variance_modifier` | Attribute | degraded | 声明修饰符降级为属性节点 |
 | `visibility_modifier` | Attribute | degraded | 声明修饰符降级为属性节点 |
 | `when_condition` | Region | degraded | when 条件无独立节点，降级为区域节点 |
-| `when_entry` | KtWhenEntry | exact | AIR 以独立节点建模该构造 |
-| `when_expression` | Match | exact | AIR 以独立节点建模该构造 |
 
 ## 能力域外条目
 
@@ -106,10 +100,10 @@
 | `anonymous_initializer` | CompositeLit | degraded | 0 | `kt.anonymous-init` |
 | `as_expression` | Cast | degraded | 0 | `kt.as` |
 | `assignment` | Assign | exact | 51 | `kt.assign` |
-| `bin_literal` | NumLit | exact | 34 | `kt.number` |
+| `bin_literal` | NumLit | exact | 35 | `kt.number` |
 | `binding_pattern_kind` | Region | degraded | 0 | `kt.binding-pattern` |
 | `boolean_literal` | BoolLit | exact | 4 | `kt.bool` |
-| `call_expression` | Call | exact | 60 | `kt.call` |
+| `call_expression` | Call | exact | 68 | `kt.call` |
 | `call_suffix` | Region | degraded | 0 | `kt.suffix` |
 | `callable_reference` | KtCallableRef | exact | 1 | `kt.callable-ref` |
 | `catch_block` | Catch | exact | 1 | `kt.catch` |
@@ -117,21 +111,21 @@
 | `character_literal` | CharLit | exact | 2 | `kt.char` |
 | `check_expression` | Region | degraded | 0 | `kt.check` |
 | `class_body` | Region | degraded | 0 | `kt.class-body` |
-| `class_declaration` | ClassDecl | exact | 14 | `kt.class` |
+| `class_declaration` | ClassDecl | exact | 17 | `kt.class` |
 | `class_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
 | `class_parameter` | Region | degraded | 0 | `kt.class-parameter` |
 | `collection_literal` | CompositeLit | degraded | 0 | `kt.collection` |
 | `companion_object` | KtCompanion | exact | 2 | `kt.companion` |
 | `comparison_expression` | Binary | exact | 25 | `kt.comparison` |
 | `conjunction_expression` | Binary | exact | 25 | `kt.conjunction` |
-| `constructor_delegation_call` | KtCtorDelegation | exact | 0 | `kt.ctor-delegation` |
+| `constructor_delegation_call` | KtCtorDelegation | exact | 1 | `kt.ctor-delegation` |
 | `constructor_invocation` | KtInfixCtor | degraded | 0 | `kt.ctor-call` |
 | `control_structure_body` | KtControlBody | exact | 4 | `kt.control-body` |
 | `delegation_specifier` | Region | degraded | 0 | `kt.delegation` |
 | `directly_assignable_expression` | Region | degraded | 0 | `kt.assignable` |
 | `disjunction_expression` | Binary | exact | 25 | `kt.disjunction` |
 | `do_while_statement` | DoWhile | exact | 1 | `kt.do` |
-| `elvis_expression` | Ternary | degraded | 0 | `kt.ternary` |
+| `elvis_expression` | Binary | exact | 25 | `kt.elvis` |
 | `enum_class_body` | Region | degraded | 0 | `kt.enum-body` |
 | `enum_entry` | EnumDecl | degraded | 2 | `kt.enum-entry` |
 | `equality_expression` | Binary | exact | 25 | `kt.equality` |
@@ -139,15 +133,15 @@
 | `file_annotation` | AnnotationDecl | exact | 1 | `kt.annotation` |
 | `finally_block` | Finally | exact | 1 | `kt.finally` |
 | `for_statement` | KtForIn | exact | 2 | `kt.for` |
-| `function_body` | Block | exact | 36 | `kt.block` |
-| `function_declaration` | FuncDecl | exact | 15 | `kt.func` |
+| `function_body` | Block | exact | 44 | `kt.block` |
+| `function_declaration` | FuncDecl | exact | 19 | `kt.func` |
 | `function_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
 | `function_type` | FuncType | degraded | 0 | `kt.fn-type` |
 | `function_type_parameters` | Region | degraded | 0 | `kt.fn-type-params` |
 | `function_value_parameters` | Region | degraded | 0 | `kt.fn-type-params` |
 | `getter` | KtAccessor | exact | 1 | `kt.accessor` |
-| `hex_literal` | NumLit | exact | 34 | `kt.number` |
-| `identifier` | Ident | exact | 361 | `core.identifier` |
+| `hex_literal` | NumLit | exact | 35 | `kt.number` |
+| `identifier` | Ident | exact | 390 | `core.identifier` |
 | `if_expression` | If | exact | 1 | `kt.if` |
 | `import_alias` | KtImportAlias | exact | 1 | `kt.import-alias` |
 | `import_header` | Import | exact | 3 | `kt.import` |
@@ -156,7 +150,7 @@
 | `indexing_suffix` | Region | degraded | 0 | `kt.suffix` |
 | `infix_expression` | KtInfixCtor | degraded | 0 | `kt.infix-call` |
 | `inheritance_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
-| `integer_literal` | NumLit | exact | 34 | `kt.number` |
+| `integer_literal` | NumLit | exact | 35 | `kt.number` |
 | `interpolated_expression` | KtInterp | exact | 6 | `kt.interpolated` |
 | `interpolated_identifier` | Region | degraded | 0 | `kt.interpolated-ident` |
 | `jump_expression` | Branch | degraded | 2 | `kt.jump` |
@@ -164,7 +158,7 @@
 | `lambda_literal` | Lambda | exact | 10 | `kt.lambda` |
 | `lambda_parameters` | Region | degraded | 0 | `kt.lambda-params` |
 | `line_comment` | Comment | exact | 4 | `kt.comment` |
-| `long_literal` | NumLit | exact | 34 | `kt.number` |
+| `long_literal` | NumLit | exact | 35 | `kt.number` |
 | `member_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
 | `modifiers` | Attribute | degraded | 0 | `kt.modifiers` |
 | `multi_variable_declaration` | KtMultiVar | degraded | 0 | `kt.multi-var` |
@@ -174,9 +168,9 @@
 | `navigation_suffix` | Region | degraded | 0 | `kt.suffix` |
 | `not_nullable_type` | Named | degraded | 0 | `kt.not-null-type` |
 | `nullable_type` | Optional | exact | 3 | `kt.nullable-type` |
-| `object_declaration` | ClassDecl | exact | 14 | `kt.object` |
+| `object_declaration` | ClassDecl | exact | 17 | `kt.object` |
 | `object_literal` | CompositeLit | degraded | 0 | `kt.object-literal` |
-| `package_header` | Package | exact | 55 | `kt.package` |
+| `package_header` | Package | exact | 58 | `kt.package` |
 | `parameter` | Region | degraded | 0 | `kt.class-parameter` |
 | `parameter_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
 | `parameter_modifiers` | Attribute | degraded | 0 | `kt.modifiers` |
@@ -193,19 +187,19 @@
 | `property_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
 | `range_expression` | KtRange | degraded | 0 | `kt.range` |
 | `range_test` | Region | degraded | 0 | `kt.range-test` |
-| `real_literal` | NumLit | exact | 34 | `kt.number` |
+| `real_literal` | NumLit | exact | 35 | `kt.number` |
 | `reification_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
-| `secondary_constructor` | KtSecondaryCtor | exact | 1 | `kt.secondary-ctor` |
+| `secondary_constructor` | KtSecondaryCtor | exact | 2 | `kt.secondary-ctor` |
 | `setter` | KtAccessor | exact | 1 | `kt.accessor` |
 | `shebang_line` | Directive | degraded | 0 | `kt.shebang` |
 | `simple_identifier` | KtSimpleIdent | degraded | 0 | `kt.simple-identifier` |
-| `source_file` | Package | exact | 55 | `kt.file` |
-| `spread_expression` | Spread | degraded | 0 | `kt.spread` |
+| `source_file` | Package | exact | 58 | `kt.file` |
+| `spread_expression` | Spread | degraded | 2 | `kt.spread` |
 | `statements` | Region | degraded | 0 | `kt.statements` |
-| `string_content` | KtStringFrag | exact | 15 | `kt.string-part` |
-| `string_literal` | StrLit | exact | 7 | `kt.string` |
-| `super_expression` | KtSuper | exact | 0 | `kt.super-expr` |
-| `this_expression` | KtThis | exact | 1 | `kt.this-expr` |
+| `string_content` | KtStringFrag | exact | 19 | `kt.string-part` |
+| `string_literal` | StrLit | exact | 9 | `kt.string` |
+| `super_expression` | KtSuper | exact | 1 | `kt.super-expr` |
+| `this_expression` | KtThis | exact | 2 | `kt.this-expr` |
 | `try_expression` | Try | exact | 1 | `kt.try` |
 | `type_alias` | TypeDecl | exact | 1 | `kt.type-alias` |
 | `type_arguments` | GenericInst | degraded | 0 | `kt.type-args` |
@@ -218,8 +212,8 @@
 | `type_parameters` | Region | degraded | 0 | `kt.type-params` |
 | `type_projection` | GenericInst | degraded | 0 | `kt.type-args` |
 | `type_projection_modifiers` | Region | degraded | 0 | `kt.type-params` |
-| `type_test` | TypeAssert | exact | 4 | `kt.type-test` |
-| `unsigned_literal` | NumLit | exact | 34 | `kt.number` |
+| `type_test` | TypeAssert | exact | 3 | `kt.type-test` |
+| `unsigned_literal` | NumLit | exact | 35 | `kt.number` |
 | `use_site_target` | Region | degraded | 0 | `kt.use-site` |
 | `user_type` | Named | degraded | 0 | `kt.named-type` |
 | `value_argument` | Region | degraded | 0 | `kt.value-args` |
@@ -228,9 +222,9 @@
 | `variance_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
 | `visibility_modifier` | Attribute | degraded | 0 | `kt.modifiers` |
 | `when_condition` | Region | degraded | 0 | `kt.when-condition` |
-| `when_entry` | KtWhenEntry | exact | 0 | `kt.when-entry` |
-| `when_expression` | Match | exact | 0 | `kt.when` |
-| `when_subject` | MatchExpr | exact | 2 | `kt.when-subject` |
+| `when_entry` | KtWhenEntry | exact | 2 | `kt.when-entry` |
+| `when_expression` | Match | exact | 1 | `kt.when` |
+| `when_subject` | MatchExpr | exact | 3 | `kt.when-subject` |
 | `while_statement` | While | exact | 2 | `kt.while` |
 | `wildcard_import` | Import | exact | 3 | `kt.import` |
 

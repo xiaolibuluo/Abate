@@ -244,8 +244,15 @@ func (p *ktParser) parseWhenBranches(lo, hi int) []air.Node {
 func (p *ktParser) caseNode(lo, hi int) air.Node {
 	inner := p.expr.reduce(p.tokens, lo, hi)
 	start, end := ktSpanTokens(p.tokens, lo, hi)
-	marker := p.mapper.dedicated(air.KindKtWhenEntry, p.tokens[hi-1],
-		p.tokens[hi-1].Text, "kt-when-entry")
+	arrow := p.tokens[hi-1]
+	// 箭头 token 已被分支内归约出的 Lambda 等子节点覆盖，零宽标记锚在
+	// 箭头结束偏移处，作为最后子节点不与前序兄弟区间重叠。
+	anchor := frontkit.Token{
+		Line: arrow.Line, Column: arrow.Column + len(arrow.Text),
+		Offset: arrow.EndOffset, EndOffset: arrow.EndOffset,
+	}
+	marker := p.mapper.dedicated(air.KindKtWhenEntry, anchor,
+		arrow.Text, "kt-when-entry")
 	node := air.NewNodeAt(air.KindCase, start, end, "",
 		append(p.view.OrderChildren(inner), marker)...)
 	return p.mapper.annotate(node, air.SemNote, p.mapper.note("when-branch"))

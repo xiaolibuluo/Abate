@@ -65,6 +65,9 @@ func ktCoverageCorpus() []string {
 		"#!/usr/bin/env kotlin\n",
 		"val c = x as String\n",
 		"val p: Int? = null\nval q: Int = p!!\n",
+		"fun pick(x: Int): String {\n  when (x) {\n    1 -> return \"a\"\n    else -> return \"b\"\n  }\n}\n",
+		"open class B { open fun m() {} }\nclass D : B() { override fun m() { super.m() } }\n",
+		"class E { constructor(x: Int) : this() { } }\n",
 	)
 }
 

@@ -127,26 +127,27 @@ var ktDeclRules = []ktDeclRule{
 
 // ktBinding 是一条 Pratt 中缀绑定力。
 type ktBinding struct {
-	text  string
-	power int
-	right bool
+	text   string
+	power  int
+	right  bool
+	prefix air.NodeKind
 }
 
 // ktInfixBindings 是 Kotlin 表达式的确定序 Pratt 绑定表；"?" 与 "!!" 是后缀
 // 构造，交由词法叶子的专有投影处理，不注册为需要右操作数的中缀规则。
 var ktInfixBindings = []ktBinding{
-	{"=", 10, true}, {"+=", 10, true}, {"-=", 10, true}, {"*=", 10, true},
-	{"/=", 10, true}, {"%=", 10, true},
-	{"->", 8, true}, {"?:", 15, true}, {"||", 20, false}, {"&&", 25, false},
-	{"===", 30, false}, {"!==", 30, false}, {"==", 30, false}, {"!=", 30, false},
-	{"<", 30, false}, {">", 30, false}, {"<=", 30, false}, {">=", 30, false},
-	{"|", 35, false}, {"^", 38, false}, {"&", 40, false},
-	{"<<", 45, false}, {">>", 45, false}, {">>>", 45, false},
-	{"..", 48, false}, {"..<", 48, false},
-	{"+", 50, false}, {"-", 50, false}, {"*", 55, false}, {"/", 55, false},
-	{"%", 55, false}, {"is", 58, false}, {"as", 58, false}, {"in", 12, false},
-	{"?.", 92, false}, {".", 92, false}, {"::", 95, false},
-	{"(", 94, false}, {"[", 94, false}, {",", 3, false},
+	{"=", 10, true, 0}, {"+=", 10, true, 0}, {"-=", 10, true, 0}, {"*=", 10, true, 0},
+	{"/=", 10, true, 0}, {"%=", 10, true, 0},
+	{"->", 8, true, 0}, {"?:", 15, true, 0}, {"||", 20, false, 0}, {"&&", 25, false, 0},
+	{"===", 30, false, 0}, {"!==", 30, false, 0}, {"==", 30, false, 0}, {"!=", 30, false, 0},
+	{"<", 30, false, 0}, {">", 30, false, 0}, {"<=", 30, false, 0}, {">=", 30, false, 0},
+	{"|", 35, false, 0}, {"^", 38, false, 0}, {"&", 40, false, 0},
+	{"<<", 45, false, 0}, {">>", 45, false, 0}, {">>>", 45, false, 0},
+	{"..", 48, false, 0}, {"..<", 48, false, 0},
+	{"+", 50, false, 0}, {"-", 50, false, 0}, {"*", 55, false, air.KindSpread}, {"/", 55, false, 0},
+	{"%", 55, false, 0}, {"is", 58, false, 0}, {"as", 58, false, 0}, {"in", 12, false, 0},
+	{"?.", 92, false, 0}, {".", 92, false, 0}, {"::", 95, false, 0},
+	{"(", 94, false, 0}, {"[", 94, false, 0}, {",", 3, false, 0},
 }
 
 // ktNote 是一条命名语义标注值。
